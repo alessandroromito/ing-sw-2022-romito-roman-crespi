@@ -1,4 +1,4 @@
 package it.polimi.ingsw.server.model.component;
 
-public class AssistentCard extends Component{
+public class AssistantCard extends Component{
 }
