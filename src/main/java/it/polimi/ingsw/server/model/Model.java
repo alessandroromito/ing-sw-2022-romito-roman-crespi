@@ -16,8 +16,8 @@ public class Model {
 
     private final Map map;
     private final Bag bag;
-    private boolean EndGame;
-    private int PlayerNumber;
+    private boolean endGame;
+    private int playerNumber;
     private List<Player> players;
 
     /**
@@ -40,8 +40,8 @@ public class Model {
      * Return the number of player
      */
     public int getNumberOfPlayer() {
-        PlayerNumber = players.size();
-        return PlayerNumber;
+        playerNumber = players.size();
+        return playerNumber;
     }
     /**
      * Returns a player given his {@code nickname}.
@@ -62,21 +62,23 @@ public class Model {
      * Change the playersNumber.
      */
     public void addPlayer(Player player) {
-        if (PlayerNumber < MAX_PLAYERS) {
+        if (playerNumber < MAX_PLAYERS) {
             players.add(player);
-            PlayerNumber++;
+            playerNumber++;
         }
     }
 
     public void GameInitialization(){
-        map.mapInit(PlayerNumber);
+
+        map.mapInit(playerNumber);
     }
 
     /**
      * Set the boolean variable EndGame true
      */
     public void SetEndGame(){
-        EndGame = true;
+
+        endGame = true;
     }
 
     /**
@@ -84,14 +86,14 @@ public class Model {
      * @return EndGame
      */
     public boolean getEndGame() {
-        return EndGame;
+        return endGame;
     }
 
     /**
      * Set of operation to do in the endgame phase
      */
     public void EndGame(String message){
-        while(EndGame){
+        while(endGame){
             switch(message){
                 case "LAST_TOWER":
                 case "ASSISTANT_CARD":
