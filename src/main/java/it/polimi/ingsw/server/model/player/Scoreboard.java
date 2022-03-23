@@ -12,4 +12,8 @@ public class Scoreboard {
     public void Scoreboard(){
 
     }
+
+    public int getNumTowers(){
+        return towerLine;
+    }
 }

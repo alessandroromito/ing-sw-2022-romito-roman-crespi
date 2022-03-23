@@ -14,10 +14,11 @@ public class Bag {
 
     }
 
+    //ritorna l'ID dello studente
     public int getSorted(){
         int temp = this.bagStudents.get(0);
         this.bagStudents.remove(0);
-        return temp;
+        return temp + 104;
     }
 
     public void notifyMovingStudents(){
