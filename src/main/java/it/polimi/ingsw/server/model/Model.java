@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.bag.*;
+import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.player.*;
 import it.polimi.ingsw.server.model.map.*;
 
@@ -19,11 +20,12 @@ public class Model {
     private boolean endGame;
     private int playerNumber;
     private List<Player> players;
+    private ArrayList<Component> components;
 
     /**
      * Default constructor.
      */
-    private Model() {
+    public Model() {
         this.players = new ArrayList<>();
         this.map = new Map();
         this.bag = new Bag();
@@ -92,7 +94,7 @@ public class Model {
     /**
      * Set of operation to do in the endgame phase
      */
-    public void EndGame(String message){
+    public void endGamePhase(String message){
         while(endGame){
             switch(message){
                 case "LAST_TOWER":
@@ -103,6 +105,15 @@ public class Model {
         }
     }
 
+    public ArrayList<Component> getComponents(){
+        return components;
+    }
+
+    public Component getComponent(int ID){
+        return components.get(ID);
+    }
+
+    // da aggiungere metodo che traduce json per importare i components
 
 }
 
