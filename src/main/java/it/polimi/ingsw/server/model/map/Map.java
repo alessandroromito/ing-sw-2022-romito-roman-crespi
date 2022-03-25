@@ -1,22 +1,18 @@
 package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.model.Model;
-
+import it.polimi.ingsw.server.model.Game;
 import java.util.ArrayList;
 
 public class Map {
 
     private ArrayList<Island> islands;
+    private ArrayList<Cloud> clouds;
 
     /**
      * Default constructor.
      */
     public Map() {
-        mapInit(Model.getNumberOfPlayer());
-    }
-
-
-    public void mapInit(int playerNumber) {
         // Create 12 island object with his default constructor
         for(int i=0; i<12; i++){
             islands.set(i, new Island());
@@ -26,4 +22,5 @@ public class Map {
             clouds.set(i, new Cloud());
         }
     }
+
 }

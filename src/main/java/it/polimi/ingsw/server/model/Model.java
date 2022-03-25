@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.bag.*;
 import it.polimi.ingsw.server.model.component.Component;
+import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.*;
 import it.polimi.ingsw.server.model.map.*;
 
@@ -9,55 +10,35 @@ import java.util.List;
 
 /**
  * This Class represents the core of the game.
- * It manages the players, the map, the bag, the player scoreboard and all the components
  */
 public class Model {
 
     public static final int MAX_PLAYERS = 4;
 
-    private final Map map;
-    private final Bag bag;
+    private Game game;
     private boolean endGame;
+    private boolean expertMode;
     private int playerNumber;
-    private List<Player> players;
-    private ArrayList<Component> components;
 
     /**
-     * Default constructor.
+     * Default constructor
      */
     public Model() {
-        this.players = new ArrayList<>();
-        this.map = new Map();
-        this.bag = new Bag();
+        this.game = new Game(expertMode, playerNumber);
     }
 
-    /**
-     * Returns a list of players.
-     */
-    public List<Player> getPlayers() {
-        return players;
+    public void autosave(){
+
     }
 
     /**
      * Return the number of player
      */
     public int getNumberOfPlayer() {
-        playerNumber = players.size();
+        playerNumber = game.getPlayers().size();
         return playerNumber;
     }
-    /**
-     * Returns a player given his {@code nickname}.
-     * If no player is found {@code null} is returned.
-     *
-     * @param nickname the nickname of the player to be found.
-     * @return Returns the player given his {@code nickname}, {@code null} otherwise.
-     */
-    public Player getPlayerByNickname(String nickname) {
-        return players.stream()
-                .filter(player -> nickname.equals(player.getNickname()))
-                .findFirst()
-                .orElse(null);
-    }
+
 
     /**
      * Adds a player to the game.
@@ -65,27 +46,34 @@ public class Model {
      */
     public void addPlayer(Player player) {
         if (playerNumber < MAX_PLAYERS) {
-            players.add(player);
+            game.getPlayers().add(player);
             playerNumber++;
         }
     }
 
-    public void GameInitialization(){
+    /**
+     *
+     */
+    public void gameInitialization(){
 
-        map.mapInit(playerNumber);
     }
 
     /**
-     * Set the boolean variable EndGame true
+     *
      */
-    public void SetEndGame(){
+    public void round(Player p){
 
+    }
+
+    /**
+     * Set EndGame true
+     */
+    public void setEndGame(){
         endGame = true;
     }
 
     /**
-     * Return the state of EndGame
-     * @return EndGame
+     * @return the state of EndGame
      */
     public boolean getEndGame() {
         return endGame;
@@ -103,14 +91,6 @@ public class Model {
                 case "LAST_STUDENT":
             }
         }
-    }
-
-    public ArrayList<Component> getComponents(){
-        return components;
-    }
-
-    public Component getComponent(int ID){
-        return components.get(ID);
     }
 
     // da aggiungere metodo che traduce json per importare i components
