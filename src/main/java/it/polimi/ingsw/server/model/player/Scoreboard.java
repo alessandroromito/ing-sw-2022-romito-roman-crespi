@@ -4,22 +4,15 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.observer.ObserverTower;
 
-public class Scoreboard {
-    private StudentDisc[] entrance;
-    private StudentDisc[] diningRoom;
-    private ProfessorPawn[] ProfessorTable;
-    private int towerLine;
-    private ObserverTower obsT;
+public interface Scoreboard {
 
-    public void Scoreboard(){
-        obsT = new ObserverTower();
-    }
+    void setProfessorTrue(int color);
+    void setProfessorFalse(int color);
+    int[] getProfessor();
+    int getNumTowers();
+    int getNumStudentsFromEntrance();
+    int[] getPlayerStudentsFromDining();
+    void addStudentsOnEntrance(int[] students);
+    void moveFromeEntranceToDining(int[] students);
 
-    public int getNumTowers(){
-        return towerLine;
-    }
-
-    public void updateObserver(){
-        obsT.onUpdate(getNumTowers());
-    }
 }
