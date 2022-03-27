@@ -1,12 +1,13 @@
 package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.bag.*;
+import it.polimi.ingsw.server.model.component.Colors;
 import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.MapPositions;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.*;
-import it.polimi.ingsw.server.model.map.*;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 /**
  * This Class represents the core of the game.
@@ -24,7 +25,7 @@ public class Model {
      * Default constructor
      */
     public Model() {
-        this.game = new Game(expertMode, playerNumber);
+
     }
 
     public void autosave(){
@@ -55,7 +56,34 @@ public class Model {
      *
      */
     public void gameInitialization(){
+        // Create all the object necessary for the game according to the number of player
+        this.game = new Game(expertMode, playerNumber);
+        // 2 set mother nature to one island
+        int randPos = getRandomNumber(1, 12);
+        game.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
+        // 3 Move 1 student to each island
+        Bag bag = game.getBag();
+        ArrayList<Component> tempArrayStudents = new ArrayList<>();
+        for(Colors color: Colors.values()){
+            Component student1 = game.getComponent(bag.getColored(color));
+            Component student2 = game.getComponent(bag.getColored(color));
+            tempArrayStudents.add(student1);
+            tempArrayStudents.add(student2);
+        }
+        Collections.shuffle(tempArrayStudents);
+        for (Component stud: tempArrayStudents) {
+            int islandNum = 0;
+            if(!(islandNum == oppositePosition()))
+            stud.setPosition(MapPositions.valueOf("ISLANDS"),islandNum);
+        }
+        // 8 Prendere 8 torri
 
+    }
+
+    private int oppositePosition() {
+        int motherNaturePosition = game.getComponent(1).getPositionDetailed();
+        int oppositePos = (motherNaturePosition + 12) / 2;
+        return oppositePos;
     }
 
     /**
@@ -91,6 +119,15 @@ public class Model {
                 case "LAST_STUDENT":
             }
         }
+    }
+
+    /**
+     * @param min minimum number can be generated
+     * @param max manximum nuber can be generated
+     * @return a random number in range min - max
+     */
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 
     // da aggiungere metodo che traduce json per importare i components
