@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.player.Scoreboard;
 public class ObserverTower extends MainObserver{
     Scoreboard scoreboard;
 
-    public void ObserverTower(Scoreboard scoreboard){
+    public ObserverTower(Scoreboard scoreboard){
             this.scoreboard = scoreboard;
     }
 
