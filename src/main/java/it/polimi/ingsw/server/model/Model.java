@@ -1,9 +1,8 @@
 package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.model.bag.*;
-import it.polimi.ingsw.server.model.component.Colors;
+import it.polimi.ingsw.server.model.component.PawnColors;
 import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.MapPositions;
-import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.*;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.Collections;
  * This Class represents the core of the game.
  */
 public class Model {
-
+    public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
 
     private Game game;
@@ -64,7 +63,7 @@ public class Model {
         // 3 Move 1 student to each island
         Bag bag = game.getBag();
         ArrayList<Component> tempArrayStudents = new ArrayList<>();
-        for(Colors color: Colors.values()){
+        for(PawnColors color: PawnColors.values()){
             Component student1 = game.getComponent(bag.getColored(color));
             Component student2 = game.getComponent(bag.getColored(color));
             tempArrayStudents.add(student1);
@@ -76,7 +75,17 @@ public class Model {
             if(!(islandNum == oppositePosition()))
             stud.setPosition(MapPositions.valueOf("ISLANDS"),islandNum);
         }
-        // 8 Prendere 8 torri
+        // 8 Take 6/8 towers
+        if(getNumberOfPlayer() == 2){
+            for (Player p: game.getPlayers()) {
+                p.getScoreboard().setNumTowers(8);
+            }
+        }
+        else if(getNumberOfPlayer() == 3){
+            for (Player p: game.getPlayers()) {
+                p.getScoreboard().setNumTowers(6);
+            }
+        }
 
     }
 
@@ -86,10 +95,13 @@ public class Model {
         return oppositePos;
     }
 
+    public void turnController(){
+
+    }
     /**
      *
      */
-    public void round(Player p){
+    public void turn(Player p){
 
     }
 

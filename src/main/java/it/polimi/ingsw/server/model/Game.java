@@ -136,7 +136,7 @@ public class Game {
             int towerColor = 1;
             components.set(i, new Tower(towerColor));
         }
-        if(exMode){
+        if(pNumber == 3){
             for(int i=59; i<=64;){
                 int towerColor = 2;
                 components.set(i, new Tower(towerColor));
@@ -154,7 +154,7 @@ public class Game {
         }
         // Create STUDENTS
         i = 105;
-        for(Colors color: Colors.values()){
+        for(PawnColors color: PawnColors.values()){
             for(int count=0; count<26; count++){
                 components.set(i, new StudentDisc(color));
                 i++;

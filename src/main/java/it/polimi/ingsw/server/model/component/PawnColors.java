@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.component;
 
-public enum Colors {
+public enum PawnColors {
     RED,
     BLUE,
     GREEN,
     YELLOW,
-    PINK;
+    PINK
 }
