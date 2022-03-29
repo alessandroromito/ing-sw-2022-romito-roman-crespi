@@ -1,13 +1,15 @@
 package it.polimi.ingsw.server.model.component;
 
-public class Tower extends Component {
-    private int color;
+import it.polimi.ingsw.server.model.player.TowerColors;
 
-    public void Tower(int color){
+public class Tower extends Component {
+    private TowerColors color;
+
+    public Tower(TowerColors color){
         this.color = color;
     }
 
-    public int getColor(){
+    public TowerColors getColor(){
         return color;
     }
 }

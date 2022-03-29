@@ -11,9 +11,13 @@ package it.polimi.ingsw.server.model.component;
 
 
 public abstract class Pawn extends Component {
-    protected int color;
+    protected PawnColors color;
 
-    public int getColor(){
+    public PawnColors getColor(){
         return color;
+    }
+
+    public int getColorInt(){
+        return color.ordinal();
     }
 }

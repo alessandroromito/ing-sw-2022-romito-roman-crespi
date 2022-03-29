@@ -10,10 +10,11 @@ public class Bag {
     private List<Integer> bagStudents;
     private ObserverLastStudent obsLS;
 
-    public void Bag(){
+    public Bag(){
         for ( int i = 1 ; i <= 130 ; i++)
             this.bagStudents.add(i);
         Collections.shuffle(this.bagStudents);
+        obsLS = new ObserverLastStudent(this);
     }
 
     //ritorna l'ID dello studente
@@ -29,11 +30,10 @@ public class Bag {
     }
 
     public void notifyMovingStudents(){
-
-        obsLS = new ObserverLastStudent(this);
+        obsLS.onUpdate();
     }
 
     public int getColored(PawnColors color) {
-        obsLS.onUpdate();
+        //da fare
     }
 }

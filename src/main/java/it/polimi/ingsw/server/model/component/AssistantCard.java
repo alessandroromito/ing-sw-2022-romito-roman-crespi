@@ -10,4 +10,16 @@ public class AssistantCard extends Component{
         this.value = value;
         this.movement = movement;
     }
+
+    public Animals getAnimal(){
+        return this.animal;
+    }
+
+    public int getValue(){
+        return this.value;
+    }
+
+    public int getMovement(){
+        return this.movement;
+    }
 }

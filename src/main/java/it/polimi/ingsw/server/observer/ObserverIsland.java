@@ -11,7 +11,7 @@ public class ObserverIsland extends MainObserver{
 
     public void onUpdate(){
         int numGroupID;
-        for(int i; i < 12; i++){
+        for(int i = 0; i < 12; i++){
             map.getIsland(i);
         }
     }

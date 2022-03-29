@@ -13,7 +13,8 @@ public class Player {
     private Scoreboard scoreboard;
     private ObserverLastAssistentCard obsLAC;
 
-    void Player(){
+    public Player(){
+        // da implementare la mano
         obsLAC = new ObserverLastAssistentCard(this);
     }
 
