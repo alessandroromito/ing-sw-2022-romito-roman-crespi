@@ -11,6 +11,7 @@ public class Bag {
     private ObserverLastStudent obsLS;
 
     public Bag(){
+        bagStudents = new ArrayList<>(130);
         for ( int i = 1 ; i <= 130 ; i++)
             this.bagStudents.add(i);
         Collections.shuffle(this.bagStudents);

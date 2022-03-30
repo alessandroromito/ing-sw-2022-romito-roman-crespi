@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.map;
 
-import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.observer.ObserverIsland;
 
@@ -17,29 +16,28 @@ public class Map {
     /**
      * Default constructor.
      */
-    public Map() {
+    public Map(int playerNumber) {
         // Create 12 island object with his default constructor
+        islands = new ArrayList<>(12);
         for(int i=0; i<12; i++){
             islands.set(i, new Island());
         }
-        // Create 2 clouds object
-
-
-
-        //possono essere anche tre
-        for(int i=0; i<2; i++){
+        // Create clouds object based on PlayerNumber
+        clouds = new ArrayList<>();
+        for(int i=0; i<playerNumber; i++){
             clouds.set(i, new Cloud());
         }
-
-
-
 
         obsIs = new ObserverIsland(this);
     }
 
-    public Island getIsland(int islandNumber){return islands.get(islandNumber);}
+    public Island getIsland(int islandNumber){
+        return islands.get(islandNumber);
+    }
 
-    public Cloud getCloud(int cloudNumber){return clouds.get(cloudNumber)}
+    public Cloud getCloud(int cloudNumber){
+        return clouds.get(cloudNumber);
+    }
 
     public void notifyMergingIslands(){
         // da implementare

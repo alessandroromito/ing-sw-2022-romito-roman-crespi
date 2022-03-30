@@ -1,99 +1,105 @@
 package it.polimi.ingsw.server.model;
-import it.polimi.ingsw.server.model.bag.*;
-import it.polimi.ingsw.server.model.component.PawnColors;
+
+import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
+import it.polimi.ingsw.server.exception.MaxPlayerException;
+import it.polimi.ingsw.server.exception.MissingPlayersException;
+import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.component.MapPositions;
-import it.polimi.ingsw.server.model.player.*;
+import it.polimi.ingsw.server.model.map.Map;
+import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
-/**
- * This Class represents the core of the game.
- */
 public class Model {
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
 
+    private static Model model;
     private Game game;
-    private boolean endGame;
+
     private boolean expertMode;
-    private int playerNumber;
+
+    private List<Player> players;
+    private ArrayList<Component> components;
+    private Map map;
+    private Bag bag;
+
+    private boolean gameStarted;
+    private boolean endGame;
+
+    int playerNumber;
 
     /**
      * Default constructor
      */
     public Model() {
+        players = new ArrayList<>();
+        components = null;
+        //map = new Map(playerNumber);
+        bag = new Bag();
+        expertMode = false;
+        playerNumber = 0;
+        gameStarted = false;
+    }
+
+    public void autoSave(){
 
     }
 
-    public void autosave(){
-
+    public static Model getModel(){
+        if (model == null)
+            model = new Model();
+        return model;
     }
 
     /**
      * Return the number of player
      */
     public int getNumberOfPlayer() {
-        playerNumber = game.getPlayers().size();
+        playerNumber = players.size();
         return playerNumber;
     }
 
 
     /**
      * Adds a player to the game.
-     * Change the playersNumber.
+     * Update the playersNumber.
      */
-    public void addPlayer(Player player) {
-        if (playerNumber < MAX_PLAYERS) {
-            game.getPlayers().add(player);
-            playerNumber++;
-        }
+    public void addPlayer(Player player) throws GameAlreadyStartedException, MaxPlayerException {
+        if (gameStarted)
+            throw new GameAlreadyStartedException("NOT possible to add players when game is already started!");
+        if (player == null) throw new NullPointerException("Player cannot be NULL");
+        if (playerNumber >= MAX_PLAYERS) throw new MaxPlayerException("Max Number of players reached!");
+        players.add(player);
+        playerNumber++;
     }
 
     /**
-     *
+     * Starts the game
      */
-    public void gameInitialization(){
-        // Create all the object necessary for the game according to the number of player
-        this.game = new Game(expertMode, playerNumber);
-        // 2 set mother nature to one island
-        int randPos = getRandomNumber(1, 12);
-        game.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
-        // 3 Move 1 student to each island
-        Bag bag = game.getBag();
-        ArrayList<Component> tempArrayStudents = new ArrayList<>();
-        for(PawnColors color: PawnColors.values()){
-            Component student1 = game.getComponent(bag.getColored(color));
-            Component student2 = game.getComponent(bag.getColored(color));
-            tempArrayStudents.add(student1);
-            tempArrayStudents.add(student2);
-        }
-        Collections.shuffle(tempArrayStudents);
-        for (Component stud: tempArrayStudents) {
-            int islandNum = 0;
-            if(!(islandNum == oppositePosition()))
-            stud.setPosition(MapPositions.valueOf("ISLANDS"),islandNum);
-        }
-        // 8 Take 6/8 towers
-        if(getNumberOfPlayer() == 2){
-            for (Player p: game.getPlayers()) {
-                p.getScoreboard().setNumTowers(8);
-            }
-        }
-        else if(getNumberOfPlayer() == 3){
-            for (Player p: game.getPlayers()) {
-                p.getScoreboard().setNumTowers(6);
-            }
-        }
+    public boolean startGame() throws GameAlreadyStartedException, MissingPlayersException {
 
+        if (gameStarted) throw new GameAlreadyStartedException("Game is already in progress!");
+
+        gameStarted = true;
+
+        if(players.size() < 2) throw new MissingPlayersException("Minimum players is 2!");
+        if(!expertMode){
+            game = new Game(players, components, map, bag);
+        }
+        else game = new ExpertGame(players, components, map, bag);
+
+        return true;
     }
 
-    private int oppositePosition() {
-        int motherNaturePosition = game.getComponent(1).getPositionDetailed();
-        int oppositePos = (motherNaturePosition + 12) / 2;
-        return oppositePos;
+    /**
+     * @return true if the game gameStarted
+     */
+    public boolean isGameStarted() {
+        return gameStarted;
     }
+
 
     public void turnController(){
 
@@ -109,6 +115,7 @@ public class Model {
      * Set EndGame true
      */
     public void setEndGame(){
+        game.currentState = GameState.GAME_ENDED;
         endGame = true;
     }
 
@@ -133,14 +140,7 @@ public class Model {
         }
     }
 
-    /**
-     * @param min minimum number can be generated
-     * @param max manximum nuber can be generated
-     * @return a random number in range min - max
-     */
-    public int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
+
 
     // da aggiungere metodo che traduce json per importare i components
 

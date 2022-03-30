@@ -1,31 +1,68 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.TowerColors;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Game {
-    private List<Player> players;
-    private ArrayList<Component> components;
-    private Map map;
-    private Bag bag;
+    protected List<Player> players;
+    protected ArrayList<Component> components;
+    protected Map map;
+    protected Bag bag;
+
+    protected GameState currentState;
+    protected Player currentPlayer;
 
     /**
      * Default constructor
      */
-    public Game(boolean exMode, int pNumber) {
-        this.players = new ArrayList<>();
-        this.components = new ArrayList<>();
-        // Create map
-        this.map = new Map();
-        // Create the bag
-        this.bag = new Bag();
+    public Game(List<Player> players, ArrayList<Component> components, Map map, Bag bag) {
+        this.players = players;
+        this.components = components;
+        this.map = map;
+        this.bag = bag;
 
-        createAllComponents(exMode, pNumber);
+        gameInitialization();
+    }
+
+    /**
+     * Inizialise the game.
+     * Creates all the object necessary for the game according to the number of player
+     */
+    public void gameInitialization() {
+        // 1) Place MotherNature to a random island
+        int randPos = getRandomNumber(1, 12);
+        this.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
+        // 3) Move 1 student to each island
+        ArrayList<Component> tempArrayStudents = new ArrayList<>();
+        for(PawnColors color: PawnColors.values()){
+            Component student1 = this.getComponent(bag.getColored(color));
+            Component student2 = this.getComponent(bag.getColored(color));
+            tempArrayStudents.add(student1);
+            tempArrayStudents.add(student2);
+        }
+        Collections.shuffle(tempArrayStudents);
+        for (Component stud: tempArrayStudents) {
+            int islandNum = 0;
+            if(!(islandNum == oppositePosition()))
+                stud.setPosition(MapPositions.valueOf("ISLANDS"), islandNum);
+        }
+        // 8 Take 6/8 towers
+        for (Player p: this.getPlayers()) {
+            if(players.size() == 2){
+                p.getScoreboard().setNumTowers(8);
+            }
+            else if (players.size() == 3){
+                p.getScoreboard().setNumTowers(6);
+            }
+        }
     }
 
     /**
@@ -43,6 +80,22 @@ public class Game {
     }
 
     /**
+     * @return the current state Game
+     */
+    public GameState getState() {
+        return this.currentState;
+    }
+
+    /**
+     * Method that sets the current state of the game
+     *
+     * @param currentState GameState to be changed
+     */
+    public void setState(GameState currentState) {
+        this.currentState = currentState;
+    }
+
+    /**
      * @return the instance of map
      */
     public Map getMap(){
@@ -52,15 +105,17 @@ public class Game {
      * @param nickname the nickname of the player to be found.
      * @return the player given his {@code nickname}, {@code null} otherwise.
      */
-    public Player getPlayerByNickname(String nickname) {
-        return players.stream()
+    public Player getPlayerByNickname(String nickname) throws MissingPlayerNicknameException {
+        Player p = players.stream()
                 .filter(player -> nickname.equals(player.getNickname()))
                 .findFirst()
                 .orElse(null);
+        if(p.equals(null)) throw new MissingPlayerNicknameException(nickname);
+        return p;
     }
 
     /**
-     * @return the instance of components array
+     * @return the instance of component's array
      */
     public ArrayList<Component> getComponents() {
         return components;
@@ -79,15 +134,18 @@ public class Game {
 
     public void locateStudentsFromBag(){
 
+
     }
-    public void chooseAndPlayAssistantCard(){
+    public void playAssistantCard(){
         AssistantCard card = getPlayerByNickname().getPlayerCard();
     }
     public void moveStudentToIsland(int numIsland, int student){
         getComponent(student).setPosition(MapPositions.valueOf("ISLANDS"), numIsland);
     }
-    public void moveStudentsToDiningRoom(int student){
+    public void moveStudentToDiningRoom(int student){
+        // moveStudentToDiningRoom() from scoreboard
 
+        //check professor e nel caso setProfessor(color)
     }
     public void moveMotherNature(int steps){
         // Get MotherNature
@@ -99,47 +157,30 @@ public class Game {
             if((MNpos) == 13) MNpos = 0;
         }
         // Set the position
-        MN.setPosition(MapPositions.valueOf("ISLANDS"), MNpos);
+        MN.setPosition(MapPositions.ISLANDS, MNpos);
     }
     public void pickAndPlaceFromCloud(){
 
     }
-    public void useCharacter(int character){
 
-    }
-
-    private void createAllComponents(boolean exMode, int pNumber){
+    public void createComponents(){
         // Create MOTHER NATURE
         components.set(1, new MotherNature());
-        // Create NO ENTRY TILE
-        if(exMode) {
-            for (int i = 2; i <= 5; i++) {
-                components.set(i, new NoEntryTile());
-            }
-        }
+
         //Create PROFESSORS
         for(int i=6; i<=10; i++){
             components.set(i, new ProfessorPawn());
         }
-        //Create COIN
-        if(exMode) {
-            for (int i = 23; i <= 42; i++) {
-                components.set(i, new Coin());
-            }
-        }
         //Create TOWER
         for(int i=43; i<=50;){
-            int towerColor = 0;
-            components.set(i, new Tower(towerColor));
+            components.set(i, new Tower(TowerColors.BLACK));
         }
         for(int i=51; i<=58;){
-            int towerColor = 1;
-            components.set(i, new Tower(towerColor));
+            components.set(i, new Tower(TowerColors.WHITE));
         }
-        if(pNumber == 3){
+        if(players.size() == 3){
             for(int i=59; i<=64;){
-                int towerColor = 2;
-                components.set(i, new Tower(towerColor));
+                components.set(i, new Tower(TowerColors.GREY));
             }
         }
         // Create ASSISTANT CARD
@@ -160,6 +201,21 @@ public class Game {
                 i++;
             }
         }
+    }
+
+    /**
+     * @param min minimum number can be generated
+     * @param max manximum nuber can be generated
+     * @return a random number in range min - max
+     */
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    private int oppositePosition() {
+        int motherNaturePosition = this.getComponent(1).getPositionDetailed();
+        int oppositePos = (motherNaturePosition + 12) / 2;
+        return oppositePos;
     }
 
 }
