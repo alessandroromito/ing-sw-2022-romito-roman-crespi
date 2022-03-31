@@ -1,50 +1,83 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.model.component.ProfessorPawn;
-import it.polimi.ingsw.server.model.component.StudentDisc;
-import it.polimi.ingsw.server.observer.ObserverTower;
+import it.polimi.ingsw.server.model.component.PawnColors;
 
 public class ScoreboardX3p implements Scoreboard{
 
-    private int Entrance[];
-    private int DiningRoom[];
-    private boolean ProfessorTable[];
-    private int TowerLine;
-    private ObserverTower obsT;
+    private final PawnColors[] entrance;
+    private final Integer[] diningRoom;
+    private final boolean[] professorTable;
+    private int towerLine;
+    private TowerColors towerColor;
+
 
     public ScoreboardX3p(){
-        obsT = new ObserverTower(this);
+        entrance = new PawnColors[9];
+        towerLine = 6;
+        professorTable = new boolean[5];
+        diningRoom = new Integer[5];
+        for(int i=0;i<5;i++){
+            diningRoom[i] = 0;
+            professorTable[i] = false;
+        }
     }
 
-    public void setProfessorTrue(int color) {
-
+    @Override
+    public void setTowerColor(TowerColors t){
+        this.towerColor = t;
     }
 
-    public void setProfessorFalse(int color) {
-
+    @Override
+    public void setProfessorTrue(PawnColors color) {
+        this.professorTable[color.ordinal()] = true;
     }
 
-    public int[] getProfessor() {
-        return new int[0];
+    @Override
+    public void setProfessorFalse(PawnColors color) {
+        this.professorTable[color.ordinal()] = false;
     }
 
+    @Override
+    public boolean getProfessor(PawnColors color) {
+        return this.professorTable[color.ordinal()];
+    }
+
+    @Override
     public int getNumTowers() {
-        return 0;
+        return this.towerLine;
     }
 
+    @Override
     public int getNumStudentsFromEntrance() {
-        return 0;
+        int c = 0;
+        for(int i=8;i>=0;i--)
+            if(entrance[i] != null)
+                c++;
+        return c;
     }
 
+    @Override
     public int[] getPlayerStudentsFromDining() {
-        return new int[0];
+        int vector[] = new int[9];
+        for(int i=0;i<8;i++)    vector[i] = this.diningRoom[i];
+        return vector;
     }
 
-    public void addStudentsOnEntrance(int[] students) {
-
+    @Override
+    public void addStudentOnEntrance(PawnColors student) {
+        int k = 0;
+        while(entrance[k] == null)  k++;
+        entrance[k] = student;
     }
 
-    public void moveFromeEntranceToDining(int[] students) {
+    @Override
+    public void moveFromEntranceToDining(int position) {
+        diningRoom[entrance[position].ordinal()]++;
+        entrance[position] = null;
+    }
 
+    @Override
+    public TowerColors getTowerColor() {
+        return this.towerColor;
     }
 }

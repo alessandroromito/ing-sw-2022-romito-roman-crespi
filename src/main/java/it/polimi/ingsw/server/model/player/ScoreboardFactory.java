@@ -8,7 +8,7 @@ public class ScoreboardFactory {
             case 3:
                 return new ScoreboardX3p();
             default:
-                throw IllegalArgumentException(N_ofplayer" number of players not supported");
+                throw new IllegalArgumentException(N_ofplayer + " number of players not supported");
         }
     }
 }
