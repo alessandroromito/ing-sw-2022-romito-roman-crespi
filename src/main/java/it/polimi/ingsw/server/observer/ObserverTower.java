@@ -11,6 +11,7 @@ public class ObserverTower extends MainObserver{
             this.scoreboard = scoreboard;
     }
 
+    @Override
     public void onUpdate() {
         if(scoreboard.getNumTowers() == 0)
             endGamePhase("LAST_TOWER");
