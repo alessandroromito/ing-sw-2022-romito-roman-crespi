@@ -9,6 +9,7 @@ public class ObserverLastStudent extends MainObserver {
         this.bag = bag;
     }
 
+    @Override
     public void onUpdate(){
         if(bag.isStudentsListEmpty())   setEndGame();
     }

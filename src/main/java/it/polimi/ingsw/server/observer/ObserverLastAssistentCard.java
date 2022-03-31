@@ -9,6 +9,7 @@ public class ObserverLastAssistentCard extends MainObserver{
         this.player = player;
     }
 
+    @Override
     public void onUpdate(){
         if(player.isLastAssistantCard())    setEndGame();
     }

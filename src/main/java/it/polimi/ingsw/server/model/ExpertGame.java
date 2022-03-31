@@ -27,7 +27,7 @@ public class ExpertGame extends Game{
         super.gameInitialization();
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
-            p.getScoreboard().addCoin();
+            p.addCoin();
         }
     }
 
