@@ -9,6 +9,7 @@ public class ObserverIsland extends MainObserver{
         this.map = map;
     }
 
+    @Override
     public void onUpdate(){
         int numGroupID;
         for(int i = 0; i < 12; i++){

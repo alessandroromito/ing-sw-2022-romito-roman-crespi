@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Player {
     private List<AssistantCard> hand;
-    private int coin;
+    private int coin = 0;
     private String nickname;
     private Scoreboard scoreboard;
     private ObserverLastAssistentCard obsLAC;
@@ -41,6 +41,8 @@ public class Player {
     public int getNumCoin(){
         return coin;
     }
+
+    public void addCoin(){coin++;}
 
     public boolean isLastAssistantCard(){
         return hand.isEmpty();
