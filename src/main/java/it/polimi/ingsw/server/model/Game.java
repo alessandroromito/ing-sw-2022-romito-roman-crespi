@@ -1,11 +1,13 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
+import it.polimi.ingsw.server.enumerations.*;
+import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
+import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.server.model.player.TowerColors;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,19 +19,21 @@ public class Game {
     protected Map map;
     protected Bag bag;
 
-    protected GameState currentState;
     protected Player currentPlayer;
 
     /**
      * Default constructor
      */
     public Game(List<Player> players, ArrayList<Component> components, Map map, Bag bag) {
+
         this.players = players;
         this.components = components;
         this.map = map;
         this.bag = bag;
 
-        gameInitialization();
+        this.createComponents();
+
+        this.gameInitialization();
     }
 
     /**
@@ -51,8 +55,11 @@ public class Game {
         Collections.shuffle(tempArrayStudents);
         for (Component stud: tempArrayStudents) {
             int islandNum = 0;
-            if(!(islandNum == oppositePosition()))
+            if(!(islandNum == oppositePosition())){
+                map.getIsland(islandNum).addStudent(stud.getColor());
                 stud.setPosition(MapPositions.valueOf("ISLANDS"), islandNum);
+            }
+
         }
         // 8 Take 6/8 towers
         for (Player p: this.getPlayers()) {
@@ -61,6 +68,15 @@ public class Game {
             }
             else if (players.size() == 3){
                 p.getScoreboard().setNumTowers(6);
+            }
+        }
+        // Place 7/9 students on scoreboard's entrance
+        for(Player p: this.getPlayers()){
+            if(players.size() = 2) {
+                for(int i=0; i<7; i++) {
+                    StudentDisc stud = (StudentDisc) bag.getSorted();
+                    p.getScoreboard().addStudentOnEntrance(stud);
+                }
             }
         }
     }
@@ -77,22 +93,6 @@ public class Game {
      */
     public Bag getBag(){
         return bag;
-    }
-
-    /**
-     * @return the current state Game
-     */
-    public GameState getState() {
-        return this.currentState;
-    }
-
-    /**
-     * Method that sets the current state of the game
-     *
-     * @param currentState GameState to be changed
-     */
-    public void setState(GameState currentState) {
-        this.currentState = currentState;
     }
 
     /**
@@ -132,24 +132,62 @@ public class Game {
                 .orElse(null);
     }
 
+    /**
+     * Refill clouds with students from bag
+     */
     public void locateStudentsFromBag(){
+        for(Cloud cloud: map.getClouds()){
+            cloud.refill();
+        }
+    }
 
+    /**
+     *
+     */
+    public void playAssistantCard(int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException {
+        AssistantCard chosenCard = currentPlayer.getPlayerCard(cardIndex);
+        if(chosenCard.equals(null)) throw new MissingAssistantCardException("AssistantCard not found!");
+        if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
+        currentPlayer.setCurrentCard(chosenCard);
+    }
 
+    /**
+     *
+     * @param numIsland
+     * @param student
+     */
+    public void moveStudentToIsland(int numIsland, int student) throws DisabledIslandException {
+        StudentDisc stud = (StudentDisc) getComponent(student);
+        Island island = map.getIsland(numIsland);
+
+        if(island.isDisabled()) throw new DisabledIslandException("This island is disabled!");
+        island.addStudent(stud.getColor());
+        stud.setPosition(MapPositions.valueOf("ISLANDS"), numIsland);
     }
-    public void playAssistantCard(){
-        AssistantCard card = getPlayerByNickname().getPlayerCard();
-    }
-    public void moveStudentToIsland(int numIsland, int student){
-        getComponent(student).setPosition(MapPositions.valueOf("ISLANDS"), numIsland);
-    }
-    public void moveStudentToDiningRoom(int student){
+    public void moveStudentToDiningRoom(int studentID){
+        StudentDisc stud = (StudentDisc) getComponent(studentID);
         // moveStudentToDiningRoom() from scoreboard
-
+        currentPlayer.getScoreboard().moveFromeEntranceToDining(stud);
         //check professor e nel caso setProfessor(color)
+        checkProfessors(stud.getColor());
     }
+
+    private void checkProfessors(PawnColors color) {
+        int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
+
+        for(Player player: players){
+            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
+                currentPlayer.getScoreboard().setProfessorTrue(color);
+            }
+        }
+    }
+
+    /**
+     * Move Mother Nature forward by @param steps
+     */
     public void moveMotherNature(int steps){
         // Get MotherNature
-        Component MN = getComponent(1);
+        Component MN = (MotherNature) getComponent(1);
         int MNpos = MN.getPositionDetailed();
         // Calculate nextIsland
         for(int i=0; i<MNpos; i++ ){
@@ -159,8 +197,17 @@ public class Game {
         // Set the position
         MN.setPosition(MapPositions.ISLANDS, MNpos);
     }
-    public void pickAndPlaceFromCloud(){
 
+    /**
+     * Choose a cloud and get its students
+     * @param cloudID Number of the cloud chosen
+     */
+    public void pickAndPlaceFromCloud(int cloudID) throws MissingCloudStudentsException {
+        Cloud cloud = map.getCloud(cloudID);
+        if(cloud.getCloudStudents() == null) throw new MissingCloudStudentsException("Cloud empty or already chosen!");
+        for(StudentDisc student: cloud.getCloudStudents()){
+            currentPlayer.getScoreboard().addStudentOnEntrance(student);
+        }
     }
 
     public void createComponents(){
@@ -168,33 +215,49 @@ public class Game {
         components.set(1, new MotherNature());
 
         //Create PROFESSORS
-        for(int i=6; i<=10; i++){
-            components.set(i, new ProfessorPawn());
+        for(PawnColors color: PawnColors.values()){
+            int i=2;
+            components.set(i, new ProfessorPawn(color));
+            i++;
         }
+
         //Create TOWER
-        for(int i=43; i<=50;){
+        for(int i=7; i<=14;){
             components.set(i, new Tower(TowerColors.BLACK));
         }
-        for(int i=51; i<=58;){
+        for(int i=15; i<=22;){
             components.set(i, new Tower(TowerColors.WHITE));
         }
         if(players.size() == 3){
-            for(int i=59; i<=64;){
+            for(int i=23; i<=28;){
                 components.set(i, new Tower(TowerColors.GREY));
             }
         }
         // Create ASSISTANT CARD
-        int i = 65;
-        for(Animals animal: Animals.values()){
-            for(int movement = 1, val = 1; i<=104; val++, movement++, i++ ){
-                components.set(i, new AssistantCard(animal, val, movement));
-                val++;
-                i++;
-                components.set(i, new AssistantCard(animal, val, movement));
-            }
+        int i = 29;
+        for(int movement = 1, val = 1; i<=38; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(val, movement));
         }
+        i = 39;
+        for(int movement = 1, val = 1; i<=48; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(val, movement));
+        }
+        i = 49;
+        for(int movement = 1, val = 1; i<=58; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(val, movement));
+        }
+
         // Create STUDENTS
-        i = 105;
+        i = 59;
         for(PawnColors color: PawnColors.values()){
             for(int count=0; count<26; count++){
                 components.set(i, new StudentDisc(color));
@@ -216,6 +279,14 @@ public class Game {
         int motherNaturePosition = this.getComponent(1).getPositionDetailed();
         int oppositePos = (motherNaturePosition + 12) / 2;
         return oppositePos;
+    }
+    private boolean validateCard(AssistantCard card){
+        for(Player player: players){
+            if(player.equals(currentPlayer) || !player.getCurrentCard().equals(null)){
+                if(player.getCurrentCard().getValue() == card.getValue()) return false;
+            }
+        }
+        return true;
     }
 
 }
