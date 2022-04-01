@@ -39,6 +39,8 @@ public class Map {
         return clouds.get(cloudNumber);
     }
 
+    public ArrayList<Cloud> getClouds(){return this.clouds;}
+
     public void notifyMergingIslands(){
         // da implementare
     }
