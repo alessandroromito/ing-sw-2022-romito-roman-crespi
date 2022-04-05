@@ -4,9 +4,7 @@ import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
 import it.polimi.ingsw.server.exception.MaxPlayerException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
-import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
@@ -23,8 +21,6 @@ public class Model {
 
     private List<Player> players;
     private ArrayList<Component> components;
-    private Map map;
-    private Bag bag;
 
     protected GameState currentState;
 
@@ -40,7 +36,6 @@ public class Model {
         //init
         players = new ArrayList<>();
         components = null;
-        bag = new Bag();
         expertMode = false;
         playerNumber = 0;
         gameStarted = false;
@@ -85,14 +80,13 @@ public class Model {
 
         if(players.size() < MIN_PLAYERS) throw new MissingPlayersException("Minimum players is 2!");
 
-        map = new Map(playerNumber);
         currentState = GameState.GAME_STARTED;
 
         if(!expertMode){
-            game = new Game(players, components, map, bag);
+            game = new Game(players);
 
         }
-        else game = new ExpertGame(players, components, map, bag);
+        else game = new ExpertGame(players);
 
         return true;
     }

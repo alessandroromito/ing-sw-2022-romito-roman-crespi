@@ -1,12 +1,13 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
-import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.observer.ObserverLastAssistentCard;
 
 import java.util.List;
 
 public class Player {
+    private AssistantCard currentAssistantCard;
     private List<AssistantCard> hand;
     private int coin = 0;
     private String nickname;
@@ -50,5 +51,20 @@ public class Player {
 
     public void notifyUsingAssistantCard(){
         obsLAC.onUpdate();
+    }
+
+    public void setCurrentCard(AssistantCard chosenCard) {
+        for(AssistantCard card: hand){
+            if(card.equals(chosenCard)){
+                hand.remove(card);
+                this.currentAssistantCard = chosenCard;
+            }
+        }
+
+    }
+
+    public AssistantCard getCurrentCard() throws NullCurrentCardException {
+        if(currentAssistantCard.equals(null)) throw new NullCurrentCardException("Current AssistantCard Null!");
+        return currentAssistantCard;
     }
 }
