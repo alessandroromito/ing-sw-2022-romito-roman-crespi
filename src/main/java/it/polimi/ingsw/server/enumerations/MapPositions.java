@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.component;
+package it.polimi.ingsw.server.enumerations;
 
 public enum MapPositions {
     PLAYER1_SCOREBOARD,
@@ -8,5 +8,5 @@ public enum MapPositions {
     ISLANDS,
     CLOUDS,
     HANDS,
-    BAG;
+    BAG
 }

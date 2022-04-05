@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model.component;
+package it.polimi.ingsw.server.enumerations;
 
 public enum PawnColors {
     RED,
