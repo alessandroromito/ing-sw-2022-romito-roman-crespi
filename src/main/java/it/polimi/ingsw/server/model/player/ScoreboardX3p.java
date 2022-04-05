@@ -83,4 +83,7 @@ public class ScoreboardX3p implements Scoreboard{
     public TowerColors getTowerColor() {
         return this.towerColor;
     }
+
+    @Override
+    public void notifyMovingTowers(){obsT.onUpdate();}
 }

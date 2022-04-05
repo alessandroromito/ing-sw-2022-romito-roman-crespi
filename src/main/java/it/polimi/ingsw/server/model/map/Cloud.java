@@ -24,6 +24,6 @@ public class Cloud {
     }
 
     public void reset(){
-        // da implementare
+        cloudStudents.clear();
     }
 }

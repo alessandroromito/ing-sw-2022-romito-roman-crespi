@@ -1,14 +1,13 @@
 package it.polimi.ingsw.server.model.bag;
 
 import it.polimi.ingsw.server.model.component.PawnColors;
-import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.observer.ObserverLastStudent;
 
 import java.util.*;
 
 public class Bag {
     private List<Integer> bagStudents;
-    private ObserverLastStudent obsLS;
+    private final ObserverLastStudent obsLS;
 
     public Bag(){
         bagStudents = new ArrayList<>(130);
@@ -19,11 +18,11 @@ public class Bag {
     }
 
     //ritorna l'ID dello studente
-    public int getSorted(){
+    public int pickSorted(){
         int temp = this.bagStudents.get(0);
         this.bagStudents.remove(0);
         notifyMovingStudents();
-        return temp + 104;
+        return temp + 58;
     }
 
     public boolean isStudentsListEmpty(){
@@ -32,9 +31,5 @@ public class Bag {
 
     public void notifyMovingStudents(){
         obsLS.onUpdate();
-    }
-
-    public int getColored(PawnColors color) {
-        //da fare
     }
 }
