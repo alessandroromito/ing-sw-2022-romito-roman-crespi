@@ -52,7 +52,7 @@ public class GhostIsland extends Island{
 
     public void addTower(TowerColors color) throws AddingWrongColorTowerToIslandException{
         if(color == towerColor) towerNumber++;
-        else throws new AddingWrongColorTowerToIslandException("You cannot add a different tower color to island before switching");
+        else throw new AddingWrongColorTowerToIslandException("You cannot add a different tower color to island before switching");
     }
 
     public void switchTowerColor(TowerColors color){
