@@ -1,7 +1,8 @@
 package it.polimi.ingsw.server.model.map;
 
-import it.polimi.ingsw.server.model.component.PawnColors;
-import it.polimi.ingsw.server.model.player.TowerColors;
+import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.enumerations.TowerColors;
+import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,8 @@ public class Island {
         return this.groupID;
     }
 
+    public void setGroupID(int groupID){this.groupID = groupID;}
+
     public int getInfluence(){
         // da implementare
     }
@@ -58,7 +61,7 @@ public class Island {
         numberOfColors[color.ordinal()] ++;
     }
 
-    public void addTower(TowerColors color){
+    public void addTower(TowerColors color) throws AddingWrongColorTowerToIslandException {
         // da implementare
     }
 

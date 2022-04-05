@@ -1,8 +1,12 @@
 package it.polimi.ingsw.server.model.map;
 
+import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.exception.DifferentColorTowerException;
+import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.observer.ObserverIsland;
 
+import java.sql.Array;
 import java.util.ArrayList;
 
 public class Map {
@@ -12,6 +16,7 @@ public class Map {
     private final ObserverIsland obsIs;
     private int motherNaturePos;
     private CharacterCard[] characterCards;
+    private GhostIsland[] groupIDsGhostIsland = {null, null, null, null, null, null};
 
     /**
      * Default constructor.
@@ -26,7 +31,7 @@ public class Map {
         clouds = new ArrayList<>();
         for(int i=0; i<playerNumber; i++){
             clouds.set(i, new Cloud());
-        }
+        };
 
         obsIs = new ObserverIsland(this);
     }
@@ -42,10 +47,52 @@ public class Map {
     public ArrayList<Cloud> getClouds(){return this.clouds;}
 
     public void notifyMergingIslands(){
-        // da implementare
+        obsIs.onUpdate();
     }
 
-    public void merge(int IDIslandEnable, int IDIslandDisable){
+    public void merge(int IDIsland1, int IDIsland2) throws DifferentColorTowerException, FullGroupIDListException {
         //da implementare
+        int groupID = 0;
+        Integer[] noc = new Integer[PawnColors.values().length];
+        Integer[] noc_e;
+        Integer[] noc_d;
+        noc_e = islands.get(IDIsland1).getNumberOfColors();
+        noc_d = islands.get(IDIsland2).getNumberOfColors();
+        //noc parameter initialization
+        for(int i = 0; i < PawnColors.values().length - 1; i++) noc[i] = noc_e[i] + noc_d[i];
+
+        for(int i = 0; i < groupIDsGhostIsland.length; i++){
+            if (groupIDsGhostIsland[i] == null) {
+                if(islands.get(IDIsland1).getTowerColor() == islands.get(IDIsland2).getTowerColor()){
+                    groupIDsGhostIsland[i] = new GhostIsland(i, noc, islands.get(IDIsland1).getTowerNumber() + islands.get(IDIsland2).getTowerNumber(), islands.get(IDIsland1).getTowerColor());
+                    groupID = i;
+                    break;
+                }
+                else throw new DifferentColorTowerException("Different tower. Impossible merging.");
+            } else throw new FullGroupIDListException("Impossible to create a new island group.");
+        }
+        islands.get(IDIsland1).disable();
+        islands.get(IDIsland1).setGroupID(groupID);
+        islands.get(IDIsland2).disable();
+        islands.get(IDIsland2).setGroupID(groupID);
+        notifyMergingIslands();
+    }
+
+    public void mergeHybridGhostFeature(int IDGhostIsland, int IDIsland) throws DifferentColorTowerException {
+        //da implementare
+        Integer[] noc, nocIsland;
+        noc = groupIDsGhostIsland[IDGhostIsland].getNumberOfColors();
+        nocIsland = islands.get(IDIsland).getNumberOfColors();
+        //noc parameter initialization
+        for(int i = 0; i < PawnColors.values().length - 1; i++) noc[i] += nocIsland[i];
+
+        if (islands.get(IDIsland).getTowerColor() == groupIDsGhostIsland[IDGhostIsland].getTowerColor()) {
+            groupIDsGhostIsland[IDGhostIsland].addStudents(islands.get(IDIsland).getNumberOfColors());
+            groupIDsGhostIsland[IDGhostIsland].addTowers(islands.get(IDIsland).getTowerNumber());
+        } else throw new DifferentColorTowerException("Different tower. Impossible merging");
+
+        islands.get(IDIsland).disable();
+        islands.get(IDIsland).setGroupID(IDGhostIsland);
+        notifyMergingIslands();
     }
 }
