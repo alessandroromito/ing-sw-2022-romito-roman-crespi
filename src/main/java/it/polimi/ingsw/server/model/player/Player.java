@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.observer.ObserverLastAssistentCard;
@@ -15,7 +16,6 @@ public class Player {
     private final ObserverLastAssistentCard obsLAC;
 
     public Player(){
-        // da implementare la mano
         obsLAC = new ObserverLastAssistentCard(this);
     }
 
@@ -53,13 +53,14 @@ public class Player {
         obsLAC.onUpdate();
     }
 
-    public void setCurrentCard(AssistantCard chosenCard) {
+    public void setCurrentCard(AssistantCard chosenCard) throws MissingAssistantCardException {
         for(AssistantCard card: hand){
             if(card.equals(chosenCard)){
                 hand.remove(card);
                 this.currentAssistantCard = chosenCard;
+                return;
             }
-        }
+        } throw new MissingAssistantCardException("Assistant Card not in hand!");
 
     }
 

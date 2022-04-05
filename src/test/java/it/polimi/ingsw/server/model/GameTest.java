@@ -70,7 +70,17 @@ public class GameTest {
         // Isola opposta a madre natura vuota
         Island oppositeIsland = map.getIsland(components.get(1).getPositionDetailed());
         assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
-        
+
+    }
+
+    @Test
+    void moveMotherNatureTest(){
+        Map map = game.getMap();
+        map.setMotherNaturePos(2);
+
+        game.moveMotherNature(4);
+
+        assertEquals(6, map.);
     }
 
 

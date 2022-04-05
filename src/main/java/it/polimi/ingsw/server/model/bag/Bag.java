@@ -1,9 +1,10 @@
 package it.polimi.ingsw.server.model.bag;
 
-import it.polimi.ingsw.server.model.component.PawnColors;
 import it.polimi.ingsw.server.observer.ObserverLastStudent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Bag {
     private List<Integer> bagStudents;

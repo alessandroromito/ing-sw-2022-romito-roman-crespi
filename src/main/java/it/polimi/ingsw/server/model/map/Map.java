@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.observer.ObserverIsland;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 public class Map {
@@ -45,6 +44,14 @@ public class Map {
     }
 
     public ArrayList<Cloud> getClouds(){return this.clouds;}
+
+    public void setMotherNaturePos(int motherNaturePos) {
+        this.motherNaturePos = motherNaturePos;
+    }
+
+    public int getMotherNaturePosition(){
+        return motherNaturePos;
+    }
 
     public void notifyMergingIslands(){
         obsIs.onUpdate();

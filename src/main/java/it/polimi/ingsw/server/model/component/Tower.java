@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.component;
-
-import it.polimi.ingsw.server.model.player.TowerColors;
+import it.polimi.ingsw.server.enumerations.TowerColors;
 
 public class Tower extends Component {
     private TowerColors color;

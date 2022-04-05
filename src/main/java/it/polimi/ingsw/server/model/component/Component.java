@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model.component;
 
+import it.polimi.ingsw.server.enumerations.MapPositions;
+
 public abstract class Component {
     private int ID;
     private MapPositions positionOnMap;

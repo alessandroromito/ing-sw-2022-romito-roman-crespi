@@ -4,8 +4,6 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 
-import java.util.ArrayList;
-
 public class Island {
 
     private int ID;
@@ -39,6 +37,7 @@ public class Island {
 
     public int getInfluence(){
         // da implementare
+        return 0;
     }
 
     public int getTowerNumber(){
