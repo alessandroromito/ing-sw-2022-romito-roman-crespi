@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.model.component.PawnColors;
+import it.polimi.ingsw.server.observer.ObserverTower;
 
 public class ScoreboardX3p implements Scoreboard{
 
@@ -9,9 +10,11 @@ public class ScoreboardX3p implements Scoreboard{
     private final boolean[] professorTable;
     private int towerLine;
     private TowerColors towerColor;
+    private final ObserverTower obsT;
 
 
     public ScoreboardX3p(){
+        obsT = new ObserverTower(this);
         entrance = new PawnColors[9];
         towerLine = 6;
         professorTable = new boolean[5];

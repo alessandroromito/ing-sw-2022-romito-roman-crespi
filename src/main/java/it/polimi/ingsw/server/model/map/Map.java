@@ -9,7 +9,7 @@ public class Map {
 
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
-    private ObserverIsland obsIs;
+    private final ObserverIsland obsIs;
     private int motherNaturePos;
     private CharacterCard[] characterCards;
 

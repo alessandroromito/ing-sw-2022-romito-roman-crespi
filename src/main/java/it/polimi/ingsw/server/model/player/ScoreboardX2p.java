@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.model.component.PawnColors;
+import it.polimi.ingsw.server.observer.ObserverTower;
 
 public class ScoreboardX2p implements Scoreboard{
 
@@ -9,9 +10,11 @@ public class ScoreboardX2p implements Scoreboard{
     private final boolean[] professorTable;
     private int towerLine;
     private TowerColors towerColor;
+    private final ObserverTower obsT;
 
 
     public ScoreboardX2p(){
+        obsT = new ObserverTower(this);
         entrance = new PawnColors[7];
         towerLine = 8;
         professorTable = new boolean[5];
@@ -21,6 +24,8 @@ public class ScoreboardX2p implements Scoreboard{
             professorTable[i] = false;
         }
     }
+
+    //manca metodo per fare pick di tower
 
     @Override
     public void setTowerColor(TowerColors t){

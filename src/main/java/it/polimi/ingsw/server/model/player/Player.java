@@ -11,7 +11,7 @@ public class Player {
     private int coin = 0;
     private String nickname;
     private Scoreboard scoreboard;
-    private ObserverLastAssistentCard obsLAC;
+    private final ObserverLastAssistentCard obsLAC;
 
     public Player(){
         // da implementare la mano
