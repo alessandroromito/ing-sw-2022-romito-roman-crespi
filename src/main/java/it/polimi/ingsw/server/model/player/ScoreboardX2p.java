@@ -1,11 +1,14 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.exception.EntranceFullException;
+import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.model.component.PawnColors;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.observer.ObserverTower;
 
 public class ScoreboardX2p implements Scoreboard{
 
-    private final PawnColors[] entrance;
+    private final StudentDisc[] entrance;
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
     private int towerLine;
@@ -15,7 +18,8 @@ public class ScoreboardX2p implements Scoreboard{
 
     public ScoreboardX2p(){
         obsT = new ObserverTower(this);
-        entrance = new PawnColors[7];
+        entrance = new StudentDisc[7];
+        for(int i=0;i<7;i++) entrance[i] = null;
         towerLine = 8;
         professorTable = new boolean[5];
         diningRoom = new Integer[5];
@@ -24,8 +28,6 @@ public class ScoreboardX2p implements Scoreboard{
             professorTable[i] = false;
         }
     }
-
-    //manca metodo per fare pick di tower
 
     @Override
     public void setTowerColor(TowerColors t){
@@ -62,23 +64,27 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public int[] getPlayerStudentsFromDining() {
-        int vector[] = new int[7];
-        for(int i=0;i<6;i++)    vector[i] = this.diningRoom[i];
-        return vector;
+    public int getPlayerStudentFromDining(PawnColors color) {
+        return this.diningRoom[color.ordinal()];
     }
 
     @Override
-    public void addStudentOnEntrance(PawnColors student) {
+    public void addStudentOnEntrance(StudentDisc student) throws EntranceFullException {
         int k = 0;
-        while(entrance[k] == null)  k++;
+        while(entrance[k] == null)  if(k<6) k++; else throw new EntranceFullException("Entrance is full");
         entrance[k] = student;
     }
 
     @Override
-    public void moveFromEntranceToDining(int position) {
-        diningRoom[entrance[position].ordinal()]++;
-        entrance[position] = null;
+    public void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException {
+        int c=0;
+        for(int i=0;i<7;i++)
+            if(entrance[c].equals(student)) {
+                diningRoom[entrance[c].getColorInt()]++;
+                entrance[c] = null;
+                return;
+            }
+        throw new StudentNotInEntranceException("Student not found in entrance");
     }
 
     @Override
@@ -88,4 +94,15 @@ public class ScoreboardX2p implements Scoreboard{
 
     @Override
     public void notifyMovingTowers(){obsT.onUpdate();}
+
+    @Override
+    public void removeTower() {
+        this.towerLine--;
+        notifyMovingTowers();
+    }
+
+    @Override
+    public void addTower() {
+        this.towerLine++;
+    }
 }
