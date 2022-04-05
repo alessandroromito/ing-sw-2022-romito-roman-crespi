@@ -1,10 +1,11 @@
 package it.polimi.ingsw.server.model.component;
 
+import it.polimi.ingsw.server.enumerations.PawnColors;
+
 public class ProfessorPawn extends Pawn{
 
-    public void ProfessorPawn(PawnColors color){
+    public ProfessorPawn(PawnColors color){
         this.color = color;
     }
 
-    //costruttore
 }

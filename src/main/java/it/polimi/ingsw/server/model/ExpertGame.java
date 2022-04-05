@@ -1,27 +1,20 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.enumerations.Animals;
-import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.model.bag.Bag;
-import it.polimi.ingsw.server.model.component.*;
-import it.polimi.ingsw.server.model.map.Map;
+import it.polimi.ingsw.server.model.component.CharacterCard;
+import it.polimi.ingsw.server.model.component.Coin;
+import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.server.enumerations.TowerColors;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpertGame extends Game{
     /**
      * Default constructor
      *
-     * @param players
-     * @param components
-     * @param map
-     * @param bag
+     * @param players ArrayList of Player
      */
-    public ExpertGame(List<Player> players, ArrayList<Component> components, Map map, Bag bag) {
-        super(players, components, map, bag);
+    public ExpertGame(List<Player> players) {
+        super(players);
     }
 
     @Override

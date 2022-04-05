@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.component.*;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
-import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,12 +24,9 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(List<Player> players, ArrayList<Component> components, Map map, Bag bag) {
+    public Game(List<Player> players) {
 
         this.players = players;
-        this.components = components;
-        this.map = map;
-        this.bag = bag;
 
         this.createComponents();
 
@@ -45,15 +42,12 @@ public class Game {
         int randPos = getRandomNumber(1, 12);
         this.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
         // 3) Move 1 student to each island
-        ArrayList<Component> tempArrayStudents = new ArrayList<>();
-        for(PawnColors color: PawnColors.values()){
-            Component student1 = this.getComponent(bag.getColored(color));
-            Component student2 = this.getComponent(bag.getColored(color));
-            tempArrayStudents.add(student1);
-            tempArrayStudents.add(student2);
+        ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
+        for(int i=0; i<10; i++) {
+            tempArrayStudents.set(i, (StudentDisc) components.get(i));
         }
         Collections.shuffle(tempArrayStudents);
-        for (Component stud: tempArrayStudents) {
+        for(StudentDisc stud: tempArrayStudents) {
             int islandNum = 0;
             if(!(islandNum == oppositePosition())){
                 map.getIsland(islandNum).addStudent(stud.getColor());
@@ -61,21 +55,12 @@ public class Game {
             }
 
         }
-        // 8 Take 6/8 towers
-        for (Player p: this.getPlayers()) {
-            if(players.size() == 2){
-                p.getScoreboard().setNumTowers(8);
-            }
-            else if (players.size() == 3){
-                p.getScoreboard().setNumTowers(6);
-            }
-        }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
-            if(players.size() = 2) {
+            if(players.size() == 2) {
                 for(int i=0; i<7; i++) {
-                    StudentDisc stud = (StudentDisc) bag.getSorted();
-                    p.getScoreboard().addStudentOnEntrance(stud);
+                    StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
+                    p.getScoreboard().addStudentOnEntrance(stud.getColor());
                 }
             }
         }
@@ -153,8 +138,8 @@ public class Game {
 
     /**
      *
-     * @param numIsland
-     * @param student
+     * @param numIsland index of the destination island
+     * @param student id of the student
      */
     public void moveStudentToIsland(int numIsland, int student) throws DisabledIslandException {
         StudentDisc stud = (StudentDisc) getComponent(student);
@@ -164,10 +149,13 @@ public class Game {
         island.addStudent(stud.getColor());
         stud.setPosition(MapPositions.valueOf("ISLANDS"), numIsland);
     }
-    public void moveStudentToDiningRoom(int studentID){
-        StudentDisc stud = (StudentDisc) getComponent(studentID);
-        // moveStudentToDiningRoom() from scoreboard
-        currentPlayer.getScoreboard().moveFromeEntranceToDining(stud);
+
+    /**
+     *
+     * @param stud id of the student to move
+     */
+    public void moveStudentToDiningRoom(StudentDisc stud){
+        currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
         //check professor e nel caso setProfessor(color)
         checkProfessors(stud.getColor());
     }
@@ -268,7 +256,7 @@ public class Game {
 
     /**
      * @param min minimum number can be generated
-     * @param max manximum nuber can be generated
+     * @param max maximum number can be generated
      * @return a random number in range min - max
      */
     public int getRandomNumber(int min, int max) {
@@ -280,6 +268,7 @@ public class Game {
         int oppositePos = (motherNaturePosition + 12) / 2;
         return oppositePos;
     }
+
     private boolean validateCard(AssistantCard card){
         for(Player player: players){
             if(player.equals(currentPlayer) || !player.getCurrentCard().equals(null)){
