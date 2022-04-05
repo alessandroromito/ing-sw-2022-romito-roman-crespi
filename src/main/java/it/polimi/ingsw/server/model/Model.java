@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
 import it.polimi.ingsw.server.exception.MaxPlayerException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
@@ -25,6 +26,8 @@ public class Model {
     private Map map;
     private Bag bag;
 
+    protected GameState currentState;
+
     private boolean gameStarted;
     private boolean endGame;
 
@@ -34,17 +37,14 @@ public class Model {
      * Default constructor
      */
     public Model() {
+        //init
         players = new ArrayList<>();
         components = null;
-        //map = new Map(playerNumber);
         bag = new Bag();
         expertMode = false;
         playerNumber = 0;
         gameStarted = false;
-    }
-
-    public void autoSave(){
-
+        currentState = GameState.GAME_ROOM;
     }
 
     public static Model getModel(){
@@ -57,10 +57,8 @@ public class Model {
      * Return the number of player
      */
     public int getNumberOfPlayer() {
-        playerNumber = players.size();
-        return playerNumber;
+        return players.size();
     }
-
 
     /**
      * Adds a player to the game.
@@ -75,6 +73,7 @@ public class Model {
         playerNumber++;
     }
 
+
     /**
      * Starts the game
      */
@@ -84,9 +83,14 @@ public class Model {
 
         gameStarted = true;
 
-        if(players.size() < 2) throw new MissingPlayersException("Minimum players is 2!");
+        if(players.size() < MIN_PLAYERS) throw new MissingPlayersException("Minimum players is 2!");
+
+        map = new Map(playerNumber);
+        currentState = GameState.GAME_STARTED;
+
         if(!expertMode){
             game = new Game(players, components, map, bag);
+
         }
         else game = new ExpertGame(players, components, map, bag);
 
@@ -100,22 +104,11 @@ public class Model {
         return gameStarted;
     }
 
-
-    public void turnController(){
-
-    }
-    /**
-     *
-     */
-    public void turn(Player p){
-
-    }
-
     /**
      * Set EndGame true
      */
     public void setEndGame(){
-        game.currentState = GameState.GAME_ENDED;
+        currentState = GameState.GAME_ENDED;
         endGame = true;
     }
 
@@ -139,10 +132,19 @@ public class Model {
             }
         }
     }
+    /**
+     * @return the current state Game
+     */
+    public GameState getState() {
+        return currentState;
+    }
 
-
-
-    // da aggiungere metodo che traduce json per importare i components
+    /**
+     * Set expertMode equals to @param bool
+     */
+    public void setExpertMode(boolean bool){
+        expertMode = bool;
+    }
 
 }
 
