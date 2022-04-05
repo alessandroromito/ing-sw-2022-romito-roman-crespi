@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
-import it.polimi.ingsw.server.model.component.PawnColors;
+import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.observer.ObserverTower;
 

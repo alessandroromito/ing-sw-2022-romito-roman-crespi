@@ -11,14 +11,14 @@ public interface Scoreboard {
     void setProfessorTrue(PawnColors color);
     void setProfessorFalse(PawnColors color);
     boolean getProfessor(PawnColors color);
+
     int getNumTowers();
     int getNumStudentsFromEntrance();
-    int getPlayerStudentFromDining(StudentDisc color);
+    int getPlayerStudentFromDining(PawnColors color);
     void addStudentOnEntrance(StudentDisc student) throws EntranceFullException;
     void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException;
     TowerColors getTowerColor();
     void removeTower();
     void addTower();
     void notifyMovingTowers();
-
 }
