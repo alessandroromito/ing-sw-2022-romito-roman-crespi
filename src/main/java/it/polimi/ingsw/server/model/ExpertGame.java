@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
@@ -18,7 +19,7 @@ public class ExpertGame extends Game{
     }
 
     @Override
-    public void gameInitialization() {
+    public void gameInitialization() throws EntranceFullException {
         super.gameInitialization();
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){

@@ -27,24 +27,28 @@ public class Game {
     public Game(List<Player> players) {
 
         this.players = players;
-
         this.createComponents();
-
-        this.gameInitialization();
+        try {
+            this.gameInitialization();
+        } catch (EntranceFullException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Inizialise the game.
+     * Initialise the game.
      * Creates all the object necessary for the game according to the number of player
      */
-    public void gameInitialization() {
+    public void gameInitialization() throws EntranceFullException {
         // 1) Place MotherNature to a random island
         int randPos = getRandomNumber(1, 12);
         this.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
+        map.setMotherNaturePos(randPos);
+
         // 3) Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            tempArrayStudents.set(i, (StudentDisc) components.get(i));
+            tempArrayStudents.set(i, (StudentDisc) getComponent(bag.pickSorted()));
         }
         Collections.shuffle(tempArrayStudents);
         for(StudentDisc stud: tempArrayStudents) {
@@ -60,7 +64,7 @@ public class Game {
             if(players.size() == 2) {
                 for(int i=0; i<7; i++) {
                     StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
-                    p.getScoreboard().addStudentOnEntrance(stud.getColor());
+                    p.getScoreboard().addStudentOnEntrance(stud);
                 }
             }
         }
@@ -129,7 +133,7 @@ public class Game {
     /**
      *
      */
-    public void playAssistantCard(int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException {
+    public void playAssistantCard(int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException, NullCurrentCardException {
         AssistantCard chosenCard = currentPlayer.getPlayerCard(cardIndex);
         if(chosenCard.equals(null)) throw new MissingAssistantCardException("AssistantCard not found!");
         if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
@@ -154,7 +158,7 @@ public class Game {
      *
      * @param stud id of the student to move
      */
-    public void moveStudentToDiningRoom(StudentDisc stud){
+    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException {
         currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
         //check professor e nel caso setProfessor(color)
         checkProfessors(stud.getColor());
@@ -178,19 +182,28 @@ public class Game {
         Component MN = (MotherNature) getComponent(1);
         int MNpos = MN.getPositionDetailed();
         // Calculate nextIsland
-        for(int i=0; i<MNpos; i++ ){
-            MNpos++;
+        for(int i=0; i<steps; i++){
+            if(map.getIsland(MNpos).isDisabled()){
+                int groupID = map.getIsland(MNpos).getGroupID();
+                do{
+                    MNpos++;
+                } while (map.getIsland(MNpos).getGroupID() == groupID);
+            }
+            else{
+                MNpos++;
+            }
             if((MNpos) == 13) MNpos = 0;
         }
         // Set the position
-        MN.setPosition(MapPositions.ISLANDS, MNpos);
+        MN.setPositionDetailed(MNpos);
+        map.setMotherNaturePos(MNpos);
     }
 
     /**
      * Choose a cloud and get its students
      * @param cloudID Number of the cloud chosen
      */
-    public void pickAndPlaceFromCloud(int cloudID) throws MissingCloudStudentsException {
+    public void pickAndPlaceFromCloud(int cloudID) throws MissingCloudStudentsException, EntranceFullException {
         Cloud cloud = map.getCloud(cloudID);
         if(cloud.getCloudStudents() == null) throw new MissingCloudStudentsException("Cloud empty or already chosen!");
         for(StudentDisc student: cloud.getCloudStudents()){
@@ -269,7 +282,7 @@ public class Game {
         return oppositePos;
     }
 
-    private boolean validateCard(AssistantCard card){
+    private boolean validateCard(AssistantCard card) throws NullCurrentCardException {
         for(Player player: players){
             if(player.equals(currentPlayer) || !player.getCurrentCard().equals(null)){
                 if(player.getCurrentCard().getValue() == card.getValue()) return false;
