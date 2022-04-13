@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.controller.TurnController;
 import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
@@ -12,14 +13,17 @@ import it.polimi.ingsw.server.model.player.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
 
-public class Game {
+public class Game extends Observable {
     protected List<Player> players;
-    protected ArrayList<Component> components;
+    protected ArrayList<Component> components = new ArrayList<>();
     protected Map map;
     protected Bag bag;
 
     protected Player currentPlayer;
+
+    protected TurnController turnController;
 
     /**
      * Default constructor
@@ -27,9 +31,10 @@ public class Game {
     public Game(List<Player> players) {
 
         this.players = players;
-        this.createComponents();
+        this.turnController = new TurnController();
+        createComponents();
         try {
-            this.gameInitialization();
+            gameInitialization();
         } catch (EntranceFullException e) {
             e.printStackTrace();
         }
@@ -68,6 +73,9 @@ public class Game {
                 }
             }
         }
+
+        turnController.newTurn();
+
     }
 
     /**
@@ -99,8 +107,20 @@ public class Game {
                 .filter(player -> nickname.equals(player.getNickname()))
                 .findFirst()
                 .orElse(null);
-        if(p.equals(null)) throw new MissingPlayerNicknameException(nickname);
+        if(p == null) throw new MissingPlayerNicknameException(nickname);
         return p;
+    }
+    /**
+     * Returns a list of player nicknames that are already in-game.
+     *
+     * @return a list with all nicknames in the Game
+     */
+    public List<String> getPlayersNicknames() {
+        List<String> playersNicknames = new ArrayList<>();
+        for (Player p : players) {
+            playersNicknames.add(p.getNickname());
+        }
+        return playersNicknames;
     }
 
     /**
@@ -135,7 +155,7 @@ public class Game {
      */
     public void playAssistantCard(int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException, NullCurrentCardException {
         AssistantCard chosenCard = currentPlayer.getPlayerCard(cardIndex);
-        if(chosenCard.equals(null)) throw new MissingAssistantCardException("AssistantCard not found!");
+        if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
         if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
         currentPlayer.setCurrentCard(chosenCard);
     }
@@ -179,7 +199,7 @@ public class Game {
      */
     public void moveMotherNature(int steps){
         // Get MotherNature
-        Component MN = (MotherNature) getComponent(1);
+        Component MN = getComponent(1);
         int MNpos = MN.getPositionDetailed();
         // Calculate nextIsland
         for(int i=0; i<steps; i++){
@@ -216,26 +236,26 @@ public class Game {
         components.set(1, new MotherNature());
 
         //Create PROFESSORS
+        int i=2;
         for(PawnColors color: PawnColors.values()){
-            int i=2;
             components.set(i, new ProfessorPawn(color));
             i++;
         }
 
         //Create TOWER
-        for(int i=7; i<=14;){
+        for(i = 7; i<=14; i++){
             components.set(i, new Tower(TowerColors.BLACK));
         }
-        for(int i=15; i<=22;){
+        for(i=15; i<=22; i++){
             components.set(i, new Tower(TowerColors.WHITE));
         }
         if(players.size() == 3){
-            for(int i=23; i<=28;){
+            for(i=23; i<=28; i++){
                 components.set(i, new Tower(TowerColors.GREY));
             }
         }
         // Create ASSISTANT CARD
-        int i = 29;
+        i = 29;
         for(int movement = 1, val = 1; i<=38; val++, movement++, i++ ){
             components.set(i, new AssistantCard(val, movement));
             val++;
@@ -278,13 +298,12 @@ public class Game {
 
     private int oppositePosition() {
         int motherNaturePosition = this.getComponent(1).getPositionDetailed();
-        int oppositePos = (motherNaturePosition + 12) / 2;
-        return oppositePos;
+        return (motherNaturePosition + 12) / 2;
     }
 
     private boolean validateCard(AssistantCard card) throws NullCurrentCardException {
         for(Player player: players){
-            if(player.equals(currentPlayer) || !player.getCurrentCard().equals(null)){
+            if(player.equals(currentPlayer)){
                 if(player.getCurrentCard().getValue() == card.getValue()) return false;
             }
         }

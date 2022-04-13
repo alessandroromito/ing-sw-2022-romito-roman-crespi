@@ -20,7 +20,7 @@ public class Model {
     private boolean expertMode;
 
     private List<Player> players;
-    private ArrayList<Component> components;
+    private final ArrayList<Component> components;
 
     protected GameState currentState;
 
@@ -68,23 +68,17 @@ public class Model {
         playerNumber++;
     }
 
-
     /**
      * Starts the game
      */
     public boolean startGame() throws GameAlreadyStartedException, MissingPlayersException {
 
         if (gameStarted) throw new GameAlreadyStartedException("Game is already in progress!");
-
         gameStarted = true;
-
         if(players.size() < MIN_PLAYERS) throw new MissingPlayersException("Minimum players is 2!");
-
-        currentState = GameState.GAME_STARTED;
-
+        setState(GameState.GAME_STARTED);
         if(!expertMode){
             game = new Game(players);
-
         }
         else game = new ExpertGame(players);
 
@@ -134,10 +128,27 @@ public class Model {
     }
 
     /**
+     * @param gameState state to be applied
+     * @return the updated gameState
+     */
+    public GameState setState(GameState gameState){
+        currentState = gameState;
+        return currentState;
+    }
+
+    /**
      * Set expertMode equals to @param bool
      */
     public void setExpertMode(boolean bool){
         expertMode = bool;
+    }
+
+    /**
+     *
+     * @return the instance of the created game
+     */
+    public Game getGame(){
+        return game;
     }
 
 }

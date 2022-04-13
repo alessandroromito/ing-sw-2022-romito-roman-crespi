@@ -9,7 +9,6 @@ public enum GameState {
      * When game already started
      */
     GAME_STARTED,
-    PIANIFICATION_PHASE,
-    ACTION_PHASE,
+    IN_GAME,
     GAME_ENDED
 }
