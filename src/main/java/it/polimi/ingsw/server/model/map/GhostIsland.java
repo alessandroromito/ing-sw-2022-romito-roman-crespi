@@ -25,36 +25,44 @@ public class GhostIsland extends Island{
         this.towerColor = towerColor;
     }
 
+    @Override
     public Integer[] getNumberOfColors(){
         return this.numberOfColors;
     }
 
+    @Override
     public int getID(){
         return this.ID_ghost;
     }
 
+    @Override
     public int getInfluence(){
         // da implementare
         return 0;
     }
 
+    @Override
     public int getTowerNumber(){
         return this.towerNumber;
     }
 
+    @Override
     public TowerColors getTowerColor(){
         return this.towerColor;
     }
 
+    @Override
     public void addStudent(PawnColors color){
         numberOfColors[color.ordinal()] ++;
     }
 
+    @Override
     public void addTower(TowerColors color) throws AddingWrongColorTowerToIslandException{
         if(color == towerColor) towerNumber++;
         else throw new AddingWrongColorTowerToIslandException("You cannot add a different tower color to island before switching");
     }
 
+    @Override
     public void switchTowerColor(TowerColors color){
         this.towerColor = color;
     }
