@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
@@ -68,8 +68,8 @@ public class TurnController {
     private void buildQueue(List<String> playersList) throws MissingPlayerNicknameException {
         List<Player> players = new ArrayList<>();
 
-        for(int i = 0; i < playersList.size(); i++){
-            Player p = game.getPlayerByNickname(playersList.get(i));
+        for (String s : playersList) {
+            Player p = game.getPlayerByNickname(s);
             players.add(p);
         }
         players.sort(new ComparatorAssistantCard());
@@ -102,18 +102,16 @@ public class TurnController {
      */
     public void nextPhase() throws MissingPlayerNicknameException {
         switch (getPhaseState()) {
-            case PLANNING_PHASE:
+            case PLANNING_PHASE -> {
                 phaseState = PhaseState.ACTION_PHASE;
                 buildQueue(nicknameQueue);
 
-                break;
-            case ACTION_PHASE:
+            }
+            case ACTION_PHASE -> {
                 phaseState = PhaseState.PLANNING_PHASE;
                 newTurn();
-                break;
-            default:
-                System.out.println("error: INVALID PHASE STATE!");
-                break;
+            }
+            default -> System.out.println("error: INVALID PHASE STATE!");
         }
     }
 

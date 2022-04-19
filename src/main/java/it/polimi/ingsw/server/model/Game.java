@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.controller.TurnController;
+import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;

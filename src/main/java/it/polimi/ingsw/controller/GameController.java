@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.controller;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
