@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
+import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.observer.ObserverLastAssistentCard;
 
@@ -44,6 +45,12 @@ public class Player {
     }
 
     public void addCoin(){coin++;}
+
+    public void removeCoin() throws ZeroCoinsException {
+        if(coin>0)
+            coin--;
+        else throw new ZeroCoinsException("No coins remaining");
+    }
 
     public boolean isLastAssistantCard(){
         return hand.isEmpty();

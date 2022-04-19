@@ -45,6 +45,9 @@ public class Map {
 
     public ArrayList<Cloud> getClouds(){return this.clouds;}
 
+    //choice is 0,1 or 2
+    public CharacterCard getCard(int choice){return this.characterCards[choice];}
+
     public void setMotherNaturePos(int motherNaturePos) {
         this.motherNaturePos = motherNaturePos;
     }
