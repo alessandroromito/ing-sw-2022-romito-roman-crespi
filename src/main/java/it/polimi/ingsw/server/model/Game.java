@@ -74,8 +74,6 @@ public class Game extends Observable {
             }
         }
 
-        turnController.newTurn();
-
     }
 
     /**

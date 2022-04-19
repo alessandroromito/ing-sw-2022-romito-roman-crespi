@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.enumerations;
 
 public enum PhaseState {
-    PIANIFICATION_PHASE,
+    PLANNING_PHASE,
     ACTION_PHASE
 }

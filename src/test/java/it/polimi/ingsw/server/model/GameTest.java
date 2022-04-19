@@ -3,6 +3,8 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
+import it.polimi.ingsw.server.exception.DifferentColorTowerException;
+import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
@@ -29,8 +31,6 @@ public class GameTest {
         players.add(new Player());
 
         game = new Game(players);
-        assertNotNull(game);
-
     }
 
     @Test
@@ -60,7 +60,7 @@ public class GameTest {
     }
 
     @Test
-    void GameInitialization(){
+    public void GameInitialization(){
         Map map = game.getMap();
 
         assertEquals(MapPositions.ISLANDS, components.get(1).getPositionOnMap());
@@ -74,13 +74,18 @@ public class GameTest {
     }
 
     @Test
-    void moveMotherNatureTest(){
+    public void moveMotherNatureTest() throws DifferentColorTowerException, FullGroupIDListException {
+        game = new Game(players);
         Map map = game.getMap();
         map.setMotherNaturePos(2);
 
         game.moveMotherNature(4);
 
-        assertEquals(6, map.);
+        assertEquals(6, map.getMotherNaturePosition());
+        assertEquals(6, components.get(1).getPositionDetailed());
+
+        map.merge(1,2);
+
     }
 
 
