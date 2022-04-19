@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
 
 public class GameController {
+    public static final String SAVING = "GameController.sav";
     private Model model;
     private Game game;
 
