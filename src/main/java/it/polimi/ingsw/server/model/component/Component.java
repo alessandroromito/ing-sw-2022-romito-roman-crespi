@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.enumerations.MapPositions;
 public abstract class Component {
     private int ID;
     private MapPositions positionOnMap;
-    private int positionDetailed;
 
     public int getID(){
         return this.ID;
@@ -15,21 +14,12 @@ public abstract class Component {
         return this.positionOnMap;
     }
 
-    public int getPositionDetailed(){
-        return this.positionDetailed;
-    }
 
-    public void setPosition(MapPositions positionOnMap, int positionDetailed){
+    public void setPosition(MapPositions positionOnMap){
         this.positionOnMap = positionOnMap;
-        this.positionDetailed = positionDetailed;
     }
 
     public void setPositionOnMap(MapPositions positionOnMap){
         this.positionOnMap = positionOnMap;
     }
-
-    public void setPositionDetailed(int positionDetailed){
-        this.positionDetailed = positionDetailed;
-    }
-
 }
