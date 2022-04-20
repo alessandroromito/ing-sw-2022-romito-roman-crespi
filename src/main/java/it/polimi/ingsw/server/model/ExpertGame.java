@@ -105,7 +105,13 @@ public class ExpertGame extends Game{
 //        for(Player p: players)
     }
 
-    public void endTurn_215 (){
+    public void endTurn_215(){
+
+    }
+
+    public void use_216 (int islandNumber) throws ActiveCardAlreadyExistingException {
+        if(activeCardID != 216) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        map.getIsland(islandNumber).getInfluence();
 
     }
 }
