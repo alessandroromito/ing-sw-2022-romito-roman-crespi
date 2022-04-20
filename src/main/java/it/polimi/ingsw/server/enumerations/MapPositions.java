@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.enumerations;
 
 public enum MapPositions {
+
+    //AGGIUNGERE NUOVE ENUM ALLA FINE!!!
+
     PLAYER1_ENTRANCE,
     PLAYER1_DINING,
     PLAYER1_HAND,
@@ -32,5 +35,12 @@ public enum MapPositions {
     CLOUDS_3,
     CLOUDS_4,
 
-    BAG
+    TRASH,
+    BAG;
+
+    public static MapPositions getRandomIsland(){
+       return MapPositions.values()[(int) (Math.random() * (12 - 24) + 12)];
+    }
 }
+
+
