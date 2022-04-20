@@ -25,3 +25,4 @@ pom.xml
 /.idea/
 /target/
 *.iml
+/src/main/java/it/polimi/ingsw/server/model/json/
