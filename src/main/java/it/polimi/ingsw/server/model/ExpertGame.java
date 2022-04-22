@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
@@ -109,7 +110,19 @@ public class ExpertGame extends Game{
         if(activeCardID != 215) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         Card_215 temp = (Card_215) activeCard;
 
-//        for(Player p: players)
+        MapPositions t[] = new MapPositions [5];
+        for(int i=2;i<=6;i++)
+            t[i-2] = components.get(i).getPositionOnMap();
+        temp.updateOldPos(t);
+
+        for(Player p : players)
+            if (p != currentPlayer)
+                for(int i=0;i<5;i++)
+                    if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
+                        if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == currentPlayer.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
+                            temp.updateOnePos(components.get(i+2).getPositionOnMap(),i);
+                            components.get(i+2).setPosition();
+                        }
     }
 
     public void endTurn_215(){
@@ -120,5 +133,13 @@ public class ExpertGame extends Game{
         if(activeCardID != 216) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         map.getIsland(islandNumber).getInfluence();
 
+    }
+//da chiamare sempre a fine turno
+    public void disableCardEffects (){
+        switch(activeCardID){
+            case 215: endTurn_215();
+        }
+
+        deleteActiveCard();
     }
 }
