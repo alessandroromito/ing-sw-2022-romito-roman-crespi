@@ -42,10 +42,9 @@ public class Model {
         currentState = GameState.GAME_ROOM;
     }
 
-    public static Model getModel(){
-        if (model == null)
-            model = new Model();
-        return model;
+    public Model getModel(){
+
+        return this;
     }
 
     /**
@@ -74,9 +73,13 @@ public class Model {
     public boolean startGame() throws GameAlreadyStartedException, MissingPlayersException {
 
         if (gameStarted) throw new GameAlreadyStartedException("Game is already in progress!");
-        gameStarted = true;
+
         if(players.size() < MIN_PLAYERS) throw new MissingPlayersException("Minimum players is 2!");
+
+        gameStarted = true;
         setState(GameState.GAME_STARTED);
+
+
         if(!expertMode){
             game = new Game(players);
         }
@@ -120,6 +123,7 @@ public class Model {
             }
         }
     }
+
     /**
      * @return the current state Game
      */

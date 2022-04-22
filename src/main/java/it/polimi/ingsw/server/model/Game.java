@@ -29,7 +29,6 @@ public class Game extends Observable {
      * Default constructor
      */
     public Game(List<Player> players) {
-
         this.players = players;
         this.turnController = new TurnController();
         createComponents();
@@ -46,9 +45,9 @@ public class Game extends Observable {
      */
     public void gameInitialization() throws EntranceFullException {
         // 1) Place MotherNature to a random island
-        int randPos = getRandomNumber(1, 12);
-        this.getComponent(1).setPosition(MapPositions.valueOf("ISLANDS"), randPos);
-        map.setMotherNaturePos(randPos);
+        MapPositions randPos = MapPositions.getRandomIsland();
+        this.getComponent(1).setPosition(randPos);
+        map.setMotherNaturePos(randPos.ordinal() - 12);
 
         // 3) Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
@@ -60,7 +59,7 @@ public class Game extends Observable {
             int islandNum = 0;
             if(!(islandNum == oppositePosition())){
                 map.getIsland(islandNum).addStudent(stud.getColor());
-                stud.setPosition(MapPositions.valueOf("ISLANDS"), islandNum);
+                stud.setPosition(MapPositions.valueOf("ISLAND_" + islandNum));
             }
 
         }
@@ -108,6 +107,7 @@ public class Game extends Observable {
         if(p == null) throw new MissingPlayerNicknameException(nickname);
         return p;
     }
+
     /**
      * Returns a list of player nicknames that are already in-game.
      *
@@ -142,51 +142,62 @@ public class Game extends Observable {
     /**
      * Refill clouds with students from bag
      */
-    public void locateStudentsFromBag(){
+    public void refillClouds(){
         for(Cloud cloud: map.getClouds()){
-            cloud.refill();
+            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+
+            if(players.size() == 3)
+                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
         }
     }
 
     /**
-     *
+     * Set the assistant card for the turn
      */
-    public void playAssistantCard(int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException, NullCurrentCardException {
-        AssistantCard chosenCard = currentPlayer.getPlayerCard(cardIndex);
+    public void setAssistantCard(String nickname, int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException, NullCurrentCardException, MissingPlayerNicknameException {
+        Player player = getPlayerByNickname(nickname);
+        AssistantCard chosenCard = player.getPlayerCard(cardIndex);
         if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
         if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
-        currentPlayer.setCurrentCard(chosenCard);
+        player.setCurrentCard(chosenCard);
     }
 
     /**
      *
      * @param numIsland index of the destination island
-     * @param student id of the student
+     * @param studentID id of the student
      */
-    public void moveStudentToIsland(int numIsland, int student) throws DisabledIslandException {
-        StudentDisc stud = (StudentDisc) getComponent(student);
+    public void moveStudentToIsland(int studentID, int numIsland) throws DisabledIslandException {
+        StudentDisc stud = (StudentDisc) getComponent(studentID);
         Island island = map.getIsland(numIsland);
 
-        if(island.isDisabled()) throw new DisabledIslandException("This island is disabled!");
+        if(island.isDisabled()) {
+            //check Ghost Island
+            if(map.getGhostIsland(numIsland) != null)
+                island = map.getGhostIsland(numIsland);
+        }
+        else throw new DisabledIslandException("This island is disabled!");
         island.addStudent(stud.getColor());
-        stud.setPosition(MapPositions.valueOf("ISLANDS"), numIsland);
+        stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
     }
 
     /**
      *
      * @param stud id of the student to move
      */
-    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException {
+    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException, MissingPlayerNicknameException {
         currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
-        //check professor e nel caso setProfessor(color)
         checkProfessors(stud.getColor());
     }
 
-    private void checkProfessors(PawnColors color) {
+    private void checkProfessors(PawnColors color) throws MissingPlayerNicknameException {
+        Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
 
         for(Player player: players){
-            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
+            if(!player.equals(turnController.getActivePlayer()) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
                 currentPlayer.getScoreboard().setProfessorTrue(color);
             }
         }
@@ -197,24 +208,22 @@ public class Game extends Observable {
      */
     public void moveMotherNature(int steps){
         // Get MotherNature
-        Component MN = getComponent(1);
-        int MNpos = MN.getPositionDetailed();
+        int motherNaturePos = map.getMotherNaturePosition();
         // Calculate nextIsland
         for(int i=0; i<steps; i++){
-            if(map.getIsland(MNpos).isDisabled()){
-                int groupID = map.getIsland(MNpos).getGroupID();
+            motherNaturePos++;
+            if(map.getIsland(motherNaturePos).isDisabled()){
+                int groupID = map.getIsland(motherNaturePos).getGroupID();
                 do{
-                    MNpos++;
-                } while (map.getIsland(MNpos).getGroupID() == groupID);
+                    motherNaturePos++;
+                    if((motherNaturePos) == 12) motherNaturePos = 0;
+                } while (map.getIsland(motherNaturePos).getGroupID() == groupID);
             }
-            else{
-                MNpos++;
-            }
-            if((MNpos) == 13) MNpos = 0;
         }
         // Set the position
-        MN.setPositionDetailed(MNpos);
-        map.setMotherNaturePos(MNpos);
+        MotherNature MN = (MotherNature) getComponent(1);
+        MN.setPosition(MapPositions.valueOf("ISLAND_" + motherNaturePos));
+        map.setMotherNaturePos(motherNaturePos);
     }
 
     /**
@@ -227,59 +236,64 @@ public class Game extends Observable {
         for(StudentDisc student: cloud.getCloudStudents()){
             currentPlayer.getScoreboard().addStudentOnEntrance(student);
         }
+        cloud.reset();
     }
 
+    /**
+     * Method to generate all the components needed
+     */
     public void createComponents(){
         // Create MOTHER NATURE
-        components.set(1, new MotherNature());
+        components.set(1, new MotherNature(1));
 
         //Create PROFESSORS
         int i=2;
         for(PawnColors color: PawnColors.values()){
-            components.set(i, new ProfessorPawn(color));
+            components.set(i, new ProfessorPawn(i, color));
             i++;
         }
 
         //Create TOWER
         for(i = 7; i<=14; i++){
-            components.set(i, new Tower(TowerColors.BLACK));
+            components.set(i, new Tower(i, TowerColors.BLACK));
         }
         for(i=15; i<=22; i++){
-            components.set(i, new Tower(TowerColors.WHITE));
+            components.set(i, new Tower(i, TowerColors.WHITE));
         }
         if(players.size() == 3){
             for(i=23; i<=28; i++){
-                components.set(i, new Tower(TowerColors.GREY));
+                components.set(i, new Tower(i, TowerColors.GREY));
             }
         }
+
         // Create ASSISTANT CARD
         i = 29;
-        for(int movement = 1, val = 1; i<=38; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(val, movement));
+        for(int movement=1, val=1; i<=38; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
             val++;
             i++;
-            components.set(i, new AssistantCard(val, movement));
+            components.set(i, new AssistantCard(i, val, movement));
         }
         i = 39;
-        for(int movement = 1, val = 1; i<=48; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(val, movement));
+        for(int movement=1, val=1; i<=48; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
             val++;
             i++;
-            components.set(i, new AssistantCard(val, movement));
+            components.set(i, new AssistantCard(i, val, movement));
         }
         i = 49;
-        for(int movement = 1, val = 1; i<=58; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(val, movement));
+        for(int movement=1, val=1; i<=58; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
             val++;
             i++;
-            components.set(i, new AssistantCard(val, movement));
+            components.set(i, new AssistantCard(i, val, movement));
         }
 
         // Create STUDENTS
         i = 59;
         for(PawnColors color: PawnColors.values()){
             for(int count=0; count<26; count++){
-                components.set(i, new StudentDisc(color));
+                components.set(i, new StudentDisc(i, color));
                 i++;
             }
         }
@@ -295,10 +309,15 @@ public class Game extends Observable {
     }
 
     private int oppositePosition() {
-        int motherNaturePosition = this.getComponent(1).getPositionDetailed();
+        int motherNaturePosition = map.getMotherNaturePosition();
         return (motherNaturePosition + 12) / 2;
     }
 
+    /**
+     *
+     * @param card the player's card he wants to choose
+     * @return true if it's valid or false if it's not
+     */
     private boolean validateCard(AssistantCard card) throws NullCurrentCardException {
         for(Player player: players){
             if(player.equals(currentPlayer)){
@@ -306,6 +325,16 @@ public class Game extends Observable {
             }
         }
         return true;
+    }
+
+    /**
+     * Print a visual log of the component's ID and class type
+     */
+    public void printComponentsLog(){
+        for(int i = 0; i<188; i++) {
+            System.out.println("ID: " + components.get(i).getID());
+            System.out.println(components.get(i).getClass().getName());
+        }
     }
 
 }

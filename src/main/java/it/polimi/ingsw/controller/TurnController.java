@@ -51,7 +51,7 @@ public class TurnController {
     public void newTurn() throws MissingPlayerNicknameException {
         activePlayer = nicknameQueue.get(0);
         // 1
-        game.locateStudentsFromBag();
+        game.refillClouds();
         // 2
         while(getPhaseState() == PhaseState.PLANNING_PHASE){
             askToChooseAssistantCard();
@@ -63,22 +63,6 @@ public class TurnController {
         // asking to choose an assistant card
         // set the chosen assistant card to the player currentAssistantCard attribute
         next();
-    }
-
-    private void buildQueue(List<String> playersList) throws MissingPlayerNicknameException {
-        List<Player> players = new ArrayList<>();
-
-        for (String s : playersList) {
-            Player p = game.getPlayerByNickname(s);
-            players.add(p);
-        }
-        players.sort(new ComparatorAssistantCard());
-
-        nicknameQueue.clear();
-
-        for(Player player : players) {
-            nicknameQueue.add(player.getNickname());
-        }
     }
 
 
@@ -105,13 +89,28 @@ public class TurnController {
             case PLANNING_PHASE -> {
                 phaseState = PhaseState.ACTION_PHASE;
                 buildQueue(nicknameQueue);
-
             }
             case ACTION_PHASE -> {
                 phaseState = PhaseState.PLANNING_PHASE;
                 newTurn();
             }
             default -> System.out.println("error: INVALID PHASE STATE!");
+        }
+    }
+
+    private void buildQueue(List<String> playersList) throws MissingPlayerNicknameException {
+        List<Player> players = new ArrayList<>();
+
+        for (String s : playersList) {
+            Player p = game.getPlayerByNickname(s);
+            players.add(p);
+        }
+        players.sort(new ComparatorAssistantCard());
+
+        nicknameQueue.clear();
+
+        for(Player player : players) {
+            nicknameQueue.add(player.getNickname());
         }
     }
 

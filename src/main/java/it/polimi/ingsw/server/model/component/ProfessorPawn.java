@@ -4,7 +4,8 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 
 public class ProfessorPawn extends Pawn{
 
-    public ProfessorPawn(PawnColors color){
+    public ProfessorPawn(int id, PawnColors color){
+        this.ID = id;
         this.color = color;
     }
 

@@ -5,6 +5,7 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
+import it.polimi.ingsw.server.model.player.Player;
 
 
 public class GhostIsland extends Island{
@@ -36,14 +37,13 @@ public class GhostIsland extends Island{
     }
 
     @Override
-    public int getInfluence(){
-        // da implementare
-        return 0;
+    public int getTowerNumber(){
+        return this.towerNumber;
     }
 
     @Override
-    public int getTowerNumber(){
-        return this.towerNumber;
+    public int getInfluence(Player p){
+        return super.getInfluence(p);
     }
 
     @Override

@@ -3,22 +3,24 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
+import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.Scoreboard;
 
 public class Island {
 
-    private int ID;
-    private Integer[] numberOfColors;
+    private final int ID;
+    private Integer[] numberOfColors = {0,0,0,0,0};
     private int groupID;
-    private int towerNumber;
-    private TowerColors towerColor;
+    private int towerNumber = 0;
+    private TowerColors towerColor = null;
     private boolean disabled;
 
     /**
      * Default constructor.
      */
-    public Island(){
+    public Island(int id){
         disabled = false;
-        //etc
+        this.ID = id;
     }
 
     public Integer[] getNumberOfColors(){
@@ -35,17 +37,24 @@ public class Island {
 
     public void setGroupID(int groupID){this.groupID = groupID;}
 
-    public int getInfluence(){
-        // da implementare
-        return 0;
+    public int getInfluence(Player p){
+        int influence = 0;
+        Scoreboard scoreboard = p.getScoreboard();
+        TowerColors playerTowerColor = scoreboard.getTowerColor();
+
+        for(PawnColors color: PawnColors.values()){
+            if(scoreboard.getProfessor(color)){
+                influence += numberOfColors[color.ordinal()];
+            }
+        }
+        if(playerTowerColor == getTowerColor())
+            influence += getTowerNumber();
+
+        return influence;
     }
 
     public int getTowerNumber(){
         return this.towerNumber;
-    }
-
-    public TowerColors getTowerColor(){
-        return this.towerColor;
     }
 
     public void disable(){
@@ -61,7 +70,15 @@ public class Island {
     }
 
     public void addTower(TowerColors color) throws AddingWrongColorTowerToIslandException {
-        // da implementare
+        if(getTowerNumber() == 0) {
+            towerNumber++;
+            towerColor = color;
+        }
+        else System.out.println("There is already a tower in this island!");
+    }
+
+    public TowerColors getTowerColor(){
+        return this.towerColor;
     }
 
     public void switchTowerColor(TowerColors color){

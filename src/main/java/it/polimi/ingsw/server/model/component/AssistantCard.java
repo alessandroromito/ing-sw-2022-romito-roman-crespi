@@ -7,7 +7,8 @@ public class AssistantCard extends Component{
     private int value;
     private int movement;
 
-    public AssistantCard(int value, int movement){
+    public AssistantCard(int id, int value, int movement){
+        this.ID = id;
         this.value = value;
         this.movement = movement;
     }

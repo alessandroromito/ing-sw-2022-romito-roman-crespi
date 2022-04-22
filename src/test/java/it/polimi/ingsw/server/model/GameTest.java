@@ -36,6 +36,7 @@ public class GameTest {
     @Test
     public void CreateComponents(){
         game.createComponents();
+        game.printComponentsLog();
 
         assertNotNull(components.get(1));
         assertEquals(MotherNature.class, components.get(1).getClass());
@@ -56,19 +57,18 @@ public class GameTest {
         assertEquals(TowerColors.BLACK, t.getColor());
 
 
-
     }
 
     @Test
     public void GameInitialization(){
         Map map = game.getMap();
 
-        assertEquals(MapPositions.ISLANDS, components.get(1).getPositionOnMap());
-        components.get(1).setPositionDetailed(1);
-        assertEquals(1, components.get(1).getPositionDetailed());
+        assertEquals(map.getMotherNaturePosition(), components.get(1).getPosition().ordinal() - 12);
+        components.get(1).setPosition(MapPositions.valueOf("ISLAND_" + 1));
+        assertEquals(1, components.get(1).getPosition().ordinal() - 12);
 
-        // Isola opposta a madre natura vuota
-        Island oppositeIsland = map.getIsland(components.get(1).getPositionDetailed());
+        // Opposite island free
+        Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
         assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
 
     }
@@ -82,7 +82,7 @@ public class GameTest {
         game.moveMotherNature(4);
 
         assertEquals(6, map.getMotherNaturePosition());
-        assertEquals(6, components.get(1).getPositionDetailed());
+        assertEquals(6, components.get(1).getPosition().ordinal() - 12);
 
         map.merge(1,2);
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
+import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.model.component.CharacterCards.*;
@@ -31,14 +32,20 @@ public class ExpertGame extends Game{
 
     @Override
     public void gameInitialization() {
-        super.gameInitialization();
+        try {
+            super.gameInitialization();
+        } catch (EntranceFullException e) {
+            System.out.println("Entrance Full!");
+        }
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();
         }
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
-        for(int i=0;i<12;i++)   vector12.add(i);
+        for(int i=0;i<12;i++){
+            vector12.add(i);
+        }
         Collections.shuffle(vector12);
 
         for(int i=0;i<3;i++) {
@@ -53,15 +60,15 @@ public class ExpertGame extends Game{
         super.createComponents();
 
         for(int i=189; i<=208; i++){
-            components.set(i, new Coin());
+            components.set(i, new Coin(i));
         }
 
         for(int i=209; i<=213; i++){
-            components.set(i, new NoEntryTile());
+            components.set(i, new NoEntryTile(i));
         }
 
         for(int i=214; i<=225; i++){
-            components.set(i, new CharacterCard());
+            components.set(i, new CharacterCard(i));
         }
     }
 

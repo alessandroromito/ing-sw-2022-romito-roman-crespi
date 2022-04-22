@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.model.component.StudentDisc;
-
 import java.util.ArrayList;
 
 public class Cloud {
@@ -12,18 +11,18 @@ public class Cloud {
      * Default constructor.
      */
     public Cloud(){
-        // da implementare
+        cloudStudents = new ArrayList<>();
     }
 
     public ArrayList<StudentDisc> getCloudStudents(){
         return this.cloudStudents;
     }
 
-    public void refill(){
-        // da implementare
-    }
-
     public void reset(){
         cloudStudents.clear();
+    }
+
+    public void addStudent(StudentDisc student) {
+        cloudStudents.add(student);
     }
 }

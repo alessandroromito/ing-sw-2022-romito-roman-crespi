@@ -4,6 +4,10 @@ public class CharacterCard extends Component{
     int cost;
     boolean firstUse = false;
 
+    public CharacterCard(int id){
+        this.ID = id;
+    }
+
     public int getCost() {
         return cost;
     }

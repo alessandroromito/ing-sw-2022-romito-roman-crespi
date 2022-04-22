@@ -14,13 +14,13 @@ public class GameController {
     private TurnController turnController;
 
 
-    public GameController(){
-        init();
+    public GameController(Model model, Game game){
+        init(model, game);
     }
 
-    public void init(){
-        this.model = Model.getModel();
-        this.game = model.getGame();
+    public void init(Model model, Game game){
+        this.model = model;
+        this.game = game;
     }
 
     private void startGame() throws MissingPlayerNicknameException {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.server.observer.ObserverLastAssistentCard;
 import java.util.List;
 
 public class Player {
+
     private AssistantCard currentAssistantCard;
     private List<AssistantCard> hand;
     private int coin = 0;
@@ -40,11 +42,13 @@ public class Player {
         return this.scoreboard;
     }
 
-    public int getNumCoin(){
+    public int getCoin(){
         return coin;
     }
 
-    public void addCoin(){coin++;}
+    public void addCoin(){
+        coin++;
+    }
 
     public void removeCoin() throws ZeroCoinsException {
         if(coin>0)
@@ -65,6 +69,7 @@ public class Player {
             if(card.equals(chosenCard)){
                 hand.remove(card);
                 this.currentAssistantCard = chosenCard;
+                currentAssistantCard.setPosition(MapPositions.TRASH);
                 return;
             }
         } throw new MissingAssistantCardException("Assistant Card not in hand!");
@@ -74,5 +79,9 @@ public class Player {
     public AssistantCard getCurrentCard() throws NullCurrentCardException {
         if(currentAssistantCard.equals(null)) throw new NullCurrentCardException("Current AssistantCard Null!");
         return currentAssistantCard;
+    }
+
+    public List<AssistantCard> getHand() {
+        return hand;
     }
 }
