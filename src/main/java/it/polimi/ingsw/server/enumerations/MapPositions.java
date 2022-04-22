@@ -35,6 +35,11 @@ public enum MapPositions {
     CLOUDS_3,
     CLOUDS_4,
 
+    CARD_214,
+    CARD_218,
+    CARD_220,
+    CARD_224,
+
     TRASH,
     BAG;
 
