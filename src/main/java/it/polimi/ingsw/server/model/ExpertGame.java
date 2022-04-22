@@ -112,7 +112,7 @@ public class ExpertGame extends Game{
 
         MapPositions t[] = new MapPositions [5];
         for(int i=2;i<=6;i++)
-            t[i-2] = components.get(i).getPositionOnMap();
+            t[i-2] = components.get(i).getPosition();
         temp.updateOldPos(t);
 
         for(Player p : players)
@@ -120,7 +120,7 @@ public class ExpertGame extends Game{
                 for(int i=0;i<5;i++)
                     if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
                         if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == currentPlayer.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
-                            temp.updateOnePos(components.get(i+2).getPositionOnMap(),i);
+                            temp.updateOnePos(components.get(i+2).getPosition(),i);
                             components.get(i+2).setPosition();
                         }
     }
