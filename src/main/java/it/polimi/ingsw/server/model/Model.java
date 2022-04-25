@@ -14,7 +14,6 @@ public class Model {
     public static final String SERVER_NAME = "server";
 
     private Game game;
-    private static Model model;
 
     private boolean expertMode;
 
@@ -34,12 +33,6 @@ public class Model {
         expertMode = false;
         playerNumber = 0;
         gameStarted = false;
-    }
-
-    public static Model getModel(){
-        if (model == null)
-            model = new Model();
-        return model;
     }
 
     /**
@@ -111,10 +104,9 @@ public class Model {
 
     /**
      *
-     * @return the instance of the game if != null
+     * @return the instance of the game
      */
     public Game getGame(){
-        if(game == null) return null;
         return game;
     }
 

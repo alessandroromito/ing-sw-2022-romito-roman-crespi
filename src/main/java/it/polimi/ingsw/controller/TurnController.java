@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
+import it.polimi.ingsw.server.exception.WrongPhaseStateException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.player.Player;
@@ -19,7 +20,7 @@ public class TurnController {
     private final List<String> nicknameQueue;
     private String activePlayer;
 
-    private PhaseState phaseState;
+    private PhaseState phaseState = PhaseState.PLANNING_PHASE;
 
     private final GameController gameController;
 
@@ -28,10 +29,9 @@ public class TurnController {
      */
     public TurnController(GameController gameController) {
         this.gameController = gameController;
-        this.model = Model.getModel();
+        this.model = gameController.getModel();
         this.game = model.getGame();
         this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
-        this.activePlayer = nicknameQueue.get(0); // set first active player
     }
 
     /**
@@ -56,8 +56,11 @@ public class TurnController {
         // 1
         game.refillClouds();
         // 2
-        while(getPhaseState() == PhaseState.PLANNING_PHASE){
-            askToChooseAssistantCard();
+        try {
+            if(getPhaseState() == PhaseState.PLANNING_PHASE) askToChooseAssistantCard();
+            else throw new WrongPhaseStateException();
+        } catch (WrongPhaseStateException e) {
+            e.printStackTrace();
         }
     }
 
@@ -79,6 +82,7 @@ public class TurnController {
             currentActive = currentActive + 1;
         } else {
             nextPhase();
+            return;
         }
         activePlayer = nicknameQueue.get(currentActive);
     }

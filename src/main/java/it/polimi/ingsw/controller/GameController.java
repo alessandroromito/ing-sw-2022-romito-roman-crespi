@@ -23,9 +23,14 @@ public class GameController {
 
     public void init(){
         this.model = new Model();
+        this.game = model.getGame();
         this.inputController = new InputController(model, this);
 
         setGameState(GameState.GAME_ROOM);
+    }
+
+    public Model getModel(){
+        return this.model;
     }
 
     private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException {
