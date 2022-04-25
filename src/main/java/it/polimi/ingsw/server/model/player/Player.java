@@ -17,6 +17,7 @@ public class Player {
     private String nickname;
     private Scoreboard scoreboard;
     private final ObserverLastAssistentCard obsLAC;
+    private boolean additionalPoints = false;
 
     public Player(){
         obsLAC = new ObserverLastAssistentCard(this);
@@ -83,5 +84,14 @@ public class Player {
 
     public List<AssistantCard> getHand() {
         return hand;
+    }
+
+    /**
+     * Flag that add + 2 points when calculate influence
+     *
+     * @param additionalPoints true or false
+     */
+    public void setAdditionalPoints(boolean additionalPoints) {
+        this.additionalPoints = additionalPoints;
     }
 }

@@ -16,6 +16,7 @@ public interface Scoreboard {
     int getNumStudentsFromEntrance();
     int getPlayerStudentFromDining(PawnColors color);
     void addStudentOnEntrance(StudentDisc student) throws EntranceFullException;
+    void addStudentOnDining(StudentDisc student);
     void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException;
     TowerColors getTowerColor();
     void removeTower();

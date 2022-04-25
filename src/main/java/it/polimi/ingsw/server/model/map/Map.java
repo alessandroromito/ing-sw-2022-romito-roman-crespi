@@ -12,9 +12,13 @@ public class Map {
 
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
+
     private final ObserverIsland obsIs;
+
     private int motherNaturePos;
+
     private CharacterCard[] characterCards;
+
     private GhostIsland[] groupIDsGhostIsland = {null, null, null, null, null, null};
 
     /**
@@ -119,4 +123,5 @@ public class Map {
         islands.get(IDIsland).setGroupID(IDGhostIsland);
         notifyMergingIslands();
     }
+
 }

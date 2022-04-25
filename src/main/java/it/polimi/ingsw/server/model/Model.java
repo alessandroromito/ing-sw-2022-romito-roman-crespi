@@ -1,10 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
 import it.polimi.ingsw.server.exception.MaxPlayerException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
-import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
@@ -13,16 +11,14 @@ import java.util.List;
 public class Model {
     public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 4;
+    public static final String SERVER_NAME = "server";
 
-    private static Model model;
     private Game game;
+    private static Model model;
 
     private boolean expertMode;
 
     private List<Player> players;
-    private final ArrayList<Component> components;
-
-    protected GameState currentState;
 
     private boolean gameStarted;
     private boolean endGame;
@@ -35,16 +31,15 @@ public class Model {
     public Model() {
         //init
         players = new ArrayList<>();
-        components = null;
         expertMode = false;
         playerNumber = 0;
         gameStarted = false;
-        currentState = GameState.GAME_ROOM;
     }
 
-    public Model getModel(){
-
-        return this;
+    public static Model getModel(){
+        if (model == null)
+            model = new Model();
+        return model;
     }
 
     /**
@@ -59,8 +54,7 @@ public class Model {
      * Update the playersNumber.
      */
     public void addPlayer(Player player) throws GameAlreadyStartedException, MaxPlayerException {
-        if (gameStarted)
-            throw new GameAlreadyStartedException("NOT possible to add players when game is already started!");
+        if (gameStarted) throw new GameAlreadyStartedException("NOT possible to add players when game is already started!");
         if (player == null) throw new NullPointerException("Player cannot be NULL");
         if (playerNumber >= MAX_PLAYERS) throw new MaxPlayerException("Max Number of players reached!");
         players.add(player);
@@ -72,34 +66,18 @@ public class Model {
      */
     public boolean startGame() throws GameAlreadyStartedException, MissingPlayersException {
 
-        if (gameStarted) throw new GameAlreadyStartedException("Game is already in progress!");
-
-        if(players.size() < MIN_PLAYERS) throw new MissingPlayersException("Minimum players is 2!");
-
-        gameStarted = true;
-        setState(GameState.GAME_STARTED);
-
-
-        if(!expertMode){
-            game = new Game(players);
+        if(expertMode){
+            game = new ExpertGame(players);
         }
-        else game = new ExpertGame(players);
+        else game = new Game(players);
 
         return true;
-    }
-
-    /**
-     * @return true if the game gameStarted
-     */
-    public boolean isGameStarted() {
-        return gameStarted;
     }
 
     /**
      * Set EndGame true
      */
     public void setEndGame(){
-        currentState = GameState.GAME_ENDED;
         endGame = true;
     }
 
@@ -125,22 +103,6 @@ public class Model {
     }
 
     /**
-     * @return the current state Game
-     */
-    public GameState getState() {
-        return currentState;
-    }
-
-    /**
-     * @param gameState state to be applied
-     * @return the updated gameState
-     */
-    public GameState setState(GameState gameState){
-        currentState = gameState;
-        return currentState;
-    }
-
-    /**
      * Set expertMode equals to @param bool
      */
     public void setExpertMode(boolean bool){
@@ -149,11 +111,22 @@ public class Model {
 
     /**
      *
-     * @return the instance of the created game
+     * @return the instance of the game if != null
      */
     public Game getGame(){
+        if(game == null) return null;
         return game;
     }
 
+    /**
+     * Search a nickname in the current players.
+     *
+     * @param nickname the nickname of the player.
+     * @return {@code true} if the nickname is found, {@code false} otherwise.
+     */
+    public boolean isNicknameTaken(String nickname) {
+        return players.stream()
+                .anyMatch(p -> nickname.equals(p.getNickname()));
+    }
 }
 

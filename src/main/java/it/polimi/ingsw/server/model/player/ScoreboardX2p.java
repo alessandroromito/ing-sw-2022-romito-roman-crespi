@@ -76,6 +76,11 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
+    public void addStudentOnDining(StudentDisc student) {
+        diningRoom[student.getColorInt()]++;
+    }
+
+    @Override
     public void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException {
         int c=0;
         for(int i=0;i<7;i++)

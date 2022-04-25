@@ -5,12 +5,13 @@ import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.CharacterCard;
-import it.polimi.ingsw.server.model.component.CharacterCards.*;
+import it.polimi.ingsw.server.model.component.charactercards.*;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.enumerations.MapPositions;
+import it.polimi.ingsw.server.model.player.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -97,7 +98,7 @@ public class ExpertGame extends Game{
         activeCardID = -1;
     }
 //aggiornare la visualizzazione per le ghost island
-    public void use_214 (int studentPos,MapPositions island) throws ActiveCardAlreadyExistingException {
+    public void use_214 (int studentPos, MapPositions island) throws ActiveCardAlreadyExistingException {
         if(activeCardID != 214) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         Card_214 temp = (Card_214) activeCard;
 
@@ -116,7 +117,7 @@ public class ExpertGame extends Game{
         temp.updateOldPos(t);
 
         for(Player p : players)
-            if (p != currentPlayer)
+            if (p != getActivePlayer())
                 for(int i=0;i<5;i++)
                     if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
                         if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == currentPlayer.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
@@ -134,12 +135,50 @@ public class ExpertGame extends Game{
         map.getIsland(islandNumber).getInfluence();
 
     }
-//da chiamare sempre a fine turno
+
+    /**
+     * EFFECT: Take 1 student from this card and place it on your dining room,
+     *         then take 1 student from the bag and place it on this card
+     *
+     * @param p player that use the effect
+     * @param number from 0 to 3 which is the number of the 4 student to take
+     */
+    public void use_224(Player p, int number) {
+        Scoreboard scoreboard = p.getScoreboard();
+        Card_224 card = (Card_224) activeCard;
+
+        scoreboard.addStudentOnDining(card.getStudent(number));
+        ((Card_224) activeCard).addStudent((StudentDisc) getComponent(bag.pickSorted()));
+
+    }
+
+    /**
+     * EFFECT: During the turn you get +2 additional point while calculating influence
+     *
+     * @param p player that use the effect
+     */
+    public void use_221(Player p){
+        p.setAdditionalPoints(true);
+    }
+
+    /**
+     * Disable the effect of the card 221
+     *
+     * @param p
+     */
+    public void endTurn_221(Player p){
+        p.setAdditionalPoints(false);
+    }
+
+    //da chiamare sempre a fine turno
     public void disableCardEffects (){
         switch(activeCardID){
             case 215: endTurn_215();
+            case 221: endTurn_221(getActivePlayer());
         }
 
         deleteActiveCard();
     }
+
+
 }

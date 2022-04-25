@@ -43,7 +43,7 @@ public class Island {
         TowerColors playerTowerColor = scoreboard.getTowerColor();
 
         for(PawnColors color: PawnColors.values()){
-            if(scoreboard.getProfessor(color)){
+            if(scoreboard.getProfessor(color) ){
                 influence += numberOfColors[color.ordinal()];
             }
         }

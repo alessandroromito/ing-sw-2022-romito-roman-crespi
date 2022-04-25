@@ -29,12 +29,12 @@ public class Game extends Observable {
      */
     public Game(List<Player> players) {
         this.players = players;
-        this.turnController = new TurnController();
+        this.turnController = new TurnController((players));
         createComponents();
         try {
             gameInitialization();
         } catch (EntranceFullException e) {
-            e.printStackTrace();
+            System.out.println("ERROR while gameInitialization()!");
         }
     }
 
@@ -69,9 +69,13 @@ public class Game extends Observable {
                     StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
                     p.getScoreboard().addStudentOnEntrance(stud);
                 }
+            } else if (players.size() == 3){
+                for(int i=0; i<9; i++) {
+                    StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
+                    p.getScoreboard().addStudentOnEntrance(stud);
+                }
             }
         }
-
     }
 
     /**
@@ -211,6 +215,12 @@ public class Game extends Observable {
         }
     }
 
+    /**
+     *
+     * @param color professor color
+     * @param player player that receive the professor
+     * @throws MissingPlayerNicknameException
+     */
     public void moveProfessor(PawnColors color, Player player) throws MissingPlayerNicknameException {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
 
@@ -231,7 +241,7 @@ public class Game extends Observable {
         checkProfessors(stud.getColor());
     }
 
-    public void checkInfluence(int islandID) throws AddingWrongColorTowerToIslandException, MissingPlayerNicknameException {
+    public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
@@ -252,7 +262,7 @@ public class Game extends Observable {
                 }
             }
             try {
-                moveTowerToIsland(dominantPlayer.getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             } catch (DisabledIslandException e) {
                 System.out.println("ERROR Moving First Tower to Island!");
             }
@@ -261,18 +271,17 @@ public class Game extends Observable {
         // CASE there is already a tower
         int currentPlayerInfluence = island.getInfluence(getPlayerByNickname(turnController.getActivePlayer()));
         for(Player p : players){
-            if(island.getTowerColor() == p.getScoreboard().getTowerColor()){
+            if(p.getScoreboard().getTowerColor() == island.getTowerColor()){
                 opponentPlayer = p;
             }
         }
         if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
             try {
-                moveTowerToIsland(dominantPlayer.getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             } catch (DisabledIslandException e) {
                 System.out.println("ERROR Switching Tower!");
             }
         }
-
     }
 
     private void checkProfessors(PawnColors color) throws MissingPlayerNicknameException {
@@ -280,7 +289,7 @@ public class Game extends Observable {
         int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
 
         for(Player player: players){
-            if(!player.equals(turnController.getActivePlayer()) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
+            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
                 currentPlayer.getScoreboard().setProfessorTrue(color);
             }
         }
@@ -382,6 +391,14 @@ public class Game extends Observable {
         }
     }
 
+    public Player getActivePlayer(){
+        try {
+            return getPlayerByNickname(turnController.getActivePlayer());
+        } catch (MissingPlayerNicknameException e) {
+            System.out.println("ERROR getActivePlayer()!");
+        }
+    }
+
     /**
      * @param min minimum number can be generated
      * @param max maximum number can be generated
@@ -416,7 +433,7 @@ public class Game extends Observable {
     public void printComponentsLog(){
         for(int i = 0; i<188; i++) {
             System.out.println("ID: " + components.get(i).getID());
-            System.out.println(components.get(i).getClass().getName());
+            System.out.print(components.get(i).getClass().getName());
         }
     }
 

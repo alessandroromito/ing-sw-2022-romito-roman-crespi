@@ -21,10 +21,13 @@ public class TurnController {
 
     private PhaseState phaseState;
 
+    private final GameController gameController;
+
     /**
      * Default Constructor of the TurnController
      */
-    public TurnController() {
+    public TurnController(GameController gameController) {
+        this.gameController = gameController;
         this.model = Model.getModel();
         this.game = model.getGame();
         this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
