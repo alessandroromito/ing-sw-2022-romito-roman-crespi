@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
+import it.polimi.ingsw.server.model.player.Player;
 
 public class GameController {
     public static final String SAVING = "GameController.sav";
@@ -36,13 +37,31 @@ public class GameController {
     private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException {
         setGameState(GameState.IN_GAME);
 
+        //broadcast message inizio loading
+
         model.startGame();
         wait(1000);
         turnController = new TurnController(this);
 
-        // Broadcast message
+        // Broadcast message fine loading
 
         turnController.newTurn();
+    }
+
+    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException {
+        for( String nickname : turnController.getNicknameQueue() ) {
+            Player player = game.getPlayerByNickname(nickname);
+            askToChooseAssistantCard(player);
+        }
+        turnController.nextPhase();
+    }
+
+    /**
+     * Ask to choose assistant card
+     */
+    private void askToChooseAssistantCard(Player player) {
+        // asking to choose an assistant card
+        // set the chosen assistant card to the player currentAssistantCard attribute
     }
 
     /**

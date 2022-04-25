@@ -29,7 +29,6 @@ public class Game extends Observable {
      */
     public Game(List<Player> players) {
         this.players = players;
-        this.turnController = new TurnController((players));
         createComponents();
         try {
             gameInitialization();

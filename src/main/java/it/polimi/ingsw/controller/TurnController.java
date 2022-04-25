@@ -10,6 +10,8 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import static it.polimi.ingsw.server.enumerations.PhaseState.ACTION_PHASE;
+
 /**
  * This Class contains all the methods used to manage every single turn of the match.
  */
@@ -20,7 +22,7 @@ public class TurnController {
     private final List<String> nicknameQueue;
     private String activePlayer;
 
-    private PhaseState phaseState = PhaseState.PLANNING_PHASE;
+    private PhaseState phaseState;
 
     private final GameController gameController;
 
@@ -32,6 +34,7 @@ public class TurnController {
         this.model = gameController.getModel();
         this.game = model.getGame();
         this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
+        this.phaseState = PhaseState.PLANNING_PHASE;
     }
 
     /**
@@ -57,19 +60,15 @@ public class TurnController {
         game.refillClouds();
         // 2
         try {
-            if(getPhaseState() == PhaseState.PLANNING_PHASE) askToChooseAssistantCard();
+            if(getPhaseState() == PhaseState.PLANNING_PHASE) gameController.askAllToChooseAssistantCard();
             else throw new WrongPhaseStateException();
         } catch (WrongPhaseStateException e) {
             e.printStackTrace();
         }
     }
 
-    private void askToChooseAssistantCard() throws MissingPlayerNicknameException {
-        Player player = game.getPlayerByNickname(getActivePlayer());
-        // asking to choose an assistant card
-        // set the chosen assistant card to the player currentAssistantCard attribute
-        next();
-    }
+
+
 
 
     /**
@@ -94,8 +93,9 @@ public class TurnController {
     public void nextPhase() throws MissingPlayerNicknameException {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
-                phaseState = PhaseState.ACTION_PHASE;
                 buildQueue(nicknameQueue);
+                phaseState = ACTION_PHASE;
+                actionPhase();
             }
             case ACTION_PHASE -> {
                 phaseState = PhaseState.PLANNING_PHASE;
@@ -105,6 +105,17 @@ public class TurnController {
         }
     }
 
+    public void actionPhase() throws MissingPlayerNicknameException {
+        gameController.askToMoveThreeStrudents();
+        //messaggio di fine mossa
+        gameController.askToMoveMotherNature();
+        //messaggio di fine mossa
+        gameController.askToChooseACloud();
+        //messaggio di fine mossa
+        next();
+        if(getPhaseState() == ACTION_PHASE) actionPhase();
+    }
+
     private void buildQueue(List<String> playersList) throws MissingPlayerNicknameException {
         List<Player> players = new ArrayList<>();
 
@@ -112,7 +123,10 @@ public class TurnController {
             Player p = game.getPlayerByNickname(s);
             players.add(p);
         }
+
+        //da testare
         players.sort(new ComparatorAssistantCard());
+
 
         nicknameQueue.clear();
 
@@ -124,4 +138,6 @@ public class TurnController {
     public PhaseState getPhaseState(){
         return phaseState;
     }
+
+    public List<String> getNicknameQueue() { return this.nicknameQueue; }
 }
