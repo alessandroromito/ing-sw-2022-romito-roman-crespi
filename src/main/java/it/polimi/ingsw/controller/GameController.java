@@ -64,6 +64,19 @@ public class GameController {
         // set the chosen assistant card to the player currentAssistantCard attribute
     }
 
+    public void askToMoveStudent() {
+
+            //chiedi dove e quale ( V Wiew )
+    }
+
+    public void askToMoveMotherNature() {
+        //chiedi dove ( V Wiew )
+    }
+
+    public void askToChooseACloud() {
+        //chiedi quale ( V Wiew)
+    }
+
     /**
      * Set the State of the current Game.
      *
@@ -172,4 +185,6 @@ public class GameController {
     public TurnController getTurnController() {
         return turnController;
     }
+
+
 }

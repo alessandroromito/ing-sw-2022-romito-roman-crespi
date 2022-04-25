@@ -1,6 +1,8 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
+import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.WrongPhaseStateException;
 import it.polimi.ingsw.server.model.Game;
@@ -23,6 +25,7 @@ public class TurnController {
     private String activePlayer;
 
     private PhaseState phaseState;
+    private ActionPhaseState actionPhaseState;
 
     private final GameController gameController;
 
@@ -95,6 +98,7 @@ public class TurnController {
             case PLANNING_PHASE -> {
                 buildQueue(nicknameQueue);
                 phaseState = ACTION_PHASE;
+                actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
                 actionPhase();
             }
             case ACTION_PHASE -> {
@@ -105,14 +109,25 @@ public class TurnController {
         }
     }
 
-    public void actionPhase() throws MissingPlayerNicknameException {
-        gameController.askToMoveThreeStrudents();
-        //messaggio di fine mossa
-        gameController.askToMoveMotherNature();
-        //messaggio di fine mossa
-        gameController.askToChooseACloud();
-        //messaggio di fine mossa
-        next();
+    public void actionPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+        switch (actionPhaseState) {
+            case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> {
+                gameController.askToMoveStudent();
+                //quando arriva il messaggio di fine mossa aggiorna actionPhaseState (con metodo actionPhaseState.next())
+                //ci sarà un onUpdate che chiamerà actionPhase()
+            }
+            case MOVE_MOTHER_NATURE -> {
+                gameController.askToMoveMotherNature();
+                //come sopra
+            }
+            case PICK_CLOUD -> {
+                gameController.askToChooseACloud();
+                //come sopra
+                next();
+            }
+            default -> throw new InvalidActionPhaseStateException();
+        }
+
         if(getPhaseState() == ACTION_PHASE) actionPhase();
     }
 
@@ -138,6 +153,8 @@ public class TurnController {
     public PhaseState getPhaseState(){
         return phaseState;
     }
+
+    public ActionPhaseState getActionPhaseState(){return actionPhaseState;}
 
     public List<String> getNicknameQueue() { return this.nicknameQueue; }
 }
