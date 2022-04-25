@@ -77,7 +77,7 @@ public class TurnController {
     /**
      * Set the next activePlayer.
      */
-    public void next() throws MissingPlayerNicknameException {
+    public void next() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
 
         int currentActive = nicknameQueue.indexOf(activePlayer);
         if (currentActive + 1 < model.getNumberOfPlayer()) {
@@ -93,7 +93,7 @@ public class TurnController {
     /**
      * Go to the next phase.
      */
-    public void nextPhase() throws MissingPlayerNicknameException {
+    public void nextPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
                 buildQueue(nicknameQueue);
