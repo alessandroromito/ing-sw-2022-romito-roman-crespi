@@ -120,5 +120,7 @@ public class Model {
         return players.stream()
                 .anyMatch(p -> nickname.equals(p.getNickname()));
     }
+
+    public boolean isExpertMode(){ return expertMode; }
 }
 

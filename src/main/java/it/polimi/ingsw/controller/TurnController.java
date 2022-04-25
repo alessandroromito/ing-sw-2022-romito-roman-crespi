@@ -57,7 +57,7 @@ public class TurnController {
     /**
      * Initialize a new Turn.
      */
-    public void newTurn() throws MissingPlayerNicknameException {
+    public void newTurn() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
         activePlayer = nicknameQueue.get(0);
         // 1
         game.refillClouds();

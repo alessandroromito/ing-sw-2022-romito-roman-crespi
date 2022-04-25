@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.GameState;
+import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
 import it.polimi.ingsw.server.model.Game;
@@ -48,7 +49,7 @@ public class GameController {
         turnController.newTurn();
     }
 
-    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException {
+    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
         for( String nickname : turnController.getNicknameQueue() ) {
             Player player = game.getPlayerByNickname(nickname);
             askToChooseAssistantCard(player);
