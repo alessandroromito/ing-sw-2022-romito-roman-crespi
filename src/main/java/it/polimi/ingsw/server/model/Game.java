@@ -395,6 +395,7 @@ public class Game extends Observable {
             return getPlayerByNickname(turnController.getActivePlayer());
         } catch (MissingPlayerNicknameException e) {
             System.out.println("ERROR getActivePlayer()!");
+            return null;
         }
     }
 

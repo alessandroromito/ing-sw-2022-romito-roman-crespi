@@ -35,7 +35,7 @@ public class GameController {
         return this.model;
     }
 
-    private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException {
+    private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException {
         setGameState(GameState.IN_GAME);
 
         //broadcast message inizio loading
