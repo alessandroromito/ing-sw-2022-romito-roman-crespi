@@ -108,11 +108,13 @@ public class Map {
 
     public void mergeHybridGhostFeature(int IDGhostIsland, int IDIsland) throws DifferentColorTowerException {
         //da implementare
+        /*
         Integer[] noc, nocIsland;
         noc = groupIDsGhostIsland[IDGhostIsland].getNumberOfColors();
         nocIsland = islands.get(IDIsland).getNumberOfColors();
         //noc parameter initialization
         for(int i = 0; i < PawnColors.values().length - 1; i++) noc[i] += nocIsland[i];
+         */
 
         if (islands.get(IDIsland).getTowerColor() == groupIDsGhostIsland[IDGhostIsland].getTowerColor()) {
             groupIDsGhostIsland[IDGhostIsland].addStudents(islands.get(IDIsland).getNumberOfColors());
@@ -122,6 +124,36 @@ public class Map {
         islands.get(IDIsland).disable();
         islands.get(IDIsland).setGroupID(IDGhostIsland);
         notifyMergingIslands();
+    }
+
+    public void mergeGhost(int IDGhostIsland1, int IDGhostIsland2) throws DifferentColorTowerException {
+        /*
+        Integer[] noc1, noc2;
+        noc1 = groupIDsGhostIsland[IDGhostIsland1].getNumberOfColors();
+        noc2 = groupIDsGhostIsland[IDGhostIsland2].getNumberOfColors();
+
+
+        //merge dei noc
+        for(int i = 0; i < PawnColors.values().length - 1; i++) noc1[i] += noc2[i];
+        */
+
+        //merge towers
+        if (groupIDsGhostIsland[IDGhostIsland1].getTowerColor() == groupIDsGhostIsland[IDGhostIsland2].getTowerColor()) {
+            groupIDsGhostIsland[IDGhostIsland1].addStudents(groupIDsGhostIsland[IDGhostIsland2].getNumberOfColors());
+            groupIDsGhostIsland[IDGhostIsland1].addTowers(groupIDsGhostIsland[IDGhostIsland2].getTowerNumber());
+        } else throw new DifferentColorTowerException("Different tower. Impossible merging");
+
+        //set isole seconda con groupID prima
+        for( Island island : islands) {
+            if( island.getGroupID() == groupIDsGhostIsland[IDGhostIsland2].getID() )
+                island.setGroupID(groupIDsGhostIsland[IDGhostIsland1].getID());
+        }
+
+        //eliminare la seconda
+        groupIDsGhostIsland[IDGhostIsland2] = null;
+
+        notifyMergingIslands();
+
     }
 
 }
