@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
+import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
@@ -14,6 +15,7 @@ public class Island {
     private int towerNumber = 0;
     private TowerColors towerColor = null;
     private boolean disabled = false;
+    private NoEntryTile noTile = null;
 
     /**
      * Default constructor.
@@ -54,6 +56,39 @@ public class Island {
         return influence;
     }
 
+    public int getInfluence_219 (Player p){
+        int influence = 0;
+        Scoreboard scoreboard = p.getScoreboard();
+        TowerColors playerTowerColor = scoreboard.getTowerColor();
+
+        for(PawnColors color: PawnColors.values()){
+            if(scoreboard.getProfessor(color) ){
+                influence += numberOfColors[color.ordinal()];
+            }
+        }
+
+        return influence;
+    }
+
+    public int getInfluence_222 (Player p,PawnColors disabled){
+        int influence = 0;
+        Scoreboard scoreboard = p.getScoreboard();
+        TowerColors playerTowerColor = scoreboard.getTowerColor();
+
+        for(PawnColors color: PawnColors.values()){
+            if(color != disabled)
+                if(scoreboard.getProfessor(color) ){
+                    influence += numberOfColors[color.ordinal()];
+                }
+        }
+        if(playerTowerColor == getTowerColor())
+            influence += getTowerNumber();
+
+        if(p.isAdditionalPoints()) influence += 2;
+
+        return influence;
+    }
+
     public int getTowerNumber(){
         return this.towerNumber;
     }
@@ -84,6 +119,21 @@ public class Island {
 
     public void switchTowerColor(TowerColors color){
         this.towerColor = color;
+    }
+
+    public void addNoEntryTile (NoEntryTile t){
+        noTile = t;
+    }
+
+    public boolean checkNoEntryTile (){
+        if(noTile == null)  return false;
+        else return true;
+    }
+
+    public NoEntryTile removeNoEntryTile (){
+        NoEntryTile tile = noTile;
+        noTile = null;
+        return tile;
     }
 
 }

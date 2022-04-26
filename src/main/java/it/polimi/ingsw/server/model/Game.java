@@ -300,6 +300,10 @@ public class Game extends Observable {
         checkProfessors(stud.getColor());
     }
 
+    public void deleteActiveCard(){
+
+    }
+
     public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
@@ -309,6 +313,11 @@ public class Game extends Observable {
         Island island = map.getIsland(islandID);
         if(island.isDisabled()){
             island = map.getGhostIsland(islandID);
+        }
+
+        if(island.checkNoEntryTile()){
+            island.removeNoEntryTile().setPosition(MapPositions.CARD_218);
+            return;
         }
 
         // CASE no tower on island
@@ -334,6 +343,7 @@ public class Game extends Observable {
                 opponentPlayer = p;
             }
         }
+
         if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
             try {
                 moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
