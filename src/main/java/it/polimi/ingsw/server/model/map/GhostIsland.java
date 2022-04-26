@@ -9,7 +9,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
 
-public class GhostIsland{
+public class GhostIsland extends  Island{
     private int ID_ghost;
     private Integer[] numberOfColors;
     private int towerNumber;
@@ -19,6 +19,7 @@ public class GhostIsland{
      * Default constructor.
      */
     public GhostIsland(int groupID, Integer[] numberOfColors, int towerNumber, TowerColors towerColor){
+        super(500);
         this.ID_ghost = groupID;
         this.numberOfColors = numberOfColors;
         for(int i = 0; i < PawnColors.values().length - 1 ; i++)
@@ -74,11 +75,11 @@ public class GhostIsland{
         this.towerColor = color;
     }
 
-    @Override
+/*    @Override
     public boolean checkNoEntryTile() {
         //da implementare
     }
-
+*/
     public void addStudents(Integer[] numberOfColors) {
         for(int i = 0; i < PawnColors.values().length; i++)
             this.numberOfColors[i] += numberOfColors[i];
