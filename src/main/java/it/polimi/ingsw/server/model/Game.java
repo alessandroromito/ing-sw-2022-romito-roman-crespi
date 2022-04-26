@@ -38,6 +38,66 @@ public class Game extends Observable {
     }
 
     /**
+     * Method to generate all the components needed
+     */
+    public void createComponents(){
+        // Create MOTHER NATURE
+        components.set(1, new MotherNature(1));
+
+        //Create PROFESSORS
+        int i=2;
+        for(PawnColors color: PawnColors.values()){
+            components.set(i, new ProfessorPawn(i, color));
+            i++;
+        }
+
+        //Create TOWER
+        for(i = 7; i<=14; i++){
+            components.set(i, new Tower(i, TowerColors.BLACK));
+        }
+        for(i=15; i<=22; i++){
+            components.set(i, new Tower(i, TowerColors.WHITE));
+        }
+        if(players.size() == 3){
+            for(i=23; i<=28; i++){
+                components.set(i, new Tower(i, TowerColors.GREY));
+            }
+        }
+
+        // Create ASSISTANT CARD
+        i = 29;
+        for(int movement=1, val=1; i<=38; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(i, val, movement));
+        }
+        i = 39;
+        for(int movement=1, val=1; i<=48; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(i, val, movement));
+        }
+        i = 49;
+        for(int movement=1, val=1; i<=58; val++, movement++, i++ ){
+            components.set(i, new AssistantCard(i, val, movement));
+            val++;
+            i++;
+            components.set(i, new AssistantCard(i, val, movement));
+        }
+
+        // Create STUDENTS
+        i = 59;
+        for(PawnColors color: PawnColors.values()){
+            for(int count=0; count<26; count++){
+                components.set(i, new StudentDisc(i, color));
+                i++;
+            }
+        }
+    }
+
+    /**
      * Initialise the game.
      * Creates all the object necessary for the game according to the number of player
      */
@@ -63,16 +123,15 @@ public class Game extends Observable {
         }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
-            if(players.size() == 2) {
-                for(int i=0; i<7; i++) {
-                    StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
-                    p.getScoreboard().addStudentOnEntrance(stud);
-                }
-            } else if (players.size() == 3){
-                for(int i=0; i<9; i++) {
-                    StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
-                    p.getScoreboard().addStudentOnEntrance(stud);
-                }
+            for(int i=0; i<7; i++) {
+                StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
+                p.getScoreboard().addStudentOnEntrance(stud);
+            }
+            if (players.size() == 3){
+                StudentDisc stud1 = (StudentDisc) getComponent(bag.pickSorted());
+                StudentDisc stud2 = (StudentDisc) getComponent(bag.pickSorted());
+                p.getScoreboard().addStudentOnEntrance(stud1);
+                p.getScoreboard().addStudentOnEntrance(stud2);
             }
         }
     }
@@ -97,6 +156,7 @@ public class Game extends Observable {
     public Map getMap(){
         return map;
     }
+
     /**
      * @param nickname the nickname of the player to be found.
      * @return the player given his {@code nickname}, {@code null} otherwise.
@@ -330,66 +390,6 @@ public class Game extends Observable {
         cloud.reset();
     }
 
-    /**
-     * Method to generate all the components needed
-     */
-    public void createComponents(){
-        // Create MOTHER NATURE
-        components.set(1, new MotherNature(1));
-
-        //Create PROFESSORS
-        int i=2;
-        for(PawnColors color: PawnColors.values()){
-            components.set(i, new ProfessorPawn(i, color));
-            i++;
-        }
-
-        //Create TOWER
-        for(i = 7; i<=14; i++){
-            components.set(i, new Tower(i, TowerColors.BLACK));
-        }
-        for(i=15; i<=22; i++){
-            components.set(i, new Tower(i, TowerColors.WHITE));
-        }
-        if(players.size() == 3){
-            for(i=23; i<=28; i++){
-                components.set(i, new Tower(i, TowerColors.GREY));
-            }
-        }
-
-        // Create ASSISTANT CARD
-        i = 29;
-        for(int movement=1, val=1; i<=38; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
-            val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
-        }
-        i = 39;
-        for(int movement=1, val=1; i<=48; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
-            val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
-        }
-        i = 49;
-        for(int movement=1, val=1; i<=58; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
-            val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
-        }
-
-        // Create STUDENTS
-        i = 59;
-        for(PawnColors color: PawnColors.values()){
-            for(int count=0; count<26; count++){
-                components.set(i, new StudentDisc(i, color));
-                i++;
-            }
-        }
-    }
-
     public Player getActivePlayer(){
         try {
             return getPlayerByNickname(turnController.getActivePlayer());
@@ -425,16 +425,6 @@ public class Game extends Observable {
             }
         }
         return true;
-    }
-
-    /**
-     * Print a visual log of the component's ID and class type
-     */
-    public void printComponentsLog(){
-        for(int i = 0; i<188; i++) {
-            System.out.println("ID: " + components.get(i).getID());
-            System.out.print(components.get(i).getClass().getName());
-        }
     }
 
 }

@@ -64,7 +64,7 @@ public class TurnController {
         // 2
         try {
             if(getPhaseState() == PhaseState.PLANNING_PHASE) gameController.askAllToChooseAssistantCard();
-            else throw new WrongPhaseStateException();
+            else throw new WrongPhaseStateException("ERROR while newTurn()!");
         } catch (WrongPhaseStateException e) {
             e.printStackTrace();
         }

@@ -9,17 +9,16 @@ import it.polimi.ingsw.server.model.player.Scoreboard;
 public class Island {
 
     private final int ID;
-    private Integer[] numberOfColors = {0,0,0,0,0};
+    private final Integer[] numberOfColors = {0,0,0,0,0};
     private int groupID;
     private int towerNumber = 0;
     private TowerColors towerColor = null;
-    private boolean disabled;
+    private boolean disabled = false;
 
     /**
      * Default constructor.
      */
     public Island(int id){
-        disabled = false;
         this.ID = id;
     }
 
@@ -49,6 +48,8 @@ public class Island {
         }
         if(playerTowerColor == getTowerColor())
             influence += getTowerNumber();
+
+        if(p.isAdditionalPoints()) influence += 2;
 
         return influence;
     }

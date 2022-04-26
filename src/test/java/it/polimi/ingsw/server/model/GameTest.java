@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.model.component.Tower;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.server.model.player.Scoreboard;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -27,16 +28,20 @@ public class GameTest {
 
     @BeforeEach
     void setUp() {
-        players.add(new Player());
-        players.add(new Player());
+        players.add(new Player("Player1"));
+        players.add(new Player("Player2"));
 
         game = new Game(players);
     }
 
     @Test
     public void CreateComponents(){
-        game.createComponents();
-        game.printComponentsLog();
+
+        // Print a visual log of the component's ID and class type
+        for(int i = 0; i<188; i++) {
+            System.out.println("ID: " + components.get(i).getID());
+            System.out.print(components.get(i).getClass().getName());
+        }
 
         assertNotNull(components.get(1));
         assertEquals(MotherNature.class, components.get(1).getClass());
@@ -56,7 +61,6 @@ public class GameTest {
         Tower t = (Tower) components.get(7);
         assertEquals(TowerColors.BLACK, t.getColor());
 
-
     }
 
     @Test
@@ -71,11 +75,20 @@ public class GameTest {
         Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
         assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
 
+        // Scoreboard entrance is full
+        Player p1 = players.get(0);
+        Scoreboard scoreboard1 = p1.getScoreboard();
+
+        Player p2 = players.get(1);
+        Scoreboard scoreboard2 = p1.getScoreboard();
+
+        assertEquals(7, scoreboard1.getNumStudentsFromEntrance());
+        assertEquals(7, scoreboard2.getNumStudentsFromEntrance());
+
     }
 
     @Test
     public void moveMotherNatureTest() throws DifferentColorTowerException, FullGroupIDListException {
-        game = new Game(players);
         Map map = game.getMap();
         map.setMotherNaturePos(2);
 
@@ -85,6 +98,12 @@ public class GameTest {
         assertEquals(6, components.get(1).getPosition().ordinal() - 12);
 
         map.merge(1,2);
+
+
+    }
+
+    @Test
+    public void getPlayerByNicknameTest(){
 
     }
 

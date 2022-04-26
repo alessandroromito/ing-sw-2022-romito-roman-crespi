@@ -1,10 +1,7 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.server.enumerations.GameState;
-import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
-import it.polimi.ingsw.server.model.player.Player;
 
 public class InputController {
 
@@ -18,10 +15,12 @@ public class InputController {
         this.gameController = gameController;
     }
 
+    /*
     // IDEA IMPLEMENTAZIONE
     public boolean verifyReceivedData(Message message) {
 
     }
+    */
 
     /**
      * Check if a nickname is free or not.
@@ -38,12 +37,14 @@ public class InputController {
         return true;
     }
 
+
     /**
      * Check that the player could move motherNature forward the requested steps
      *
      * @param message received from the client
      * @return {code @true} if he could move {code @false} if not
      */
+    /*
     public boolean moveCheck(Message message) throws NullCurrentCardException {
         MoveMessage moveMessage = (MoveMessage) message;
         int steps = moveMessage.getSteps();
@@ -56,5 +57,6 @@ public class InputController {
             return false;
         }
     }
+    */
 
 }

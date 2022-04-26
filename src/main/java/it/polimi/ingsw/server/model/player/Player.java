@@ -19,7 +19,8 @@ public class Player {
     private final ObserverLastAssistentCard obsLAC;
     private boolean additionalPoints = false;
 
-    public Player(){
+    public Player(String nickname){
+        this.nickname = nickname;
         obsLAC = new ObserverLastAssistentCard(this);
     }
 
@@ -94,4 +95,9 @@ public class Player {
     public void setAdditionalPoints(boolean additionalPoints) {
         this.additionalPoints = additionalPoints;
     }
+
+    public boolean isAdditionalPoints() {
+        return additionalPoints;
+    }
+
 }
