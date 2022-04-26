@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
 import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
@@ -233,16 +234,17 @@ public class Game extends Observable {
      */
     public void moveStudentToIsland(int studentID, int numIsland) throws DisabledIslandException {
         StudentDisc stud = (StudentDisc) getComponent(studentID);
-        Island island = map.getIsland(numIsland);
 
-        if(island.isDisabled()) {
-            //check Ghost Island
-            if(map.getGhostIsland(numIsland) != null)
-                island = map.getGhostIsland(numIsland);
+        if(map.getIsland(numIsland).isDisabled()) {
+            GhostIsland ghostIsland = map.getGhostIsland(numIsland);
+            ghostIsland.addStudent(stud.getColor());
+            stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
         }
-        else throw new DisabledIslandException("This island is disabled!");
-        island.addStudent(stud.getColor());
-        stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
+        else {
+            Island island = map.getIsland(numIsland);
+            island.addStudent(stud.getColor());
+            stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
+        }
     }
 
     /**
@@ -311,6 +313,7 @@ public class Game extends Observable {
         Player opponentPlayer = null;
 
         Island island = map.getIsland(islandID);
+
         if(island.isDisabled()){
             island = map.getGhostIsland(islandID);
         }

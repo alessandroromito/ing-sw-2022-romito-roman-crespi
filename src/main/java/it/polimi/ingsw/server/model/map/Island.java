@@ -9,13 +9,13 @@ import it.polimi.ingsw.server.model.player.Scoreboard;
 
 public class Island {
 
-    private final int ID;
-    private final Integer[] numberOfColors = {0,0,0,0,0};
+    protected final int ID;
+    protected Integer[] numberOfColors = {0,0,0,0,0};
     private int groupID;
-    private int towerNumber = 0;
-    private TowerColors towerColor = null;
+    protected int towerNumber = 0;
+    protected TowerColors towerColor = null;
     private boolean disabled = false;
-    private NoEntryTile noTile = null;
+    protected NoEntryTile noTile = null;
 
     /**
      * Default constructor.
