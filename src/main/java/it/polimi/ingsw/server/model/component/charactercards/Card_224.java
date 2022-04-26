@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.component.charactercards;
 
-import it.polimi.ingsw.server.model.component.CharacterCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
 import java.util.ArrayList;
