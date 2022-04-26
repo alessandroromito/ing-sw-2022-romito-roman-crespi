@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.component.charactercards;
 
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.model.player.Player;
 
 public class Card_215 extends CharacterCard {
