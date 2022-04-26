@@ -74,7 +74,7 @@ public class ExpertGame extends Game {
                     }
                     pool[i] = new Card_218(components.subList(209,212));
                     break;
-                case 5: pool[i] = new Card_219();   break;
+//                case 5: pool[i] = new Card_219();   break;
             }
         }
     }
@@ -181,14 +181,14 @@ public class ExpertGame extends Game {
 
     }
 
-    public void use_219 () throws ActiveCardAlreadyExistingException{
+/*    public void use_219 () throws ActiveCardAlreadyExistingException{
         if(activeCardID != 219) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         activeCardID = 219;
     }
-
+*/
     @Override
     public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
-        if(activeCardID == 219) {
+/*        if(activeCardID == 219) {
             int bestInfluence = 0;
             Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
             Player dominantPlayer = null;
@@ -236,7 +236,7 @@ public class ExpertGame extends Game {
                 }
             }
         }
-        else if(activeCardID == 222){
+        else */ if(activeCardID == 222){
             Card_222 card = (Card_222) activeCard;
             int bestInfluence = 0;
             Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
