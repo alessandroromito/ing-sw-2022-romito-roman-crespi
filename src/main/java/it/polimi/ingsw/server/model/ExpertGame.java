@@ -1,18 +1,15 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.*;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
-import it.polimi.ingsw.server.model.component.charactercards.*;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.charactercards.*;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.player.Player;
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.model.player.Scoreboard;
-
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +129,7 @@ public class ExpertGame extends Game {
         deleteActiveCard();
     }
 //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
-    public void use_215 () throws ActiveCardAlreadyExistingException {
+    public void use_215 () throws ActiveCardAlreadyExistingException, MissingPlayerNicknameException {
         if(activeCardID != 215) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         Card_215 temp = (Card_215) activeCard;
         activeCardID = 215;
@@ -152,7 +149,7 @@ public class ExpertGame extends Game {
                         }
     }
 
-    public void endTurn_215(){
+    public void endTurn_215() throws MissingPlayerNicknameException {
         Card_215 temp = (Card_215) activeCard;
         for(int i=0;i<5;i++){
             moveProfessor(PawnColors.values()[i],temp.getOldPos(i));
@@ -331,7 +328,7 @@ public class ExpertGame extends Game {
     }
 
     //da chiamare sempre a fine turno
-    public void disableCardEffects (){
+    public void disableCardEffects () throws MissingPlayerNicknameException {
         switch(activeCardID){
             case 215: endTurn_215();
             case 221: endTurn_221(getActivePlayer());
