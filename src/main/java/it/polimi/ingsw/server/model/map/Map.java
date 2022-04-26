@@ -3,7 +3,7 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
-import it.polimi.ingsw.server.model.component.CharacterCard;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.observer.ObserverIsland;
 
 import java.util.ArrayList;

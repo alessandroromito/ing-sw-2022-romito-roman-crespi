@@ -74,6 +74,11 @@ public class GhostIsland{
         this.towerColor = color;
     }
 
+    @Override
+    public boolean checkNoEntryTile() {
+        //da implementare
+    }
+
     public void addStudents(Integer[] numberOfColors) {
         for(int i = 0; i < PawnColors.values().length; i++)
             this.numberOfColors[i] += numberOfColors[i];

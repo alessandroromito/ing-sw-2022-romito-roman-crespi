@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.WrongPhaseStateException;
+import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.player.Player;
@@ -82,6 +83,7 @@ public class TurnController {
         int currentActive = nicknameQueue.indexOf(activePlayer);
         if (currentActive + 1 < model.getNumberOfPlayer()) {
             currentActive = currentActive + 1;
+            if(model.isExpertMode()) game.deleteActiveCard();
         } else {
             nextPhase();
             return;
