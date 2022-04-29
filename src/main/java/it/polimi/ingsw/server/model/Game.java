@@ -30,7 +30,13 @@ public class Game extends Observable {
      */
     public Game(List<Player> players) {
         this.players = players;
+        for(Player player : players) player.createScoreboard(players.size());
+
+        this.map = new Map(players.size());
+        this.bag = new Bag();
+
         createComponents();
+
         try {
             gameInitialization();
         } catch (EntranceFullException e) {
@@ -43,57 +49,57 @@ public class Game extends Observable {
      */
     public void createComponents(){
         // Create MOTHER NATURE
-        components.set(1, new MotherNature(1));
+        components.add(new MotherNature(1));
 
         //Create PROFESSORS
-        int i=2;
+        int id = 2;
         for(PawnColors color: PawnColors.values()){
-            components.set(i, new ProfessorPawn(i, color));
-            i++;
+            components.add(new ProfessorPawn(id, color));
+            id++;
         }
 
         //Create TOWER
-        for(i = 7; i<=14; i++){
-            components.set(i, new Tower(i, TowerColors.BLACK));
+        for(id = 7; id<=14; id++){
+            components.add(new Tower(id, TowerColors.BLACK));
         }
-        for(i=15; i<=22; i++){
-            components.set(i, new Tower(i, TowerColors.WHITE));
+        for(id=15; id<=22; id++){
+            components.add(new Tower(id, TowerColors.WHITE));
         }
         if(players.size() == 3){
-            for(i=23; i<=28; i++){
-                components.set(i, new Tower(i, TowerColors.GREY));
+            for(id=23; id<=28; id++){
+                components.add(new Tower(id, TowerColors.GREY));
             }
         }
 
         // Create ASSISTANT CARD
-        i = 29;
-        for(int movement=1, val=1; i<=38; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
+        id = 29;
+        for(int movement=1, val=1; id<=38; val++, movement++, id++ ){
+            components.add(new AssistantCard(id, val, movement));
             val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
+            id++;
+            components.add(new AssistantCard(id, val, movement));
         }
-        i = 39;
-        for(int movement=1, val=1; i<=48; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
+        id = 39;
+        for(int movement=1, val=1; id<=48; val++, movement++, id++ ){
+            components.add(new AssistantCard(id, val, movement));
             val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
+            id++;
+            components.add(new AssistantCard(id, val, movement));
         }
-        i = 49;
-        for(int movement=1, val=1; i<=58; val++, movement++, i++ ){
-            components.set(i, new AssistantCard(i, val, movement));
+        id = 49;
+        for(int movement=1, val=1; id<=58; val++, movement++, id++ ){
+            components.add(new AssistantCard(id, val, movement));
             val++;
-            i++;
-            components.set(i, new AssistantCard(i, val, movement));
+            id++;
+            components.add(new AssistantCard(id, val, movement));
         }
 
         // Create STUDENTS
-        i = 59;
+        id = 59;
         for(PawnColors color: PawnColors.values()){
             for(int count=0; count<26; count++){
-                components.set(i, new StudentDisc(i, color));
-                i++;
+                components.add(new StudentDisc(id, color));
+                id++;
             }
         }
     }
@@ -111,7 +117,7 @@ public class Game extends Observable {
         // 3) Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            tempArrayStudents.set(i, (StudentDisc) getComponent(bag.pickSorted()));
+            tempArrayStudents.add((StudentDisc) getComponent(bag.pickSorted()));
         }
         Collections.shuffle(tempArrayStudents);
         for(StudentDisc stud: tempArrayStudents) {
@@ -196,10 +202,18 @@ public class Game extends Observable {
      * @return the component given his {@code ID}, {@code null} otherwise.
      */
     public Component getComponent(int ID){
+        for(Component component : components){
+            if(ID == component.getID()) return component;
+        }
+        return null;
+
+        /*
         return components.stream()
                 .filter(component -> ID == (component.getID()))
                 .findFirst()
                 .orElse(null);
+
+         */
     }
 
     /**

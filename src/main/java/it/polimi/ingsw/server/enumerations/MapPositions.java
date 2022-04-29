@@ -17,6 +17,7 @@ public enum MapPositions {
     PLAYER4_DINING,
     PLAYER4_HAND,
 
+    ISLAND_0,
     ISLAND_1,
     ISLAND_2,
     ISLAND_3,
@@ -28,7 +29,6 @@ public enum MapPositions {
     ISLAND_9,
     ISLAND_10,
     ISLAND_11,
-    ISLAND_12,
 
     CLOUDS_1,
     CLOUDS_2,

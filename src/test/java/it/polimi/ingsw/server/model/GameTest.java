@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
+import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
@@ -23,15 +24,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
     private Game game;
-    private List<Player> players;
+    private List<Player> players = new ArrayList<>();
     protected ArrayList<Component> components;
 
     @Before
     public void setUp() {
-        players.add(new Player("Player1"));
-        players.add(new Player("Player2"));
+        Player player1 = new Player("Player 1");
+        Player player2 = new Player("Player 2");
+        Player player3 = new Player("Player 3");
+
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
 
         game = new Game(players);
+        components = game.components;
+
     }
 
     @Test
@@ -39,22 +47,22 @@ public class GameTest {
 
         // Print a visual log of the component's ID and class type
         for(int i = 0; i<188; i++) {
-            System.out.println("ID: " + game.getComponents().get(i).getID());
-            System.out.print(game.getComponents().get(i).getClass().getName());
+            System.out.print("ID: " + components.get(i).getID() + " ");
+            System.out.println(components.get(i).getClass().getName());
         }
 
-        assertNotNull(components.get(1));
-        assertEquals(MotherNature.class, components.get(1).getClass());
+        assertNotNull(components.get(0));
+        assertEquals(MotherNature.class, components.get(0).getClass());
 
         assertNotNull(components.get(2));
         assertEquals(ProfessorPawn.class, components.get(2).getClass());
         ProfessorPawn p = (ProfessorPawn) components.get(2);
         assertEquals(PawnColors.BLUE, p.getColor());
 
-        assertNotNull(components.get(6));
-        assertEquals(ProfessorPawn.class, components.get(6).getClass());
-        p = (ProfessorPawn) components.get(6);
-        assertEquals(PawnColors.YELLOW, p.getColor());
+        assertNotNull(components.get(5));
+        assertEquals(ProfessorPawn.class, components.get(5).getClass());
+        p = (ProfessorPawn) components.get(5);
+        assertEquals(PawnColors.PINK, p.getColor());
 
         assertNotNull(components.get(7));
         assertEquals(Tower.class, components.get(7).getClass());
@@ -67,9 +75,9 @@ public class GameTest {
     public void GameInitialization(){
         Map map = game.getMap();
 
-        assertEquals(map.getMotherNaturePosition(), components.get(1).getPosition().ordinal() - 12);
-        components.get(1).setPosition(MapPositions.valueOf("ISLAND_" + 1));
-        assertEquals(1, components.get(1).getPosition().ordinal() - 12);
+        assertEquals(map.getMotherNaturePosition(), components.get(0).getPosition().ordinal() - 12);
+        components.get(0).setPosition(MapPositions.valueOf("ISLAND_" + 1));
+        assertEquals(0, components.get(0).getPosition().ordinal() - 12);
 
         // Opposite island free
         Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
@@ -95,17 +103,60 @@ public class GameTest {
         game.moveMotherNature(4);
 
         assertEquals(6, map.getMotherNaturePosition());
-        assertEquals(6, components.get(1).getPosition().ordinal() - 12);
+        assertEquals(6, game.getComponent(1).getPosition().ordinal() - 12);
 
         map.merge(1,2);
-
 
     }
 
     @Test
-    public void getPlayerByNicknameTest(){
+    public void getPlayerByNicknameTest() throws MissingPlayerNicknameException {
+        assertEquals(players.get(0), game.getPlayerByNickname("Player 1"));
+        assertEquals(players.get(1), game.getPlayerByNickname("Player 2"));
+        assertEquals(players.get(2), game.getPlayerByNickname("Player 3"));
 
     }
 
 
+    @Test
+    public void getPlayersNicknames() {
+    }
+
+    @Test
+    public void refillClouds() {
+    }
+
+    @Test
+    public void setAssistantCard() {
+    }
+
+    @Test
+    public void moveStudentToIsland() {
+    }
+
+    @Test
+    public void moveTowerToIsland() {
+    }
+
+    @Test
+    public void moveProfessor() {
+    }
+
+    @Test
+    public void moveStudentToDiningRoom() {
+    }
+
+    @Test
+    public void deleteActiveCard() {
+    }
+
+    @Test
+    public void pickAndPlaceFromCloud() {
+    }
+
+    @Test
+    public void getComponentByIDTest() {
+        assertEquals(components.get(0), game.getComponent(1));
+        assertEquals(components.get(1), game.getComponent(2));
+    }
 }
