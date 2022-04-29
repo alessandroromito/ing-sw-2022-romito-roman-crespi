@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
 
-    private ArrayList<StudentDisc> bagStudents;
+    private ArrayList<StudentDisc> bagStudents = new ArrayList<>();
+    private Bag bag = new Bag();
 
     @BeforeEach
     void setUp() {
-        Bag bag = new Bag();
     }
 
     @AfterEach
@@ -28,12 +28,13 @@ class BagTest {
 
     @Test
     void isStudentsListEmpty() {
-        assertEquals(bagStudents.getType(), ArrayList<bagStudents> )
+        assertTrue(bagStudents.isEmpty());
+        //assertEquals(bagStudents.getType(), ArrayList<bagStudents> );
     }
 
     @Test
     void getBagStudents(){
-        Bag bag = new Bag();
+
         //assertInstanceOf(ArrayList<StudentDisc>, bag.getBagStudents());
         //assertArrayEquals(bag.getBagStudents().toArray(new StudentDisc[0]), );
         //assertNotNull(bag.getBagStudents());
