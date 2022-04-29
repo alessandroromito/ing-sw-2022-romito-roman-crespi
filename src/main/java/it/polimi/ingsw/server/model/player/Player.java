@@ -24,6 +24,11 @@ public class Player {
         obsLAC = new ObserverLastAssistentCard(this);
     }
 
+    public void createScoreboard(int nofplayers){
+        ScoreboardFactory s = new ScoreboardFactory();
+        this.scoreboard = s.createScoreboard(nofplayers);
+    }
+
     public String getNickname(){
         return this.nickname;
     }
