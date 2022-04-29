@@ -13,8 +13,8 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
-    private static Game game;
+    private Game game;
     private List<Player> players;
     protected ArrayList<Component> components;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         players.add(new Player("Player1"));
         players.add(new Player("Player2"));
 
@@ -39,8 +39,8 @@ public class GameTest {
 
         // Print a visual log of the component's ID and class type
         for(int i = 0; i<188; i++) {
-            System.out.println("ID: " + components.get(i).getID());
-            System.out.print(components.get(i).getClass().getName());
+            System.out.println("ID: " + game.getComponents().get(i).getID());
+            System.out.print(game.getComponents().get(i).getClass().getName());
         }
 
         assertNotNull(components.get(1));

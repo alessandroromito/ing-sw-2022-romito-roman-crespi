@@ -23,46 +23,39 @@ public class ModelTest {
 
     @BeforeEach
     void setUp() {
-        model = new Model();
-        this.model = Model.getModel();
-    }
 
-    @Test
-    void getModel() {
-        assertFalse(model.isGameStarted());
-        assertEquals(model, Model.getModel());
     }
 
     @Test
     void addPlayer() throws MissingPlayersException {
         assertNull(players);
-        model.addPlayer(new Player());
+        model.addPlayer(new Player("Player 1"));
 
         assertEquals(1, playerNumber);
         assertEquals(1, players.size());
 
 
-        model.addPlayer(new Player());
+        model.addPlayer(new Player("Player 2"));
 
         //gameStarted = true;
         //assertThrows(GameAlreadyStartedException.class, () -> model.addPlayer(new Player()));
         //gameStarted = false;
 
-        model.addPlayer(new Player());
-        model.addPlayer(new Player());
+        model.addPlayer(new Player("Player 3"));
+        model.addPlayer(new Player("Player 4"));
 
         assertEquals(3, playerNumber);
-        assertThrows(MaxPlayerException.class, () -> model.addPlayer(new Player()));
+        assertThrows(MaxPlayerException.class, () -> model.addPlayer(new Player("Player 5")));
         assertThrows(NullPointerException.class, () -> model.addPlayer(null));
 
     }
 
     @Test
     void startGame() throws MissingPlayersException {
-        model.addPlayer(new Player());
-        model.addPlayer(new Player());
+        model.addPlayer(new Player("player 1"));
+        model.addPlayer(new Player("Player 2"));
         model.startGame();
-        assertTrue(model.isGameStarted());
+
         assertThrows(GameAlreadyStartedException.class, () -> model.startGame());
     }
 

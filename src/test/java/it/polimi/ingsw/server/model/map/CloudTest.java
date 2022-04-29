@@ -2,14 +2,15 @@ package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.component.StudentDisc;
-import java.util.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
 
-class CloudTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class CloudTest {
 
     @BeforeEach
     void setUp() {
@@ -21,7 +22,7 @@ class CloudTest {
     }
 
     @Test
-    ArrayList<StudentDisc> getCloudStudents() {
+    public ArrayList<StudentDisc> getCloudStudents() {
         ArrayList<StudentDisc> cloudStudents = new ArrayList<>();
         StudentDisc studentDisc1, studentDisc2, studentDisc3;
         studentDisc1 = new StudentDisc(1, PawnColors.RED);
