@@ -26,6 +26,8 @@ public class Bag {
         return temp + 58;
     }
 
+    public List<Integer> getBagStudents(){ return bagStudents; }
+
     public boolean isStudentsListEmpty(){
         return bagStudents.isEmpty();
     }
