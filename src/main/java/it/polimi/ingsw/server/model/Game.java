@@ -219,14 +219,18 @@ public class Game extends Observable {
     /**
      * Refill clouds with students from bag
      */
-    public void refillClouds(){
+    public void refillClouds() throws CloudNotEmptyException {
         for(Cloud cloud: map.getClouds()){
-            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-            cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-
-            if(players.size() == 3)
+            if(cloud.getCloudStudents().isEmpty()) {
                 cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+
+                if(players.size() == 3)
+                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+            }
+            else throw new CloudNotEmptyException("Cloud is NOT empty before refill!");
+
         }
     }
 

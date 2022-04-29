@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.GameState;
+import it.polimi.ingsw.server.exception.CloudNotEmptyException;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.MissingPlayersException;
@@ -35,7 +36,7 @@ public class GameController {
         return this.model;
     }
 
-    private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException {
+    private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException, CloudNotEmptyException {
         setGameState(GameState.IN_GAME);
 
         //broadcast message inizio loading
@@ -49,7 +50,7 @@ public class GameController {
         turnController.newTurn();
     }
 
-    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
         for( String nickname : turnController.getNicknameQueue() ) {
             Player player = game.getPlayerByNickname(nickname);
             askToChooseAssistantCard(player);
@@ -162,7 +163,6 @@ public class GameController {
      * Verifies the nickname through the InputController.
      *
      * @param nickname the nickname to be checked.
-     * @param view     the view of the player who is logging in.
      * @return see {@link InputController#checkLoginNickname(String)}
      */
     public boolean checkLoginNickname(String nickname) {

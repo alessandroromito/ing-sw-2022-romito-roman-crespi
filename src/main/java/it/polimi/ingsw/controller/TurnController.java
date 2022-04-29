@@ -2,10 +2,10 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
+import it.polimi.ingsw.server.exception.CloudNotEmptyException;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.WrongPhaseStateException;
-import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.player.Player;
@@ -58,7 +58,7 @@ public class TurnController {
     /**
      * Initialize a new Turn.
      */
-    public void newTurn() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+    public void newTurn() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
         activePlayer = nicknameQueue.get(0);
         // 1
         game.refillClouds();
@@ -78,7 +78,7 @@ public class TurnController {
     /**
      * Set the next activePlayer.
      */
-    public void next() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+    public void next() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
 
         int currentActive = nicknameQueue.indexOf(activePlayer);
         if (currentActive + 1 < model.getNumberOfPlayer()) {
@@ -95,7 +95,7 @@ public class TurnController {
     /**
      * Go to the next phase.
      */
-    public void nextPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+    public void nextPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
                 buildQueue(nicknameQueue);
@@ -111,7 +111,7 @@ public class TurnController {
         }
     }
 
-    public void actionPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException {
+    public void actionPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
         switch (actionPhaseState) {
             case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> {
                 gameController.askToMoveStudent();

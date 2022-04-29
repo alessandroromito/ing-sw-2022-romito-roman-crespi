@@ -103,7 +103,7 @@ public class GameTest {
         game.moveMotherNature(4);
 
         assertEquals(6, map.getMotherNaturePosition());
-        assertEquals(6, game.getComponent(1).getPosition().ordinal() - 12);
+        assertEquals(MapPositions.ISLAND_6, game.getComponent(1).getPosition());
 
         map.merge(1,2);
 
