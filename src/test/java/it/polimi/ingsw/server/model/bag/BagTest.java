@@ -6,20 +6,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BagTest {
 
-    private ArrayList<StudentDisc> bagStudents = new ArrayList<>();
-    private Bag bag = new Bag();
+    private List<Integer> bagStudents;
+    private Bag bag;
 
     @BeforeEach
     void setUp() {
+        bagStudents = new ArrayList<Integer>();
+        bag = new Bag();
     }
 
     @AfterEach
     void tearDown() {
+        bagStudents = null;
+        bag = null;
     }
 
     @Test
@@ -27,8 +32,19 @@ class BagTest {
     }
 
     @Test
-    void isStudentsListEmpty() {
+    void isStudentsListEmpty_Empty() {
         assertTrue(bagStudents.isEmpty());
+        //assertEquals(bagStudents.getType(), ArrayList<bagStudents> );
+    }
+
+    @Test
+    void isStudentsListEmpty_NotEmpty() {
+        for ( int i = 1 ; i <= 130 ; i++)
+            this.bagStudents.add(i);
+        for ( int i = 130 ; i > 1 ; i--) {
+            this.bagStudents.remove(bagStudents.size()-1);
+            assertFalse(bagStudents.isEmpty());
+        }
         //assertEquals(bagStudents.getType(), ArrayList<bagStudents> );
     }
 
