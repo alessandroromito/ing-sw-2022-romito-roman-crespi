@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -68,10 +69,16 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
-    public void addStudentOnEntrance(StudentDisc student) {
+    public void addStudentOnEntrance(StudentDisc student) throws EntranceFullException {
         int k = 0;
-        while(entrance[k] == null)  k++;
-        entrance[k] = student;
+        for(k=0;k<=8;k++)
+            if(entrance[k] == null){
+                entrance[k] = student;
+                return;
+            }
+
+        throw new EntranceFullException("Entrance is full");
+
     }
 
     @Override
