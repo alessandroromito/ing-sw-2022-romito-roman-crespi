@@ -7,7 +7,7 @@ public class PlayerNumberRequest extends Message {
     private static final long serialVersionUID = -1L; //da scegliere
 
     public PlayerNumberRequest() {
-        super(Model.SERVER_NAME, MessageType.PLAYERNUMBER_REQUEST);
+        super(Model.SERVER_NAME, MessageType.PLAYER_NUMBER_REQUEST);
     }
 
     @Override
