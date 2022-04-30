@@ -29,7 +29,7 @@ public class SocketServer implements Runnable{
             try {
                 Socket client = serverSocket.accept();
                 client.setSoTimeout(8000);
-                SocketClientHandler clientHandler = new SocketClientHandler(this, client);
+                ClientHandler clientHandler = new ClientHandler(this, client);
                 Thread thread = new Thread (clientHandler, "ss_handler" + client.getInetAddress());
                 thread.start();
             } catch(IOException e) {
