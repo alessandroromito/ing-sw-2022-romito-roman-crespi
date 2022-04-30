@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
-import it.polimi.ingsw.server.observer.ObserverLastAssistentCard;
 
 import java.util.List;
 
@@ -16,17 +16,20 @@ public class Player {
     private int coin = 0;
     private String nickname;
     private Scoreboard scoreboard;
-    private final ObserverLastAssistentCard obsLAC;
+    private GameController controller;
     private boolean additionalPoints = false;
 
     public Player(String nickname){
         this.nickname = nickname;
-        obsLAC = new ObserverLastAssistentCard(this);
     }
 
-    public void createScoreboard(int nofplayers){
+    public void addGameController(GameController c) {
+        this.controller = c;
+    }
+
+    public void createScoreboard(int nofplayers,Player p){
         ScoreboardFactory s = new ScoreboardFactory();
-        this.scoreboard = s.createScoreboard(nofplayers);
+        this.scoreboard = s.createScoreboard(nofplayers,p);
     }
 
     public String getNickname(){
@@ -68,7 +71,8 @@ public class Player {
     }
 
     public void notifyUsingAssistantCard(){
-        obsLAC.onUpdate();
+        if(isLastAssistantCard())
+            controller.lastTurn();
     }
 
     public void setCurrentCard(AssistantCard chosenCard) throws MissingAssistantCardException {
@@ -77,6 +81,7 @@ public class Player {
                 hand.remove(card);
                 this.currentAssistantCard = chosenCard;
                 currentAssistantCard.setPosition(MapPositions.TRASH);
+                notifyUsingAssistantCard();
                 return;
             }
         } throw new MissingAssistantCardException("Assistant Card not in hand!");

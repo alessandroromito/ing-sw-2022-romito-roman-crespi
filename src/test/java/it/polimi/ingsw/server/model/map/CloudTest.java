@@ -11,10 +11,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CloudTest {
+    Cloud cloud;
 
     @BeforeEach
     void setUp() {
-        Cloud cloud = new Cloud();
+        cloud = new Cloud();
     }
 
     @AfterEach
@@ -55,7 +56,7 @@ public class CloudTest {
 
     @Test
     void addStudent(StudentDisc studentDisc) {
-        addStudent(studentDisc);
+        cloud.addStudent(studentDisc);
         ArrayList<StudentDisc> cloudStudents = getCloudStudents();
         int k = 0;
         for( StudentDisc i : cloudStudents) {

@@ -14,6 +14,7 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
+import it.polimi.ingsw.server.model.player.ScoreboardX3p;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,6 +41,12 @@ public class GameTest {
         game = new Game(players);
         components = game.components;
 
+    }
+
+    @Test
+    public void scoreboardX3p(){
+        Object s2 = players.get(1).getScoreboard();
+        assertTrue(s2 instanceof ScoreboardX3p);
     }
 
     @Test

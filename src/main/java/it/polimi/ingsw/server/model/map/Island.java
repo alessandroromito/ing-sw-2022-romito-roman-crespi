@@ -11,7 +11,7 @@ public class Island {
 
     protected final int ID;
     protected Integer[] numberOfColors = {0,0,0,0,0};
-    private int groupID;
+    private int groupID = -1;
     protected int towerNumber = 0;
     protected TowerColors towerColor = null;
     private boolean disabled = false;

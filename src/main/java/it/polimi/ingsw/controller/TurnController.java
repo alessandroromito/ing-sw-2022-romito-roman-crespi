@@ -24,6 +24,7 @@ public class TurnController {
     private final Game game;
     private final List<String> nicknameQueue;
     private String activePlayer;
+    private boolean lastTurn = false;
 
     private PhaseState phaseState;
     private ActionPhaseState actionPhaseState;
@@ -104,6 +105,10 @@ public class TurnController {
                 actionPhase();
             }
             case ACTION_PHASE -> {
+                if(lastTurn){
+                    gameController.winnerChecker();
+                    return;
+                }
                 phaseState = PhaseState.PLANNING_PHASE;
                 newTurn();
             }
@@ -159,4 +164,8 @@ public class TurnController {
     public ActionPhaseState getActionPhaseState(){return actionPhaseState;}
 
     public List<String> getNicknameQueue() { return this.nicknameQueue; }
+
+    public void setLastTurn() {
+        this.lastTurn = true;
+    }
 }

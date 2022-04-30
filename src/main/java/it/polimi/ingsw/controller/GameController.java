@@ -9,6 +9,8 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.player.Player;
 
+import java.util.ArrayList;
+
 public class GameController {
     public static final String SAVING = "GameController.sav";
     private Model model;
@@ -29,11 +31,23 @@ public class GameController {
         this.game = model.getGame();
         this.inputController = new InputController(model, this);
 
+        addGameController();
+
         setGameState(GameState.GAME_ROOM);
     }
 
     public Model getModel(){
         return this.model;
+    }
+
+    //da invocare appena possibile
+    public void addGameController(){
+        game.getMap().addGameController(this);
+        game.getBag().addGameController(this);
+        for(Player p:game.getPlayers()) {
+            p.addGameController(this);
+            p.getScoreboard().addGameController(this);
+        }
     }
 
     private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException, CloudNotEmptyException {
@@ -99,6 +113,51 @@ public class GameController {
     /**
      * Reset the Game Instance and re-initialize GameController Class.
      */
+
+    public void lastTurn(){
+        turnController.setLastTurn();
+    }
+
+    public void winnerChecker(){
+        ArrayList<Player> possibleWinners = new ArrayList<Player>();
+        int minTower = 8,maxProfessor = 0;
+
+        for(Player p:game.getPlayers())
+            if(p.getScoreboard().getNumTowers() < minTower)
+                minTower = p.getScoreboard().getNumTowers();
+
+        for(Player p:game.getPlayers())
+            if(p.getScoreboard().getNumTowers() ==minTower)
+                possibleWinners.add(p);
+
+        if(possibleWinners.size() == 1)
+            endGameWinner(possibleWinners.get(0));
+        else{
+            for(Player p:possibleWinners)
+                if(p.getScoreboard().getNumProf() > maxProfessor)
+                    maxProfessor = p.getScoreboard().getNumProf();
+
+            for(int i=0;i<possibleWinners.size();i++)
+                if(possibleWinners.get(i).getScoreboard().getNumProf() != maxProfessor){
+                    possibleWinners.remove(i);
+                    i--;
+                }
+
+            if(possibleWinners.size() == 1)
+                endGameWinner(possibleWinners.get(0));
+            else if(possibleWinners.size() == 2)
+                endGameWinner(possibleWinners.get(0),possibleWinners.get(1));
+        }
+    }
+
+    public void endGameWinner(Player p){
+// vince il giocatore p
+    }
+
+    public void endGameWinner(Player p1,Player p2){
+// nel caso in cui vincano 2 giocatori
+    }
+
     public void endGame() {
         // Reset Model
 

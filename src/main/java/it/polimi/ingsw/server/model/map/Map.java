@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.map;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
-import it.polimi.ingsw.server.observer.ObserverIsland;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public class Map {
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
 
-    private final ObserverIsland obsIs;
+    private GameController controller;
 
     private int motherNaturePos;
 
@@ -35,8 +35,10 @@ public class Map {
         for(int i=0; i<playerNumber; i++){
             clouds.add(new Cloud());
         }
+    }
 
-        obsIs = new ObserverIsland(this);
+    public void addGameController(GameController c) {
+        this.controller = c;
     }
 
     public Island getIsland(int islandNumber){
@@ -76,11 +78,14 @@ public class Map {
     }
 
     public void notifyMergingIslands(){
-        obsIs.onUpdate();
+        boolean end = true;
+        for(Island i: islands)
+            if(i.getGroupID() == -1 || i.getGroupID() >= 4)     end = false;
+
+        if(end)     controller.winnerChecker();
     }
 
     public void merge(int IDIsland1, int IDIsland2) throws DifferentColorTowerException, FullGroupIDListException {
-        //da implementare
         int groupID = 0;
         Integer[] noc = new Integer[PawnColors.values().length];
         Integer[] noc_e;

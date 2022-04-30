@@ -20,7 +20,6 @@ public class Model {
     private List<Player> players;
 
     private boolean gameStarted;
-    private boolean endGame;
 
     int playerNumber;
 
@@ -65,34 +64,6 @@ public class Model {
         else game = new Game(players);
 
         return true;
-    }
-
-    /**
-     * Set EndGame true
-     */
-    public void setEndGame(){
-        endGame = true;
-    }
-
-    /**
-     * @return the state of EndGame
-     */
-    public boolean getEndGame() {
-        return endGame;
-    }
-
-    /**
-     * Set of operation to do in the endgame phase
-     */
-    public void endGamePhase(String message){
-        while(endGame){
-            switch(message){
-                case "LAST_TOWER":
-                case "ASSISTANT_CARD":
-                case "ISLAND":
-                case "LAST_STUDENT":
-            }
-        }
     }
 
     /**

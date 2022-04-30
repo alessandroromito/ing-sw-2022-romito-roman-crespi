@@ -15,7 +15,7 @@ import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.*;
 
-public class Game extends Observable {
+public class Game {
     protected List<Player> players;
     protected ArrayList<Component> components = new ArrayList<>();
     protected Map map;
@@ -30,7 +30,7 @@ public class Game extends Observable {
      */
     public Game(List<Player> players) {
         this.players = players;
-        for(Player player : players) player.createScoreboard(players.size());
+        for(Player player : players) player.createScoreboard(players.size(),player);
 
         this.map = new Map(players.size());
         this.bag = new Bag();

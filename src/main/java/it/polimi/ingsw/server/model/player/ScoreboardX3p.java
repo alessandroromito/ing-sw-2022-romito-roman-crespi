@@ -1,10 +1,10 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
-import it.polimi.ingsw.server.observer.ObserverTower;
 
 public class ScoreboardX3p implements Scoreboard{
 
@@ -13,11 +13,11 @@ public class ScoreboardX3p implements Scoreboard{
     private final boolean[] professorTable;
     private int towerLine;
     private TowerColors towerColor;
-    private final ObserverTower obsT;
+    private GameController controller;
+private Player player;
 
-
-    public ScoreboardX3p(){
-        obsT = new ObserverTower(this);
+    public ScoreboardX3p(Player player){
+        this.player = player;
         entrance = new StudentDisc[9];
         for(int i=0;i<9;i++) entrance[i] = null;
         towerLine = 6;
@@ -27,6 +27,14 @@ public class ScoreboardX3p implements Scoreboard{
             diningRoom[i] = 0;
             professorTable[i] = false;
         }
+    }
+
+    @Override
+    public int getNumProf(){
+        int count = 0;
+        for(PawnColors col:PawnColors.values())
+            if(getProfessor(col)) count++;
+        return count;
     }
 
     @Override
@@ -104,16 +112,23 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
-    public void notifyMovingTowers(){obsT.onUpdate();}
+    public void addGameController(GameController c) {
+        this.controller = c;
+    }
 
     @Override
     public void removeTower() {
         this.towerLine--;
-        notifyMovingTowers();
+        if(towerLine == 0)  notifyNoMoreTowers();
     }
 
     @Override
     public void addTower() {
         this.towerLine++;
+    }
+
+    @Override
+    public void notifyNoMoreTowers() {
+        controller.endGameWinner(player);
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.bag;
 
-import it.polimi.ingsw.server.observer.ObserverLastStudent;
+import it.polimi.ingsw.controller.GameController;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,20 +8,20 @@ import java.util.List;
 
 public class Bag {
     private List<Integer> bagStudents;
-    private final ObserverLastStudent obsLS;
+    private GameController controller;
 
     public Bag(){
         bagStudents = new ArrayList<>(130);
         for ( int i = 1 ; i <= 130 ; i++)
             this.bagStudents.add(i);
         Collections.shuffle(this.bagStudents);
-        obsLS = new ObserverLastStudent(this);
     }
 
     //ritorna l'ID dello studente
     public int pickSorted(){
         int temp = this.bagStudents.get(0);
         this.bagStudents.remove(0);
+        notifyMovingStudents();
         notifyMovingStudents();
         return temp + 58;
     }
@@ -33,6 +33,11 @@ public class Bag {
     }
 
     public void notifyMovingStudents(){
-        obsLS.onUpdate();
+        if(isStudentsListEmpty())
+            controller.lastTurn();
+    }
+
+    public void addGameController(GameController c) {
+        this.controller = c;
     }
 }
