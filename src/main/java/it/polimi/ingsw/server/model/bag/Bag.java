@@ -22,7 +22,6 @@ public class Bag {
         int temp = this.bagStudents.get(0);
         this.bagStudents.remove(0);
         notifyMovingStudents();
-        notifyMovingStudents();
         return temp + 58;
     }
 
