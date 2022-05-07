@@ -16,10 +16,14 @@ import it.polimi.ingsw.server.model.player.Player;
 import java.util.*;
 
 public class Game {
+    public static final int MAX_PLAYERS = 4;
+
     protected List<Player> players;
     protected ArrayList<Component> components = new ArrayList<>();
     protected Map map;
     protected Bag bag;
+
+    public static final String SERVER_NAME = "server";
 
     protected Player currentPlayer;
 
@@ -28,8 +32,10 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game(List<Player> players) {
-        this.players = players;
+    public Game(List<String> playersNicknames) {
+        for(String nick : playersNicknames){
+            this.players.add(new Player(nick));
+        }
         for(Player player : players) player.createScoreboard(players.size(),player);
 
         this.map = new Map(players.size());
@@ -457,5 +463,10 @@ public class Game {
         }
         return true;
     }
+
+    public int getNumberOfPlayer() {
+        return players.size();
+    }
+
 
 }

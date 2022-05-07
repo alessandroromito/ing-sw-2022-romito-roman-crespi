@@ -24,10 +24,10 @@ public class ExpertGame extends Game {
     /**
      * Default constructor
      *
-     * @param players ArrayList of Player
+     * @param playersNicknames List of players nicknames
      */
-    public ExpertGame(List<Player> players) {
-        super(players);
+    public ExpertGame(List<String> playersNicknames) {
+        super(playersNicknames);
         activeCardID = -1;
         activeCard = null;
     }
