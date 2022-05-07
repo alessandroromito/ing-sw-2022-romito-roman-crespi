@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.controller.GameController;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -21,19 +21,32 @@ public class SocketServer implements Runnable{
         try {
             serverSocket = new ServerSocket(port);
         } catch (IOException e) {
-            e.printStackTrace(); //temporarly
+            e.printStackTrace(); //temporary
             return;
         }
 
+        System.out.println("Server Socket listening at port: " + port);
+
         while(!Thread.currentThread().isInterrupted()) {
+            Socket client = null;
             try {
-                Socket client = serverSocket.accept();
+                client = serverSocket.accept();
                 client.setSoTimeout(8000);
-                ClientHandler clientHandler = new ClientHandler(this, client);
-                Thread thread = new Thread (clientHandler, "ss_handler" + client.getInetAddress());
-                thread.start();
             } catch(IOException e) {
-                e.printStackTrace(); //temporarly
+                System.out.println("SocketServer.run(): Client connection not accepted");
+                continue;
+            }
+
+            ClientHandler clientHandler = null;
+            try {
+                clientHandler = new ClientHandler(this, client);
+                Thread thread = new Thread (clientHandler, "serverSocket_handler" + client.getInetAddress());
+                thread.start();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("SocketServer.run(): Error creating a clientHandler");
+                System.out.println("Server still active");
             }
         }
     }
@@ -42,13 +55,12 @@ public class SocketServer implements Runnable{
         server.addClient(nickname, clientHandler);
     }
 
-    public void onMessage (Message message) {
-        server.onMessageReceived(message);
-    }
-
     public void onDisconnect (ClientHandler clientHandler) {
         server.onDisconnect(clientHandler);
     }
 
+    public GameController getGameController(){
+        return server.getGameController();
+    }
 
 }

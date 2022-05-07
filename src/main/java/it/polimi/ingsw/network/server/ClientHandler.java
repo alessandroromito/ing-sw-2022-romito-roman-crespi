@@ -1,17 +1,20 @@
 package it.polimi.ingsw.network.server;
 
+import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.message.PingMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-//Manca tutta la parte di sicronized
+//Manca tutta la parte di synchronized
 
 public class ClientHandler implements Runnable {
     private final Socket client;
     private final SocketServer socketServer;
+    private final MessageHandler messageHandler;
 
     private boolean connected;
 
@@ -31,13 +34,26 @@ public class ClientHandler implements Runnable {
 
         this.out = new ObjectOutputStream(client.getOutputStream());
         this.in = new ObjectInputStream(client.getInputStream());
+
+        this.messageHandler = new MessageHandler(socketServer, this);
     }
 
     @Override
     public void run() {
         try {
-            handleClientConnectior(); //da implementare
-        } catch (IOException e) {
+            while (!Thread.currentThread().isInterrupted()) {
+                synchronized (inputLock) {
+                    Message message = (Message) in.readObject();
+                    if (message != null && !message.getClass().equals(PingMessage.class)) {
+                        if (message.getClass().equals(LoginRequest.class)) {
+                            messageHandler.handleMessage((LoginRequest) message);
+                        } else {
+                            messageHandler.handleMessage(message);
+                        }
+                    }
+                }
+            }
+        } catch (IOException | ClassNotFoundException e) {
             disconnect();
         }
     }
@@ -49,7 +65,9 @@ public class ClientHandler implements Runnable {
     public void disconnect() {
         if(connected) {
             try {
-                if (!client.isClosed()) {client.close();}
+                if (!client.isClosed()) {
+                    client.close();
+                }
             } catch (IOException e) {
 
             }
@@ -60,9 +78,12 @@ public class ClientHandler implements Runnable {
     }
 
     public void sendMessage(Message message) {
+        if(!isConnected()) return;
         try {
             synchronized (outputLock) {
                 out.writeObject(message);
+                out.reset();
+                out.flush();
                 out.reset();
             }
         } catch (IOException e) {

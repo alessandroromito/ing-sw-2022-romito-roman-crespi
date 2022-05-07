@@ -6,8 +6,8 @@ import it.polimi.ingsw.server.exception.CloudNotEmptyException;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.WrongPhaseStateException;
+import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.Model;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.ACTION_PHASE;
  */
 public class TurnController {
 
-    private final Model model;
     private final Game game;
     private final List<String> nicknameQueue;
     private String activePlayer;
@@ -36,8 +35,7 @@ public class TurnController {
      */
     public TurnController(GameController gameController) {
         this.gameController = gameController;
-        this.model = gameController.getModel();
-        this.game = model.getGame();
+        this.game = gameController.getGame();
         this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
         this.phaseState = PhaseState.PLANNING_PHASE;
     }
@@ -72,19 +70,15 @@ public class TurnController {
         }
     }
 
-
-
-
-
     /**
      * Set the next activePlayer.
      */
     public void next() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
 
         int currentActive = nicknameQueue.indexOf(activePlayer);
-        if (currentActive + 1 < model.getNumberOfPlayer()) {
+        if (currentActive + 1 < gameController.getPlayersNumber()) {
             currentActive = currentActive + 1;
-            if(model.isExpertMode()) game.deleteActiveCard();
+            if(game.getClass().equals(ExpertGame.class)) game.deleteActiveCard();
         } else {
             nextPhase();
             return;
