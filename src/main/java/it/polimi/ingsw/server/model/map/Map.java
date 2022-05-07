@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.map;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
@@ -12,8 +11,6 @@ public class Map {
 
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
-
-    private GameController controller;
 
     private int motherNaturePos;
 
@@ -35,10 +32,6 @@ public class Map {
         for(int i=0; i<playerNumber; i++){
             clouds.add(new Cloud());
         }
-    }
-
-    public void addGameController(GameController c) {
-        this.controller = c;
     }
 
     public Island getIsland(int islandNumber){
@@ -77,13 +70,6 @@ public class Map {
         return motherNaturePos;
     }
 
-    public void notifyMergingIslands(){
-        boolean end = true;
-        for(Island i: islands)
-            if(i.getGroupID() == -1 || i.getGroupID() >= 4)     end = false;
-
-        if(end)     controller.winnerChecker();
-    }
 
     public void merge(int IDIsland1, int IDIsland2) throws DifferentColorTowerException, FullGroupIDListException {
         int groupID = 0;
@@ -109,7 +95,6 @@ public class Map {
         islands.get(IDIsland1).setGroupID(groupID);
         islands.get(IDIsland2).disable();
         islands.get(IDIsland2).setGroupID(groupID);
-        notifyMergingIslands();
     }
 
     public void mergeHybridGhostFeature(int IDGhostIsland, int IDIsland) throws DifferentColorTowerException {
@@ -129,7 +114,6 @@ public class Map {
 
         islands.get(IDIsland).disable();
         islands.get(IDIsland).setGroupID(IDGhostIsland);
-        notifyMergingIslands();
     }
 
     public void mergeGhost(int IDGhostIsland1, int IDGhostIsland2) throws DifferentColorTowerException {
@@ -157,9 +141,6 @@ public class Map {
 
         //eliminare la seconda
         groupIDsGhostIsland[IDGhostIsland2] = null;
-
-        notifyMergingIslands();
-
     }
 
 }

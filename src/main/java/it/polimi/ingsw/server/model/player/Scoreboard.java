@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
-import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
 public interface Scoreboard {
@@ -12,7 +12,6 @@ public interface Scoreboard {
     void setProfessorTrue(PawnColors color);
     void setProfessorFalse(PawnColors color);
     boolean getProfessor(PawnColors color);
-
     int getNumTowers();
     int getNumStudentsFromEntrance();
     int getNumProf();
@@ -23,6 +22,4 @@ public interface Scoreboard {
     TowerColors getTowerColor();
     void removeTower();
     void addTower();
-    void notifyNoMoreTowers();
-    void addGameController(GameController c);
 }

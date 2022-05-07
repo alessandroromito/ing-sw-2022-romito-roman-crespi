@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
-import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
 public class ScoreboardX2p implements Scoreboard{
@@ -13,7 +13,6 @@ public class ScoreboardX2p implements Scoreboard{
     private final boolean[] professorTable;
     private int towerLine;
     private TowerColors towerColor;
-    private GameController controller;
     private Player player;
 
 
@@ -113,14 +112,8 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public void addGameController(GameController c) {
-        this.controller = c;
-    }
-
-    @Override
     public void removeTower() {
         this.towerLine--;
-        if(towerLine == 0)  notifyNoMoreTowers();
     }
 
     @Override
@@ -128,8 +121,4 @@ public class ScoreboardX2p implements Scoreboard{
         this.towerLine++;
     }
 
-    @Override
-    public void notifyNoMoreTowers() {
-        controller.endGameWinner(player);
-    }
 }

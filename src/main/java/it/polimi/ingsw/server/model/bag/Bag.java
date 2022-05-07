@@ -1,14 +1,11 @@
 package it.polimi.ingsw.server.model.bag;
 
-import it.polimi.ingsw.controller.GameController;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Bag {
     private List<Integer> bagStudents;
-    private GameController controller;
 
     public Bag(){
         bagStudents = new ArrayList<>(130);
@@ -21,7 +18,6 @@ public class Bag {
     public int pickSorted(){
         int temp = this.bagStudents.get(0);
         this.bagStudents.remove(0);
-        notifyMovingStudents();
         return temp + 58;
     }
 
@@ -29,14 +25,5 @@ public class Bag {
 
     public boolean isStudentsListEmpty(){
         return bagStudents.isEmpty();
-    }
-
-    public void notifyMovingStudents(){
-        if(isStudentsListEmpty())
-            controller.lastTurn();
-    }
-
-    public void addGameController(GameController c) {
-        this.controller = c;
     }
 }

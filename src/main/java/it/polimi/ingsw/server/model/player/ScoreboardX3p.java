@@ -14,7 +14,7 @@ public class ScoreboardX3p implements Scoreboard{
     private int towerLine;
     private TowerColors towerColor;
     private GameController controller;
-private Player player;
+    private Player player;
 
     public ScoreboardX3p(Player player){
         this.player = player;
@@ -112,14 +112,8 @@ private Player player;
     }
 
     @Override
-    public void addGameController(GameController c) {
-        this.controller = c;
-    }
-
-    @Override
     public void removeTower() {
         this.towerLine--;
-        if(towerLine == 0)  notifyNoMoreTowers();
     }
 
     @Override
@@ -127,8 +121,4 @@ private Player player;
         this.towerLine++;
     }
 
-    @Override
-    public void notifyNoMoreTowers() {
-        controller.endGameWinner(player);
-    }
 }
