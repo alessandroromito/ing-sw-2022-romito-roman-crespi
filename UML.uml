@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/Users/romens/IdeaProjects/ing-sw-2022-romito-roman-crespi/src/main/java/it/polimi/ingsw</OriginalElement>
+  <nodes>
+    <node x="0.0" y="2667.0">it.polimi.ingsw.server.exception.DisabledIslandException</node>
+    <node x="1938.0" y="2522.0">it.polimi.ingsw.controller.ComparatorAssistantCard</node>
+    <node x="1546.0" y="2063.0">it.polimi.ingsw.network.message.ErrorMessage</node>
+    <node x="1130.0" y="0.0">it.polimi.ingsw.server.model.map.Island</node>
+    <node x="0.0" y="1824.0">it.polimi.ingsw.controller.GameController</node>
+    <node x="0.0" y="2775.0">it.polimi.ingsw.server.exception.MissingAssistantCardException</node>
+    <node x="344.0" y="2775.0">it.polimi.ingsw.server.exception.DoubleAssistantCardException</node>
+    <node x="0.0" y="2522.0">it.polimi.ingsw.observer.Observable</node>
+    <node x="1737.0" y="504.0">it.polimi.ingsw.server.observer.ObserverIsland</node>
+    <node x="1825.0" y="0.0">it.polimi.ingsw.server.model.Model</node>
+    <node x="2527.16875" y="1236.0">it.polimi.ingsw.server.model.player.Player</node>
+    <node x="1182.91875" y="1485.0">it.polimi.ingsw.server.model.component.NoEntryTile</node>
+    <node x="1140.0" y="2522.0">it.polimi.ingsw.server.enumerations.PhaseState</node>
+    <node x="417.22009858846775" y="1472.0">it.polimi.ingsw.server.model.component.MotherNature</node>
+    <node x="740.0" y="370.0">it.polimi.ingsw.server.model.player.ScoreboardX3p</node>
+    <node x="1686.0" y="2522.0">it.polimi.ingsw.server.enumerations.Animals</node>
+    <node x="2209.16875" y="1668.0">it.polimi.ingsw.server.model.component.charactercards.Card_224</node>
+    <node x="2254.0" y="2522.0">it.polimi.ingsw.controller.InputController</node>
+    <node x="1668.0" y="2775.0">it.polimi.ingsw.server.exception.NullCurrentCardException</node>
+    <node x="1853.16875" y="1666.5">it.polimi.ingsw.server.model.component.charactercards.Card_222</node>
+    <node x="2051.16875" y="1691.5">it.polimi.ingsw.server.model.component.charactercards.Card_221</node>
+    <node x="305.0" y="2667.0">it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException</node>
+    <node x="1872.0" y="376.0">it.polimi.ingsw.server.observer.MainObserver</node>
+    <node x="1003.0" y="2305.0">it.polimi.ingsw.network.server.SocketServer</node>
+    <node x="1975.0" y="2775.0">it.polimi.ingsw.server.exception.CloudNotEmptyException</node>
+    <node x="683.0" y="2775.0">it.polimi.ingsw.server.exception.GameAlreadyStartedException</node>
+    <node x="2579.0" y="2667.0">it.polimi.ingsw.server.exception.StudentNotInEntranceException</node>
+    <node x="1726.16875" y="1485.0">it.polimi.ingsw.server.model.component.Coin</node>
+    <node x="295.0" y="2522.0">it.polimi.ingsw.server.enumerations.MessageType</node>
+    <node x="1280.0" y="2068.0">it.polimi.ingsw.network.message.PlayerNumberReply</node>
+    <node x="1675.0" y="2305.0">it.polimi.ingsw.server.enumerations.MapPositions</node>
+    <node x="1941.0" y="504.0">it.polimi.ingsw.server.observer.ObserverLastAssistentCard</node>
+    <node x="2228.0" y="2667.0">it.polimi.ingsw.server.exception.MissingCloudStudentsException</node>
+    <node x="0.0" y="2873.0">it.polimi.ingsw.server.exception.EntranceFullException</node>
+    <node x="1020.0" y="2775.0">it.polimi.ingsw.server.exception.DifferentColorTowerException</node>
+    <node x="2654.0" y="1974.0">it.polimi.ingsw.network.server.SocketClientHandler</node>
+    <node x="1537.16875" y="1447.5">it.polimi.ingsw.server.model.component.charactercards.CharacterCard</node>
+    <node x="1399.75" y="2383.0">it.polimi.ingsw.controller.ClientController</node>
+    <node x="2598.0" y="2522.0">it.polimi.ingsw.server.model.player.ScoreboardFactory</node>
+    <node x="964.4187500000002" y="1223.0">it.polimi.ingsw.server.model.component.Component</node>
+    <node x="608.0" y="2305.0">it.polimi.ingsw.observer.ViewObservable</node>
+    <node x="2223.0" y="2305.0">it.polimi.ingsw.server.extra.PersistenceGameController</node>
+    <node x="1351.0" y="2775.0">it.polimi.ingsw.server.exception.WrongPhaseStateException</node>
+    <node x="827.0" y="2093.0">it.polimi.ingsw.network.message.LoginRequest</node>
+    <node x="44.5" y="728.0">it.polimi.ingsw.server.model.ExpertGame</node>
+    <node x="951.91875" y="1416.0">it.polimi.ingsw.server.model.component.AssistantCard</node>
+    <node x="561.0" y="0.0">it.polimi.ingsw.server.model.player.Scoreboard</node>
+    <node x="823.0" y="2873.0">it.polimi.ingsw.network.server.Server</node>
+    <node x="1414.0" y="2522.0">it.polimi.ingsw.server.enumerations.GameState</node>
+    <node x="1023.0" y="1824.0">it.polimi.ingsw.network.message.Message</node>
+    <node x="104.96875" y="1449.0">it.polimi.ingsw.server.model.component.Pawn</node>
+    <node x="283.0" y="2873.0">it.polimi.ingsw.server.exception.MaxPlayerException</node>
+    <node x="0.0" y="2305.0">it.polimi.ingsw.server.model.bag.Bag</node>
+    <node x="271.0" y="2305.0">it.polimi.ingsw.server.model.map.Cloud</node>
+    <node x="1797.0" y="2105.5">it.polimi.ingsw.network.message.PingMessage</node>
+    <node x="1962.0" y="2305.0">it.polimi.ingsw.server.extra.DataSaving</node>
+    <node x="271.0000000000001" y="1691.5">it.polimi.ingsw.server.model.component.StudentDisc</node>
+    <node x="1327.0" y="2305.0">it.polimi.ingsw.observer.ViewObserver</node>
+    <node x="2337.0" y="1824.0">it.polimi.ingsw.controller.TurnController</node>
+    <node x="1503.0" y="2667.0">it.polimi.ingsw.server.exception.InvalidActionPhaseStateException</node>
+    <node x="863.0" y="2522.0">it.polimi.ingsw.server.enumerations.PawnColors</node>
+    <node x="2700.5" y="1824.0">it.polimi.ingsw.network.server.ClientHandler</node>
+    <node x="2233.0" y="504.0">it.polimi.ingsw.server.observer.ObserverLastStudent</node>
+    <node x="0.0" y="0.0">it.polimi.ingsw.server.model.Game</node>
+    <node x="1489.0" y="504.0">it.polimi.ingsw.server.observer.ObserverTower</node>
+    <node x="1032.0" y="2093.0">it.polimi.ingsw.network.message.PlayerNumberRequest</node>
+    <node x="731.91875" y="1460.0">it.polimi.ingsw.server.model.component.Tower</node>
+    <node x="737.0" y="2667.0">it.polimi.ingsw.server.exception.ZeroNoEntryTyleRemainingException</node>
+    <node x="603.0" y="2068.0">it.polimi.ingsw.network.message.GenericMessage</node>
+    <node x="2581.0" y="2775.0">it.polimi.ingsw.server.exception.MissingPlayersException</node>
+    <node x="1123.0" y="596.0">it.polimi.ingsw.server.model.map.GhostIsland</node>
+    <node x="0.0" y="1691.5">it.polimi.ingsw.server.model.component.ProfessorPawn</node>
+    <node x="343.0" y="2046.0">it.polimi.ingsw.network.message.LoginReply</node>
+    <node x="1867.0" y="2667.0">it.polimi.ingsw.server.exception.MissingPlayerNicknameException</node>
+    <node x="582.0" y="2522.0">it.polimi.ingsw.server.enumerations.TowerColors</node>
+    <node x="2599.0" y="2305.0">it.polimi.ingsw.server.enumerations.ActionPhaseState</node>
+    <node x="1999.0" y="1824.0">it.polimi.ingsw.server.model.map.Map</node>
+    <node x="893.16875" y="1691.5">it.polimi.ingsw.server.model.component.charactercards.Card_219</node>
+    <node x="1041.16875" y="1679.0">it.polimi.ingsw.server.model.component.charactercards.Card_218</node>
+    <node x="2279.0" y="2775.0">it.polimi.ingsw.server.exception.FullGroupIDListException</node>
+    <node x="1122.0" y="2667.0">it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException</node>
+    <node x="1558.16875" y="1691.5">it.polimi.ingsw.server.model.component.charactercards.Card_217</node>
+    <node x="1705.16875" y="1691.5">it.polimi.ingsw.server.model.component.charactercards.Card_216</node>
+    <node x="1295.16875" y="1657.0">it.polimi.ingsw.server.model.component.charactercards.Card_215</node>
+    <node x="553.0" y="2873.0">it.polimi.ingsw.server.exception.ZeroCoinsException</node>
+    <node x="1507.0" y="2305.0">it.polimi.ingsw.observer.Observer</node>
+    <node x="602.16875" y="1680.0">it.polimi.ingsw.server.model.component.charactercards.Card_214</node>
+    <node x="382.0" y="372.5">it.polimi.ingsw.server.model.player.ScoreboardX2p</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_221" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="2120.16875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.observer.ObserverLastAssistentCard" target="it.polimi.ingsw.server.observer.MainObserver" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="2077.0" y="479.0" />
+      <point x="1953.0" y="479.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.observer.ObserverIsland" target="it.polimi.ingsw.server.observer.MainObserver" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="1829.0" y="479.0" />
+      <point x="1953.0" y="479.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.GenericMessage" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-64.0" />
+      <point x="705.0" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.Tower" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.5" />
+      <point x="831.91875" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.LoginReply" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-86.0" />
+      <point x="463.0" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_224" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="2345.66875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_222" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-51.5" />
+      <point x="1942.16875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.PingMessage" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1875.5" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.player.ScoreboardX2p" target="it.polimi.ingsw.server.model.player.Scoreboard" relationship="REALIZATION">
+      <point x="0.0" y="-185.0" />
+      <point x="551.0" y="345.0" />
+      <point x="730.0" y="345.0" />
+      <point x="0.0" y="160.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.map.GhostIsland" target="it.polimi.ingsw.server.model.map.Island" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="0.0" y="273.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.PlayerNumberReply" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-64.0" />
+      <point x="1403.0" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_219" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="957.16875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.ProfessorPawn" target="it.polimi.ingsw.server.model.component.Pawn" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="125.5" y="1632.0" />
+      <point x="183.96875" y="1632.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.Pawn" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-62.5" />
+      <point x="183.96875" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.ClientController" target="it.polimi.ingsw.observer.Observer" relationship="REALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1487.75" y="2358.0" />
+      <point x="1568.5" y="2358.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.ExpertGame" target="it.polimi.ingsw.server.model.Game" relationship="GENERALIZATION">
+      <point x="0.0" y="-231.5" />
+      <point x="0.0" y="339.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.MotherNature" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-50.0" />
+      <point x="530.7200985884677" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.ErrorMessage" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-69.0" />
+      <point x="1661.5" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.Coin" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1779.66875" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.AssistantCard" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="2.2737367544323206E-13" y="-95.5" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.player.ScoreboardX3p" target="it.polimi.ingsw.server.model.player.Scoreboard" relationship="REALIZATION">
+      <point x="0.0" y="-187.5" />
+      <point x="909.0" y="345.0" />
+      <point x="730.0" y="345.0" />
+      <point x="0.0" y="160.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_217" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_218" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="2.2737367544323206E-13" y="-39.0" />
+      <point x="1158.1687500000003" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_215" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-61.0" />
+      <point x="1416.66875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_216" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1769.16875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-64.0" />
+      <point x="1621.66875" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.charactercards.Card_214" target="it.polimi.ingsw.server.model.component.charactercards.CharacterCard" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="737.66875" y="1632.0" />
+      <point x="1621.66875" y="1632.0" />
+      <point x="0.0" y="64.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.observer.ObserverTower" target="it.polimi.ingsw.server.observer.MainObserver" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="1603.0" y="479.0" />
+      <point x="1953.0" y="479.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.server.SocketClientHandler" target="it.polimi.ingsw.network.server.ClientHandler" relationship="REALIZATION">
+      <point x="0.0" y="-86.0" />
+      <point x="0.0" y="50.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.NoEntryTile" target="it.polimi.ingsw.server.model.component.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1257.91875" y="1391.0" />
+      <point x="1057.4187500000003" y="1391.0" />
+      <point x="0.0" y="65.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.observer.MainObserver" target="it.polimi.ingsw.server.model.Model" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="0.0" y="163.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.LoginRequest" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="919.5" y="2021.0" />
+      <point x="1146.0" y="2021.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.observer.ObserverLastStudent" target="it.polimi.ingsw.server.observer.MainObserver" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="2343.0" y="479.0" />
+      <point x="1953.0" y="479.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.controller.ClientController" target="it.polimi.ingsw.observer.ViewObserver" relationship="REALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="1487.75" y="2358.0" />
+      <point x="1407.0" y="2358.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.network.message.PlayerNumberRequest" target="it.polimi.ingsw.network.message.Message" relationship="GENERALIZATION">
+      <point x="0.0" y="-39.0" />
+      <point x="0.0" y="86.0" />
+    </edge>
+    <edge source="it.polimi.ingsw.server.model.component.StudentDisc" target="it.polimi.ingsw.server.model.component.Pawn" relationship="GENERALIZATION">
+      <point x="0.0" y="-26.5" />
+      <point x="388.5000000000001" y="1632.0" />
+      <point x="183.96875" y="1632.0" />
+      <point x="0.0" y="62.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.7862505979197005" showDependencies="false" x="1085.0" y="1630.0" />
+  <SelectedNodes>
+    <node>it.polimi.ingsw.server.model.component.charactercards.Card_214</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
