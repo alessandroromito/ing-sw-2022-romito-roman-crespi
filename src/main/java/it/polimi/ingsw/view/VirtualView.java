@@ -1,10 +1,14 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.network.message.ErrorMessage;
-import it.polimi.ingsw.network.message.GenericMessage;
-import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.AssistantCard;
+import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.map.Cloud;
+
+import java.util.List;
 
 public class VirtualView implements View, Observer {
     private ClientHandler clientHandler;
@@ -39,10 +43,71 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askPlayersNumber() {
+        clientHandler.sendMessage(new PlayerNumberRequest());
+    }
+
+    @Override
+    public void askPlayerNickname() {
+        clientHandler.sendMessage(new LoginReply(false, true));
+    }
+
+    @Override
+    public void showLobby(List<String> playersNickname, int numMaxPlayers) {
+        clientHandler.sendMessage(new LobbyMessage(playersNickname, numMaxPlayers));
+    }
+
+    @Override
+    public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
+        clientHandler.sendMessage(new DisconnectedPlayerMessage(nicknameDisconnected, text));
+    }
+
+    @Override
+    public void showErrorMessage(String error) {
+        clientHandler.sendMessage(new ErrorMessage(Game.SERVER_NAME, error));
+    }
+
+    @Override
+    public void showGameScenario() {
 
     }
 
-    public void askToMoveStudent() {
-        clientHandler.sendMessage(new GenericMessage("Please chose a student to move..."));
+    @Override
+    public void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer) {
+
+    }
+
+    @Override
+    public void showGenericMessage(String genericMessage) {
+
+    }
+
+    @Override
+    public void askAssistantCard() {
+
+    }
+
+    @Override
+    public void askToMoveAStudent() {
+
+    }
+
+    @Override
+    public void askToMoveMotherNature() {
+
+    }
+
+    @Override
+    public void askToChooseACloudAndTake3Students(List<Cloud> cloudList) {
+
+    }
+
+    @Override
+    public void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String playerNickname) {
+
+    }
+
+    @Override
+    public void showVictoryMessage(String winner) {
+        clientHandler.sendMessage(new VictoryMessage(winner));
     }
 }

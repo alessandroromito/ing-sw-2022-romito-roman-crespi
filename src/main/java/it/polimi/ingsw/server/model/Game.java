@@ -23,7 +23,7 @@ public class Game {
     protected Map map;
     protected Bag bag;
 
-    public static final String SERVER_NAME = "server";
+    public static final String SERVER_NAME = "main server";
 
     protected Player currentPlayer;
 
