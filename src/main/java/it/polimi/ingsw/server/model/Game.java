@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
-import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.*;
 import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
@@ -212,31 +212,26 @@ public class Game {
             if(ID == component.getID()) return component;
         }
         return null;
-
-        /*
-        return components.stream()
-                .filter(component -> ID == (component.getID()))
-                .findFirst()
-                .orElse(null);
-
-         */
     }
 
     /**
      * Refill clouds with students from bag
      */
-    public void refillClouds() throws CloudNotEmptyException {
+    public void refillClouds() {
         for(Cloud cloud: map.getClouds()){
-            if(cloud.getCloudStudents().isEmpty()) {
-                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-                cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-
-                if(players.size() == 3)
+            try {
+                if (cloud.getCloudStudents().isEmpty()) {
                     cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-            }
-            else throw new CloudNotEmptyException("Cloud is NOT empty before refill!");
+                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
 
+                    if (players.size() == 3)
+                        cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                }
+                else throw new CloudNotEmptyException("Cloud is NOT empty before refill!");
+            } catch (CloudNotEmptyException e) {
+
+            }
         }
     }
 

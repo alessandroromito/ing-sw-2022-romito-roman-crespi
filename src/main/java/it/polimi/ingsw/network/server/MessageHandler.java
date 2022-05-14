@@ -3,7 +3,7 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
-import it.polimi.ingsw.network.message.PlayerNumberRequest;
+import it.polimi.ingsw.network.message.PlayerNumberReply;
 import it.polimi.ingsw.server.enumerations.GameState;
 
 /**
@@ -27,11 +27,15 @@ public class MessageHandler {
      * @param message LoginRequest
      */
     public void handleMessage(LoginRequest message){
-        socketServer.addClient(message.getNickname(), clientHandler);
+        if(gameController.getGameState() == GameState.GAME_ROOM) {
+            socketServer.addClient(message.getNickname(), clientHandler);
+        }
     }
 
-    public void handleMessage(PlayerNumberRequest message){
-
+    public void handleMessage(PlayerNumberReply message){
+        if(gameController.getGameState() == GameState.GAME_ROOM) {
+            gameController.setChosenPlayerNumber(message.getPlayerNumber());
+        }
     }
 
     public void handleMessage(MoveMotherNatureMessage message){

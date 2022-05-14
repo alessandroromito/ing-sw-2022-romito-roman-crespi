@@ -16,6 +16,7 @@ import java.util.Map;
 
 public class GameController {
     public static final String SAVING = "GameController.sav";
+
     private List<String> playersNicknames = new ArrayList<>();
     private Map<String, VirtualView> virtualViewMap;
 
@@ -71,7 +72,8 @@ public class GameController {
     }
 
     public void askToMoveStudent() {
-
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askToMoveStudent();
         //chiedi dove e quale ( V Wiew )
     }
 
@@ -247,6 +249,10 @@ public class GameController {
         return playersNicknames.size();
     }
 
+    public List<String> getPlayersNicknames() {
+        return playersNicknames;
+    }
+
     public InputController getInputController() {
         return inputController;
     }
@@ -276,5 +282,9 @@ public class GameController {
         } catch (NullCurrentCardException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void refillClouds(){
+        game.refillClouds();
     }
 }

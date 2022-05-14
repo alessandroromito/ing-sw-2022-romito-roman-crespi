@@ -1,7 +1,7 @@
 package it.polimi.ingsw.network.message;
 
 import it.polimi.ingsw.server.enumerations.MessageType;
-import it.polimi.ingsw.server.model.Model;
+import it.polimi.ingsw.server.model.Game;
 
 public class GenericMessage extends Message {
     private static final long serialVersionUID = 1L; //da scegliere
@@ -9,7 +9,7 @@ public class GenericMessage extends Message {
     private final String message;
 
     public GenericMessage(String message) {
-        super(Model.SERVER_NAME, MessageType.GENERIC_MESSAGE);
+        super(Game.SERVER_NAME, MessageType.GENERIC_MESSAGE);
         this.message = message;
     }
 
