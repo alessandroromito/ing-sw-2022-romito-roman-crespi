@@ -21,13 +21,6 @@ public class InputController {
         this.virtualViewMap = virtualViewMap;
     }
 
-    /*
-    // IDEA IMPLEMENTAZIONE
-    public boolean verifyReceivedData(Message message) {
-
-    }
-    */
-
     /**
      * Check if a nickname is free or not.
      *
@@ -37,10 +30,7 @@ public class InputController {
     public boolean checkLoginNickname(String nickname) {
         if (nickname.isEmpty() || nickname.equalsIgnoreCase(Game.SERVER_NAME)) {
             return false;
-        } else if (gameController.isNicknameTaken(nickname)) {
-            return false;
-        }
-        return true;
+        } else return !gameController.isNicknameTaken(nickname);
     }
 
 
@@ -50,21 +40,20 @@ public class InputController {
      * @param message received from the client
      * @return {code @true} if he could move {code @false} if not
      */
-
     public boolean moveCheck(MoveMotherNatureMessage message) throws NullCurrentCardException {
         int steps = message.getSteps();
-        Player player = null;
+        Player player;
         try {
             player = game.getPlayerByNickname(message.getNickname());
         } catch (MissingPlayerNicknameException e) {
-
+            throw new RuntimeException(e);
         }
 
-        if(player.getCurrentCard().getMovement() >= steps){
+        if (player.getCurrentCard().getMovement() >= steps) {
             return true;
         } else {
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
-            virtualView.showMessage("You can't move Mother Nature so far!");
+            virtualView.showMessage(message.getNickname(), "You can't move Mother Nature so far!");
             return false;
         }
     }

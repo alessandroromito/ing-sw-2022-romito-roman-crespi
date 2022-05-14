@@ -36,7 +36,7 @@ public class TurnController {
     public TurnController(GameController gameController) {
         this.gameController = gameController;
         this.game = gameController.getGame();
-        this.nicknameQueue = new ArrayList<>(game.getPlayersNicknames());
+        this.nicknameQueue = new ArrayList<>(gameController.getPlayersNicknames());
         this.phaseState = PhaseState.PLANNING_PHASE;
     }
 
@@ -60,7 +60,7 @@ public class TurnController {
     public void newTurn() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
         activePlayer = nicknameQueue.get(0);
         // 1
-        game.refillClouds();
+        gameController.refillClouds();
         // 2
         try {
             if(getPhaseState() == PhaseState.PLANNING_PHASE) gameController.askAllToChooseAssistantCard();
@@ -140,9 +140,8 @@ public class TurnController {
             players.add(p);
         }
 
-        //da testare
+        //to be tested
         players.sort(new ComparatorAssistantCard());
-
 
         nicknameQueue.clear();
 
@@ -155,9 +154,13 @@ public class TurnController {
         return phaseState;
     }
 
-    public ActionPhaseState getActionPhaseState(){return actionPhaseState;}
+    public ActionPhaseState getActionPhaseState(){
+        return actionPhaseState;
+    }
 
-    public List<String> getNicknameQueue() { return this.nicknameQueue; }
+    public List<String> getNicknameQueue() {
+        return this.nicknameQueue;
+    }
 
     public void setLastTurn() {
         this.lastTurn = true;
