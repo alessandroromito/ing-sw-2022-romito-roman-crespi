@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import java.util.List;
@@ -14,8 +15,13 @@ public class AssistantCardList extends  Message{
         this.assistantCards = assistantCards;
     }
 
-    public List<AssistantCard> getCardNumber(){
+    public List<AssistantCard> getAssistantCards(){
         return this.assistantCards;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

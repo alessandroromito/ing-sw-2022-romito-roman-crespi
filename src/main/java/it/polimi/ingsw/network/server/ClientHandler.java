@@ -1,6 +1,5 @@
 package it.polimi.ingsw.network.server;
 
-import it.polimi.ingsw.network.message.ClientMessage;
 import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.network.message.PingMessage;
@@ -47,7 +46,7 @@ public class ClientHandler implements Runnable {
                         if (message.getClass().equals(LoginRequest.class)) {
                             socketServer.addClient(message.getNickname(), this);
                         } else {
-                            ((ClientMessage) message).handle(messageHandler);
+                            message.handle(messageHandler);
                         }
                     }
                 }

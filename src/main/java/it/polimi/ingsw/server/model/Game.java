@@ -7,13 +7,16 @@ import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
-import it.polimi.ingsw.server.model.map.*;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class Game {
     public static final int MAX_PLAYERS = 4;

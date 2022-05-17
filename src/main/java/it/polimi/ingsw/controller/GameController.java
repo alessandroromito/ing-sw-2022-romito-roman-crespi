@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
@@ -45,7 +46,7 @@ public class GameController {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
 
-        turnController = new TurnController(this);
+        turnController = new TurnController(this, virtualViewMap);
         showGenericMessage("GAME STARTED!");
         turnController.newTurn();
 
@@ -53,9 +54,14 @@ public class GameController {
 
     public void askAllToChooseAssistantCard() {
         for(String nickname : turnController.getNicknameQueue() ) {
-            VirtualView virtualView = virtualViewMap.get(nickname);
-            virtualView.askAssistantCard();
+            try {
+                VirtualView virtualView = virtualViewMap.get(nickname);
+                virtualView.askAssistantCard(nickname, game.getPlayerByNickname(nickname).getHand());
+            } catch (MissingPlayerNicknameException e) {
+                e.printStackTrace();
+            }
         }
+
         try {
             turnController.nextPhase();
         } catch (MissingPlayerNicknameException | InvalidActionPhaseStateException | CloudNotEmptyException e) {
@@ -65,20 +71,18 @@ public class GameController {
 
     public void askToMoveStudent() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-    //    virtualView.askToMoveStudent();
-        //chiedi dove e quale ( V Wiew )
+        virtualView.askToMoveAStudent(turnController.getActivePlayer(),  );
     }
 
     public void askToMoveMotherNature() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askToMoveMotherNature();
-        //chiedi dove ( V Wiew )
     }
 
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askToChoseACloud();
-        //chiedi quale ( V Wiew)
+
     }
 
     /**
@@ -90,56 +94,51 @@ public class GameController {
         this.gameState = gameState;
     }
 
-    public void win(Player player){
-
-        // Broadcast message ...
-
-        endGame();
-    }
-
-
     public void lastTurn(){
         turnController.setLastTurn();
     }
 
     public void winnerChecker(){
-        ArrayList<Player> possibleWinners = new ArrayList<Player>();
+        List<Player> possibleWinners = new ArrayList<Player>();
         int minTower = 8, maxProfessor = 0;
 
-        for(Player p:game.getPlayers())
+        for(Player p : game.getPlayers())
             if(p.getScoreboard().getNumTowers() < minTower)
                 minTower = p.getScoreboard().getNumTowers();
 
-        for(Player p:game.getPlayers())
-            if(p.getScoreboard().getNumTowers() ==minTower)
+        for(Player p : game.getPlayers())
+            if(p.getScoreboard().getNumTowers() == minTower)
                 possibleWinners.add(p);
 
         if(possibleWinners.size() == 1)
             win(possibleWinners.get(0));
         else{
-            for(Player p:possibleWinners)
+            for(Player p : possibleWinners)
                 if(p.getScoreboard().getNumProf() > maxProfessor)
                     maxProfessor = p.getScoreboard().getNumProf();
 
-            for(int i=0;i<possibleWinners.size();i++)
-                if(possibleWinners.get(i).getScoreboard().getNumProf() != maxProfessor){
-                    possibleWinners.remove(i);
-                    i--;
-                }
+            for(Player p : possibleWinners)
+                if(p.getScoreboard().getNumProf() != maxProfessor)
+                    possibleWinners.remove(p);
 
             win(possibleWinners.get(0));
-
         }
     }
 
+    public void win(Player player){
+        showGenericMessage("### PLAYER:" + player.getNickname() + "WIN!!! ###");
+        endGame();
+    }
+
+
     public void endGame() {
-        // Reset Model
+        game = null;
 
         // Delete storage data
 
-        init();
 
-        // Server.LOGGER.info("Game finished.");
+        init();
+        System.out.println("Game Finished!");
     }
 
     public void addPlayer(String nickname, VirtualView virtualView) throws MaxPlayerException, MissingPlayersException, MissingPlayerNicknameException, InvalidActionPhaseStateException, InterruptedException, CloudNotEmptyException {
@@ -327,6 +326,15 @@ public class GameController {
             }
         } catch (MissingPlayerNicknameException | EntranceFullException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void setAssistantCard(AssistantCardList assistantCardList) {
+        try {
+            game.setAssistantCard(assistantCardList.getNickname(), assistantCardList.getAssistantCards().get(0).getID());
+        } catch (MissingAssistantCardException | MissingPlayerNicknameException | NullCurrentCardException |
+                 DoubleAssistantCardException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -82,5 +82,16 @@ public class MessageHandler {
     }
 
     public void handleMessage(GameInfoMessage gameInfoMessage) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            gameController.sendInfo(gameInfoMessage);
+        }
+    }
+
+    public void handleMessage(AssistantCardList assistantCardList) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(assistantCardList)){
+                gameController.setAssistantCard(assistantCardList)
+            }
+        }
     }
 }

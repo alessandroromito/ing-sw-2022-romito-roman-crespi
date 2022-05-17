@@ -8,7 +8,6 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualView implements View, Observer {
@@ -83,7 +82,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askAssistantCard(String nickname, ArrayList<AssistantCard> assistantCards) {
+    public void askAssistantCard(String nickname, List<AssistantCard> assistantCards) {
         clientHandler.sendMessage(new AssistantCardList(nickname, assistantCards));
     }
 

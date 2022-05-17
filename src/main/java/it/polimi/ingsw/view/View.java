@@ -1,11 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.server.model.component.AssistantCard;
-import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface View {
@@ -39,7 +37,7 @@ public interface View {
     void showGenericMessage(String genericMessage);
 
     //ask to choose assistant card
-    void askAssistantCard(String nickname, ArrayList<AssistantCard> assistantCards);
+    void askAssistantCard(String nickname, List<AssistantCard> assistantCards);
 
     //ask to move a student
     void askToMoveAStudent(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber);

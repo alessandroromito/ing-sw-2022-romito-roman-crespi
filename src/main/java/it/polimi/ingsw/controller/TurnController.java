@@ -7,10 +7,13 @@ import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static it.polimi.ingsw.server.enumerations.PhaseState.ACTION_PHASE;
 
@@ -28,15 +31,18 @@ public class TurnController {
     private ActionPhaseState actionPhaseState;
 
     private final GameController gameController;
+    private Map<String, VirtualView> virtualViewMap;
 
     /**
      * Default Constructor of the TurnController
      */
-    public TurnController(GameController gameController) {
-        this.gameController = gameController;
+    public TurnController(GameController gameController, Map<String, VirtualView> virtualViewMap) {
         this.game = gameController.getGame();
         this.nicknameQueue = new ArrayList<>(gameController.getPlayersNicknames());
         this.phaseState = PhaseState.PLANNING_PHASE;
+
+        this.gameController = gameController;
+        this.virtualViewMap = virtualViewMap;
     }
 
     /**
@@ -56,13 +62,32 @@ public class TurnController {
     /**
      * Initialize a new Turn.
      */
-    public void newTurn() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
+    public void newTurn() {
         activePlayer = nicknameQueue.get(0);
+        gameController.showGenericMessage("Turn of " + activePlayer + "...");
         // 1
         gameController.refillClouds();
         // 2
-        if(getPhaseState() == PhaseState.PLANNING_PHASE)
-            gameController.askAllToChooseAssistantCard();
+        askAssistantCard();
+    }
+
+    private void askAssistantCard() {
+        for(String nickname : nicknameQueue){
+            Player player = null;
+            try {
+                player = game.getPlayerByNickname(getActivePlayer());
+                List<AssistantCard> assistantCardLists = new ArrayList<>(player.getHand());
+                VirtualView virtualView = virtualViewMap.get(getActivePlayer());
+
+                if (assistantCardLists.isEmpty()) {
+                    gameController.winnerChecker();
+                } else {
+                    virtualView.askAssistantCard(getActivePlayer(), assistantCardLists);
+                }
+            } catch (MissingPlayerNicknameException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
