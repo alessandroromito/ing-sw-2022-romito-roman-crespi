@@ -1,8 +1,9 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.network.message.LoginRequest;
+import it.polimi.ingsw.network.message.GameModeMessage;
 import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.message.MoveStudentMessage;
 import it.polimi.ingsw.network.message.PlayerNumberReply;
 import it.polimi.ingsw.server.enumerations.GameState;
 
@@ -15,26 +16,35 @@ public class MessageHandler {
     private final ClientHandler clientHandler; //to send messages in return
     private GameController gameController; // to take action in the game
 
+    /**
+     * Default Constructor
+     *
+     * @param socketServer
+     * @param clientHandler
+     */
     public MessageHandler(SocketServer socketServer, ClientHandler clientHandler) {
         this.socketServer = socketServer;
         this.clientHandler = clientHandler;
         this.gameController = socketServer.getGameController();
     }
 
-    /**
-     * Handle the login request arrived by the client
-     *
-     * @param message LoginRequest
-     */
-    public void handleMessage(LoginRequest message){
+    public void handleMessage(PlayerNumberReply message){
         if(gameController.getGameState() == GameState.GAME_ROOM) {
-            socketServer.addClient(message.getNickname(), clientHandler);
+            gameController.setChosenPlayerNumber(message);
         }
     }
 
-    public void handleMessage(PlayerNumberReply message){
+    public void handleMessage(GameModeMessage message){
         if(gameController.getGameState() == GameState.GAME_ROOM) {
-            gameController.setChosenPlayerNumber(message.getPlayerNumber());
+            gameController.setChosenExpertMode(message);
+        }
+    }
+
+    public void handleMessage(MoveStudentMessage message){
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(message)){
+                gameController.moveStudent(message);
+            }
         }
     }
 

@@ -33,6 +33,13 @@ public class InputController {
         } else return !gameController.isNicknameTaken(nickname);
     }
 
+    public boolean playerNumberReplyCheck(int chosenPlayerNumber) {
+        if (chosenPlayerNumber < 4 && chosenPlayerNumber> 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Check that the player could move motherNature forward the requested steps

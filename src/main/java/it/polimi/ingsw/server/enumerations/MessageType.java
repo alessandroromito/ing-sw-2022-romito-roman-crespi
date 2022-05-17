@@ -14,5 +14,6 @@ public enum MessageType {
     DISCONNECTED_PLAYER,
     MOVE_STUDENT,
     PICK_CLOUD,
-    PLAY_ASSISTANT_CARD
+    PLAY_ASSISTANT_CARD,
+    GAME_MODE;
 }

@@ -5,7 +5,6 @@ import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.CloudNotEmptyException;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
-import it.polimi.ingsw.server.exception.WrongPhaseStateException;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
@@ -62,12 +61,8 @@ public class TurnController {
         // 1
         gameController.refillClouds();
         // 2
-        try {
-            if(getPhaseState() == PhaseState.PLANNING_PHASE) gameController.askAllToChooseAssistantCard();
-            else throw new WrongPhaseStateException("ERROR while newTurn()!");
-        } catch (WrongPhaseStateException e) {
-            e.printStackTrace();
-        }
+        if(getPhaseState() == PhaseState.PLANNING_PHASE)
+            gameController.askAllToChooseAssistantCard();
     }
 
     /**

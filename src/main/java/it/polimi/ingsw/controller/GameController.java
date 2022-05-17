@@ -1,11 +1,11 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.network.message.Message;
-import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
+import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -43,32 +43,24 @@ public class GameController {
 
     private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException, CloudNotEmptyException {
         setGameState(GameState.IN_GAME);
-
-        //broadcast message start loading
-
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
 
         turnController = new TurnController(this);
-
-        // Broadcast message fine loading
-
+        showGenericMessage("GAME STARTED!");
         turnController.newTurn();
+
     }
 
-    public void askAllToChooseAssistantCard() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
+    public void askAllToChooseAssistantCard() {
         for(String nickname : turnController.getNicknameQueue() ) {
-            Player player = game.getPlayerByNickname(nickname);
-            askToChooseAssistantCard(player);
+            VirtualView virtualView = virtualViewMap.get(nickname);
+            virtualView.askAssistantCard();
         }
-        turnController.nextPhase();
-    }
-
-    /**
-     * Ask to choose assistant card
-     */
-    private void askToChooseAssistantCard(Player player) {
-        // asking to choose an assistant card
-        // set the chosen assistant card to the player currentAssistantCard attribute
+        try {
+            turnController.nextPhase();
+        } catch (MissingPlayerNicknameException | InvalidActionPhaseStateException | CloudNotEmptyException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void askToMoveStudent() {
@@ -78,10 +70,14 @@ public class GameController {
     }
 
     public void askToMoveMotherNature() {
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askToMoveMotherNature();
         //chiedi dove ( V Wiew )
     }
 
     public void askToChooseACloud() {
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askToChoseACloud();
         //chiedi quale ( V Wiew)
     }
 
@@ -131,7 +127,6 @@ public class GameController {
                     i--;
                 }
 
-
             win(possibleWinners.get(0));
 
         }
@@ -147,34 +142,40 @@ public class GameController {
         // Server.LOGGER.info("Game finished.");
     }
 
-    public void addPlayer(String nickname) throws GameAlreadyStartedException, MaxPlayerException, MissingPlayersException, MissingPlayerNicknameException, InvalidActionPhaseStateException, InterruptedException, CloudNotEmptyException {
-        if (isGameStarted()) throw new GameAlreadyStartedException("NOT possible to add players when game is already started!");
+    public void addPlayer(String nickname, VirtualView virtualView) throws MaxPlayerException, MissingPlayersException, MissingPlayerNicknameException, InvalidActionPhaseStateException, InterruptedException, CloudNotEmptyException {
+        //First player joining
+        if (virtualViewMap.isEmpty()) {
+            try{
+                virtualViewMap.put(nickname, virtualView);
+                //game.addObserver(virtualView);
+                playersNicknames.add(nickname);
 
-        playersNicknames.add(nickname);
+                virtualView.showLoginResult(true, true, nickname);
+                virtualView.askPlayersNumber();
+                virtualView.askGameMode();
 
-        if(chosenPlayerNumber == playersNicknames.size()){
-            startGame();
+            } catch(GameAlreadyStartedException e){
+                new GameAlreadyStartedException("NOT possible to add players when game is already started!");
+            }
+        } else if (virtualViewMap.size() < chosenPlayerNumber){
+            virtualViewMap.put(nickname, virtualView);
+            //game.addObserver(virtualView);
+            playersNicknames.add(nickname);
+
+            if(chosenPlayerNumber == playersNicknames.size()){
+
+                //check if there is a saved game
+
+                startGame();
+            }
+        } else {
+            virtualView.showLoginResult(true, false, nickname);
         }
     }
 
 
 
-
     /*
-    public void loginHandler(String nickname, VirtualView virtualView) {
-
-        if (virtualViewMap.isEmpty()) { // First player logged. Ask number of players.
-            addVirtualView(nickname, virtualView);
-            game.addPlayer(new Player(nickname));
-
-            virtualView.showLoginResult(true, true, Model.SERVER_NAME);
-            virtualView.askPlayersNumber();
-
-        } else if (virtualViewMap.size() < game.getChosenPlayersNumber()) {
-            addVirtualView(nickname, virtualView);
-            model.addPlayer(new Player(nickname));
-            virtualView.showLoginResult(true, true, Model.SERVER_NAME);
-
             if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
 
                 // check saved matches.
@@ -206,18 +207,26 @@ public class GameController {
         return inputController.checkLoginNickname(nickname);
     }
 
-    public void setChosenPlayerNumber(int chosenPlayerNumber) {
-        this.chosenPlayerNumber = chosenPlayerNumber;
+    public void setChosenPlayerNumber(PlayerNumberReply message) {
+        if(inputController.playerNumberReplyCheck(message.getPlayerNumber())) {
+            this.chosenPlayerNumber = message.getPlayerNumber();
+            showGenericMessage("Waiting for other players...");
+        }
+        else{
+            VirtualView virtualView = virtualViewMap.get(message.getNickname());
+            virtualView.askPlayersNumber();
+        }
     }
 
-    public void setChosenExpertMode(boolean chosenExpertMode) {
-        this.chosenExpertMode = chosenExpertMode;
+    public void setChosenExpertMode(GameModeMessage message) {
+        this.chosenExpertMode = message.getExpertMode();
+        showGenericMessage("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
     }
 
     /**
      * Checks if the game is already started, then no more players can connect.
      *
-     * @return {@code true} if the game isn't started yet, {@code false} otherwise.
+     * @return {@code true} if the game is started yet, {@code false} otherwise.
      */
     public boolean isGameStarted() {
         return this.gameState == GameState.GAME_STARTED;
@@ -284,7 +293,40 @@ public class GameController {
         }
     }
 
+    /**
+     * Show a message to all players
+     * @param message message to show
+     */
+    public void showGenericMessage(String message) {
+        for (VirtualView virtualView : virtualViewMap.values()) {
+            virtualView.showGenericMessage(message);
+        }
+    }
+
+
     public void refillClouds(){
         game.refillClouds();
+    }
+
+    public void moveStudent(MoveStudentMessage message) {
+        try {
+            StudentDisc student = (StudentDisc) game.getComponent(message.getStudentId());
+            Player player = game.getPlayerByNickname(message.getNickname());
+
+            switch (message.getPosition()) {
+                case 0: {
+                    player.getScoreboard().addStudentOnEntrance(student);
+                    break;
+                }
+                case 1: {
+                    game.getMap().getIsland(message.getIslandNumber()).addStudent(student.getColor());
+                    break;
+                }
+                default:
+                    showGenericMessage("Invalid MoveStudentMessage!");
+            }
+        } catch (MissingPlayerNicknameException | EntranceFullException e) {
+            e.printStackTrace();
+        }
     }
 }
