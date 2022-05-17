@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
+import it.polimi.ingsw.server.model.component.Component;
 
 import java.util.List;
 
@@ -23,11 +24,7 @@ public class Player {
         this.nickname = nickname;
     }
 
-    public void addGameController(GameController c) {
-        this.controller = c;
-    }
-
-    public void createScoreboard(int nofplayers,Player p){
+        public void createScoreboard(int nofplayers,Player p){
         ScoreboardFactory s = new ScoreboardFactory();
         this.scoreboard = s.createScoreboard(nofplayers,p);
     }
@@ -42,10 +39,10 @@ public class Player {
         return hand.get(cardNumber);
     }
 
-    public void setPlayerCards(List<AssistantCard> cards){
+    public void setPlayerCards(List<Component> cards){
         int i;
         for(i=0; i<10; i++)
-            hand.add(cards.get(i));
+            hand.add((AssistantCard) cards.get(i));
     }
 
     public Scoreboard getScoreboard(){
