@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface View {
@@ -38,16 +39,16 @@ public interface View {
     void showGenericMessage(String genericMessage);
 
     //ask to choose assistant card
-    void askAssistantCard();
+    void askAssistantCard(List<AssistantCard> assistantCards);
 
     //ask to move a student
-    void askToMoveAStudent();
+    void askToMoveAStudent(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber);
 
     //ask to move mother nature
-    void askToMoveMotherNature();
+    void askToMoveMotherNature(String nickname, int steps);
 
-    //ask to choose a Cloud (and take 3 students)
-    void askToChooseACloudAndTake3Students(List<Cloud> cloudList);
+    //ask to choose a Cloud
+    void askToChooseACloud(String nickname, List<Cloud> cloudList);
 
     //show if the login has gone successful
     void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String playerNickname);

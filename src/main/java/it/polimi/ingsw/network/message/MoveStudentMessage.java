@@ -1,24 +1,27 @@
 package it.polimi.ingsw.network.message;
 
 import it.polimi.ingsw.server.enumerations.MessageType;
+import it.polimi.ingsw.server.model.component.StudentDisc;
+
+import java.util.List;
 
 public class MoveStudentMessage extends Message{
 
     private static final long serialVersionUID = -1L; //da scegliere
 
     private final int islandNumber;
-    private final int studentId;
+    private final List<StudentDisc> studentDiscs;
     private final int position; // 0 = scoreboard, 1 = islands
 
-    public MoveStudentMessage(String nickname, int studentId, int position, int islandNumber) {
+    public MoveStudentMessage(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber) {
         super(nickname, MessageType.MOVE_STUDENT);
-        this.studentId = studentId;
+        this.studentDiscs = studentDiscs;
         this.islandNumber = islandNumber;
         this.position = position;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public List<StudentDisc> getStudentDiscs() {
+        return studentDiscs;
     }
 
     public int getPosition() {
@@ -31,6 +34,6 @@ public class MoveStudentMessage extends Message{
 
     @Override
     public String toString() {
-        return "MoveStudent[" + "nickname:" + getNickname() + ", islandNumber:" + this.islandNumber + "]";
+        return "MoveStudent[" + "nickname:" + getNickname() + ", islandNumber:" + this.islandNumber + ", studentID:" + studentDiscs + ",position:" + position + "]";
     }
 }

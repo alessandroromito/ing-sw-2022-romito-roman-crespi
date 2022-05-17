@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualView implements View, Observer {
@@ -68,7 +69,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showGameScenario() {
-
+        //da implementare in base alle esigenze
     }
 
     @Override
@@ -82,23 +83,23 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askAssistantCard() {
-
+    public void askAssistantCard(String nickname, ArrayList<AssistantCard> assistantCards) {
+        clientHandler.sendMessage(new AssistantCardList(nickname, assistantCards));
     }
 
     @Override
-    public void askToMoveAStudent() {
-
+    public void askToMoveAStudent(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber) {
+        clientHandler.sendMessage(new MoveStudentMessage(nickname, studentDiscs, position, islandNumber));
     }
 
     @Override
-    public void askToMoveMotherNature() {
-
+    public void askToMoveMotherNature(String nickname, int steps) {
+        clientHandler.sendMessage(new MoveMotherNatureMessage(nickname, steps));
     }
 
     @Override
-    public void askToChooseACloudAndTake3Students(List<Cloud> cloudList) {
-
+    public void askToChooseACloud(String nickname, List<Cloud> cloudList) {
+        clientHandler.sendMessage(new CloudMessage(nickname, cloudList));
     }
 
     @Override
