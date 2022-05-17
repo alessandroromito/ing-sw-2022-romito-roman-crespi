@@ -80,4 +80,7 @@ public class MessageHandler {
 
     public void handleMessage(GenericMessage genericMessage) {
     }
+
+    public void handleMessage(GameInfoMessage gameInfoMessage) {
+    }
 }

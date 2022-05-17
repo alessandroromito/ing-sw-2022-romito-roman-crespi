@@ -33,13 +33,13 @@ public interface View {
     void showGameScenario();
 
     //show game info detailed
-    void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer);
+    void showGameInfo(String nickname, List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer);
 
     //show generic message
     void showGenericMessage(String genericMessage);
 
     //ask to choose assistant card
-    void askAssistantCard(List<AssistantCard> assistantCards);
+    void askAssistantCard(String nickname, ArrayList<AssistantCard> assistantCards);
 
     //ask to move a student
     void askToMoveAStudent(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber);

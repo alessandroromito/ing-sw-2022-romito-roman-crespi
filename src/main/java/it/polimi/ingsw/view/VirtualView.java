@@ -73,8 +73,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer) {
-
+    public void showGameInfo(String nickname, List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer) {
+        clientHandler.sendMessage(new GameInfoMessage(nickname, playersNickname, unifiedIslandsNumber, remainingBagStudents, activePlayer));
     }
 
     @Override
