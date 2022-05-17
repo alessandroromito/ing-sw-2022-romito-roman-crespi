@@ -65,7 +65,7 @@ public class GameController {
 
     public void askToMoveStudent() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        virtualView.askToMoveStudent();
+    //    virtualView.askToMoveStudent();
         //chiedi dove e quale ( V Wiew )
     }
 

@@ -30,15 +30,10 @@ public class ExpertGame extends Game {
         super(playersNicknames);
         activeCardID = -1;
         activeCard = null;
+        ExpertGameInitialization();
     }
 
-    @Override
-    public void gameInitialization() {
-        try {
-            super.gameInitialization();
-        } catch (EntranceFullException e) {
-            System.out.println("Entrance Full!");
-        }
+    public void ExpertGameInitialization() {
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();

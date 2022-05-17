@@ -81,9 +81,4 @@ class BagTest {
         assertEquals(bag.getBagStudents().getClass(), bagStudents.getClass());
     }
 
-    @Test
-    void notifyMovingStudents() {
-        bag.notifyMovingStudents();
-        assert true;
-    }
 }
