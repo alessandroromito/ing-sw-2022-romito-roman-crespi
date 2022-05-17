@@ -55,7 +55,7 @@ public class ExpertGame extends Game {
                     break;
                 case 1:
                     Player mps[] = new Player [5];
-                    for(int k=0;k<5;k++)    mps[k] = players.get(components.get(i).getPosition().ordinal()/3);
+                    for(int k=0;k<5;k++)    mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
                     pool[i] = new Card_215(mps);
                     break;
                 case 2: pool[i] = new Card_216();   break;
@@ -112,6 +112,12 @@ public class ExpertGame extends Game {
 
     public int getActiveCardID() {
         return activeCardID;
+    }
+
+    public void setCard_215_ForTest(){
+        Player mps[] = new Player [5];
+        for(int k=0;k<5;k++)    mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
+        pool[0] = new Card_215(mps);
     }
 
     //aggiornare la visualizzazione per le ghost island

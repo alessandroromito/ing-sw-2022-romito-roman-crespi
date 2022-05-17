@@ -88,6 +88,8 @@ public class Game {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
+        getPlayers().get(0).setPlayerCards( components.subList(28,37));
+
         id = 39;
         for(int movement=1, val=1; id<=48; val++, movement++, id++ ){
             components.add(new AssistantCard(id, val, movement));
@@ -95,6 +97,8 @@ public class Game {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
+        getPlayers().get(1).setPlayerCards( components.subList(38,47));
+
         id = 49;
         for(int movement=1, val=1; id<=58; val++, movement++, id++ ){
             components.add(new AssistantCard(id, val, movement));
@@ -102,6 +106,8 @@ public class Game {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
+        if(players.size() == 3)
+            getPlayers().get(2).setPlayerCards( components.subList(48,57));
 
         // Create STUDENTS
         id = 59;
@@ -260,12 +266,12 @@ public class Game {
         if(map.getIsland(numIsland).isDisabled()) {
             GhostIsland ghostIsland = map.getGhostIsland(numIsland);
             ghostIsland.addStudent(stud.getColor());
-            stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
+            stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
         else {
             Island island = map.getIsland(numIsland);
             island.addStudent(stud.getColor());
-            stud.setPosition(MapPositions.valueOf("ISLANDS_" + numIsland));
+            stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
     }
 
@@ -284,6 +290,10 @@ public class Game {
                 island = map.getGhostIsland(numIsland);
         }
         else throw new DisabledIslandException("This island is disabled!");
+
+        /**
+            aggiornare posizione torri quando spostate
+         */
 
         for(Player p : players){
             TowerColors oldColor = p.getScoreboard().getTowerColor();
