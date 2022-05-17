@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
@@ -14,6 +15,11 @@ public class VictoryMessage extends Message {
 
     public String getWinnerNickname() {
         return winnerNickname;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

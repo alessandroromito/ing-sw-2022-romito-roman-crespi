@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
@@ -30,6 +31,11 @@ public class MoveStudentMessage extends Message{
 
     public int getIslandNumber() {
         return islandNumber;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

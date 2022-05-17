@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
 public class PingMessage extends Message {
@@ -7,5 +8,10 @@ public class PingMessage extends Message {
 
     public PingMessage() {
         super(null, MessageType.PING);
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 }

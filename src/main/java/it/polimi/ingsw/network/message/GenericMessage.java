@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
@@ -15,6 +16,11 @@ public class GenericMessage extends Message {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

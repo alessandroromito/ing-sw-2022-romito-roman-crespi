@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
 public class ErrorMessage extends Message {
@@ -13,6 +14,11 @@ public class ErrorMessage extends Message {
 
     public String getError() {
         return error;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

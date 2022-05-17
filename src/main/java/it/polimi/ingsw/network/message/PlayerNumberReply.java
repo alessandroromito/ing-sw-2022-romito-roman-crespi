@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
 public class PlayerNumberReply extends Message{
@@ -13,6 +14,11 @@ public class PlayerNumberReply extends Message{
 
     public int getPlayerNumber() {
         return playerNumber;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

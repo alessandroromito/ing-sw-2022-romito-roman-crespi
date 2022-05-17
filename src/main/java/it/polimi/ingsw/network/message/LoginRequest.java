@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
 public class LoginRequest extends Message {
@@ -7,6 +8,11 @@ public class LoginRequest extends Message {
 
     public LoginRequest(String nickname) {
         super(nickname, MessageType.LOGIN_REQUEST);
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

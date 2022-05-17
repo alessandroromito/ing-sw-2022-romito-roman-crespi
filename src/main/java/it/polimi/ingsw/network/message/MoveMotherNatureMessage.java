@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
 public class MoveMotherNatureMessage extends Message {
@@ -14,6 +15,11 @@ public class MoveMotherNatureMessage extends Message {
 
     public int getSteps() {
         return steps;
+    }
+
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
     }
 
     @Override

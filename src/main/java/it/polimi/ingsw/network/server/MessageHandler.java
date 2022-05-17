@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.network.message.GameModeMessage;
-import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
-import it.polimi.ingsw.network.message.MoveStudentMessage;
-import it.polimi.ingsw.network.message.PlayerNumberReply;
+import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.server.enumerations.GameState;
 
 /**
@@ -54,5 +51,33 @@ public class MessageHandler {
                 gameController.moveMotherNature(message);
             }
         }
+    }
+
+    public void handleMessage(LoginRequest loginRequest) {
+        gameController.
+    }
+
+    public void handleMessage(LoginReply loginReply) {
+    }
+
+    public void handleMessage(PingMessage pingMessage) {
+    }
+
+    public void handleMessage(PlayerNumberRequest playerNumberRequest) {
+    }
+
+    public void handleMessage(VictoryMessage victoryMessage) {
+    }
+
+    public void handleMessage(LobbyMessage lobbyMessage) {
+    }
+
+    public void handleMessage(DisconnectedPlayerMessage disconnectedPlayerMessage) {
+    }
+
+    public void handleMessage(ErrorMessage errorMessage) {
+    }
+
+    public void handleMessage(GenericMessage genericMessage) {
     }
 }
