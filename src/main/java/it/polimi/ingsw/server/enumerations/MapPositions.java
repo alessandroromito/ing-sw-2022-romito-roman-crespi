@@ -17,6 +17,11 @@ public enum MapPositions {
     PLAYER4_DINING,
     PLAYER4_HAND,
 
+    PLAYER1_SCOREBOARD,
+    PLAYER2_SCOREBOARD,
+    PLAYER3_SCOREBOARD,
+    PLAYER4_SCOREBOARD,
+
     ISLAND_0,
     ISLAND_1,
     ISLAND_2,
@@ -41,7 +46,8 @@ public enum MapPositions {
     CARD_224,
 
     TRASH,
-    BAG;
+    BAG,
+    NA;  //not assigned
 
     public static MapPositions getRandomIsland(){
        return MapPositions.values()[(int) (Math.random() * (12 - 24) + 12)];
