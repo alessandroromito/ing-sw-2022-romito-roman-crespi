@@ -24,20 +24,18 @@ public class Server {
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView virtualView = new VirtualView(clientHandler);
 
-        if(!gameController.isGameStarted()){
-            try {
-                gameController.checkLoginNickname(nickname);
-                gameController.addPlayer(nickname);
+        try {
+            if(gameController.checkLoginNickname(nickname)){
+                gameController.addPlayer(nickname, virtualView);
                 clientHandlerMap.put(nickname, clientHandler);
-            } catch (MissingPlayersException | MissingPlayerNicknameException | InvalidActionPhaseStateException |
-                     InterruptedException | CloudNotEmptyException e) {
-                throw new RuntimeException(e);
             }
+            else{
+                clientHandler.disconnect();
+            }
+        } catch (MissingPlayersException | MissingPlayerNicknameException | InvalidActionPhaseStateException |
+                 InterruptedException | CloudNotEmptyException e) {
+            throw new RuntimeException(e);
         }
-        else{
-            clientHandler.disconnect();
-        }
-
     }
 
     public void removeClient(String nickname) {

@@ -10,8 +10,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-//Manca tutta la parte di synchronized
-
 public class ClientHandler implements Runnable {
     private final Socket client;
     private final SocketServer socketServer;
@@ -47,7 +45,7 @@ public class ClientHandler implements Runnable {
                     Message message = (Message) in.readObject();
                     if (message != null && !message.getClass().equals(PingMessage.class)) {
                         if (message.getClass().equals(LoginRequest.class)) {
-                            messageHandler.handleMessage((LoginRequest) message);
+                            socketServer.addClient(message.getNickname(), this);
                         } else {
                             ((ClientMessage) message).handle(messageHandler);
                         }
