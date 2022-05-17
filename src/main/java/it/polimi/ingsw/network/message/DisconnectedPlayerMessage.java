@@ -14,4 +14,17 @@ public class DisconnectedPlayerMessage extends Message {
         this.nicknameDisconnected = nicknameDisconnected;
         this.text = text;
     }
+
+    public String getNicknameDisconnected() {
+        return nicknameDisconnected;
+    }
+    public String getMessageText() {
+        return text;
+    }
+
+    @Override
+    public String toString() {
+        return "DisconnectedPlayerMessage[nicknameDisconnected:" + nicknameDisconnected +
+                ", messageText:" + text + "]";
+    }
 }
