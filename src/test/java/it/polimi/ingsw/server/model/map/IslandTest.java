@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
+import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.AfterEach;
@@ -18,14 +19,14 @@ class IslandTest {
 
     Island island;
     private Game game;
-    private List<Player> players = new ArrayList<>();
+    private List<String> players = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
         island = new Island(1);
-        Player player1 = new Player("Player 1");
-        Player player2 = new Player("Player 2");
-        Player player3 = new Player("Player 3");
+        String player1 = "Player 1";
+        String player2 = "Player 2";
+        String player3 = "Player 3";
 
         players.add(player1);
         players.add(player2);
@@ -60,7 +61,12 @@ class IslandTest {
     //ci sono altri casi
     @Test
     void getInfluence() throws AddingWrongColorTowerToIslandException {
-        Player player1 = players.get(0);
+        Player player1 = null;
+        try {
+            player1 = game.getPlayerByNickname("Player 1");
+        } catch (MissingPlayerNicknameException e) {
+            e.printStackTrace();
+        }
         player1.getScoreboard().setProfessorTrue(PawnColors.RED);
 
         island = game.getMap().getIsland(1);

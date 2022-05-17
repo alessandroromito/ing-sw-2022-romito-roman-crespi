@@ -25,14 +25,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
     private Game game;
-    private List<Player> players = new ArrayList<>();
+    private List<String> players = new ArrayList<>();
     protected ArrayList<Component> components;
 
     @Before
     public void setUp() {
-        Player player1 = new Player("Player 1");
-        Player player2 = new Player("Player 2");
-        Player player3 = new Player("Player 3");
+        String player1 = "Player 1";
+        String player2 = "Player 2";
+        String player3 = "Player 3";
 
         players.add(player1);
         players.add(player2);
@@ -42,13 +42,13 @@ public class GameTest {
         components = game.components;
 
     }
-
+/*
     @Test
     public void scoreboardX3p(){
         Object s2 = players.get(1).getScoreboard();
         assertTrue(s2 instanceof ScoreboardX3p);
     }
-
+*/
     @Test
     public void CreateComponents(){
 
@@ -91,10 +91,19 @@ public class GameTest {
         assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
 
         // Scoreboard entrance is full
-        Player p1 = players.get(0);
+        Player p1 = null;
+        try {
+            p1 = game.getPlayerByNickname("Player 1");
+        } catch (MissingPlayerNicknameException e) {
+            e.printStackTrace();
+        }
         Scoreboard scoreboard1 = p1.getScoreboard();
 
-        Player p2 = players.get(1);
+        try {
+            Player p2 = game.getPlayerByNickname("Player 2");
+        } catch (MissingPlayerNicknameException e) {
+            e.printStackTrace();
+        }
         Scoreboard scoreboard2 = p1.getScoreboard();
 
         assertEquals(7, scoreboard1.getNumStudentsFromEntrance());
@@ -118,6 +127,16 @@ public class GameTest {
 
     @Test
     public void getPlayerByNicknameTest() throws MissingPlayerNicknameException {
+        String player1 = "Player 1";
+        String player2 = "Player 2";
+        String player3 = "Player 3";
+
+        players.add(player1);
+        players.add(player2);
+        players.add(player3);
+
+        this.game = new Game(players);
+
         assertEquals(players.get(0), game.getPlayerByNickname("Player 1"));
         assertEquals(players.get(1), game.getPlayerByNickname("Player 2"));
         assertEquals(players.get(2), game.getPlayerByNickname("Player 3"));
