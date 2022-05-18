@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
+import java.util.List;
+
 public interface Scoreboard {
 
     void setTowerColor(TowerColors t);
@@ -22,4 +24,5 @@ public interface Scoreboard {
     TowerColors getTowerColor();
     void removeTower();
     void addTower();
+    List<StudentDisc> getEntrance();
 }

@@ -6,8 +6,10 @@ import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
-public class ScoreboardX2p implements Scoreboard{
+import java.util.ArrayList;
+import java.util.List;
 
+public class ScoreboardX2p implements Scoreboard{
     private final StudentDisc[] entrance;
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
@@ -95,15 +97,18 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException {
-        int c=0;
-        for(int i=0;i<7;i++)
-            if(entrance[c].equals(student)) {
-                diningRoom[entrance[c].getColorInt()]++;
-                entrance[c] = null;
-                return;
-            }
-        throw new StudentNotInEntranceException("Student not found in entrance");
+    public void moveFromEntranceToDining(StudentDisc student) {
+        try {
+            for (int i = 0; i < 7; i++)
+                if (entrance[i].equals(student)) {
+                    diningRoom[entrance[i].getColorInt()]++;
+                    entrance[i] = null;
+                    return;
+                }
+            throw new StudentNotInEntranceException("Student not in entrance!");
+        } catch (StudentNotInEntranceException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -119,6 +124,15 @@ public class ScoreboardX2p implements Scoreboard{
     @Override
     public void addTower() {
         this.towerLine++;
+    }
+
+    @Override
+    public List<StudentDisc> getEntrance() {
+        List<StudentDisc> tempList = new ArrayList<>();
+        for(int i=0; i<7; i++){
+            tempList.add(entrance[i]);
+        }
+        return tempList;
     }
 
 }

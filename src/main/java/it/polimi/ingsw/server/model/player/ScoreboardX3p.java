@@ -6,6 +6,9 @@ import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.enumerations.*;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScoreboardX3p implements Scoreboard{
 
     private final StudentDisc[] entrance;
@@ -119,6 +122,15 @@ public class ScoreboardX3p implements Scoreboard{
     @Override
     public void addTower() {
         this.towerLine++;
+    }
+
+    @Override
+    public List<StudentDisc> getEntrance() {
+        List<StudentDisc> tempList = new ArrayList<>();
+        for(int i=0; i<9; i++){
+            tempList.add(entrance[i]);
+        }
+        return tempList;
     }
 
 }
