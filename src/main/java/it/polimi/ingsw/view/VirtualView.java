@@ -47,6 +47,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void askGameMode() {
+        clientHandler.sendMessage(new GameModeMessage());
+    }
+
+    @Override
     public void askPlayerNickname() {
         clientHandler.sendMessage(new LoginReply(false, true));
     }

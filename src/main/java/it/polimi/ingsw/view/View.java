@@ -15,6 +15,8 @@ public interface View {
     //ask to user to choose how many player will play
     void askPlayersNumber();
 
+    void askGameMode();
+
     //ask to a player to choose his nickname
     void askPlayerNickname();
 
