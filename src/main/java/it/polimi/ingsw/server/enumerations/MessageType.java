@@ -15,5 +15,6 @@ public enum MessageType {
     MOVE_STUDENT,
     PICK_CLOUD,
     PLAY_ASSISTANT_CARD,
-    GAME_MODE;
+    GAME_MODE,
+    USE_EFFECT;
 }

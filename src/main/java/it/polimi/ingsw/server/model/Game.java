@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
@@ -18,8 +19,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Game {
-    public static final int MAX_PLAYERS = 4;
+public class Game extends Observable {
 
     protected List<Player> players;
     protected ArrayList<Component> components = new ArrayList<>();
@@ -124,6 +124,7 @@ public class Game {
      * Creates all the object necessary for the game according to the number of player
      */
     public void gameInitialization() throws EntranceFullException {
+        System.out.println("STARTING GameInitialization...");
         // 1) Place MotherNature to a random island
         MapPositions randPos = MapPositions.getRandomIsland();
         this.getComponent(1).setPosition(randPos);
@@ -141,7 +142,6 @@ public class Game {
                 map.getIsland(islandNum).addStudent(stud.getColor());
                 stud.setPosition(MapPositions.valueOf("ISLAND_" + islandNum));
             }
-
         }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
@@ -156,6 +156,7 @@ public class Game {
                 p.getScoreboard().addStudentOnEntrance(stud2);
             }
         }
+        System.out.println("...ENDED GameInitialization");
     }
 
     /**
@@ -183,13 +184,18 @@ public class Game {
      * @param nickname the nickname of the player to be found.
      * @return the player given his {@code nickname}, {@code null} otherwise.
      */
-    public Player getPlayerByNickname(String nickname) throws MissingPlayerNicknameException {
-        Player p = players.stream()
-                .filter(player -> nickname.equals(player.getNickname()))
-                .findFirst()
-                .orElse(null);
-        if(p == null) throw new MissingPlayerNicknameException(nickname);
-        return p;
+    public Player getPlayerByNickname(String nickname) {
+        try{
+            Player p = players.stream()
+                    .filter(player -> nickname.equals(player.getNickname()))
+                    .findFirst()
+                    .orElse(null);
+            if(p == null) throw new MissingPlayerNicknameException("Player " + nickname + "is missing!");
+            return p;
+        }catch (MissingPlayerNicknameException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -247,12 +253,18 @@ public class Game {
     /**
      * Set the assistant card for the turn
      */
-    public void setAssistantCard(String nickname, int cardIndex) throws MissingAssistantCardException, DoubleAssistantCardException, NullCurrentCardException, MissingPlayerNicknameException {
-        Player player = getPlayerByNickname(nickname);
-        AssistantCard chosenCard = player.getPlayerCard(cardIndex);
-        if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
-        if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
-        player.setCurrentCard(chosenCard);
+    public void setAssistantCard(String nickname, int cardIndex) {
+        try{
+            Player player = getPlayerByNickname(nickname);
+            AssistantCard chosenCard = player.getPlayerCard(cardIndex);
+            if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
+            if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
+            player.setCurrentCard(chosenCard);
+
+            //notifyObserver(new ScoreBoardMessage(ScoreBoard ReducedScoreBoard));
+        }catch (DoubleAssistantCardException | MissingAssistantCardException | NullCurrentCardException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -281,30 +293,30 @@ public class Game {
      * @param numIsland
      * @throws DisabledIslandException
      */
-    public void moveTowerToIsland(TowerColors towerColor, int numIsland) throws DisabledIslandException {
-        Island island = map.getIsland(numIsland);
+    public void moveTowerToIsland(TowerColors towerColor, int numIsland) {
+        try{
+             Island island = map.getIsland(numIsland);
 
-        if(island.isDisabled()) {
-            //check Ghost Island
-            if(map.getGhostIsland(numIsland) != null)
-                island = map.getGhostIsland(numIsland);
-        }
-        else throw new DisabledIslandException("This island is disabled!");
+             if(island.isDisabled()) {
+                //check Ghost Island
+                if(map.getGhostIsland(numIsland) != null)
+                    island = map.getGhostIsland(numIsland);
+                else throw new DisabledIslandException("Error in island");
+             }
 
-        /**
-            aggiornare posizione torri quando spostate
-         */
-
-        for(Player p : players){
-            TowerColors oldColor = p.getScoreboard().getTowerColor();
-            if(island.getTowerColor() == oldColor){
-                // Add 1 tower to the old dominant player
-                p.getScoreboard().addTower();
-                // switch island tower color
-                island.switchTowerColor(p.getScoreboard().getTowerColor());
-                // remove player tower from scoreboard
-                p.getScoreboard().removeTower();
+            for(Player p : players){
+                TowerColors oldColor = p.getScoreboard().getTowerColor();
+                if(island.getTowerColor() == oldColor){
+                    // Add 1 tower to the old dominant player
+                    p.getScoreboard().addTower();
+                    // switch island tower color
+                    island.switchTowerColor(p.getScoreboard().getTowerColor());
+                    // remove player tower from scoreboard
+                    p.getScoreboard().removeTower();
+                }
             }
+        } catch (DisabledIslandException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -312,9 +324,8 @@ public class Game {
      *
      * @param color professor color
      * @param player player that receive the professor
-     * @throws MissingPlayerNicknameException
      */
-    public void moveProfessor(PawnColors color, Player player) throws MissingPlayerNicknameException {
+    public void moveProfessor(PawnColors color, Player player) {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
 
         for(Player p : players){
@@ -329,7 +340,7 @@ public class Game {
      *
      * @param stud id of the student to move
      */
-    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException, MissingPlayerNicknameException {
+    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException {
         currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
         checkProfessors(stud.getColor());
     }
@@ -364,11 +375,7 @@ public class Game {
                     dominantPlayer = p;
                 }
             }
-            try {
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-            } catch (DisabledIslandException e) {
-                System.out.println("ERROR Moving First Tower to Island!");
-            }
+            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
         }
 
         // CASE there is already a tower
@@ -380,15 +387,11 @@ public class Game {
         }
 
         if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
-            try {
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-            } catch (DisabledIslandException e) {
-                System.out.println("ERROR Switching Tower!");
-            }
+            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
         }
     }
 
-    private void checkProfessors(PawnColors color) throws MissingPlayerNicknameException {
+    private void checkProfessors(PawnColors color) {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
 
@@ -436,12 +439,7 @@ public class Game {
     }
 
     public Player getActivePlayer(){
-        try {
-            return getPlayerByNickname(turnController.getActivePlayer());
-        } catch (MissingPlayerNicknameException e) {
-            System.out.println("ERROR getActivePlayer()!");
-            return null;
-        }
+        return getPlayerByNickname(turnController.getActivePlayer());
     }
 
     /**
@@ -465,8 +463,11 @@ public class Game {
      */
     private boolean validateCard(AssistantCard card) throws NullCurrentCardException {
         for(Player player: players){
-            if(player.equals(currentPlayer)){
-                if(player.getCurrentCard().getValue() == card.getValue()) return false;
+            if(!player.getNickname().equals(turnController.getActivePlayer())){
+                if(player.getCurrentCard().getValue() == card.getValue()){
+                    if(player.getHand().size() == 1) return true;
+                    else return false;
+                }
             }
         }
         return true;

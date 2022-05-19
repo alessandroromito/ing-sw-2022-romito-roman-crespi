@@ -57,10 +57,15 @@ public class Player {
         coin++;
     }
 
-    public void removeCoin() throws ZeroCoinsException {
-        if(coin>0)
-            coin--;
-        else throw new ZeroCoinsException("No coins remaining");
+    public void removeCoin(int coinToRemove) {
+        try {
+            if (coinToRemove >= this.coin)
+                this.coin = coin - coinToRemove;
+            else
+                throw new ZeroCoinsException("You have not enough coin!");
+        } catch (ZeroCoinsException e){
+            e.printStackTrace();
+        }
     }
 
     public boolean isLastAssistantCard(){
@@ -85,8 +90,13 @@ public class Player {
 
     }
 
-    public AssistantCard getCurrentCard() throws NullCurrentCardException {
-        if(currentAssistantCard.equals(null)) throw new NullCurrentCardException("Current AssistantCard Null!");
+    public AssistantCard getCurrentCard() {
+        try {
+            if(currentAssistantCard == null)
+                throw new NullCurrentCardException("Current " + nickname + " AssistantCard Null! ");
+        } catch (NullCurrentCardException e) {
+            throw new RuntimeException(e);
+        }
         return currentAssistantCard;
     }
 

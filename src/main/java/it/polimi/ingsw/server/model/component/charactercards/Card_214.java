@@ -15,7 +15,7 @@ public class Card_214 extends CharacterCard {
 
     public StudentDisc use(int studentPos, StudentDisc next){
         StudentDisc removed = students.get(studentPos);
-        super.use();
+        super.addCost();
         students.remove(studentPos);
         students.add(next);
         return removed;

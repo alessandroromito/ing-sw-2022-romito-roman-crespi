@@ -48,7 +48,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askGameMode() {
-        clientHandler.sendMessage(new GameModeMessage());
+        clientHandler.sendMessage(new GameModeMessage(false));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void askAssistantCard(String nickname, List<AssistantCard> assistantCards) {
-        clientHandler.sendMessage(new AssistantCardList(nickname, assistantCards));
+        clientHandler.sendMessage(new AssistantCardMessage(nickname, assistantCards));
     }
 
     @Override

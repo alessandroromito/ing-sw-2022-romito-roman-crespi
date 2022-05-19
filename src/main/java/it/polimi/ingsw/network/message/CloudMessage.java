@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.message;
 
+import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.map.Cloud;
 
@@ -19,7 +20,12 @@ public class CloudMessage extends Message {
             return cloudList;
         }
 
-        @Override
+    @Override
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
+    }
+
+    @Override
         public String toString() {
             return "CloudMessage[" + "nickname:" + getNickname() + ", clouds:" + this.cloudList + "]";
         }

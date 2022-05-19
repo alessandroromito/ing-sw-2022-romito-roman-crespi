@@ -10,18 +10,15 @@ import it.polimi.ingsw.server.enumerations.GameState;
 public class MessageHandler {
 
     private final SocketServer socketServer; //to take action in the server
-    private final ClientHandler clientHandler; //to send messages in return
     private GameController gameController; // to take action in the game
 
     /**
      * Default Constructor
      *
      * @param socketServer
-     * @param clientHandler
      */
-    public MessageHandler(SocketServer socketServer, ClientHandler clientHandler) {
+    public MessageHandler(SocketServer socketServer) {
         this.socketServer = socketServer;
-        this.clientHandler = clientHandler;
         this.gameController = socketServer.getGameController();
     }
 
@@ -54,7 +51,7 @@ public class MessageHandler {
     }
 
     public void handleMessage(LoginRequest loginRequest) {
-        gameController.
+
     }
 
     public void handleMessage(LoginReply loginReply) {
@@ -87,11 +84,22 @@ public class MessageHandler {
         }
     }
 
-    public void handleMessage(AssistantCardList assistantCardList) {
+    public void handleMessage(AssistantCardMessage assistantCardMessage) {
         if(gameController.getGameState() == GameState.IN_GAME){
-            if(gameController.checkUser(assistantCardList)){
-                gameController.setAssistantCard(assistantCardList)
+            if(gameController.checkUser(assistantCardMessage)){
+                gameController.setAssistantCard(assistantCardMessage);
             }
         }
+    }
+
+    public void handleMessage(UseEffectMessage useEffectMessage) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(useEffectMessage)){
+                gameController.applyEffect(useEffectMessage);
+            }
+        }
+    }
+
+    public void handleMessage(CloudMessage cloudMessage) {
     }
 }

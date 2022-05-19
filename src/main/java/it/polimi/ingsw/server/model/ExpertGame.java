@@ -84,24 +84,20 @@ public class ExpertGame extends Game {
         }
     }
 
-    //receive 0,1 or 2
-    //if it is a immediate effect card it will end
-    public void useCharacter(int character) throws ActiveCardAlreadyExistingException{
-        if(activeCardID != -1) throw new ActiveCardAlreadyExistingException("There is an active card already!");
+    public void useCharacter(int characterCardID){
+        try{
+            if(activeCardID != -1)
+                throw new ActiveCardAlreadyExistingException("There is an active card already!");
 
-        activeCard = map.getCard(character);
-        activeCardID = activeCard.getID();
-        activeCard.use();
+            activeCard = map.getCard(characterCardID);
+            activeCardID = activeCard.getID();
+            activeCard.addCost();
 
-        //exception will be handled by game controller
-        for(int i=0;i<activeCard.getCost();i++)
-            try{
-                getActivePlayer().removeCoin();
-            } catch (ZeroCoinsException e) {
-                e.printStackTrace();
-            }
+            getActivePlayer().removeCoin(activeCard.getCost());
 
-// at the end of the turn activeCardID must be -1
+        } catch (ActiveCardAlreadyExistingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -129,7 +125,8 @@ public class ExpertGame extends Game {
         moving.setPosition(island);
         deleteActiveCard();
     }
-//tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
+
+    //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
     public void use_215 () throws ActiveCardAlreadyExistingException, MissingPlayerNicknameException {
         if(activeCardID != 215) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         Card_215 temp = (Card_215) activeCard;
@@ -165,6 +162,7 @@ public class ExpertGame extends Game {
             System.out.println("Wrong player nickname");
         }
     }
+
     //Sposta mother nature fino a 2 pos in più
     public void use_217 () throws ActiveCardAlreadyExistingException{
         if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -234,7 +232,8 @@ public class ExpertGame extends Game {
                 }
             }
         }
-        else */ if(activeCardID == 222){
+        else */
+        if(activeCardID == 222){
             Card_222 card = (Card_222) activeCard;
             int bestInfluence = 0;
             Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
@@ -260,11 +259,7 @@ public class ExpertGame extends Game {
                         dominantPlayer = p;
                     }
                 }
-                try {
-                    moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-                } catch (DisabledIslandException e) {
-                    System.out.println("ERROR Moving First Tower to Island!");
-                }
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             }
 
             // CASE there is already a tower
@@ -276,11 +271,7 @@ public class ExpertGame extends Game {
             }
 
             if(island.getInfluence_222(Objects.requireNonNull(opponentPlayer),card.getDisColor()) > currentPlayerInfluence){
-                try {
-                    moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-                } catch (DisabledIslandException e) {
-                    System.out.println("ERROR Switching Tower!");
-                }
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             }
         }
         else super.checkInfluence(islandID);

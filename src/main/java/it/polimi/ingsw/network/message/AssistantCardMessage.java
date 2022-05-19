@@ -5,12 +5,12 @@ import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import java.util.List;
 
-public class AssistantCardList extends  Message{
+public class AssistantCardMessage extends  Message{
     private static final long serialVersionUID = 1001L; //da scegliere
 
     private final List<AssistantCard> assistantCards;
 
-    public AssistantCardList(String nickname, List<AssistantCard> assistantCards){
+    public AssistantCardMessage(String nickname, List<AssistantCard> assistantCards){
         super(nickname, MessageType.PLAY_ASSISTANT_CARD);
         this.assistantCards = assistantCards;
     }
