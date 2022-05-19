@@ -15,7 +15,7 @@ public class CloudTest {
 
     @BeforeEach
     void setUp() {
-        cloud = new Cloud();
+        cloud = new Cloud(0);
     }
 
     @AfterEach

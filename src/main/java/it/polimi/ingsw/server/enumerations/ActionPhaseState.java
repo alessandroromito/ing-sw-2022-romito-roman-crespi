@@ -9,17 +9,17 @@ public enum ActionPhaseState {
 
     public ActionPhaseState next(ActionPhaseState actionPhaseState){
         switch (actionPhaseState) {
+            case MOVE_MOTHER_NATURE -> { return MOVE_STUDENT1;
+            }
             case MOVE_STUDENT1 -> { return MOVE_STUDENT2;
             }
             case MOVE_STUDENT2 -> { return MOVE_STUDENT3;
             }
-            case MOVE_STUDENT3 -> { return MOVE_MOTHER_NATURE;
+            case MOVE_STUDENT3 -> { return PICK_CLOUD;
             }
-            case MOVE_MOTHER_NATURE -> { return MOVE_STUDENT1;
-            }
-            default -> {
-                return PICK_CLOUD;
+            case PICK_CLOUD -> { return MOVE_MOTHER_NATURE;
             }
         }
+        return actionPhaseState;
     }
 }

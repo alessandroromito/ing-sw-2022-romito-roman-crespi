@@ -429,13 +429,18 @@ public class Game extends Observable {
      * Choose a cloud and get its students
      * @param cloudID Number of the cloud chosen
      */
-    public void pickAndPlaceFromCloud(int cloudID) throws MissingCloudStudentsException, EntranceFullException {
-        Cloud cloud = map.getCloud(cloudID);
-        if(cloud.getCloudStudents() == null) throw new MissingCloudStudentsException("Cloud empty or already chosen!");
-        for(StudentDisc student: cloud.getCloudStudents()){
-            currentPlayer.getScoreboard().addStudentOnEntrance(student);
+    public void pickAndPlaceFromCloud(int cloudID) {
+        try{
+            Cloud cloud = map.getCloud(cloudID);
+            if(cloud.getCloudStudents() == null) throw new MissingCloudStudentsException("Cloud empty or already chosen!");
+            for(StudentDisc student: cloud.getCloudStudents()){
+                currentPlayer.getScoreboard().addStudentOnEntrance(student);
+            }
+            cloud.reset();
+        } catch (MissingCloudStudentsException e) {
+            throw new RuntimeException(e);
         }
-        cloud.reset();
+
     }
 
     public Player getActivePlayer(){

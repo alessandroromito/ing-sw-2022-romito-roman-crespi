@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
@@ -22,15 +23,16 @@ public class Map {
      * Default constructor.
      */
     public Map(int playerNumber) {
-        // Create 12 island object with his default constructor
+
         islands = new ArrayList<>(12);
         for(int i=0; i<12; i++){
             islands.add(new Island(i));
         }
+
         // Create clouds object based on PlayerNumber
         clouds = new ArrayList<>();
         for(int i=0; i<playerNumber; i++){
-            clouds.add(new Cloud());
+            clouds.add(new Cloud(i));
         }
     }
 
@@ -48,8 +50,18 @@ public class Map {
         return islands;
     }
 
-    public Cloud getCloud(int cloudNumber){
-        return clouds.get(cloudNumber);
+    public Cloud getCloud(int cloudID){
+        try{
+            if(cloudID < clouds.size()) {
+                for (Cloud cloud : clouds) {
+                    if (cloud.getCloudID() == cloudID) return cloud;
+                }
+            }
+            else throw new CloudNotFoundException("Cloud not found!");
+        } catch (CloudNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     public ArrayList<Cloud> getClouds(){

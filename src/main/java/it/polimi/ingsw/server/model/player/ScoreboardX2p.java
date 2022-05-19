@@ -79,16 +79,19 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public void addStudentOnEntrance(StudentDisc student) throws EntranceFullException {
-        int k = 0;
-        for(k=0;k<=6;k++)
-            if(entrance[k] == null){
-                entrance[k] = student;
-                return;
-            }
+    public void addStudentOnEntrance(StudentDisc student) {
+        try{
+            int k = 0;
+            for(k=0;k<=6;k++)
+                if(entrance[k] == null){
+                    entrance[k] = student;
+                    return;
+                }
 
-        throw new EntranceFullException("Entrance is full");
-
+            throw new EntranceFullException("Entrance is full");
+        } catch (EntranceFullException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -80,16 +80,19 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
-    public void addStudentOnEntrance(StudentDisc student) throws EntranceFullException {
-        int k = 0;
-        for(k=0;k<=8;k++)
-            if(entrance[k] == null){
-                entrance[k] = student;
-                return;
-            }
+    public void addStudentOnEntrance(StudentDisc student) {
+        try{
+            int k = 0;
+            for(k=0;k<=8;k++)
+                if(entrance[k] == null){
+                    entrance[k] = student;
+                    return;
+                }
 
-        throw new EntranceFullException("Entrance is full");
-
+            throw new EntranceFullException("Entrance is full");
+        } catch (EntranceFullException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -98,15 +101,19 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
-    public void moveFromEntranceToDining(StudentDisc student) throws StudentNotInEntranceException {
-        int c=0;
-        for(int i=0;i<9;i++)
-            if(entrance[c].equals(student)) {
-                diningRoom[entrance[c].getColorInt()]++;
-                entrance[c] = null;
-                return;
-            }
-        throw new StudentNotInEntranceException("Student not found in entrance");
+    public void moveFromEntranceToDining(StudentDisc student) {
+        try{
+            int c=0;
+            for(int i=0;i<9;i++)
+                if(entrance[c].equals(student)) {
+                    diningRoom[entrance[c].getColorInt()]++;
+                    entrance[c] = null;
+                    return;
+                }
+            throw new StudentNotInEntranceException("Student not found in entrance");
+        } catch (StudentNotInEntranceException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
