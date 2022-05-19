@@ -1,12 +1,15 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.network.message.*;
+import it.polimi.ingsw.observer.Observer;
+import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
+import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -15,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameController {
+public class GameController implements Observer {
     public static final String SAVING = "GameController.sav";
 
     private List<String> playersNicknames = new ArrayList<>();
@@ -42,47 +45,34 @@ public class GameController {
         setGameState(GameState.GAME_ROOM);
     }
 
-    private void startGame() throws MissingPlayerNicknameException, MissingPlayersException, InterruptedException, InvalidActionPhaseStateException, CloudNotEmptyException {
+    private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
 
         turnController = new TurnController(this, virtualViewMap);
-        showGenericMessage("GAME STARTED!");
+        showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
 
     }
 
-    public void askAllToChooseAssistantCard() {
-        for(String nickname : turnController.getNicknameQueue() ) {
-            try {
-                VirtualView virtualView = virtualViewMap.get(nickname);
-                virtualView.askAssistantCard(nickname, game.getPlayerByNickname(nickname).getHand());
-            } catch (MissingPlayerNicknameException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            turnController.nextPhase();
-        } catch (MissingPlayerNicknameException | InvalidActionPhaseStateException | CloudNotEmptyException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void askToMoveStudent() {
-        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        virtualView.askToMoveAStudent(turnController.getActivePlayer(),  );
+        Player player = game.getPlayerByNickname(turnController.getActivePlayer());
+        List<StudentDisc> studentDiscList = player.getScoreboard().getEntrance();
+
+        VirtualView virtualView = virtualViewMap.get(player.getNickname());
+        virtualView.askToMoveAStudent(player.getNickname(), studentDiscList, 0, 0 );
     }
 
     public void askToMoveMotherNature() {
-        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        virtualView.askToMoveMotherNature();
+        Player player = game.getPlayerByNickname(turnController.getActivePlayer());
+
+        VirtualView virtualView = virtualViewMap.get(player.getNickname());
+        virtualView.askToMoveMotherNature(player.getNickname(), player.getCurrentCard().getMovement() );
     }
 
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        virtualView.askToChoseACloud();
-
+        virtualView.askToChooseACloud(turnController.getActivePlayer(), game.getMap().getClouds());
     }
 
     /**
@@ -94,12 +84,8 @@ public class GameController {
         this.gameState = gameState;
     }
 
-    public void lastTurn(){
-        turnController.setLastTurn();
-    }
-
     public void winnerChecker(){
-        List<Player> possibleWinners = new ArrayList<Player>();
+        List<Player> possibleWinners = new ArrayList<>();
         int minTower = 8, maxProfessor = 0;
 
         for(Player p : game.getPlayers())
@@ -126,7 +112,7 @@ public class GameController {
     }
 
     public void win(Player player){
-        showGenericMessage("### PLAYER:" + player.getNickname() + "WIN!!! ###");
+        showGenericMessageToAll("### PLAYER:" + player.getNickname() + "WIN!!! ###");
         endGame();
     }
 
@@ -209,7 +195,7 @@ public class GameController {
     public void setChosenPlayerNumber(PlayerNumberReply message) {
         if(inputController.playerNumberReplyCheck(message.getPlayerNumber())) {
             this.chosenPlayerNumber = message.getPlayerNumber();
-            showGenericMessage("Waiting for other players...");
+            showGenericMessageToAll("Waiting for other players...");
         }
         else{
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
@@ -219,16 +205,136 @@ public class GameController {
 
     public void setChosenExpertMode(GameModeMessage message) {
         this.chosenExpertMode = message.getExpertMode();
-        showGenericMessage("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
+        showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
+    }
+
+    public boolean isNicknameTaken(String nickname) {
+        return playersNicknames.stream()
+                .anyMatch(nickname::equals);
     }
 
     /**
-     * Checks if the game is already started, then no more players can connect.
+     * Check if the message is sent by the active player, if true he could take actions
      *
-     * @return {@code true} if the game is started yet, {@code false} otherwise.
+     * @param message
+     * @return
      */
-    public boolean isGameStarted() {
-        return this.gameState == GameState.GAME_STARTED;
+    public boolean checkUser(Message message) {
+        return message.getNickname().equals(getTurnController().getActivePlayer());
+    }
+
+    public void moveMotherNature(MoveMotherNatureMessage message) {
+        int steps = message.getSteps();
+        if (turnController.getPhaseState() == PhaseState.ACTION_PHASE && turnController.getActionPhaseState() == ActionPhaseState.MOVE_MOTHER_NATURE) {
+            try {
+                if (inputController.moveCheck(message)) {
+                    game.moveMotherNature(steps);
+
+                    // Go to the next action phase
+                    turnController.nextActionPhase();
+                }
+            } catch (NullCurrentCardException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void moveStudent(MoveStudentMessage message) {
+        if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT1 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT2 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT3)) {
+            StudentDisc student = message.getStudentDiscs().get(0);
+            Player player = game.getPlayerByNickname(message.getNickname());
+
+            switch (message.getPosition()) {
+                case 0 -> player.getScoreboard().addStudentOnEntrance(student);
+                case 1 -> game.getMap().getIsland(message.getIslandNumber()).addStudent(student.getColor());
+                default -> showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
+            }
+
+            // go to the next action phase move
+            turnController.nextActionPhase();
+        }
+        else showMessage(turnController.getActivePlayer(), "You can't move a student in this phase!");
+    }
+
+    public void pickCloud(CloudMessage message) {
+        if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
+            Cloud chosenCloud = message.getCloudList().get(0);
+            Player player = game.getPlayerByNickname(message.getNickname());
+
+            game.pickAndPlaceFromCloud(chosenCloud.getCloudID());
+        }
+    }
+
+    /**
+     * Show a message to all players
+     * @param message message to show
+     */
+    public void showGenericMessageToAll(String message) {
+        for (VirtualView virtualView : virtualViewMap.values()) {
+            virtualView.showGenericMessage(message);
+        }
+    }
+
+    public void showMessage(String nickname, String message){
+        VirtualView virtualView = virtualViewMap.get(nickname);
+        virtualView.showGenericMessage(message);
+    }
+
+
+
+    public void refillClouds(){
+        game.refillClouds();
+    }
+
+    public void setAssistantCard(AssistantCardMessage assistantCardMessage) {
+        if(turnController.getPhaseState() == PhaseState.PLANNING_PHASE){
+            game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
+
+            //Verifica se tutti l'hanno settata
+            for(Player p : game.getPlayers()){
+                if(p.getCurrentCard() == null)
+                    return;
+            }
+            turnController.nextPhase();
+        }
+
+        else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");
+    }
+
+    public void sendInfo(GameInfoMessage gameInfoMessage) {
+
+    }
+
+    public void applyEffect(UseEffectMessage useEffectMessage) {
+
+    }
+
+    /**
+     * Receive update from the Game
+     * @param message
+     */
+    @Override
+    public void update(Message message) {
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        switch (message.getMessageType()) {
+
+            case WINNER_DECLARATION -> win(game.getPlayerByNickname(message.getNickname()));
+            case ERROR -> {
+                ErrorMessage errMsg = (ErrorMessage) message;
+                System.out.println(((ErrorMessage) message).getError());
+            }
+            default -> showGenericMessageToAll("Invalid update!");
+        }
+
+    }
+
+    /**
+     * Method to reset the assistantCard at the start of every turn
+     */
+    public void refreshAssistantCard() {
+        for(Player p : game.getPlayers()){
+            p.resetAssistantCard();
+        }
     }
 
     /**
@@ -238,6 +344,11 @@ public class GameController {
      */
     public TurnController getTurnController() {
         return turnController;
+    }
+
+
+    public InputController getInputController() {
+        return inputController;
     }
 
     /**
@@ -259,82 +370,5 @@ public class GameController {
 
     public List<String> getPlayersNicknames() {
         return playersNicknames;
-    }
-
-    public InputController getInputController() {
-        return inputController;
-    }
-
-    public boolean isNicknameTaken(String nickname) {
-        return playersNicknames.stream()
-                .anyMatch(nickname::equals);
-    }
-
-    /**
-     * Check if the message is sent by the active player, if true he could take actions
-     *
-     * @param message
-     * @return
-     */
-    public boolean checkUser(Message message) {
-        return message.getNickname().equals(getTurnController().getActivePlayer());
-    }
-
-    public void moveMotherNature(MoveMotherNatureMessage message) {
-        int steps = message.getSteps();
-
-        try {
-            if(inputController.moveCheck(message)){
-                game.moveMotherNature(steps);
-            }
-        } catch (NullCurrentCardException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Show a message to all players
-     * @param message message to show
-     */
-    public void showGenericMessage(String message) {
-        for (VirtualView virtualView : virtualViewMap.values()) {
-            virtualView.showGenericMessage(message);
-        }
-    }
-
-
-    public void refillClouds(){
-        game.refillClouds();
-    }
-
-    public void moveStudent(MoveStudentMessage message) {
-        try {
-            StudentDisc student = (StudentDisc) game.getComponent(message.getStudentId());
-            Player player = game.getPlayerByNickname(message.getNickname());
-
-            switch (message.getPosition()) {
-                case 0: {
-                    player.getScoreboard().addStudentOnEntrance(student);
-                    break;
-                }
-                case 1: {
-                    game.getMap().getIsland(message.getIslandNumber()).addStudent(student.getColor());
-                    break;
-                }
-                default:
-                    showGenericMessage("Invalid MoveStudentMessage!");
-            }
-        } catch (MissingPlayerNicknameException | EntranceFullException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setAssistantCard(AssistantCardList assistantCardList) {
-        try {
-            game.setAssistantCard(assistantCardList.getNickname(), assistantCardList.getAssistantCards().get(0).getID());
-        } catch (MissingAssistantCardException | MissingPlayerNicknameException | NullCurrentCardException |
-                 DoubleAssistantCardException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

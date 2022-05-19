@@ -1,7 +1,6 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
@@ -50,11 +49,7 @@ public class InputController {
     public boolean moveCheck(MoveMotherNatureMessage message) throws NullCurrentCardException {
         int steps = message.getSteps();
         Player player;
-        try {
-            player = game.getPlayerByNickname(message.getNickname());
-        } catch (MissingPlayerNicknameException e) {
-            throw new RuntimeException(e);
-        }
+        player = game.getPlayerByNickname(message.getNickname());
 
         if (player.getCurrentCard().getMovement() >= steps) {
             return true;

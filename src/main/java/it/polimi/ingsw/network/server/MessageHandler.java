@@ -50,6 +50,14 @@ public class MessageHandler {
         }
     }
 
+    public void handleMessage(CloudMessage message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(message)){
+                gameController.pickCloud(message);
+            }
+        }
+    }
+
     public void handleMessage(LoginRequest loginRequest) {
 
     }
@@ -100,6 +108,5 @@ public class MessageHandler {
         }
     }
 
-    public void handleMessage(CloudMessage cloudMessage) {
-    }
+
 }

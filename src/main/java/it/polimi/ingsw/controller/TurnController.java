@@ -2,9 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
-import it.polimi.ingsw.server.exception.CloudNotEmptyException;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.AssistantCard;
@@ -25,10 +23,10 @@ public class TurnController {
     private final Game game;
     private final List<String> nicknameQueue;
     private String activePlayer;
-    private boolean lastTurn = false;
 
     private PhaseState phaseState;
     private ActionPhaseState actionPhaseState;
+    private int turnCount = 0;
 
     private final GameController gameController;
     private Map<String, VirtualView> virtualViewMap;
@@ -53,50 +51,35 @@ public class TurnController {
     }
 
     /**
-     * @param activePlayer the active Player to be set.
-     */
-    public void setActivePlayer(String activePlayer) {
-        this.activePlayer = activePlayer;
-    }
-
-    /**
      * Initialize a new Turn.
      */
     public void newTurn() {
+        turnCount++;
+        if(turnCount == 10)
+            gameController.winnerChecker();
+
         activePlayer = nicknameQueue.get(0);
-        gameController.showGenericMessage("Turn of " + activePlayer + "...");
+        gameController.showGenericMessageToAll("Turn of " + activePlayer + "...");
         // 1
         gameController.refillClouds();
         // 2
+        gameController.refreshAssistantCard();
         askAssistantCard();
     }
 
     private void askAssistantCard() {
-        for(String nickname : nicknameQueue){
-            Player player = null;
-            try {
-                player = game.getPlayerByNickname(getActivePlayer());
-                List<AssistantCard> assistantCardLists = new ArrayList<>(player.getHand());
-                VirtualView virtualView = virtualViewMap.get(getActivePlayer());
-
-                if (assistantCardLists.isEmpty()) {
-                    gameController.winnerChecker();
-                } else {
-                    virtualView.askAssistantCard(getActivePlayer(), assistantCardLists);
-                }
-            } catch (MissingPlayerNicknameException e) {
-                e.printStackTrace();
-            }
-        }
+        Player player = game.getPlayerByNickname(getActivePlayer());
+        List<AssistantCard> assistantCardLists = new ArrayList<>(player.getHand());
+        VirtualView virtualView = virtualViewMap.get(getActivePlayer());
+        virtualView.askAssistantCard(getActivePlayer(), assistantCardLists);
     }
 
     /**
      * Set the next activePlayer.
      */
-    public void next() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
-
+    public void next() {
         int currentActive = nicknameQueue.indexOf(activePlayer);
-        if (currentActive + 1 < gameController.getPlayersNumber()) {
+        if (currentActive + 1 < nicknameQueue.size()) {
             currentActive = currentActive + 1;
             if(game.getClass().equals(ExpertGame.class)) game.deleteActiveCard();
         } else {
@@ -104,13 +87,14 @@ public class TurnController {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
+        actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
     }
 
 
     /**
      * Go to the next phase.
      */
-    public void nextPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
+    public void nextPhase() {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
                 buildQueue(nicknameQueue);
@@ -119,10 +103,6 @@ public class TurnController {
                 actionPhase();
             }
             case ACTION_PHASE -> {
-                if(lastTurn){
-                    gameController.winnerChecker();
-                    return;
-                }
                 phaseState = PhaseState.PLANNING_PHASE;
                 newTurn();
             }
@@ -130,29 +110,26 @@ public class TurnController {
         }
     }
 
-    public void actionPhase() throws MissingPlayerNicknameException, InvalidActionPhaseStateException, CloudNotEmptyException {
-        switch (actionPhaseState) {
-            case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> {
-                gameController.askToMoveStudent();
-                //quando arriva il messaggio di fine mossa aggiorna actionPhaseState (con metodo actionPhaseState.next())
-                //ci sarà un onUpdate che chiamerà actionPhase()
+    public void actionPhase() {
+        try {
+            switch (actionPhaseState) {
+                case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> gameController.askToMoveStudent();
+                case MOVE_MOTHER_NATURE -> gameController.askToMoveMotherNature();
+                case PICK_CLOUD -> {
+                    gameController.askToChooseACloud();
+                    next();
+                }
+                default -> throw new InvalidActionPhaseStateException();
             }
-            case MOVE_MOTHER_NATURE -> {
-                gameController.askToMoveMotherNature();
-                //come sopra
-            }
-            case PICK_CLOUD -> {
-                gameController.askToChooseACloud();
-                //come sopra
-                next();
-            }
-            default -> throw new InvalidActionPhaseStateException();
-        }
 
-        if(getPhaseState() == ACTION_PHASE) actionPhase();
+            if (getPhaseState() == ACTION_PHASE) actionPhase();
+
+        }catch(InvalidActionPhaseStateException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void buildQueue(List<String> playersList) throws MissingPlayerNicknameException {
+    private void buildQueue(List<String> playersList) {
         List<Player> players = new ArrayList<>();
 
         for (String s : playersList) {
@@ -182,7 +159,8 @@ public class TurnController {
         return this.nicknameQueue;
     }
 
-    public void setLastTurn() {
-        this.lastTurn = true;
+    public void nextActionPhase() {
+        actionPhaseState = actionPhaseState.next(getActionPhaseState());
+        actionPhase();
     }
 }

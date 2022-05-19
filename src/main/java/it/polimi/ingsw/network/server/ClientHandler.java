@@ -33,7 +33,7 @@ public class ClientHandler implements Runnable {
         this.out = new ObjectOutputStream(client.getOutputStream());
         this.in = new ObjectInputStream(client.getInputStream());
 
-        this.messageHandler = new MessageHandler(socketServer, this);
+        this.messageHandler = new MessageHandler(socketServer);
     }
 
     @Override
