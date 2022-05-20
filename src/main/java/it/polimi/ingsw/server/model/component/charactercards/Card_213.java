@@ -7,15 +7,15 @@ import it.polimi.ingsw.server.model.component.NoEntryTile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Card_218 extends CharacterCard{
-    ArrayList<NoEntryTile> net;
-    public Card_218(List<Component> nt) {
-        super(218);
+public class Card_213 extends CharacterCard{
+    ArrayList<NoEntryTile> net = new ArrayList<>();
+    public Card_213(List<Component> nt) {
+        super(213);
         this.cost = 2;
         for(int i=0;i<4;i++)    this.net.add((NoEntryTile) nt.get(i));
     }
 
-    public NoEntryTile use_218() throws ZeroNoEntryTyleRemainingException {
+    public NoEntryTile use_213() throws ZeroNoEntryTyleRemainingException {
         if(!net.isEmpty())
             return net.get(0);
         else throw new ZeroNoEntryTyleRemainingException("No entry tiles available");

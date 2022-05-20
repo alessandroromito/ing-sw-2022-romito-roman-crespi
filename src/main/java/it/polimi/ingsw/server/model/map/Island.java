@@ -56,7 +56,7 @@ public class Island {
         return influence;
     }
 
-    public int getInfluence_219 (Player p){
+    public int getInfluence_214 (Player p){
         int influence = 0;
         Scoreboard scoreboard = p.getScoreboard();
         TowerColors playerTowerColor = scoreboard.getTowerColor();
@@ -70,7 +70,7 @@ public class Island {
         return influence;
     }
 
-    public int getInfluence_222 (Player p,PawnColors disabled){
+    public int getInfluence_217 (Player p,PawnColors disabled){
         int influence = 0;
         Scoreboard scoreboard = p.getScoreboard();
         TowerColors playerTowerColor = scoreboard.getTowerColor();

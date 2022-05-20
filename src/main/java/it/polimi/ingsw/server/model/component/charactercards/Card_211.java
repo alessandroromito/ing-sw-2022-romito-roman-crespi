@@ -1,9 +1,9 @@
 package it.polimi.ingsw.server.model.component.charactercards;
 
-public class Card_214 extends CharacterCard{
+public class Card_211 extends CharacterCard{
 
-    public Card_214(){
-        super(214);
+    public Card_211(){
+        super(211);
         this.cost = 3;
     }
 }

@@ -62,11 +62,7 @@ class IslandTest {
     @Test
     void getInfluence() throws AddingWrongColorTowerToIslandException {
         Player player1 = null;
-        try {
-            player1 = game.getPlayerByNickname("Player 1");
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        player1 = game.getPlayerByNickname("Player 1");
         player1.getScoreboard().setProfessorTrue(PawnColors.RED);
 
         island = game.getMap().getIsland(1);
@@ -82,11 +78,11 @@ class IslandTest {
     }
 
     @Test
-    void getInfluence_219() {
+    void getInfluence_214() {
     }
 
     @Test
-    void getInfluence_222() {
+    void getInfluence_217() {
     }
 
     @Test
