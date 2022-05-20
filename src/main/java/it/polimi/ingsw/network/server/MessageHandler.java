@@ -9,7 +9,6 @@ import it.polimi.ingsw.server.enumerations.GameState;
  */
 public class MessageHandler {
 
-    private final SocketServer socketServer; //to take action in the server
     private GameController gameController; // to take action in the game
 
     /**
@@ -18,8 +17,15 @@ public class MessageHandler {
      * @param socketServer
      */
     public MessageHandler(SocketServer socketServer) {
-        this.socketServer = socketServer;
         this.gameController = socketServer.getGameController();
+    }
+
+    /**
+     * Client don't send PlayerNumberRequest
+     * @param playerNumberRequest
+     */
+    public void handleMessage(PlayerNumberRequest playerNumberRequest) {
+
     }
 
     public void handleMessage(PlayerNumberReply message){
@@ -58,40 +64,71 @@ public class MessageHandler {
         }
     }
 
-    public void handleMessage(LoginRequest loginRequest) {
-
-    }
-
+    /**
+     * Client don't send LoginReplyMessage
+     * @param loginReply
+     */
     public void handleMessage(LoginReply loginReply) {
     }
 
+    /**
+     * Handled by ClientHandler
+     * @param pingMessage
+     */
     public void handleMessage(PingMessage pingMessage) {
     }
 
-    public void handleMessage(PlayerNumberRequest playerNumberRequest) {
-    }
-
+    /**
+     * Client don't send VictoryMessage
+     * @param victoryMessage
+     */
     public void handleMessage(VictoryMessage victoryMessage) {
+
     }
 
+    /**
+     * Client don't send LobbyMessage
+     * @param lobbyMessage
+     */
     public void handleMessage(LobbyMessage lobbyMessage) {
     }
 
     public void handleMessage(DisconnectedPlayerMessage disconnectedPlayerMessage) {
+
     }
 
+    /**
+     * Client don't send ErrorMessage
+     * @param errorMessage
+     */
     public void handleMessage(ErrorMessage errorMessage) {
+
     }
 
-    public void handleMessage(GenericMessage genericMessage) {
+    /**
+     * Client don't send GenericMessage
+     * @param message
+     */
+    public void handleMessage(GenericMessage message) {
     }
 
+    /**
+     * Client don't send MergeIslandMessage
+     * @param mergeIslandMessage
+     */
     public void handleMessage(MergeIslandMessage mergeIslandMessage) {
+
     }
 
     public void handleMessage(GameInfoMessage gameInfoMessage) {
         if(gameController.getGameState() == GameState.IN_GAME){
             gameController.sendInfo(gameInfoMessage);
+        }
+    }
+
+    public void handleMessage(ExpertGameInfoMessage expertGameInfoMessage) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            gameController.sendInfo(expertGameInfoMessage);
         }
     }
 
@@ -111,7 +148,10 @@ public class MessageHandler {
         }
     }
 
-
-
-
+    /**
+     * Client don't send LoginRequest
+     * @param loginRequest
+     */
+    public void handleMessage(LoginRequest loginRequest) {
+    }
 }

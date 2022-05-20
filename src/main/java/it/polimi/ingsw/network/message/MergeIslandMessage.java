@@ -14,10 +14,14 @@ public class MergeIslandMessage extends Message {
         this.unifiedIslands = unifiedIslands;
     }
 
-    public List<Integer> getUnifiedIslands() { return this.unifiedIslands; }
+    public List<Integer> getUnifiedIslands() {
+        return this.unifiedIslands;
+    }
 
     @Override
-    public void handle(MessageHandler messageHandler) { messageHandler.handleMessage(this);}
+    public void handle(MessageHandler messageHandler) {
+        messageHandler.handleMessage(this);
+    }
 
     @Override
     public String toString() { return "MergeIslandsMessage[nickname:" + getNickname() + "]";}

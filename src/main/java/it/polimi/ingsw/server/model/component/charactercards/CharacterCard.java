@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.component.Component;
 
 public class CharacterCard extends Component {
     protected int cost;
+    protected boolean firstUse = true;
 
     public CharacterCard(int id){
         this.ID = id;
@@ -14,6 +15,9 @@ public class CharacterCard extends Component {
     }
 
     public void addCost(){
-        cost++;
+        if(firstUse){
+            cost++;
+            firstUse = false;
+        }
     }
 }
