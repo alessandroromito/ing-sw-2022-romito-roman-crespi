@@ -27,13 +27,12 @@ public class GameController implements Observer {
     private int chosenPlayerNumber = 0;
     private boolean chosenExpertMode = false;
 
-    private Game game;
-
     private GameState gameState;
     private TurnController turnController;
     private InputController inputController;
 
     public static final String SAVED_GAME_FILE = "gameController.saving";
+    private Game game;
 
     public GameController(){
         init();
@@ -48,6 +47,8 @@ public class GameController implements Observer {
     private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
+        //if(chosenExpertMode)
+        //    assert game instanceof ExpertGame;
 
         turnController = new TurnController(this, virtualViewMap);
         showGenericMessageToAll("GAME STARTED!");
@@ -60,19 +61,19 @@ public class GameController implements Observer {
         List<StudentDisc> studentDiscList = player.getScoreboard().getEntrance();
 
         VirtualView virtualView = virtualViewMap.get(player.getNickname());
-        virtualView.askToMoveAStudent(player.getNickname(), studentDiscList, 0, 0 );
+        virtualView.askToMoveAStudent(studentDiscList, 0, 0 );
     }
 
     public void askToMoveMotherNature() {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
 
         VirtualView virtualView = virtualViewMap.get(player.getNickname());
-        virtualView.askToMoveMotherNature(player.getNickname(), player.getCurrentCard().getMovement() );
+        virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement() );
     }
 
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-        virtualView.askToChooseACloud(turnController.getActivePlayer(), game.getMap().getClouds());
+        virtualView.askToChooseACloud(game.getMap().getClouds());
     }
 
     /**
@@ -135,12 +136,12 @@ public class GameController implements Observer {
                 //game.addObserver(virtualView);
                 playersNicknames.add(nickname);
 
-                virtualView.showLoginResult(true, true, nickname);
+                virtualView.showLoginResult(true, true);
                 virtualView.askPlayersNumber();
                 virtualView.askGameMode();
 
-            } catch(GameAlreadyStartedException e){
-                new GameAlreadyStartedException("NOT possible to add players when game is already started!");
+            } catch(GameAlreadyStartedException e) {
+                throw new RuntimeException(e);
             }
         } else if (virtualViewMap.size() < chosenPlayerNumber){
             virtualViewMap.put(nickname, virtualView);
@@ -154,7 +155,7 @@ public class GameController implements Observer {
                 startGame();
             }
         } else {
-            virtualView.showLoginResult(true, false, nickname);
+            virtualView.showLoginResult(true, false);
         }
     }
 
@@ -302,11 +303,20 @@ public class GameController implements Observer {
     }
 
     public void sendInfo(GameInfoMessage gameInfoMessage) {
+        VirtualView virtualView = virtualViewMap.get(gameInfoMessage.getNickname());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGroupIDsGhostIsland().length, game.getBag().getBagStudents().size(), turnController.getActivePlayer());
+    }
 
+    public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
+        VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
+        ExpertGame tempGame = (ExpertGame) game ;
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGroupIDsGhostIsland().length, game.getBag().getBagStudents().size(), turnController.getActivePlayer(), tempGame.);
     }
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
+        if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
 
+        }
     }
 
     /**

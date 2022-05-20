@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.Component;
 import org.junit.jupiter.api.AfterEach;
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlayerTest {
 
@@ -32,11 +31,7 @@ public class PlayerTest {
         game = new Game(players);
         components = game.getComponents();
 
-        try {
-            p1 = game.getPlayerByNickname("Player 1");
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        p1 = game.getPlayerByNickname("Player 1");
     }
 
     @AfterEach
@@ -48,20 +43,12 @@ public class PlayerTest {
 
     @Test
     void createScoreboard() {
-        try {
-            p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
         assertEquals(ScoreboardX3p.class, p1.getScoreboard().getClass());
 
         players.remove(2);
 
-        try {
-            p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
         assertEquals(ScoreboardX2p.class, p1.getScoreboard().getClass());
 
     }

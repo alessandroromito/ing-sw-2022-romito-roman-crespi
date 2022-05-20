@@ -14,7 +14,6 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
-import it.polimi.ingsw.server.model.player.ScoreboardX3p;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,13 +29,9 @@ public class GameTest {
 
     @Before
     public void setUp() {
-        String player1 = "Player 1";
-        String player2 = "Player 2";
-        String player3 = "Player 3";
-
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
+        players.add("player1");
+        players.add("player2");
+        players.add("player3");
 
         game = new Game(players);
         components = game.components;
@@ -92,18 +87,10 @@ public class GameTest {
 
         // Scoreboard entrance is full
         Player p1 = null;
-        try {
-            p1 = game.getPlayerByNickname("Player 1");
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        p1 = game.getPlayerByNickname("Player 1");
         Scoreboard scoreboard1 = p1.getScoreboard();
 
-        try {
-            Player p2 = game.getPlayerByNickname("Player 2");
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        Player p2 = game.getPlayerByNickname("Player 2");
         Scoreboard scoreboard2 = p1.getScoreboard();
 
         assertEquals(7, scoreboard1.getNumStudentsFromEntrance());

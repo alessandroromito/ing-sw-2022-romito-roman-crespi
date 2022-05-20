@@ -5,6 +5,7 @@ import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -35,7 +36,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     public void parametersConfiguration() throws ExecutionException, InterruptedException {
-        Map<String, String> server = new Map<>();
+        HashMap<String, String> server = new HashMap<>();
         boolean validInput;
         out.println("Inserisci i seguenti parametri per iniziare a giocare!\n");
         do{
@@ -73,7 +74,7 @@ public class CLI extends ViewObservable implements View {
 
 
             //Da implementare nel clientController
-
+//
 
 
 

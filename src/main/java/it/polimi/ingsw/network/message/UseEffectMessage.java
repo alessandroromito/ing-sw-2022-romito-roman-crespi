@@ -2,22 +2,18 @@ package it.polimi.ingsw.network.message;
 
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
-
-import java.util.List;
 
 public class UseEffectMessage extends Message{
     private static final long serialVersionUID = -1L; //da scegliere
-    private final List<CharacterCard> characterCard;
+    private final int characterCardID;
 
-
-    public UseEffectMessage(String nickname, List<CharacterCard> characterCard) {
+    public UseEffectMessage(String nickname, int characterCardID) {
         super(nickname, MessageType.USE_EFFECT);
-        this.characterCard = characterCard;
+        this.characterCardID = characterCardID;
     }
 
-    public List<CharacterCard> getCharacterCard(){
-        return this.characterCard;
+    public int getCharacterCardID(){
+        return this.characterCardID;
     }
 
     @Override

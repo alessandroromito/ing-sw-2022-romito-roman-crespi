@@ -7,7 +7,7 @@ import it.polimi.ingsw.server.model.Game;
 import java.util.List;
 
 public class LobbyMessage extends Message {
-    private static final long serialVersionUID = 2456845241456325827L;
+    private static final long serialVersionUID = 1L;
     private final List<String> playersNickname;
     private final int numMaxPlayers;
 

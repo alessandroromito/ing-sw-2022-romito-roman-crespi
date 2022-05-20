@@ -6,6 +6,7 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
 import java.util.List;
@@ -77,8 +78,12 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showGameInfo(String nickname, List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer) {
-        clientHandler.sendMessage(new GameInfoMessage(nickname, playersNickname, unifiedIslandsNumber, remainingBagStudents, activePlayer));
+    public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
+        clientHandler.sendMessage(new ExpertGameInfoMessage(Game.SERVER_NAME, playersNicknames, unifiedIslandsNumber, remainingBagStudents, activePlayer, characterCards));
+    }
+    @Override
+    public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer) {
+        clientHandler.sendMessage(new GameInfoMessage(Game.SERVER_NAME, playersNicknames, unifiedIslandsNumber, remainingBagStudents, activePlayer));
     }
 
     @Override
@@ -87,28 +92,28 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askAssistantCard(String nickname, List<AssistantCard> assistantCards) {
-        clientHandler.sendMessage(new AssistantCardMessage(nickname, assistantCards));
+    public void askAssistantCard(List<AssistantCard> assistantCards) {
+        clientHandler.sendMessage(new AssistantCardMessage(Game.SERVER_NAME, assistantCards));
     }
 
     @Override
-    public void askToMoveAStudent(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber) {
-        clientHandler.sendMessage(new MoveStudentMessage(nickname, studentDiscs, position, islandNumber));
+    public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
+        clientHandler.sendMessage(new MoveStudentMessage(Game.SERVER_NAME, studentDiscs, position, islandNumber));
     }
 
     @Override
-    public void askToMoveMotherNature(String nickname, int steps) {
-        clientHandler.sendMessage(new MoveMotherNatureMessage(nickname, steps));
+    public void askToMoveMotherNature(int steps) {
+        clientHandler.sendMessage(new MoveMotherNatureMessage(Game.SERVER_NAME, steps));
     }
 
     @Override
-    public void askToChooseACloud(String nickname, List<Cloud> cloudList) {
-        clientHandler.sendMessage(new CloudMessage(nickname, cloudList));
+    public void askToChooseACloud(List<Cloud> cloudList) {
+        clientHandler.sendMessage(new CloudMessage(Game.SERVER_NAME, cloudList));
     }
 
     @Override
-    public void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String playerNickname) {
-
+    public void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful) {
+        clientHandler.sendMessage(new LoginReply(playerNicknameAccepted, connectionSuccessful));
     }
 
     @Override
