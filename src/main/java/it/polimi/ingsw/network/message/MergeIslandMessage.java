@@ -20,5 +20,5 @@ public class MergeIslandMessage extends Message {
     public void handle(MessageHandler messageHandler) { messageHandler.handleMessage(this);}
 
     @Override
-    public String toString() { return "MergeIslandsMessage[nickname:" + getNickname() + "]"}
+    public String toString() { return "MergeIslandsMessage[nickname:" + getNickname() + "]";}
 }
