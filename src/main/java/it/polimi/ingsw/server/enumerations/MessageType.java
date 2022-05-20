@@ -14,6 +14,7 @@ public enum MessageType {
     DISCONNECTED_PLAYER,
     MOVE_STUDENT,
     PICK_CLOUD,
+    MERGE_ISLANDS,
     PLAY_ASSISTANT_CARD,
     GAME_MODE,
     USE_EFFECT;
