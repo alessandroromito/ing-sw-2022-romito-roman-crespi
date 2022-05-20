@@ -4,7 +4,6 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 
 import java.util.ArrayList;
 
@@ -14,8 +13,6 @@ public class Map {
     private ArrayList<Cloud> clouds;
 
     private int motherNaturePos;
-
-    private CharacterCard[] characterCards;
 
     private GhostIsland[] groupIDsGhostIsland = {null, null, null, null, null, null};
 
@@ -66,11 +63,6 @@ public class Map {
 
     public ArrayList<Cloud> getClouds(){
         return this.clouds;
-    }
-
-    //choice is 0,1 or 2
-    public CharacterCard getCard(int choice){
-        return this.characterCards[choice];
     }
 
     public void setMotherNaturePos(int motherNaturePos) {
