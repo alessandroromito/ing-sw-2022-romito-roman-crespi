@@ -86,6 +86,9 @@ public class MessageHandler {
     public void handleMessage(GenericMessage genericMessage) {
     }
 
+    public void handleMessage(MergeIslandMessage mergeIslandMessage) {
+    }
+
     public void handleMessage(GameInfoMessage gameInfoMessage) {
         if(gameController.getGameState() == GameState.IN_GAME){
             gameController.sendInfo(gameInfoMessage);
@@ -107,6 +110,8 @@ public class MessageHandler {
             }
         }
     }
+
+
 
 
 }
