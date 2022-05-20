@@ -5,7 +5,7 @@ import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
 
-public abstract class CLI extends ViewObservable implements View {
+public class CLI extends ViewObservable implements View {
 
     private final PrintStream out;
     private Thread inputThread;
