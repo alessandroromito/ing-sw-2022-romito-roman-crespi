@@ -40,7 +40,7 @@ public class Game extends Observable {
         for(String nick : playersNicknames){
             players.add(new Player(nick));
         }
-        for(Player player : players) player.createScoreboard(players.size(),player);
+        for(Player player : players) player.createScoreboard(players.size(), player);
 
         this.map = new Map(players.size());
         this.bag = new Bag();
@@ -98,7 +98,7 @@ public class Game extends Observable {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
-        getPlayers().get(1).setPlayerCards( components.subList(38,48));
+        getPlayers().get(1).setPlayerCards(components.subList(38,48));
 
         id = 49;
         for(int movement=1, val=1; id<=58; val++, movement++, id++ ){
@@ -311,7 +311,7 @@ public class Game extends Observable {
                     // Add 1 tower to the old dominant player
                     p.getScoreboard().addTower();
                     // switch island tower color
-                    island.switchTowerColor(p.getScoreboard().getTowerColor());
+                    island.addTower(p.getScoreboard().getTower());
                     // remove player tower from scoreboard
                     p.getScoreboard().removeTower();
                 }
@@ -482,7 +482,7 @@ public class Game extends Observable {
     // EXPERT GAME METHODS throw RunTimeException()
     // -----------------------------------------------------------
 
-    public void use_209 (int studentPos,MapPositions island){
+    public void use_209 (int studentPos, MapPositions island){
         throw new RuntimeException();
     }
 

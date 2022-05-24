@@ -314,7 +314,7 @@ public class GameController implements Observer {
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
             switch(useEffectMessage.getCharacterCardID()){
-                case 209 -> game.
+                case 209 -> game.use_209();
             }
 
         }

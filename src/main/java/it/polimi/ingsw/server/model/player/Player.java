@@ -25,7 +25,7 @@ public class Player {
         this.nickname = nickname;
     }
 
-        public void createScoreboard(int nofplayers,Player p){
+        public void createScoreboard(int nofplayers, Player p){
         ScoreboardFactory s = new ScoreboardFactory();
         this.scoreboard = s.createScoreboard(nofplayers,p);
     }

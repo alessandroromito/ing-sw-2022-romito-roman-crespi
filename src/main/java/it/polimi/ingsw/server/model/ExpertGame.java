@@ -122,14 +122,14 @@ public class ExpertGame extends Game {
     }
 
     //aggiornare la visualizzazione per le ghost island
-    public void use_209 (int studentPos,MapPositions island) {
+    public void use_209 (int studentPos, int islandNumber) {
         try {
             if(activeCardID != 209)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_209 temp = (Card_209) activeCard;
 
-            StudentDisc moving = temp.use(studentPos,(StudentDisc)getComponent(bag.pickSorted()));
-            moving.setPosition(island);
+            StudentDisc moving = temp.use(studentPos, (StudentDisc)getComponent(bag.pickSorted()));
+            map.getIsland(islandNumber).addStudent(moving.getColor());
             deleteActiveCard();
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
@@ -334,7 +334,6 @@ public class ExpertGame extends Game {
         } catch (ActiveCardAlreadyExistingException e) {
             e.printStackTrace();
         }
-
     }
 
     //da chiamare sempre a fine turno

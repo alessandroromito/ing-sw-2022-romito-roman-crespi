@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.EntranceFullException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.Tower;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ public class ScoreboardX2p implements Scoreboard{
     private final StudentDisc[] entrance;
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
-    private int towerLine;
+    private ArrayList<Tower> towers = new ArrayList<Tower>(8);
     private TowerColors towerColor;
     private Player player;
 
@@ -22,7 +23,7 @@ public class ScoreboardX2p implements Scoreboard{
         this.player = player;
         entrance = new StudentDisc[7];
         for(int i=0;i<7;i++) entrance[i] = null;
-        towerLine = 8;
+
         professorTable = new boolean[5];
         diningRoom = new Integer[5];
         for(int i=0;i<5;i++){
@@ -61,7 +62,7 @@ public class ScoreboardX2p implements Scoreboard{
 
     @Override
     public int getNumTowers() {
-        return this.towerLine;
+        return towers.size();
     }
 
     @Override
