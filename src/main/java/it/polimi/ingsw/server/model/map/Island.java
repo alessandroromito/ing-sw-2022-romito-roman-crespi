@@ -2,18 +2,21 @@ package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
-import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
+import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.Tower;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
+
+import java.util.ArrayList;
 
 public class Island {
 
     protected final int ID;
     protected Integer[] numberOfColors = {0,0,0,0,0};
+    protected ArrayList<StudentDisc> students = new ArrayList<>();
     private int groupID = -1;
-    protected int towerNumber = 0;
-    protected TowerColors towerColor = null;
+    protected Tower tower = null;
     private boolean disabled = false;
     protected NoEntryTile noTile = null;
 
@@ -59,7 +62,6 @@ public class Island {
     public int getInfluence_214 (Player p){
         int influence = 0;
         Scoreboard scoreboard = p.getScoreboard();
-        TowerColors playerTowerColor = scoreboard.getTowerColor();
 
         for(PawnColors color: PawnColors.values()){
             if(scoreboard.getProfessor(color) ){
@@ -90,7 +92,7 @@ public class Island {
     }
 
     public int getTowerNumber(){
-        return this.towerNumber;
+        return tower == null ? 0 : 1;
     }
 
     public void disable(){
@@ -101,24 +103,32 @@ public class Island {
         return disabled;
     }
 
-    public void addStudent(PawnColors color){
-        numberOfColors[color.ordinal()] ++;
+    /**
+     * Method to add student on the island
+     * @param studentDisc
+     */
+    public void addStudent(StudentDisc studentDisc){
+        students.add(studentDisc);
+        numberOfColors[studentDisc.getColor().ordinal()]++;
     }
 
-    public void addTower(TowerColors color) throws AddingWrongColorTowerToIslandException {
+    /**
+     *
+     * @param tower
+     */
+    public void addTower(Tower tower) {
         if(getTowerNumber() == 0) {
-            towerNumber++;
-            towerColor = color;
+            this.tower = tower;
         }
         else System.out.println("There is already a tower in this island!");
     }
 
     public TowerColors getTowerColor(){
-        return this.towerColor;
+        return tower.getColor();
     }
 
-    public void switchTowerColor(TowerColors color){
-        this.towerColor = color;
+    public void switchTowerColor(Tower tower){
+        this.tower = tower;
     }
 
     public void addNoEntryTile (NoEntryTile t){
@@ -126,8 +136,7 @@ public class Island {
     }
 
     public boolean checkNoEntryTile (){
-        if(noTile == null)  return false;
-        else return true;
+        return noTile != null;
     }
 
     public NoEntryTile removeNoEntryTile (){
