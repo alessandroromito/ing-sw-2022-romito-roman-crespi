@@ -78,7 +78,7 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdatePickCloud(List<Cloud> cloudList) {
-
+        client.sendMessage(new CloudMessage(this.nickname, cloudList));
     }
 
     @Override
@@ -98,7 +98,8 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdatePickCloud(Cloud cloud) {
-        client.sendMessage(new CloudMessage(this.nickname, List.of(cloud)));
+        //client.sendMessage(new CloudMessage(this.nickname, List.of(cloud)));
+        //già implementata sopra come lista
     }
 
     @Override

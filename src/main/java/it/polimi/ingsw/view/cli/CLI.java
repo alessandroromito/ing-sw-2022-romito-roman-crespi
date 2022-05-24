@@ -245,7 +245,21 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askToChooseACloud(List<Cloud> cloudList) {
-
+        int choose = -1;
+        do {
+            out.println("Scegli tra le seguenti Nuvole:");
+            for (Cloud cloud : cloudList) out.println(cloud);
+            out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
+            try {
+                choose = Integer.parseInt(readRow());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(choose >= cloudList.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
+        }while(choose >= cloudList.size()-1 || choose < 0);
+        List<Cloud> response = new ArrayList<Cloud>();
+        response.add(cloudList.get(choose));
+        notifyObserver(obs -> obs.onUpdatePickCloud(response));
     }
 
     @Override
