@@ -8,12 +8,13 @@ import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
 
     private AssistantCard currentAssistantCard;
-    private List<AssistantCard> hand;
+    private List<AssistantCard> hand = new ArrayList<>();
     private int coin = 0;
     private String nickname;
     private Scoreboard scoreboard;

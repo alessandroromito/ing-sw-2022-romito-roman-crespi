@@ -112,6 +112,10 @@ public class ExpertGame extends Game {
         return activeCardID;
     }
 
+    public CharacterCard getActiveCard() {
+        return activeCard;
+    }
+
     public void setCard_210_ForTest(){
         Player mps[] = new Player [5];
         for(int k=0;k<5;k++)    mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
@@ -172,21 +176,20 @@ public class ExpertGame extends Game {
         // Da implementare
     }
 //difficile
-    public void use_213 () throws ActiveCardAlreadyExistingException{
+    public void use_213 (int islandNumber) throws ActiveCardAlreadyExistingException, ZeroNoEntryTyleRemainingException {
         if(activeCardID != 213) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-
-        //da implementare
-
+        Card_213 temp = (Card_213) activeCard;
+        map.getIsland(islandNumber).addNoEntryTile(temp.use());
     }
 
-/*    public void use_214 () throws ActiveCardAlreadyExistingException{
+    public void use_214 () throws ActiveCardAlreadyExistingException{
         if(activeCardID != 214) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         activeCardID = 214;
     }
-*/
+
     @Override
     public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
-/*        if(activeCardID == 214) {
+        if(activeCardID == 214) {
             int bestInfluence = 0;
             Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
             Player dominantPlayer = null;
@@ -198,7 +201,11 @@ public class ExpertGame extends Game {
             }
 
             if (island.checkNoEntryTile()) {
-                island.removeNoEntryTile().setPosition(MapPositions.CARD_213);
+                Card_213 temp = null;
+                for(int i=0;i<3;i++)
+                    if(pool[i].getClass() == Card_213.class)
+                         temp = (Card_213) pool[i];
+                temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
 
@@ -211,11 +218,7 @@ public class ExpertGame extends Game {
                         dominantPlayer = p;
                     }
                 }
-                try {
-                    moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-                } catch (DisabledIslandException e) {
-                    System.out.println("ERROR Moving First Tower to Island!");
-                }
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             }
 
             // CASE there is already a tower
@@ -227,14 +230,10 @@ public class ExpertGame extends Game {
             }
 
             if (island.getInfluence_214(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence) {
-                try {
-                    moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
-                } catch (DisabledIslandException e) {
-                    System.out.println("ERROR Switching Tower!");
-                }
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
             }
         }
-        else */
+        else
         if(activeCardID == 217){
             Card_217 card = (Card_217) activeCard;
             int bestInfluence = 0;

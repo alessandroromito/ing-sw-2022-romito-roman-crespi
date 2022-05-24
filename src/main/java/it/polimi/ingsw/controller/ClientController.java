@@ -45,7 +45,7 @@ public class ClientController implements ViewObserver, Observer {
             queue.execute(view::askPlayerNickname);
         }
         catch(IOException e){
-            queue.execute(() -> view.showLoginResult(false, false);
+            queue.execute(() -> view.showLoginResult(false, false));
         }
     }
 
