@@ -1,6 +1,4 @@
 package it.polimi.ingsw.server.model.map;
-//implementationPhase
-//concept: si crea una ghostIsland per ogni grupid dopo i merging, id_ghost = groupID
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;

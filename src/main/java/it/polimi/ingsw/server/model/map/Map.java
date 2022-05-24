@@ -26,7 +26,6 @@ public class Map {
             islands.add(new Island(i));
         }
 
-        // Create clouds object based on PlayerNumber
         clouds = new ArrayList<>();
         for(int i=0; i<playerNumber; i++){
             clouds.add(new Cloud(i));
@@ -51,7 +50,8 @@ public class Map {
         try{
             if(cloudID < clouds.size()) {
                 for (Cloud cloud : clouds) {
-                    if (cloud.getCloudID() == cloudID) return cloud;
+                    if (cloud.getCloudID() == cloudID)
+                        return cloud;
                 }
             }
             else throw new CloudNotFoundException("Cloud not found!");
@@ -73,7 +73,6 @@ public class Map {
     public int getMotherNaturePosition(){
         return motherNaturePos;
     }
-
 
     public void merge(int IDIsland1, int IDIsland2) throws DifferentColorTowerException, FullGroupIDListException {
         int groupID = 0;

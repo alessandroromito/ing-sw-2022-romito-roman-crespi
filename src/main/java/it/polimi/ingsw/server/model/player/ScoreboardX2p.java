@@ -3,7 +3,9 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.EntranceFullException;
+import it.polimi.ingsw.server.exception.MissingProfessorException;
 import it.polimi.ingsw.server.exception.StudentNotInEntranceException;
+import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
@@ -11,18 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreboardX2p implements Scoreboard{
-    private final StudentDisc[] entrance;
+
+    private final StudentDisc[] entrance = new StudentDisc[7];
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
-    private ArrayList<Tower> towers = new ArrayList<Tower>(8);
+    private ArrayList<ProfessorPawn> professorList = new ArrayList<>();
+    private ArrayList<Tower> towers = new ArrayList<>(8);
     private TowerColors towerColor;
-    private Player player;
 
-
-    public ScoreboardX2p(Player player){
-        this.player = player;
-        entrance = new StudentDisc[7];
-        for(int i=0;i<7;i++) entrance[i] = null;
+    public ScoreboardX2p(TowerColors towerColor){
+        for(int i=0; i<7; i++) entrance[i] = null;
 
         professorTable = new boolean[5];
         diningRoom = new Integer[5];
@@ -46,13 +46,27 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public void setProfessorTrue(PawnColors color) {
-        this.professorTable[color.ordinal()] = true;
+    public void addProfessor(ProfessorPawn professor) {
+        professorList.add(professor);
+        professorTable[professor.getColorInt()] = true;
     }
 
     @Override
-    public void setProfessorFalse(PawnColors color) {
-        this.professorTable[color.ordinal()] = false;
+    public ProfessorPawn removeProfessor(PawnColors color) {
+        try{
+            professorTable[color.ordinal()] = false;
+            for(ProfessorPawn professor : professorList){
+                if(professor.getColor() == color) {
+                    ProfessorPawn temp = professor;
+                    professorList.remove(professor);
+                    return temp;
+                }
+            }
+            throw new MissingProfessorException("Unable to remove professor");
+        } catch (MissingProfessorException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -88,7 +102,6 @@ public class ScoreboardX2p implements Scoreboard{
                     entrance[k] = student;
                     return;
                 }
-
             throw new EntranceFullException("Entrance is full");
         } catch (EntranceFullException e) {
             throw new RuntimeException(e);
@@ -121,13 +134,14 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
-    public void removeTower() {
-        this.towerLine--;
+    public Tower removeTower() {
+        towers.remove(towers.size()-1);
+        return towers.get(towers.size()-1);
     }
 
     @Override
-    public void addTower() {
-        this.towerLine++;
+    public void addTower(Tower tower) {
+        towers.add(tower);
     }
 
     @Override
