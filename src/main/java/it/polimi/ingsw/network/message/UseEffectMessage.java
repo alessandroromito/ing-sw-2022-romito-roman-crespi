@@ -23,6 +23,6 @@ public class UseEffectMessage extends Message{
 
     @Override
     public String toString() {
-        return "PlayerNumberRequest[nickname:" + getNickname() + "]";
+        return "UseEffectMessage[nickname:" + getNickname() + "characterCard: " + getCharacterCardID() +"]";
     }
 }

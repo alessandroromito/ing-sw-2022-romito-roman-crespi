@@ -49,7 +49,7 @@ public class ExpertGame extends Game {
             switch(vector12.get(i)){
                 case 0:
                     ArrayList<StudentDisc> t = new ArrayList<StudentDisc>();
-                    for(int k=0;k<4;k++)    {t.add((StudentDisc) getComponent(bag.pickSorted()));   t.get(k).setPosition(MapPositions.CARD_209);}
+                    for(int k=0;k<4;k++)    {t.add(bag.pickSorted());   t.get(k).setPosition(MapPositions.CARD_209);}
                     pool.add(new Card_209(t));
                     break;
                 case 1:
@@ -83,7 +83,7 @@ public class ExpertGame extends Game {
         }
     }
 
-    public void useCharacter(int characterCardID){
+    public boolean useCharacter(int characterCardID){
         try{
             if(activeCardID != -1)
                 throw new ActiveCardAlreadyExistingException("There is an active card already!");
@@ -94,11 +94,13 @@ public class ExpertGame extends Game {
                     activeCardID = activeCard.getID();
                     activeCard.addCost();
                     getActivePlayer().removeCoin(activeCard.getCost());
+                    return true;
                 }
 
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
         }
+        return false;
     }
 
     @Override
@@ -117,19 +119,19 @@ public class ExpertGame extends Game {
 
     public void setCard_210_ForTest(){
         Player mps[] = new Player [5];
-        for(int k=0;k<5;k++)    mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
+        for(int k=0;k<5;k++)
+            mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
         pool.add(new Card_210(mps));
     }
 
-    //aggiornare la visualizzazione per le ghost island
     public void use_209 (int studentPos, int islandNumber) {
         try {
             if(activeCardID != 209)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_209 temp = (Card_209) activeCard;
 
-            StudentDisc moving = temp.use(studentPos, (StudentDisc)getComponent(bag.pickSorted()));
-            map.getIsland(islandNumber).addStudent(moving.getColor());
+            StudentDisc moving = temp.use(studentPos, bag.pickSorted());
+            map.getIsland(islandNumber).addStudent(moving);
             deleteActiveCard();
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
@@ -216,8 +218,8 @@ public class ExpertGame extends Game {
             if (island.checkNoEntryTile()) {
                 Card_213 temp = null;
                 for(int i=0;i<3;i++)
-                    if(pool[i].getClass() == Card_213.class)
-                         temp = (Card_213) pool[i];
+                    if(pool.get(i).getClass() == Card_213.class)
+                         temp = (Card_213) pool.get(i);
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
@@ -231,7 +233,7 @@ public class ExpertGame extends Game {
                         dominantPlayer = p;
                     }
                 }
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
             }
 
             // CASE there is already a tower
@@ -243,7 +245,7 @@ public class ExpertGame extends Game {
             }
 
             if (island.getInfluence_214(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence) {
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
             }
         }
         else
@@ -273,7 +275,7 @@ public class ExpertGame extends Game {
                         dominantPlayer = p;
                     }
                 }
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
             }
 
             // CASE there is already a tower
@@ -285,7 +287,7 @@ public class ExpertGame extends Game {
             }
 
             if(island.getInfluence_217(Objects.requireNonNull(opponentPlayer),card.getDisColor()) > currentPlayerInfluence){
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
             }
         }
         else super.checkInfluence(islandID);
@@ -303,7 +305,7 @@ public class ExpertGame extends Game {
         Card_219 card = (Card_219) activeCard;
 
         scoreboard.addStudentOnDining(card.getStudent(number));
-        ((Card_219) activeCard).addStudent((StudentDisc) getComponent(bag.pickSorted()));
+        ((Card_219) activeCard).addStudent(bag.pickSorted());
 
     }
 

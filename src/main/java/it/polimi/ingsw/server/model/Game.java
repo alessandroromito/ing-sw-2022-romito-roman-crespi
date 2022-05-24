@@ -40,7 +40,11 @@ public class Game extends Observable {
         for(String nick : playersNicknames){
             players.add(new Player(nick));
         }
-        for(Player player : players) player.createScoreboard(players.size(), player);
+
+        players.get(0).createScoreboard(players.size(), TowerColors.BLACK);
+        players.get(1).createScoreboard(players.size(), TowerColors.WHITE);
+        if(players.size() == 3)
+            players.get(2).createScoreboard(players.size(), TowerColors.GREY);
 
         this.map = new Map(players.size());
         this.bag = new Bag();
@@ -110,14 +114,6 @@ public class Game extends Observable {
         if(players.size() == 3)
             getPlayers().get(2).setPlayerCards( components.subList(48,58));
 
-        // Create STUDENTS
-        id = 59;
-        for(PawnColors color: PawnColors.values()){
-            for(int count=0; count<26; count++){
-                components.add(new StudentDisc(id, color));
-                id++;
-            }
-        }
     }
 
     /**
@@ -134,25 +130,25 @@ public class Game extends Observable {
         // 3) Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            tempArrayStudents.add((StudentDisc) getComponent(bag.pickSorted()));
+            tempArrayStudents.add(bag.pickSorted());
         }
         Collections.shuffle(tempArrayStudents);
         for(StudentDisc stud: tempArrayStudents) {
             int islandNum = 0;
             if(!(islandNum == oppositePosition())){
-                map.getIsland(islandNum).addStudent(stud.getColor());
+                map.getIsland(islandNum).addStudent(stud);
                 stud.setPosition(MapPositions.valueOf("ISLAND_" + islandNum));
             }
         }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
             for(int i=0; i<7; i++) {
-                StudentDisc stud = (StudentDisc) getComponent(bag.pickSorted());
+                StudentDisc stud = bag.pickSorted();
                 p.getScoreboard().addStudentOnEntrance(stud);
             }
             if (players.size() == 3){
-                StudentDisc stud1 = (StudentDisc) getComponent(bag.pickSorted());
-                StudentDisc stud2 = (StudentDisc) getComponent(bag.pickSorted());
+                StudentDisc stud1 = bag.pickSorted();
+                StudentDisc stud2 = bag.pickSorted();
                 p.getScoreboard().addStudentOnEntrance(stud1);
                 p.getScoreboard().addStudentOnEntrance(stud2);
             }
@@ -237,12 +233,12 @@ public class Game extends Observable {
         for(Cloud cloud: map.getClouds()){
             try {
                 if (cloud.getCloudStudents().isEmpty()) {
-                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
-                    cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                    cloud.addStudent(bag.pickSorted());
+                    cloud.addStudent(bag.pickSorted());
+                    cloud.addStudent(bag.pickSorted());
 
                     if (players.size() == 3)
-                        cloud.addStudent((StudentDisc) getComponent(bag.pickSorted()));
+                        cloud.addStudent(bag.pickSorted());
                 }
                 else throw new CloudNotEmptyException("Cloud is NOT empty before refill!");
             } catch (CloudNotEmptyException e) {
@@ -278,23 +274,23 @@ public class Game extends Observable {
 
         if(map.getIsland(numIsland).isDisabled()) {
             GhostIsland ghostIsland = map.getGhostIsland(numIsland);
-            ghostIsland.addStudent(stud.getColor());
+            ghostIsland.addStudent(stud);
             stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
         else {
             Island island = map.getIsland(numIsland);
-            island.addStudent(stud.getColor());
+            island.addStudent(stud);
             stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
     }
 
     /**
      *
-     * @param towerColor
+     * @param tower
      * @param numIsland
      * @throws DisabledIslandException
      */
-    public void moveTowerToIsland(TowerColors towerColor, int numIsland) {
+    public void moveTowerToIsland(Tower tower, int numIsland) {
         try{
              Island island = map.getIsland(numIsland);
 
@@ -309,11 +305,9 @@ public class Game extends Observable {
                 TowerColors oldColor = p.getScoreboard().getTowerColor();
                 if(island.getTowerColor() == oldColor){
                     // Add 1 tower to the old dominant player
-                    p.getScoreboard().addTower();
+                    p.getScoreboard().addTower(tower);
                     // switch island tower color
-                    island.addTower(p.getScoreboard().getTower());
-                    // remove player tower from scoreboard
-                    p.getScoreboard().removeTower();
+                    island.addTower(p.getScoreboard().removeTower());
                 }
             }
         } catch (DisabledIslandException e) {
@@ -331,8 +325,7 @@ public class Game extends Observable {
 
         for(Player p : players){
             if(!p.equals(currentPlayer) && p.getScoreboard().getProfessor(color)){
-                p.getScoreboard().setProfessorFalse(color);
-                currentPlayer.getScoreboard().setProfessorTrue(color);
+                currentPlayer.getScoreboard().addProfessor(p.getScoreboard().removeProfessor(color));
             }
         }
     }
@@ -371,7 +364,7 @@ public class Game extends Observable {
                     dominantPlayer = p;
                 }
             }
-            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
         }
 
         // CASE there is already a tower
@@ -383,7 +376,7 @@ public class Game extends Observable {
         }
 
         if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
-            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().getTowerColor(), islandID);
+            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
         }
     }
 
@@ -393,7 +386,7 @@ public class Game extends Observable {
 
         for(Player player: players){
             if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
-                currentPlayer.getScoreboard().setProfessorTrue(color);
+                currentPlayer.getScoreboard().addProfessor(player.getScoreboard().removeProfessor(color));
             }
         }
     }
@@ -416,8 +409,6 @@ public class Game extends Observable {
             }
         }
         // Set the position
-        MotherNature MN = (MotherNature) getComponent(1);
-        MN.setPosition(MapPositions.valueOf("ISLAND_" + motherNaturePos));
         map.setMotherNaturePos(motherNaturePos);
     }
 
@@ -481,6 +472,10 @@ public class Game extends Observable {
     // -----------------------------------------------------------
     // EXPERT GAME METHODS throw RunTimeException()
     // -----------------------------------------------------------
+
+    public boolean useCharacter(int characterCardID){
+        throw new RuntimeException();
+    }
 
     public void use_209 (int studentPos, MapPositions island){
         throw new RuntimeException();
