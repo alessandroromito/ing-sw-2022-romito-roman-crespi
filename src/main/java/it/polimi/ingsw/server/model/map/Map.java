@@ -4,6 +4,8 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
+Ghostimport it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.Tower;
 
 import java.util.ArrayList;
 
@@ -76,18 +78,19 @@ public class Map {
 
     public void merge(int IDIsland1, int IDIsland2) throws DifferentColorTowerException, FullGroupIDListException {
         int groupID = 0;
-        Integer[] noc = new Integer[PawnColors.values().length];
-        Integer[] noc_e;
-        Integer[] noc_d;
-        noc_e = islands.get(IDIsland1).getNumberOfColors();
-        noc_d = islands.get(IDIsland2).getNumberOfColors();
-        //noc parameter initialization
-        for(int i = 0; i < PawnColors.values().length - 1; i++) noc[i] = noc_e[i] + noc_d[i];
+        ArrayList<StudentDisc> students = islands.get(IDIsland1).getStudents();
+        ArrayList<Tower> towers = islands.get(IDIsland1).getTowers();
+
+        for(StudentDisc student: islands.get(IDIsland2).getStudents())
+            students.add(student);
+
+        for(Tower tower: islands.get(IDIsland2).getTowers())
+            towers.add(tower);
 
         for(int i = 0; i < groupIDsGhostIsland.length; i++){
             if (groupIDsGhostIsland[i] == null) {
                 if(islands.get(IDIsland1).getTowerColor() == islands.get(IDIsland2).getTowerColor()){
-                    groupIDsGhostIsland[i] = new GhostIsland(i, noc, islands.get(IDIsland1).getTowerNumber() + islands.get(IDIsland2).getTowerNumber(), islands.get(IDIsland1).getTowerColor());
+                    groupIDsGhostIsland[i] = new GhostIsland(i,  , islands.get(IDIsland1).getTowers().addAll(islands.get(IDIsland1).getTowers()));
                     groupID = i;
                     break;
                 }

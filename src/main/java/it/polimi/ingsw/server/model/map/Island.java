@@ -16,7 +16,7 @@ public class Island {
     protected Integer[] numberOfColors = {0,0,0,0,0};
     protected ArrayList<StudentDisc> students = new ArrayList<>();
     private int groupID = -1;
-    protected Tower tower = null;
+    protected ArrayList<Tower> towers = new ArrayList<>();
     private boolean disabled = false;
     protected NoEntryTile noTile = null;
 
@@ -37,6 +37,14 @@ public class Island {
 
     public int getGroupID(){
         return this.groupID;
+    }
+
+    public ArrayList<StudentDisc> getStudents(){
+        return students;
+    }
+
+    public ArrayList<Tower> getTowers() {
+        return towers;
     }
 
     public void setGroupID(int groupID){this.groupID = groupID;}
@@ -92,7 +100,7 @@ public class Island {
     }
 
     public int getTowerNumber(){
-        return tower == null ? 0 : 1;
+        return towers.size();
     }
 
     public void disable(){
@@ -118,17 +126,25 @@ public class Island {
      */
     public void addTower(Tower tower) {
         if(getTowerNumber() == 0) {
-            this.tower = tower;
+            towers.add(tower);
         }
         else System.out.println("There is already a tower in this island!");
     }
 
     public TowerColors getTowerColor(){
-        return tower.getColor();
+        return towers.get(0).getColor();
     }
 
-    public void switchTowerColor(Tower tower){
-        this.tower = tower;
+    public ArrayList<Tower> switchTowerColor(ArrayList<Tower> towers){
+        ArrayList<Tower> temp;
+        temp = this.towers;
+        this.towers = towers;
+        return temp;
+    }
+
+    public void deleteComponents(){
+        towers = null;
+        students = null;
     }
 
     public void addNoEntryTile (NoEntryTile t){
