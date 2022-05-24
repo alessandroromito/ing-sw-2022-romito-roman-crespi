@@ -147,4 +147,10 @@ public class Map {
         groupIDsGhostIsland[IDGhostIsland2] = null;
     }
 
+    public Object getGhostIslandNumber() {
+        int c=0;
+        while(groupIDsGhostIsland[c]!=null)
+            c++;
+        return c;
+    }
 }
