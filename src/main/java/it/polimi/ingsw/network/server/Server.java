@@ -40,8 +40,8 @@ public class Server {
 
     public void removeClient(String nickname) {
         clientHandlerMap.remove(nickname);
-        // rimuovere virtualView
-        // mandare sempre messaggio disconnessione agli altri giocatori
+        gameController.getVirtualViewMap().remove(nickname);
+        gameController.showGenericMessageToAll("Player " + nickname + " disconnected!");
     }
 
     public void onDisconnect(ClientHandler clientHandler) {

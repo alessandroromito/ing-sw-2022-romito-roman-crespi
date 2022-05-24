@@ -159,8 +159,6 @@ public class GameController implements Observer {
         }
     }
 
-
-
     /*
             if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
 
@@ -310,11 +308,14 @@ public class GameController implements Observer {
     public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
         ExpertGame tempGame = (ExpertGame) game ;
-    //    virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), tempGame.);
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
     }
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
+            switch(useEffectMessage.getCharacterCardID()){
+                case 209 -> game.
+            }
 
         }
     }
@@ -380,5 +381,9 @@ public class GameController implements Observer {
 
     public List<String> getPlayersNicknames() {
         return playersNicknames;
+    }
+
+    public Map<String, VirtualView> getVirtualViewMap() {
+        return virtualViewMap;
     }
 }
