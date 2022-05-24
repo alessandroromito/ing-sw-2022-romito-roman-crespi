@@ -217,8 +217,19 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void askToMoveMotherNature(int steps) {
-
+    public void askToMoveMotherNature(int maxSteps) {
+        int steps = 0;
+        do {
+            out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + "passi.");
+            try {
+                steps = Integer.parseInt(readRow());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(steps <= 0 || steps >= maxSteps) out.println("Impossibile muoversi di " + steps + "passi. Riprova!");
+            int finalSteps = steps;
+            notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
+        }while(steps <= 0 || steps >= maxSteps);
     }
 
     @Override

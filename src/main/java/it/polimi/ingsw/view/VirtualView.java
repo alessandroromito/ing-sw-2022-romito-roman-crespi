@@ -102,8 +102,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askToMoveMotherNature(int steps) {
-        clientHandler.sendMessage(new MoveMotherNatureMessage(Game.SERVER_NAME, steps));
+    public void askToMoveMotherNature(int maxSteps) {
+        clientHandler.sendMessage(new MoveMotherNatureMessage(Game.SERVER_NAME, maxSteps));
     }
 
     @Override

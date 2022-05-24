@@ -48,7 +48,7 @@ public interface View {
     void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber);
 
     //ask to move mother nature
-    void askToMoveMotherNature(int steps);
+    void askToMoveMotherNature(int maxSteps);
 
     //ask to choose a Cloud
     void askToChooseACloud(List<Cloud> cloudList);
