@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>softeng-GC8</groupId>
-	<artifactId>GC8</artifactId>
+	<artifactId>GC08</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
