@@ -9,11 +9,16 @@ import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ClientController implements ViewObserver, Observer {
     private final View view;
     private String nickname;
+    private final ExecutorService queue;
     private Client client;
 
     /**
@@ -22,11 +27,26 @@ public class ClientController implements ViewObserver, Observer {
      */
     public ClientController(View view) {
         this.view = view;
+        this.queue = Executors.newSingleThreadExecutor();
     }
 
     @Override
     public void update(Message message) {
 
+    }
+
+    @Override
+    public void onUpdateServerDetails(HashMap<String, String> server){
+        try{
+            client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
+            client.addObserver(this);
+            client.readMessage();
+            client.enablePinger(true);
+            queue.execute(view::askPlayerNickname);
+        }
+        catch(IOException e){
+            queue.execute(() -> view.showLoginResult(false, false);
+        }
     }
 
     @Override
