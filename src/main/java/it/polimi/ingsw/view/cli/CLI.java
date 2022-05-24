@@ -53,7 +53,6 @@ public class CLI extends ViewObservable implements View {
             }
         }while(!validInput);
 
-        //inserimento porta
         do{
             out.println("Port address: ");
             String port = readRow();
@@ -63,12 +62,12 @@ public class CLI extends ViewObservable implements View {
             }
             else {
                 clearCli();
-                out.println("Indirizzo vuoto o non valido! Riprova!");
+                out.println("Porta vuota o non valida! Riprova!");
                 validInput = false;
             }
         }while(!validInput);
         //observersrsrsrsrsrsrsrsrrsrsrsrsrsrsrsrrsrss
-        //notifyObserver(obs -> obs.onUpdateServerInfo(server));
+        notifyObserver(obs -> obs.onUpdateServerInfo(server));
         //
 
 
