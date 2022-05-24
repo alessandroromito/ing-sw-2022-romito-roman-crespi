@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
@@ -91,6 +92,11 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
+    public void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards){
+        client.sendMessage(new AssistantCardMessage(nickname, assistantCards));
+    }
+
+    @Override
     public void onUpdatePickCloud(Cloud cloud) {
         client.sendMessage(new CloudMessage(this.nickname, List.of(cloud)));
     }
@@ -99,4 +105,6 @@ public class ClientController implements ViewObserver, Observer {
     public void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber) {
         client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));
     }
+
+
 }

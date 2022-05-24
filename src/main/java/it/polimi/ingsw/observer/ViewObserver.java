@@ -1,6 +1,7 @@
 package it.polimi.ingsw.observer;
 
 import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
@@ -32,6 +33,8 @@ public interface ViewObserver {
     void onUpdatePickCloud(Cloud cloud);
 
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
+
+    void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards);
 
     void update(Message message);
 

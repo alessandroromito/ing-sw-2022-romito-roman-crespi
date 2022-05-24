@@ -9,10 +9,7 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 
 import java.io.PrintStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -208,7 +205,21 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-
+        int choose = -1;
+        do {
+            out.println("Scegli tra le seguenti Carte Assistente:");
+            for (AssistantCard assistantCard : assistantCards) out.println(assistantCard);
+            out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
+            try {
+                choose = Integer.parseInt(readRow());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(choose >= assistantCards.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
+        }while(choose >= assistantCards.size()-1 || choose < 0);
+        List<AssistantCard> response = new ArrayList<AssistantCard>();
+        response.add(assistantCards.get(choose));
+        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(response));
     }
 
     @Override
