@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.*;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
@@ -477,5 +478,39 @@ public class Game extends Observable {
         return players.size();
     }
 
+    // -----------------------------------------------------------
+    // EXPERT GAME METHODS throw RunTimeException()
+    // -----------------------------------------------------------
 
+    public void use_209 (int studentPos,MapPositions island){
+        throw new RuntimeException();
+    }
+
+    public void use_210 (){
+        throw new RuntimeException();
+    }
+
+    public void endTurn_210() {
+        throw new RuntimeException();
+    }
+
+    public void use_211(int islandNumber){
+        throw new RuntimeException();
+    }
+
+    public void use_212(){
+        throw new RuntimeException();
+    }
+
+    public void use_217 (PawnColors p){
+        throw new RuntimeException();
+    }
+
+    public void disableCardEffects (){
+        throw new RuntimeException();
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+        throw new RuntimeException();
+    }
 }

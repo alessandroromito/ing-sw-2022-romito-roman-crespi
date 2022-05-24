@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ExpertGame extends Game {
     private int activeCardID;
     private CharacterCard activeCard;
-    private CharacterCard pool[] = new CharacterCard[3];
+    private ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
     /**
      * Default constructor
@@ -45,26 +45,25 @@ public class ExpertGame extends Game {
         }
         Collections.shuffle(vector12);
 
-        pool = new CharacterCard[3];
         for(int i=0;i<3;i++) {
             switch(vector12.get(i)){
                 case 0:
                     ArrayList<StudentDisc> t = new ArrayList<StudentDisc>();
                     for(int k=0;k<4;k++)    {t.add((StudentDisc) getComponent(bag.pickSorted()));   t.get(k).setPosition(MapPositions.CARD_209);}
-                    pool[i] = new Card_209(t);
+                    pool.add(new Card_209(t));
                     break;
                 case 1:
                     Player mps[] = new Player [5];
                     for(int k=0;k<5;k++)   mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
-                    pool[i] = new Card_210(mps);
+                    pool.add(new Card_210(mps));
                     break;
-                case 2: pool[i] = new Card_211();   break;
-                case 3: pool[i] = new Card_212();   break;
+                case 2: pool.add(new Card_211());   break;
+                case 3: pool.add(new Card_212());   break;
                 case 4:
                     for(int j=216; j<=225; j++){
                         components.add(new NoEntryTile(j));
                     }
-                    pool[i] = new Card_213(components.subList(209,212));
+                    pool.add(new Card_213(components.subList(209,212)));
                     break;
 //                case 5: pool[i] = new Card_214();   break;
             }
@@ -90,8 +89,8 @@ public class ExpertGame extends Game {
                 throw new ActiveCardAlreadyExistingException("There is an active card already!");
 
             for(int i=0;i<3;i++)
-                if(pool[i].getID() == characterCardID){
-                    activeCard = pool[i];
+                if(pool.get(i).getID() == characterCardID){
+                    activeCard = pool.get(i);
                     activeCardID = activeCard.getID();
                     activeCard.addCost();
                     getActivePlayer().removeCoin(activeCard.getCost());
@@ -115,61 +114,75 @@ public class ExpertGame extends Game {
     public void setCard_210_ForTest(){
         Player mps[] = new Player [5];
         for(int k=0;k<5;k++)    mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
-        pool[0] = new Card_210(mps);
+        pool.add(new Card_210(mps));
     }
 
     //aggiornare la visualizzazione per le ghost island
-    public void use_209 (int studentPos,MapPositions island) throws ActiveCardAlreadyExistingException {
-        if(activeCardID != 209) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-        Card_209 temp = (Card_209) activeCard;
+    public void use_209 (int studentPos,MapPositions island) {
+        try {
+            if(activeCardID != 209)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            Card_209 temp = (Card_209) activeCard;
 
-        StudentDisc moving = temp.use(studentPos,(StudentDisc)getComponent(bag.pickSorted()));
-        moving.setPosition(island);
-        deleteActiveCard();
+            StudentDisc moving = temp.use(studentPos,(StudentDisc)getComponent(bag.pickSorted()));
+            moving.setPosition(island);
+            deleteActiveCard();
+        } catch (ActiveCardAlreadyExistingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
-    public void use_210 () throws ActiveCardAlreadyExistingException, MissingPlayerNicknameException {
-        if(activeCardID != 210) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-        Card_210 temp = (Card_210) activeCard;
-        activeCardID = 210;
+    public void use_210 () {
+        try{
+            if(activeCardID != 210) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            Card_210 temp = (Card_210) activeCard;
+            activeCardID = 210;
 
-        Player t[] = new Player [5];
-        for(int i=2;i<=6;i++)
-            t[i-2] = players.get(components.get(i).getPosition().ordinal()/3);
-        temp.updateOldPos(t);
+            Player t[] = new Player [5];
+            for(int i=2;i<=6;i++)
+                t[i-2] = players.get(components.get(i).getPosition().ordinal()/3);
+            temp.updateOldPos(t);
 
-        for(Player p : players)
-            if (p != getActivePlayer())
-                for(int i=0;i<5;i++)
-                    if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
-                        if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == getActivePlayer().getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
-                            temp.updateOnePos(players.get(components.get(i).getPosition().ordinal()/3),i);
-                            moveProfessor(PawnColors.values()[i],getActivePlayer());
-                        }
+            for(Player p : players)
+                if (p != getActivePlayer())
+                    for(int i=0;i<5;i++)
+                        if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
+                            if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == getActivePlayer().getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
+                                temp.updateOnePos(players.get(components.get(i).getPosition().ordinal()/3),i);
+                                moveProfessor(PawnColors.values()[i],getActivePlayer());
+                            }
+        } catch (ActiveCardAlreadyExistingException e) {
+
+        }
     }
 
-    public void endTurn_210() throws MissingPlayerNicknameException {
+    public void endTurn_210() {
         Card_210 temp = (Card_210) activeCard;
         for(int i=0;i<5;i++){
             moveProfessor(PawnColors.values()[i],temp.getOldPos(i));
         }
     }
 
-    public void use_211 (int islandNumber) throws ActiveCardAlreadyExistingException {
-        if(activeCardID != 211) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+    public void use_211 (int islandNumber) {
         try{
-            checkInfluence(islandNumber);}
-        catch (MissingPlayerNicknameException e){
-            System.out.println("Wrong player nickname");
+            if(activeCardID != 211)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            checkInfluence(islandNumber);
+        } catch (MissingPlayerNicknameException | ActiveCardAlreadyExistingException e) {
+            throw new RuntimeException(e);
         }
     }
 
     //Sposta mother nature fino a 2 pos in più
-    public void use_212 () throws ActiveCardAlreadyExistingException{
-        if(activeCardID != 212) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-        activeCardID = 212;
-        // Da implementare
+    public void use_212 () {
+        try {
+            if(activeCardID != 212)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            activeCardID = 212;
+        } catch (ActiveCardAlreadyExistingException e) {
+            throw new RuntimeException(e);
+        }
     }
 //difficile
     public void use_213 () throws ActiveCardAlreadyExistingException{
@@ -279,7 +292,6 @@ public class ExpertGame extends Game {
         else super.checkInfluence(islandID);
     }
 
-
     /**
      * EFFECT: Take 1 student from this card and place it on your dining room,
      *         then take 1 student from the bag and place it on this card
@@ -314,20 +326,24 @@ public class ExpertGame extends Game {
         p.setAdditionalPoints(false);
     }
 
-    public void use_217 (PawnColors p) throws ActiveCardAlreadyExistingException{
-        if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-        activeCardID = 217;
-        Card_217 card = (Card_217) activeCard;
-        card.setDisColor(p);
+    public void use_217 (PawnColors p){
+        try{
+            if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            activeCardID = 217;
+            Card_217 card = (Card_217) activeCard;
+            card.setDisColor(p);
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //da chiamare sempre a fine turno
-    public void disableCardEffects () throws MissingPlayerNicknameException {
+    public void disableCardEffects () {
         switch(activeCardID){
             case 210: endTurn_210();
             case 216: endTurn_216(getActivePlayer());
         }
-
         deleteActiveCard();
     }
 

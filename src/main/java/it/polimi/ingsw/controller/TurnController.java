@@ -71,7 +71,7 @@ public class TurnController {
         Player player = game.getPlayerByNickname(getActivePlayer());
         List<AssistantCard> assistantCardLists = new ArrayList<>(player.getHand());
         VirtualView virtualView = virtualViewMap.get(getActivePlayer());
-        virtualView.askAssistantCard(getActivePlayer(), assistantCardLists);
+        virtualView.askAssistantCard(assistantCardLists);
     }
 
     /**
