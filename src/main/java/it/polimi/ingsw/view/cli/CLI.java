@@ -264,10 +264,10 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String nickname) {
-        if(connectionSuccessful)    askPlayerNickname();
-        else if(playerNicknameAccepted && connectionSuccessful) {
+        if(playerNicknameAccepted && connectionSuccessful) {
             out.println("Sei stato connesso al server con successo! Benvenuto " + nickname);
         }
+        else if(connectionSuccessful)    askPlayerNickname();
             else if(playerNicknameAccepted) out.println("Max numero di giocatori raggiunto.");
                 else showErrorMessage("Impossibile contattare il server. Riprova più tardi.");
     }
