@@ -304,13 +304,13 @@ public class GameController implements Observer {
 
     public void sendInfo(GameInfoMessage gameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(gameInfoMessage.getNickname());
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGroupIDsGhostIsland().length, game.getBag().getBagStudents().size(), turnController.getActivePlayer());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
     }
 
     public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
         ExpertGame tempGame = (ExpertGame) game ;
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGroupIDsGhostIsland().length, game.getBag().getBagStudents().size(), turnController.getActivePlayer(), tempGame.);
+    //    virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), tempGame.);
     }
 
     public void applyEffect(UseEffectMessage useEffectMessage) {

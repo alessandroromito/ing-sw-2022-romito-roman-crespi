@@ -42,7 +42,7 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateUseEffect(CharacterCard characterCard) {
-        client.sendMessage(new UseEffectMessage(this.nickname, List.of(characterCard)));
+    //    client.sendMessage(new UseEffectMessage(this.nickname, List.of(characterCard)));
     }
 
     @Override

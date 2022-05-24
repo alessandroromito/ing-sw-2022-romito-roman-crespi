@@ -15,9 +15,13 @@ public class Card_213 extends CharacterCard{
         for(int i=0;i<4;i++)    this.net.add((NoEntryTile) nt.get(i));
     }
 
-    public NoEntryTile use_213() throws ZeroNoEntryTyleRemainingException {
+    public NoEntryTile use() throws ZeroNoEntryTyleRemainingException {
         if(!net.isEmpty())
             return net.get(0);
         else throw new ZeroNoEntryTyleRemainingException("No entry tiles available");
+    }
+
+    public void recoverTile(NoEntryTile t){
+        net.add(t);
     }
 }

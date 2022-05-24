@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class Game extends Observable {
 
-    protected List<Player> players;
+    protected List<Player> players = new ArrayList<>();
     protected ArrayList<Component> components = new ArrayList<>();
     protected Map map;
     protected Bag bag;
@@ -37,7 +37,7 @@ public class Game extends Observable {
      */
     public Game(List<String> playersNicknames) {
         for(String nick : playersNicknames){
-            this.players.add(new Player(nick));
+            players.add(new Player(nick));
         }
         for(Player player : players) player.createScoreboard(players.size(),player);
 
@@ -88,7 +88,7 @@ public class Game extends Observable {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
-        getPlayers().get(0).setPlayerCards( components.subList(28,37));
+        getPlayers().get(0).setPlayerCards( components.subList(28,38));
 
         id = 39;
         for(int movement=1, val=1; id<=48; val++, movement++, id++ ){
@@ -97,7 +97,7 @@ public class Game extends Observable {
             id++;
             components.add(new AssistantCard(id, val, movement));
         }
-        getPlayers().get(1).setPlayerCards( components.subList(38,47));
+        getPlayers().get(1).setPlayerCards( components.subList(38,48));
 
         id = 49;
         for(int movement=1, val=1; id<=58; val++, movement++, id++ ){
@@ -107,7 +107,7 @@ public class Game extends Observable {
             components.add(new AssistantCard(id, val, movement));
         }
         if(players.size() == 3)
-            getPlayers().get(2).setPlayerCards( components.subList(48,57));
+            getPlayers().get(2).setPlayerCards( components.subList(48,58));
 
         // Create STUDENTS
         id = 59;
@@ -359,11 +359,6 @@ public class Game extends Observable {
 
         if(island.isDisabled()){
             island = map.getGhostIsland(islandID);
-        }
-
-        if(island.checkNoEntryTile()){
-            island.removeNoEntryTile().setPosition(MapPositions.CARD_218);
-            return;
         }
 
         // CASE no tower on island
