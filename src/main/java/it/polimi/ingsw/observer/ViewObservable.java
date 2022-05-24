@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.message.Message;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class ViewObservable {
     protected final List<ViewObserver> observers = new ArrayList<>();
@@ -20,9 +21,9 @@ public abstract class ViewObservable {
         observers.removeAll(observerList);
     }
 
-    protected void notifyObserver(Message message) {
+    protected void notifyObserver(Consumer<ViewObserver> lambda) {
         for(ViewObserver observer : observers) {
-            observer.update(message);
+            lambda.accept(observer);
         }
     }
 }

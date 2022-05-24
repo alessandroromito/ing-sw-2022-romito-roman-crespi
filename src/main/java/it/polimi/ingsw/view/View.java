@@ -54,7 +54,7 @@ public interface View {
     void askToChooseACloud(List<Cloud> cloudList);
 
     //show if the login has gone successful
-    void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful);
+    void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String nickname);
 
     //show victory message
     void showVictoryMessage(String winner);

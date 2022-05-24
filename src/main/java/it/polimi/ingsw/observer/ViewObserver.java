@@ -23,9 +23,17 @@ public interface ViewObserver {
 
     void onUpdateMotherNaturePosition(int steps);
 
+    void onUpdatePickCloud(List<Cloud> cloudList);
+
+    void onUpdateMoveStudent(int position, int islandNumber);
+
+    void onUpdateMoveStudent(List<StudentDisc> studentDiscsList, int position, int islandNumber);
+
     void onUpdatePickCloud(Cloud cloud);
 
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
 
     void update(Message message);
+
+    void onUpdateGameMode(String finalGamemode);
 }

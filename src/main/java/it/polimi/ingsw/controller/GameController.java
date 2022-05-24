@@ -136,7 +136,7 @@ public class GameController implements Observer {
                 //game.addObserver(virtualView);
                 playersNicknames.add(nickname);
 
-                virtualView.showLoginResult(true, true);
+                virtualView.showLoginResult(true, true, nickname);
                 virtualView.askPlayersNumber();
                 virtualView.askGameMode();
 
@@ -155,7 +155,7 @@ public class GameController implements Observer {
                 startGame();
             }
         } else {
-            virtualView.showLoginResult(true, false);
+            virtualView.showLoginResult(true, false, nickname);
         }
     }
 

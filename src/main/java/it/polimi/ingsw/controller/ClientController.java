@@ -36,6 +36,11 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
+    public void onUpdateGameMode(String finalGamemode) {
+        client.sendMessage(new GameModeMessage(finalGamemode=="Esperta"));
+    }
+
+    @Override
     public void onUpdateServerDetails(HashMap<String, String> server){
         try{
             client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
@@ -45,7 +50,7 @@ public class ClientController implements ViewObserver, Observer {
             queue.execute(view::askPlayerNickname);
         }
         catch(IOException e){
-            queue.execute(() -> view.showLoginResult(false, false));
+            queue.execute(() -> view.showLoginResult(false, false, nickname));
         }
     }
 
