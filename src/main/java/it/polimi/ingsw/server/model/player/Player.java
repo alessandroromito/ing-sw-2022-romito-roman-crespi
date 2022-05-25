@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model.player;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
@@ -18,11 +17,20 @@ public class Player {
     private int coin = 0;
     private String nickname;
     private Scoreboard scoreboard;
-    private GameController controller;
     private boolean additionalPoints = false;
 
     public Player(String nickname){
         this.nickname = nickname;
+
+        int val = 1;
+        int movement = 1;
+        for(int i = 0; i < 10; i++){
+            hand.add(new AssistantCard(i, val, movement));
+            val++;
+            hand.add(new AssistantCard(i, val, movement));
+            val++;
+            movement++;
+        }
     }
 
     public void createScoreboard(int numberOfPlayers, TowerColors towerColor){

@@ -67,49 +67,6 @@ public class Game extends Observable {
             components.add(new ProfessorPawn(id, color));
             id++;
         }
-
-        //Create TOWER
-        for(id = 7; id<=14; id++){
-            components.add(new Tower(id, TowerColors.BLACK));
-        }
-        for(id=15; id<=22; id++){
-            components.add(new Tower(id, TowerColors.WHITE));
-        }
-        if(players.size() == 3){
-            for(id=23; id<=28; id++){
-                components.add(new Tower(id, TowerColors.GREY));
-            }
-        }
-
-        // Create ASSISTANT CARD
-        id = 29;
-        for(int movement=1, val=1; id<=38; val++, movement++, id++ ){
-            components.add(new AssistantCard(id, val, movement));
-            val++;
-            id++;
-            components.add(new AssistantCard(id, val, movement));
-        }
-        getPlayers().get(0).setPlayerCards( components.subList(28,38));
-
-        id = 39;
-        for(int movement=1, val=1; id<=48; val++, movement++, id++ ){
-            components.add(new AssistantCard(id, val, movement));
-            val++;
-            id++;
-            components.add(new AssistantCard(id, val, movement));
-        }
-        getPlayers().get(1).setPlayerCards(components.subList(38,48));
-
-        id = 49;
-        for(int movement=1, val=1; id<=58; val++, movement++, id++ ){
-            components.add(new AssistantCard(id, val, movement));
-            val++;
-            id++;
-            components.add(new AssistantCard(id, val, movement));
-        }
-        if(players.size() == 3)
-            getPlayers().get(2).setPlayerCards( components.subList(48,58));
-
     }
 
     /**
