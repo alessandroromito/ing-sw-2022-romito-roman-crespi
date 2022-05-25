@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,13 +18,13 @@ class ScoreboardFactoryTest {
 
     @Test
     void createScoreboardX2p() {
-        Object s2 = s.createScoreboard(2,new Player("gigio"));
+        Object s2 = s.createScoreboard(2, TowerColors.BLACK);
         assertTrue(s2 instanceof ScoreboardX2p );
     }
 
     @Test
     void createScoreboardX3p() {
-        Object s2 = s.createScoreboard(3,new Player("dani"));
+        Object s2 = s.createScoreboard(3,TowerColors.BLACK);
         assertTrue(s2 instanceof ScoreboardX3p );
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.Component;
 import org.junit.jupiter.api.AfterEach;
@@ -43,12 +44,12 @@ public class PlayerTest {
 
     @Test
     void createScoreboard() {
-        p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
+        p1.createScoreboard(game.getNumberOfPlayer(), TowerColors.BLACK);
         assertEquals(ScoreboardX3p.class, p1.getScoreboard().getClass());
 
         players.remove(2);
 
-        p1.createScoreboard(game.getNumberOfPlayer(), game.getPlayerByNickname("Player 1"));
+        p1.createScoreboard(game.getNumberOfPlayer(), TowerColors.BLACK);
         assertEquals(ScoreboardX2p.class, p1.getScoreboard().getClass());
 
     }

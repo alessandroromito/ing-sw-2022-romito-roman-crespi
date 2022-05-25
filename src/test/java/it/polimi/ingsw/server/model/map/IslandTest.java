@@ -3,6 +3,8 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.ProfessorPawn;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,16 +63,16 @@ class IslandTest {
     void getInfluence() throws AddingWrongColorTowerToIslandException {
         Player player1 = null;
         player1 = game.getPlayerByNickname("Player 1");
-        player1.getScoreboard().setProfessorTrue(PawnColors.RED);
+        player1.getScoreboard().addProfessor(new ProfessorPawn(2,PawnColors.RED));
 
         island = game.getMap().getIsland(1);
 
-        island.addTower(player1.getScoreboard().getTowerColor());
-        island.addStudent(PawnColors.RED);
-        island.addStudent(PawnColors.BLUE);
-        island.addStudent(PawnColors.GREEN);
-        island.addStudent(PawnColors.RED);
-        island.addStudent(PawnColors.PINK);
+        island.addTower(player1.getScoreboard().removeTower());
+        island.addStudent(new StudentDisc(100,PawnColors.RED));
+        island.addStudent(new StudentDisc(101,PawnColors.BLUE));
+        island.addStudent(new StudentDisc(102,PawnColors.GREEN));
+        island.addStudent(new StudentDisc(103,PawnColors.RED));
+        island.addStudent(new StudentDisc(104,PawnColors.PINK));
 
         assertEquals(3, island.getInfluence(player1));
     }

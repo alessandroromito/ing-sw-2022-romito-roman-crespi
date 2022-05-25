@@ -48,13 +48,7 @@ class ExpertGame_Card_210 {
 
     @Test
     void use_210() {
-        try {
-            expertgame.use_210();
-        } catch (ActiveCardAlreadyExistingException e) {
-            e.printStackTrace();
-        } catch (MissingPlayerNicknameException e) {
-            e.printStackTrace();
-        }
+        expertgame.use_210();
         card = (Card_210) expertgame.getActiveCard();
         assertEquals(Card_210.class ,expertgame.getActiveCard().getClass());
     }

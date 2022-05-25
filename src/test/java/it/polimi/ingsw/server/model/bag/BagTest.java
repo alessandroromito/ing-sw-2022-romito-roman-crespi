@@ -33,7 +33,7 @@ class BagTest {
     void pickSorted(){
         int id;
         for(int i = 1; i <= 130; i++ ){
-            id = bag.pickSorted();
+            id = bag.pickSorted().getID();
             if(1 <= id-58 && id-58 <= 130) assert true;
             else assert false;
             System.out.println("ID: " + (id-59));
