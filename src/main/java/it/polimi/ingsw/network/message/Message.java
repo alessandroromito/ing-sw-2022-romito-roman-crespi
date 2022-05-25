@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.enumerations.MessageType;
 import java.io.Serializable;
 
 public abstract class Message implements Serializable {
-
     private static final long serialVersionUID = 1000L; //da scegliere
 
     private final String nickname;

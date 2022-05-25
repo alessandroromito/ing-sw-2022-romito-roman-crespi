@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.*;
@@ -470,7 +471,7 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
-    public void use_209 (int studentPos, int island){
+    public void use_209 (int studentPos, int islandNumber){
         throw new RuntimeException();
     }
 
@@ -490,7 +491,23 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+    public void use_213(int islandNum) {
+        throw new RuntimeException();
+    }
+
+    public void use_214 (){
+        throw new RuntimeException();
+    }
+
+    public void use_216(Player playerByNickname) {
+        throw new RuntimeException();
+    }
+
     public void use_217 (PawnColors p){
+        throw new RuntimeException();
+    }
+
+    public void use_219(Player player, int number) {
         throw new RuntimeException();
     }
 
@@ -501,4 +518,5 @@ public class Game extends Observable {
     public List<CharacterCard> getCharacterCards() {
         throw new RuntimeException();
     }
+
 }

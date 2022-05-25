@@ -313,42 +313,47 @@ public class GameController implements Observer {
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
-            switch(useEffectMessage.getCharacterCardID()){
+            switch(useEffectMessage.getCardID()){
                 case 209 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_209();
+                    Card209Message card209Message = (Card209Message) useEffectMessage;
+                    if(game.useCharacter(209))
+                        game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber());
                 }
                 case 210 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                    if(game.useCharacter(210))
                         game.use_210();
                 }
                 case 211 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_211();
+                    Card211Message card211Message = (Card211Message) useEffectMessage;
+                    if(game.useCharacter(211))
+                        game.use_211(card211Message.getIslandNumber());
                 }
                 case 212 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                    if(game.useCharacter(212))
                         game.use_212();
                 }
                 case 213 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_213();
+                    Card213Message card213Message = (Card213Message) useEffectMessage;
+                    if(game.useCharacter(213))
+                        game.use_213(card213Message.getIslandNumber());
                 }
                 case 214 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                    if(game.useCharacter(214))
                         game.use_214();
                 }
                 case 216 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_216();
+                    if(game.useCharacter(216))
+                        game.use_216(game.getPlayerByNickname(useEffectMessage.getNickname()));
                 }
                 case 217 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_217();
+                    Card217Message card217Message = (Card217Message) useEffectMessage;
+                    if(game.useCharacter(217))
+                        game.use_217(card217Message.getColor());
                 }
                 case 219 -> {
-                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
-                        game.use_219();
+                    Card219Message card219Message = (Card219Message) useEffectMessage;
+                    if(game.useCharacter(219))
+                        game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
                 }
             }
         }

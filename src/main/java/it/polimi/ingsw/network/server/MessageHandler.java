@@ -140,10 +140,10 @@ public class MessageHandler {
         }
     }
 
-    public void handleMessage(UseEffectMessage useEffectMessage) {
+    public void handleMessage(Card209Message card209Message) {
         if(gameController.getGameState() == GameState.IN_GAME){
-            if(gameController.checkUser(useEffectMessage)){
-                gameController.applyEffect(useEffectMessage);
+            if(gameController.checkUser(card209Message)){
+                gameController.applyEffect(card209Message);
             }
         }
     }
@@ -154,4 +154,69 @@ public class MessageHandler {
      */
     public void handleMessage(LoginRequest loginRequest) {
     }
+
+    public void handleMessage(Card210Message card210Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card210Message)){
+                gameController.applyEffect(card210Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card211Message card211Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card211Message)){
+                gameController.applyEffect(card211Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card212Message card212Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card212Message)){
+                gameController.applyEffect(card212Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card213Message card213Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card213Message)){
+                gameController.applyEffect(card213Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card214Message card214Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card214Message)){
+                gameController.applyEffect(card214Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card216Message card216Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card216Message)){
+                gameController.applyEffect(card216Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card217Message card217Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card217Message)){
+                gameController.applyEffect(card217Message);
+            }
+        }
+    }
+
+    public void handleMessage(Card219Message card219Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card219Message)){
+                gameController.applyEffect(card219Message);
+            }
+        }
+    }
+
 }
