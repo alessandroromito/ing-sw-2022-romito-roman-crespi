@@ -1,6 +1,4 @@
 package it.polimi.ingsw.server.model.map;
-
-import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;

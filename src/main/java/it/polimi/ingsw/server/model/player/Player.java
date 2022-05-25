@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
@@ -118,7 +117,6 @@ public class Player {
     }
 
     public void resetAssistantCard(){
-        currentAssistantCard.setPosition(MapPositions.TRASH);
         hand.remove(currentAssistantCard);
         this.currentAssistantCard = null;
     }

@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.*;
@@ -15,10 +14,7 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class Game extends Observable {
 
@@ -123,9 +119,9 @@ public class Game extends Observable {
     public void gameInitialization() throws EntranceFullException {
         System.out.println("STARTING GameInitialization...");
         // 1) Place MotherNature to a random island
-        MapPositions randPos = MapPositions.getRandomIsland();
-        this.getComponent(1).setPosition(randPos);
-        map.setMotherNaturePos(randPos.ordinal() - 12);
+        Random r = new Random();
+        int pos = r.nextInt( 12);
+        map.setMotherNaturePos(pos);
 
         // 3) Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
@@ -137,7 +133,6 @@ public class Game extends Observable {
             int islandNum = 0;
             if(!(islandNum == oppositePosition())){
                 map.getIsland(islandNum).addStudent(stud);
-                stud.setPosition(MapPositions.valueOf("ISLAND_" + islandNum));
             }
         }
         // Place 7/9 students on scoreboard's entrance
@@ -275,12 +270,10 @@ public class Game extends Observable {
         if(map.getIsland(numIsland).isDisabled()) {
             GhostIsland ghostIsland = map.getGhostIsland(numIsland);
             ghostIsland.addStudent(stud);
-            stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
         else {
             Island island = map.getIsland(numIsland);
             island.addStudent(stud);
-            stud.setPosition(MapPositions.valueOf("ISLAND_" + numIsland));
         }
     }
 
@@ -477,7 +470,7 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
-    public void use_209 (int studentPos, MapPositions island){
+    public void use_209 (int studentPos, int island){
         throw new RuntimeException();
     }
 

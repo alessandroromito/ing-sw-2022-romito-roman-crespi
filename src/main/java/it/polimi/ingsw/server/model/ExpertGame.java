@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.*;
 import it.polimi.ingsw.server.model.component.Coin;
@@ -49,12 +48,16 @@ public class ExpertGame extends Game {
             switch(vector12.get(i)){
                 case 0:
                     ArrayList<StudentDisc> t = new ArrayList<StudentDisc>();
-                    for(int k=0;k<4;k++)    {t.add(bag.pickSorted());   t.get(k).setPosition(MapPositions.CARD_209);}
+                    for(int k=0;k<4;k++)
+                        t.add(bag.pickSorted());
                     pool.add(new Card_209(t));
                     break;
                 case 1:
                     Player mps[] = new Player [5];
-                    for(int k=0;k<5;k++)   mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
+                    for(Player p: players)
+                        for(int k=0;k<5;k++)
+                            if(p.getScoreboard().getProfessor(PawnColors.values()[k]))
+                                mps[k] = p;
                     pool.add(new Card_210(mps));
                     break;
                 case 2: pool.add(new Card_211());   break;
@@ -118,10 +121,12 @@ public class ExpertGame extends Game {
     }
 
     public void setCard_210_ForTest(){
-        Player mps[] = new Player [5];
-        for(int k=0;k<5;k++)
-            mps[k] = players.get(components.get(k+2).getPosition().ordinal()/3);
-        pool.add(new Card_210(mps));
+        Player t[] = new Player [5];
+        for(Player p: players)
+            for(int i=0;i<5;i++)
+                if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
+                    t[i] = p;
+        pool.add(new Card_210(t));
     }
 
     public void use_209 (int studentPos, int islandNumber) {
@@ -146,8 +151,11 @@ public class ExpertGame extends Game {
             activeCardID = 210;
 
             Player t[] = new Player [5];
-            for(int i=2;i<=6;i++)
-                t[i-2] = players.get(components.get(i).getPosition().ordinal()/3);
+            for(Player p: players)
+                for(int i=0;i<5;i++)
+                    if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
+                        t[i] = p;
+
             temp.updateOldPos(t);
 
             for(Player p : players)
@@ -155,7 +163,7 @@ public class ExpertGame extends Game {
                     for(int i=0;i<5;i++)
                         if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
                             if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == getActivePlayer().getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
-                                temp.updateOnePos(players.get(components.get(i).getPosition().ordinal()/3),i);
+                                temp.updateOnePos(p,i);
                                 moveProfessor(PawnColors.values()[i],getActivePlayer());
                             }
         } catch (ActiveCardAlreadyExistingException e) {
@@ -261,8 +269,12 @@ public class ExpertGame extends Game {
                 island = map.getGhostIsland(islandID);
             }
 
-            if(island.checkNoEntryTile()){
-                island.removeNoEntryTile().setPosition(MapPositions.CARD_213);
+            if (island.checkNoEntryTile()) {
+                Card_213 temp = null;
+                for(int i=0;i<3;i++)
+                    if(pool.get(i).getClass() == Card_213.class)
+                        temp = (Card_213) pool.get(i);
+                temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
@@ -77,10 +76,6 @@ public class GameTest {
     public void GameInitialization(){
         Map map = game.getMap();
 
-        assertEquals(map.getMotherNaturePosition(), components.get(0).getPosition().ordinal() - 12);
-        components.get(0).setPosition(MapPositions.valueOf("ISLAND_" + 1));
-        assertEquals(0, components.get(0).getPosition().ordinal() - 12);
-
         // Opposite island free
         Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
         assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
@@ -106,7 +101,6 @@ public class GameTest {
         game.moveMotherNature(4);
 
         assertEquals(6, map.getMotherNaturePosition());
-        assertEquals(MapPositions.ISLAND_6, game.getComponent(1).getPosition());
 
         map.merge(1,2);
 
