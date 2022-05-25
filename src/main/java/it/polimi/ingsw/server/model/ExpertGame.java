@@ -41,7 +41,7 @@ public class ExpertGame extends Game {
         }
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
-        for(int i=0;i<12;i++){
+        for(int i=0;i<9;i++){
             vector12.add(i);
         }
         Collections.shuffle(vector12);
@@ -70,7 +70,15 @@ public class ExpertGame extends Game {
                     }
                     pool.add(new Card_213(components.subList(209,212)));
                     break;
-//                case 5: pool[i] = new Card_214();   break;
+                case 5: pool.add(new Card_214());   break;
+                case 6: pool.add(new Card_216());   break;
+                case 7: pool.add(new Card_217());   break;
+                case 8:
+                    ArrayList<StudentDisc> s = new ArrayList<StudentDisc>();
+                    for(int k=0;k<4;k++)
+                        s.add(bag.pickSorted());
+                    pool.add(new Card_209(s));
+                    break;
             }
         }
     }
