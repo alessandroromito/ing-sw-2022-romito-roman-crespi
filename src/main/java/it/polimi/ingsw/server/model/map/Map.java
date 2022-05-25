@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
-Ghostimport it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
 import java.util.ArrayList;
@@ -81,16 +81,13 @@ public class Map {
         ArrayList<StudentDisc> students = islands.get(IDIsland1).getStudents();
         ArrayList<Tower> towers = islands.get(IDIsland1).getTowers();
 
-        for(StudentDisc student: islands.get(IDIsland2).getStudents())
-            students.add(student);
-
-        for(Tower tower: islands.get(IDIsland2).getTowers())
-            towers.add(tower);
+        students.addAll(islands.get(IDIsland2).getStudents());
+        towers.addAll(islands.get(IDIsland2).getTowers());
 
         for(int i = 0; i < groupIDsGhostIsland.length; i++){
             if (groupIDsGhostIsland[i] == null) {
                 if(islands.get(IDIsland1).getTowerColor() == islands.get(IDIsland2).getTowerColor()){
-                    groupIDsGhostIsland[i] = new GhostIsland(i,  , islands.get(IDIsland1).getTowers().addAll(islands.get(IDIsland1).getTowers()));
+                    groupIDsGhostIsland[i] = new GhostIsland(i, students , towers );
                     groupID = i;
                     break;
                 }
@@ -114,9 +111,9 @@ public class Map {
          */
 
         if (islands.get(IDIsland).getTowerColor() == groupIDsGhostIsland[IDGhostIsland].getTowerColor()) {
-            groupIDsGhostIsland[IDGhostIsland].addStudents(islands.get(IDIsland).getNumberOfColors());
-            groupIDsGhostIsland[IDGhostIsland].addTowers(islands.get(IDIsland).getTowerNumber());
-        } else throw new DifferentColorTowerException("Different tower. Impossible merging");
+            groupIDsGhostIsland[IDGhostIsland].getStudents().addAll(islands.get(IDIsland).getStudents());
+            groupIDsGhostIsland[IDGhostIsland].getTowers().addAll(islands.get(IDIsland).getTowers());
+        } else throw new DifferentColorTowerException("Different tower color. Impossible merging");
 
         islands.get(IDIsland).disable();
         islands.get(IDIsland).setGroupID(IDGhostIsland);
@@ -135,8 +132,8 @@ public class Map {
 
         //merge towers
         if (groupIDsGhostIsland[IDGhostIsland1].getTowerColor() == groupIDsGhostIsland[IDGhostIsland2].getTowerColor()) {
-            groupIDsGhostIsland[IDGhostIsland1].addStudents(groupIDsGhostIsland[IDGhostIsland2].getNumberOfColors());
-            groupIDsGhostIsland[IDGhostIsland1].addTowers(groupIDsGhostIsland[IDGhostIsland2].getTowerNumber());
+            groupIDsGhostIsland[IDGhostIsland1].getStudents().addAll(groupIDsGhostIsland[IDGhostIsland2].getStudents());
+            groupIDsGhostIsland[IDGhostIsland1].getTowers().addAll(groupIDsGhostIsland[IDGhostIsland2].getTowers());
         } else throw new DifferentColorTowerException("Different tower. Impossible merging");
 
         //set isole seconda con groupID prima
