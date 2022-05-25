@@ -9,7 +9,7 @@ import it.polimi.ingsw.server.enumerations.GameState;
  */
 public class MessageHandler {
 
-    private GameController gameController; // to take action in the game
+    private final GameController gameController;
 
     /**
      * Default Constructor
@@ -91,6 +91,7 @@ public class MessageHandler {
      * @param lobbyMessage
      */
     public void handleMessage(LobbyMessage lobbyMessage) {
+
     }
 
     public void handleMessage(DisconnectedPlayerMessage disconnectedPlayerMessage) {
@@ -153,6 +154,7 @@ public class MessageHandler {
      * @param loginRequest
      */
     public void handleMessage(LoginRequest loginRequest) {
+
     }
 
     public void handleMessage(Card210Message card210Message) {

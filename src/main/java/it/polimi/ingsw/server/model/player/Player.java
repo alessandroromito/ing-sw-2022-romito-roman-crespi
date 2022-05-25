@@ -121,4 +121,8 @@ public class Player {
         this.currentAssistantCard = null;
     }
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
 }

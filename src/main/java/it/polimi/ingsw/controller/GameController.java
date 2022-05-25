@@ -47,9 +47,6 @@ public class GameController implements Observer {
     private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
-        //if(chosenExpertMode)
-        //    assert game instanceof ExpertGame;
-
         turnController = new TurnController(this, virtualViewMap);
         showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
@@ -225,15 +222,11 @@ public class GameController implements Observer {
     public void moveMotherNature(MoveMotherNatureMessage message) {
         int steps = message.getSteps();
         if (turnController.getPhaseState() == PhaseState.ACTION_PHASE && turnController.getActionPhaseState() == ActionPhaseState.MOVE_MOTHER_NATURE) {
-            try {
-                if (inputController.moveCheck(message)) {
-                    game.moveMotherNature(steps);
+            if (inputController.moveCheck(message)) {
+                game.moveMotherNature(steps);
 
-                    // Go to the next action phase
-                    turnController.nextActionPhase();
-                }
-            } catch (NullCurrentCardException e) {
-                throw new RuntimeException(e);
+                // Go to the next action phase
+                turnController.nextActionPhase();
             }
         }
     }
@@ -313,49 +306,57 @@ public class GameController implements Observer {
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
-            switch(useEffectMessage.getCardID()){
-                case 209 -> {
-                    Card209Message card209Message = (Card209Message) useEffectMessage;
-                    if(game.useCharacter(209))
-                        game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber());
-                }
-                case 210 -> {
-                    if(game.useCharacter(210))
-                        game.use_210();
-                }
-                case 211 -> {
-                    Card211Message card211Message = (Card211Message) useEffectMessage;
-                    if(game.useCharacter(211))
-                        game.use_211(card211Message.getIslandNumber());
-                }
-                case 212 -> {
-                    if(game.useCharacter(212))
-                        game.use_212();
-                }
-                case 213 -> {
-                    Card213Message card213Message = (Card213Message) useEffectMessage;
-                    if(game.useCharacter(213))
-                        game.use_213(card213Message.getIslandNumber());
-                }
-                case 214 -> {
-                    if(game.useCharacter(214))
-                        game.use_214();
-                }
-                case 216 -> {
-                    if(game.useCharacter(216))
-                        game.use_216(game.getPlayerByNickname(useEffectMessage.getNickname()));
-                }
-                case 217 -> {
-                    Card217Message card217Message = (Card217Message) useEffectMessage;
-                    if(game.useCharacter(217))
-                        game.use_217(card217Message.getColor());
-                }
-                case 219 -> {
-                    Card219Message card219Message = (Card219Message) useEffectMessage;
-                    if(game.useCharacter(219))
-                        game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
+            if(inputController.checkCoin(useEffectMessage)){
+                switch(useEffectMessage.getCardID()){
+                    case 209 -> {
+                        Card209Message card209Message = (Card209Message) useEffectMessage;
+                        if(game.useCharacter(209))
+                            game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber());
+                    }
+                    case 210 -> {
+                        if(game.useCharacter(210))
+                            game.use_210();
+                    }
+                    case 211 -> {
+                        Card211Message card211Message = (Card211Message) useEffectMessage;
+                        if(game.useCharacter(211))
+                            game.use_211(card211Message.getIslandNumber());
+                    }
+                    case 212 -> {
+                        if(game.useCharacter(212))
+                            game.use_212();
+                    }
+                    case 213 -> {
+                        Card213Message card213Message = (Card213Message) useEffectMessage;
+                        if(game.useCharacter(213))
+                            game.use_213(card213Message.getIslandNumber());
+                    }
+                    case 214 -> {
+                        if(game.useCharacter(214))
+                            game.use_214();
+                    }
+                    case 216 -> {
+                        if(game.useCharacter(216))
+                            game.use_216(game.getPlayerByNickname(useEffectMessage.getNickname()));
+                    }
+                    case 217 -> {
+                        Card217Message card217Message = (Card217Message) useEffectMessage;
+                        if(game.useCharacter(217))
+                            game.use_217(card217Message.getColor());
+                    }
+                    case 219 -> {
+                        Card219Message card219Message = (Card219Message) useEffectMessage;
+                        if(game.useCharacter(219))
+                            game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
+                    }
                 }
             }
+            else{
+                showMessage(useEffectMessage.getNickname(), "You don't have enough coin!");
+            }
+        }
+        else{
+            showMessage(useEffectMessage.getNickname(), "You are not in the correct phase!");
         }
     }
 
@@ -412,10 +413,6 @@ public class GameController implements Observer {
 
     public Game getGame() {
         return game;
-    }
-
-    public int getPlayersNumber(){
-        return playersNicknames.size();
     }
 
     public List<String> getPlayersNicknames() {

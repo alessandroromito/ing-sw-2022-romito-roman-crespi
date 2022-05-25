@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
-import it.polimi.ingsw.server.exception.NullCurrentCardException;
+import it.polimi.ingsw.network.message.UseEffectMessage;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
@@ -46,7 +46,7 @@ public class InputController {
      * @param message received from the client
      * @return {code @true} if he could move {code @false} if not
      */
-    public boolean moveCheck(MoveMotherNatureMessage message) throws NullCurrentCardException {
+    public boolean moveCheck(MoveMotherNatureMessage message) {
         int steps = message.getSteps();
         Player player;
         player = game.getPlayerByNickname(message.getNickname());
@@ -60,5 +60,19 @@ public class InputController {
         }
     }
 
+    /**
+     * Check that the player have enough coin
+     *
+     * @param message
+     * @return
+     */
+    public boolean checkCoin(UseEffectMessage message) {
+        int cost = game.getCharacterCards().get(message.getCardID()).getCost();
+        Player player = game.getPlayerByNickname(message.getNickname());
 
+        if(player.getCoin() < cost)
+            return false;
+        else
+            return true;
+    }
 }
