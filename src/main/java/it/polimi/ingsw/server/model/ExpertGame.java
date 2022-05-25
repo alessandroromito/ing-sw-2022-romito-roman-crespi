@@ -2,7 +2,9 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.enumerations.MapPositions;
 import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.exception.*;
+import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
+import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
+import it.polimi.ingsw.server.exception.ZeroNoEntryTyleRemainingException;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -141,7 +143,8 @@ public class ExpertGame extends Game {
     //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
     public void use_210 () {
         try{
-            if(activeCardID != 210) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            if(activeCardID != 210)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_210 temp = (Card_210) activeCard;
             activeCardID = 210;
 
@@ -165,8 +168,8 @@ public class ExpertGame extends Game {
 
     public void endTurn_210() {
         Card_210 temp = (Card_210) activeCard;
-        for(int i=0;i<5;i++){
-            moveProfessor(PawnColors.values()[i],temp.getOldPos(i));
+        for(int i=0; i<5; i++){
+            moveProfessor(PawnColors.values()[i], temp.getOldPos(i));
         }
     }
 
@@ -175,35 +178,105 @@ public class ExpertGame extends Game {
             if(activeCardID != 211)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             checkInfluence(islandNumber);
-        } catch (MissingPlayerNicknameException | ActiveCardAlreadyExistingException e) {
+        } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
         }
     }
 
     //Sposta mother nature fino a 2 pos in più
-    public void use_212 () {
+    public void use_212() {
         try {
             if(activeCardID != 212)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-            activeCardID = 212;
         } catch (ActiveCardAlreadyExistingException e) {
-            throw new RuntimeException(e);
+
         }
-    }
-//difficile
-    public void use_213 (int islandNumber) throws ActiveCardAlreadyExistingException, ZeroNoEntryTyleRemainingException {
-        if(activeCardID != 213) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-        Card_213 temp = (Card_213) activeCard;
-        map.getIsland(islandNumber).addNoEntryTile(temp.use());
+        activeCardID = 212;
     }
 
-    public void use_214 () throws ActiveCardAlreadyExistingException{
-        if(activeCardID != 214) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+    public void use_213(int islandNumber) {
+        try{
+            if(activeCardID != 213) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            Card_213 temp = (Card_213) activeCard;
+            map.getIsland(islandNumber).addNoEntryTile(temp.use());
+        } catch (ActiveCardAlreadyExistingException | ZeroNoEntryTyleRemainingException e) {
+
+        }
+
+    }
+
+    public void use_214() {
+        try {
+            if(activeCardID != 214)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        } catch (ActiveCardAlreadyExistingException e) {
+
+        }
         activeCardID = 214;
     }
 
+    /**
+     * EFFECT: During the turn you get +2 additional point while calculating influence
+     *
+     * @param p player that use the effect
+     */
+    public void use_216(Player p){
+        p.setAdditionalPoints(true);
+    }
+
+    /**
+     * Disable the effect of the card 216
+     *
+     * @param p
+     */
+    public void endTurn_216(Player p){
+        p.setAdditionalPoints(false);
+    }
+
+
+    /**
+     *
+     * @param p
+     */
+    public void use_217(PawnColors p){
+        try{
+            if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+            activeCardID = 217;
+            Card_217 card = (Card_217) activeCard;
+            card.setDisColor(p);
+        } catch (ActiveCardAlreadyExistingException e) {
+
+        }
+    }
+
+    /**
+     * EFFECT: Take 1 student from this card and place it on your dining room,
+     *         then take 1 student from the bag and place it on this card
+     *
+     * @param player player that use the effect
+     * @param number from 0 to 3 which is the number of the 4 student to take
+     */
+    public void use_219(Player player, int number) {
+        Scoreboard scoreboard = player.getScoreboard();
+        Card_219 card = (Card_219) activeCard;
+        scoreboard.addStudentOnDining(card.getStudent(number));
+        ((Card_219) activeCard).addStudent(bag.pickSorted());
+    }
+
+    /**
+     * Method to disable the card effect
+     * MUST BE CALLED AT EVERY END TURN!
+     */
+    public void disableCardEffects () {
+        switch(activeCardID){
+            case 210: endTurn_210();
+            case 216: endTurn_216(getActivePlayer());
+        }
+        deleteActiveCard();
+    }
+
     @Override
-    public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
+    public void checkInfluence(int islandID) {
         if(activeCardID == 214) {
             int bestInfluence = 0;
             Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
@@ -219,7 +292,7 @@ public class ExpertGame extends Game {
                 Card_213 temp = null;
                 for(int i=0;i<3;i++)
                     if(pool.get(i).getClass() == Card_213.class)
-                         temp = (Card_213) pool.get(i);
+                        temp = (Card_213) pool.get(i);
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
@@ -290,61 +363,13 @@ public class ExpertGame extends Game {
                 moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
             }
         }
-        else super.checkInfluence(islandID);
-    }
-
-    /**
-     * EFFECT: Take 1 student from this card and place it on your dining room,
-     *         then take 1 student from the bag and place it on this card
-     *
-     * @param p player that use the effect
-     * @param number from 0 to 3 which is the number of the 4 student to take
-     */
-    public void use_219(Player p, int number) {
-        Scoreboard scoreboard = p.getScoreboard();
-        Card_219 card = (Card_219) activeCard;
-
-        scoreboard.addStudentOnDining(card.getStudent(number));
-        ((Card_219) activeCard).addStudent(bag.pickSorted());
-
-    }
-
-    /**
-     * EFFECT: During the turn you get +2 additional point while calculating influence
-     *
-     * @param p player that use the effect
-     */
-    public void use_216(Player p){
-        p.setAdditionalPoints(true);
-    }
-
-    /**
-     * Disable the effect of the card 216
-     *
-     * @param p
-     */
-    public void endTurn_216(Player p){
-        p.setAdditionalPoints(false);
-    }
-
-    public void use_217 (PawnColors p){
-        try{
-            if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-            activeCardID = 217;
-            Card_217 card = (Card_217) activeCard;
-            card.setDisColor(p);
-        } catch (ActiveCardAlreadyExistingException e) {
-            e.printStackTrace();
+        else {
+            try {
+                super.checkInfluence(islandID);
+            } catch (MissingPlayerNicknameException e) {
+                throw new RuntimeException(e);
+            }
         }
-    }
-
-    //da chiamare sempre a fine turno
-    public void disableCardEffects () {
-        switch(activeCardID){
-            case 210: endTurn_210();
-            case 216: endTurn_216(getActivePlayer());
-        }
-        deleteActiveCard();
     }
 
 

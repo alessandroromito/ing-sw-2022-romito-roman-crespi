@@ -477,7 +477,7 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
-    public void use_209 (int studentPos, MapPositions island){
+    public void use_209 (int studentPos, int islandNumber){
         throw new RuntimeException();
     }
 
@@ -497,7 +497,23 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+    public void use_213(int islandNum) {
+        throw new RuntimeException();
+    }
+
+    public void use_214 (){
+        throw new RuntimeException();
+    }
+
+    public void use_216(Player playerByNickname) {
+        throw new RuntimeException();
+    }
+
     public void use_217 (PawnColors p){
+        throw new RuntimeException();
+    }
+
+    public void use_219(Player player, int number) {
         throw new RuntimeException();
     }
 
@@ -508,4 +524,5 @@ public class Game extends Observable {
     public List<CharacterCard> getCharacterCards() {
         throw new RuntimeException();
     }
+
 }

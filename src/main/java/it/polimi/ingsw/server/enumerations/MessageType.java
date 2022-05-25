@@ -17,5 +17,14 @@ public enum MessageType {
     MERGE_ISLANDS,
     PLAY_ASSISTANT_CARD,
     GAME_MODE,
-    USE_EFFECT;
+    USE_EFFECT,
+    CARD209,
+    CARD210,
+    CARD211,
+    CARD212,
+    CARD213,
+    CARD214,
+    CARD216,
+    CARD217,
+    CARD219;
 }
