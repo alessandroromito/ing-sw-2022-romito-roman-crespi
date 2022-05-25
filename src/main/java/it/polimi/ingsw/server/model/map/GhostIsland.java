@@ -1,8 +1,5 @@
 package it.polimi.ingsw.server.model.map;
 
-import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.enumerations.TowerColors;
-import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
