@@ -117,6 +117,7 @@ public class TurnController {
                 case MOVE_MOTHER_NATURE -> gameController.askToMoveMotherNature();
                 case PICK_CLOUD -> {
                     gameController.askToChooseACloud();
+                    game.disableCardEffects();
                     next();
                 }
                 default -> throw new InvalidActionPhaseStateException();

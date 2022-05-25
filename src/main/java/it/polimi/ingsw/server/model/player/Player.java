@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.player;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.MapPositions;
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
@@ -25,9 +26,9 @@ public class Player {
         this.nickname = nickname;
     }
 
-        public void createScoreboard(int nofplayers, Player p){
+    public void createScoreboard(int numberOfPlayers, TowerColors towerColor){
         ScoreboardFactory s = new ScoreboardFactory();
-        this.scoreboard = s.createScoreboard(nofplayers,p);
+        this.scoreboard = s.createScoreboard(numberOfPlayers, towerColor);
     }
 
     public String getNickname(){

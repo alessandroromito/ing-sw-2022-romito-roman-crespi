@@ -245,7 +245,7 @@ public class GameController implements Observer {
 
             switch (message.getPosition()) {
                 case 0 -> player.getScoreboard().addStudentOnEntrance(student);
-                case 1 -> game.getMap().getIsland(message.getIslandNumber()).addStudent(student.getColor());
+                case 1 -> game.getMap().getIsland(message.getIslandNumber()).addStudent(student);
                 default -> showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
             }
 
@@ -314,9 +314,43 @@ public class GameController implements Observer {
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
             switch(useEffectMessage.getCharacterCardID()){
-                case 209 -> game.use_209();
+                case 209 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_209();
+                }
+                case 210 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_210();
+                }
+                case 211 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_211();
+                }
+                case 212 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_212();
+                }
+                case 213 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_213();
+                }
+                case 214 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_214();
+                }
+                case 216 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_216();
+                }
+                case 217 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_217();
+                }
+                case 219 -> {
+                    if(game.useCharacter(useEffectMessage.getCharacterCardID()))
+                        game.use_219();
+                }
             }
-
         }
     }
 

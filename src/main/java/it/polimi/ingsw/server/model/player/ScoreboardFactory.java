@@ -1,17 +1,19 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.server.enumerations.TowerColors;
+
 public class ScoreboardFactory {
     public ScoreboardFactory() {
     }
 
-    public Scoreboard createScoreboard (int n_ofplayer, Player p){
-        switch(n_ofplayer){
+    public Scoreboard createScoreboard (int numberOfPlayer, TowerColors towerColor){
+        switch(numberOfPlayer){
             case 2:
-                return new ScoreboardX2p(p);
+                return new ScoreboardX2p(towerColor);
             case 3:
-                return new ScoreboardX3p(p);
+                return new ScoreboardX3p(towerColor);
             default:
-                throw new IllegalArgumentException(n_ofplayer + " number of players not supported");
+                throw new IllegalArgumentException(numberOfPlayer + " number of players not supported");
         }
     }
 }
