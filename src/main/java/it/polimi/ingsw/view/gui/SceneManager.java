@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
-import it.polimi.ingsw.view.gui.sceneManager.SceneManagerInterface;
+import it.polimi.ingsw.view.gui.scene.SceneManagerInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

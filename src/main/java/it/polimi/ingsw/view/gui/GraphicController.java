@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.sceneManager.PlayersNumberSceneManager;
+import it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
