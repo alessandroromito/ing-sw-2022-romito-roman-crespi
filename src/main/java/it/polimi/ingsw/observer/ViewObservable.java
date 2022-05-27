@@ -13,6 +13,8 @@ public abstract class ViewObservable {
         observers.add(observer);
     }
 
+    public void addAllObservers(List<ViewObserver> observers) { observers.addAll(observers); }
+
     public void removeObserver(ViewObserver observer) {
         observers.remove(observer);
     }
