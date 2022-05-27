@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.ClientController;
 import javafx.application.Platform;
-import it.polimi.ingsw.view.gui.graphicController.GraphicController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
