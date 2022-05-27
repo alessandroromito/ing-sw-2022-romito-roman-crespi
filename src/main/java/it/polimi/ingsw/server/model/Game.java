@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
+import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
@@ -221,7 +222,7 @@ public class Game extends Observable {
      * @param numIsland index of the destination island
      * @param studentID id of the student
      */
-    public void moveStudentToIsland(int studentID, int numIsland) throws DisabledIslandException {
+    public void moveStudentToIsland(int studentID, int numIsland) {
         StudentDisc stud = (StudentDisc) getComponent(studentID);
 
         if(map.getIsland(numIsland).isDisabled()) {
@@ -268,14 +269,11 @@ public class Game extends Observable {
     /**
      *
      * @param color professor color
-     * @param player player that receive the professor
      */
     public void moveProfessor(PawnColors color, Player player) {
-        Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
-
         for(Player p : players){
-            if(!p.equals(currentPlayer) && p.getScoreboard().getProfessor(color)){
-                currentPlayer.getScoreboard().addProfessor(p.getScoreboard().removeProfessor(color));
+            if(!p.equals(player) && p.getScoreboard().getProfessor(color)){
+                player.getScoreboard().addProfessor(p.getScoreboard().removeProfessor(color));
             }
         }
     }
@@ -293,7 +291,7 @@ public class Game extends Observable {
 
     }
 
-    public void checkInfluence(int islandID) throws MissingPlayerNicknameException {
+    public void checkInfluence(int islandID) {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
@@ -318,7 +316,7 @@ public class Game extends Observable {
         }
 
         // CASE there is already a tower
-        int currentPlayerInfluence = island.getInfluence(getPlayerByNickname(turnController.getActivePlayer()));
+        int currentPlayerInfluence = island.getInfluence(currentPlayer);
         for(Player p : players){
             if(p.getScoreboard().getTowerColor() == island.getTowerColor()){
                 opponentPlayer = p;
@@ -327,8 +325,15 @@ public class Game extends Observable {
 
         if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
             moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
+
+            notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
     }
+
+    private GameSerialized getGameSerialized() {
+        return new GameSerialized(this);
+    }
+
 
     private void checkProfessors(PawnColors color) {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());

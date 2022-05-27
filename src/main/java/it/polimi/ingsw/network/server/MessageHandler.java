@@ -221,4 +221,11 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * Client don't send GameScenarioMessages
+     * @param gameScenarioMessage
+     */
+    public void handleMessage(GameScenarioMessage gameScenarioMessage) {
+
+    }
 }

@@ -33,12 +33,46 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void update(Message message) {
-
+        switch(message.getMessageType()){
+            case ERROR -> {
+                ErrorMessage errorMessage = (ErrorMessage) message;
+                view.showErrorMessage(errorMessage.getError());
+            }
+            case WINNER_DECLARATION -> {
+                VictoryMessage victoryMessage = (VictoryMessage) message;
+                view.showVictoryMessage(victoryMessage.getWinnerNickname());
+            }
+            case LOBBY -> {
+                LobbyMessage lobbyMessage = (LobbyMessage) message;
+                queue.execute(() -> view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers()));
+            }
+            case LOGIN_REPLY -> {
+                LoginReply loginReplyMessage = (LoginReply) message;
+                queue.execute(() -> view.showLoginResult(loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful(), loginReplyMessage.getNickname()));
+            }
+            case MERGE_ISLANDS -> {
+                MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;
+                //
+            }
+            case GENERIC_MESSAGE -> {
+                GenericMessage genericMessage = (GenericMessage) message;
+                queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
+            }
+            case DISCONNECTED_PLAYER -> {
+                DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;
+                client.disconnect();
+                view.showDisconnectedPlayerMessage(disconnectedPlayerMessage.getNicknameDisconnected(), disconnectedPlayerMessage.getMessageText());
+            }
+            case GAME_SCENARIO -> {
+                GameScenarioMessage gameScenarioMessage = (GameScenarioMessage) message;
+                queue.execute(() -> view.showGameScenario(gameScenarioMessage.getGameSerialized()));
+            }
+        }
     }
 
     @Override
-    public void onUpdateGameMode(String finalGamemode) {
-        client.sendMessage(new GameModeMessage(finalGamemode=="Esperta"));
+    public void onUpdateGameMode(String gameMode) {
+        client.sendMessage(new GameModeMessage(gameMode.equals("Expert")));
     }
 
     @Override

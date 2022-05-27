@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.enumerations.MessageType;
 import java.util.List;
 
 public class MergeIslandMessage extends Message {
-    private static final long serialVersionUID = 1002L; //da scegliere
+    private static final long serialVersionUID = 1002L;
     private final List<Integer> unifiedIslands;
 
     public MergeIslandMessage(String nickname, List<Integer> unifiedIslands) {
@@ -24,5 +24,5 @@ public class MergeIslandMessage extends Message {
     }
 
     @Override
-    public String toString() { return "MergeIslandsMessage[nickname:" + getNickname() + "]";}
+    public String toString() { return "MergeIslandsMessage[nickname: " + getNickname() + " ]";}
 }

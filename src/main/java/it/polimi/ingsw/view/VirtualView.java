@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.network.server.ClientHandler;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
@@ -28,7 +29,7 @@ public class VirtualView implements View, Observer {
     }
 
     public void showMessage(String nickName, String messageString) {
-        clientHandler.sendMessage(new ErrorMessage(nickName, messageString));
+        clientHandler.sendMessage(new ErrorMessage(messageString));
     }
 
     /**
@@ -69,12 +70,17 @@ public class VirtualView implements View, Observer {
 
     @Override
     public void showErrorMessage(String error) {
-        clientHandler.sendMessage(new ErrorMessage(Game.SERVER_NAME, error));
+        clientHandler.sendMessage(new ErrorMessage(error));
     }
 
     @Override
-    public void showGameScenario() {
-        //da implementare in base alle esigenze
+    public void showGameScenario(GameSerialized gameSerialized) {
+        clientHandler.sendMessage(new GameScenarioMessage(gameSerialized));
+    }
+
+    @Override
+    public void showMergeIslandMessage(List<Integer> unifiedIsland) {
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
@@ -31,7 +32,9 @@ public interface View {
     void showErrorMessage(String error);
 
     //show game scenario
-    void showGameScenario();
+    void showGameScenario(GameSerialized gameSerialized);
+
+    void showMergeIslandMessage(List<Integer> unifiedIsland);
 
     //show game info detailed
     void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards);

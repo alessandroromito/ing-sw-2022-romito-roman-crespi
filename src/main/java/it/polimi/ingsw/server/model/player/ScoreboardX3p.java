@@ -155,4 +155,9 @@ public class ScoreboardX3p implements Scoreboard{
         return tempList;
     }
 
+    @Override
+    public ArrayList<ProfessorPawn> getProfessorList() {
+        return professorList;
+    }
+
 }

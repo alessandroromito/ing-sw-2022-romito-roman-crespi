@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface Scoreboard {
@@ -25,4 +26,5 @@ public interface Scoreboard {
     Tower removeTower();
     void addTower(Tower tower);
     List<StudentDisc> getEntrance();
+    ArrayList<ProfessorPawn> getProfessorList();
 }

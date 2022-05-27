@@ -2,7 +2,6 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.exception.ZeroNoEntryTyleRemainingException;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
@@ -180,7 +179,7 @@ public class ExpertGame extends Game {
                         if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
                             if(p.getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i]) == getActivePlayer().getScoreboard().getPlayerStudentFromDining(PawnColors.values()[i])){
                                 temp.updateOnePos(p,i);
-                                moveProfessor(PawnColors.values()[i],getActivePlayer());
+                                moveProfessor(PawnColors.values()[i], getActivePlayer());
                             }
         } catch (ActiveCardAlreadyExistingException e) {
 
@@ -396,11 +395,7 @@ public class ExpertGame extends Game {
             }
         }
         else {
-            try {
-                super.checkInfluence(islandID);
-            } catch (MissingPlayerNicknameException e) {
-                throw new RuntimeException(e);
-            }
+            super.checkInfluence(islandID);
         }
     }
 

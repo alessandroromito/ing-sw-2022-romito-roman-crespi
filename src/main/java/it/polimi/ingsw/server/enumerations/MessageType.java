@@ -26,5 +26,6 @@ public enum MessageType {
     CARD214,
     CARD216,
     CARD217,
-    CARD219;
+    CARD219,
+    GAME_SCENARIO
 }

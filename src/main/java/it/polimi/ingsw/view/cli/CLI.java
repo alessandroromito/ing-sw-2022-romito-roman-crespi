@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
-import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
@@ -15,7 +15,6 @@ import java.util.concurrent.FutureTask;
 
 public class CLI extends ViewObservable implements View {
 
-    private final String GAME_VERSION = "1.0";
     private final PrintStream out;
     private Thread readThread;
 
@@ -25,15 +24,17 @@ public class CLI extends ViewObservable implements View {
 
     public void initialization() {
         out.println(
-                "/ ____/____(_)___ _____  / /___  _______\n" +
-                "/ __/ / ___/ / __ `/ __ |/ __/ / / / ___/\n" +
-                "/ /___/ /  / / /_/ / / / / /_/ /_/ (__  )\n" +
-                "/_____/_/  /_/|__,_/_/ /_/|__/|__, /____/\n" +
-                "                             /____/"
+                """
+                        / ____/____(_)___ _____  / /___  _______
+                        / __/ / ___/ / __ `/ __ |/ __/ / / / ___/
+                        / /___/ /  / / /_/ / / / / /_/ /_/ (__  )
+                        /_____/_/  /_/|__,_/_/ /_/|__/|__, /____/
+                                                     /____/"""
                 );
 
         out.println("Welcome in Eriantys!");
         out.println("Game developed by Alessandro Romito, Gioele Crespi and Matteo Roman");
+        String GAME_VERSION = "1.0";
         out.println("GAME VERSION: " + GAME_VERSION);
         askServerParametersConfiguration();
     }
@@ -47,9 +48,7 @@ public class CLI extends ViewObservable implements View {
             String address = null;
             try {
                 address = readRow();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
             if(Validator.validateIpAddress(address)) {
@@ -68,9 +67,7 @@ public class CLI extends ViewObservable implements View {
             String port = null;
             try {
                 port = readRow();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
             if(Validator.validatePort(port)) {
@@ -177,7 +174,12 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void showGameScenario() {
+    public void showGameScenario(GameSerialized gameSerialized) {
+
+    }
+
+    @Override
+    public void showMergeIslandMessage(List<Integer> unifiedIsland){
 
     }
 
@@ -217,7 +219,7 @@ public class CLI extends ViewObservable implements View {
             }
             if(choose >= assistantCards.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
         }while(choose >= assistantCards.size()-1 || choose < 0);
-        List<AssistantCard> response = new ArrayList<AssistantCard>();
+        List<AssistantCard> response = new ArrayList<>();
         response.add(assistantCards.get(choose));
         notifyObserver(obs -> obs.onUpdatePlayAssistantCard(response));
     }
@@ -257,7 +259,7 @@ public class CLI extends ViewObservable implements View {
             }
             if(choose >= cloudList.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
         }while(choose >= cloudList.size()-1 || choose < 0);
-        List<Cloud> response = new ArrayList<Cloud>();
+        List<Cloud> response = new ArrayList<>();
         response.add(cloudList.get(choose));
         notifyObserver(obs -> obs.onUpdatePickCloud(response));
     }
