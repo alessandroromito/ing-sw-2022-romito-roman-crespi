@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
-import it.polimi.ingsw.view.gui.sceneManager.GenericSceneManager;
+import it.polimi.ingsw.view.gui.sceneManager.SceneManagerInterface;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 
 public class SceneManager extends ViewObservable {
     private static Scene activeScene;
-    private static GenericSceneManager activeManager;
+    private static SceneManagerInterface activeManager;
 
 
     public static Scene getActiveScene() {
         return activeScene;
     }
 
-    public static GenericSceneManager getActiveManager() {
+    public static SceneManagerInterface getActiveManager() {
         return activeManager;
     }
 
@@ -37,7 +37,7 @@ public class SceneManager extends ViewObservable {
             manager = fxmlLoader.getController();
             ((ViewObservable) manager).addAllObservers(observerList);
 
-            activeManager = (GenericSceneManager) manager;
+            activeManager = (SceneManagerInterface) manager;
             activeScene = scene;
             activeScene.setRoot(parent);
         } catch(IOException e) {

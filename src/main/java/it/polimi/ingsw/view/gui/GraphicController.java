@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.sceneManager.PlayersNumberSceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,17 +36,19 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void askPlayersNumber() {
+    public void askPlayerNickname() {
         Platform.runLater(() -> SceneManager.paneTransition(observers, "login_scene.fxml"));
     }
 
     @Override
-    public void askGameMode() {
-
+    public void askPlayersNumber() {
+        PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
+        playersNumberSceneManager.addAllObservers(observers);
+        Platform.runLater(() -> SceneManager.paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
     @Override
-    public void askPlayerNickname() {
+    public void askGameMode() {
 
     }
 
