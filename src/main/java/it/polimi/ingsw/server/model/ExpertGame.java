@@ -65,10 +65,13 @@ public class ExpertGame extends Game {
                 case 2: pool.add(new Card_211());   break;
                 case 3: pool.add(new Card_212());   break;
                 case 4:
-                    for(int j=216; j<=225; j++){
+                    for(int j=221; j<=224; j++){
                         components.add(new NoEntryTile(j));
                     }
-                    pool.add(new Card_213(components.subList(209,212)));
+                    int pos = 0;
+                    while(!getComponent(209).equals(components.get(pos)))
+                        pos++;
+                    pool.add(new Card_213(components.subList(pos,pos+5)));
                     break;
                 case 5: pool.add(new Card_214());   break;
                 case 6: pool.add(new Card_216());   break;
@@ -77,7 +80,7 @@ public class ExpertGame extends Game {
                     ArrayList<StudentDisc> s = new ArrayList<StudentDisc>();
                     for(int k=0;k<4;k++)
                         s.add(bag.pickSorted());
-                    pool.add(new Card_209(s));
+                    pool.add(new Card_219(s));
                     break;
             }
         }
@@ -140,6 +143,7 @@ public class ExpertGame extends Game {
     }
 
     public void use_209 (int studentPos, int islandNumber) {
+        useCharacter(209);
         try {
             if(activeCardID != 209)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -155,6 +159,7 @@ public class ExpertGame extends Game {
 
     //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
     public void use_210 () {
+        useCharacter(210);
         try{
             if(activeCardID != 210)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -190,6 +195,7 @@ public class ExpertGame extends Game {
     }
 
     public void use_211 (int islandNumber) {
+        useCharacter(211);
         try{
             if(activeCardID != 211)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -201,6 +207,7 @@ public class ExpertGame extends Game {
 
     //Sposta mother nature fino a 2 pos in più
     public void use_212() {
+        useCharacter(212);
         try {
             if(activeCardID != 212)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -211,6 +218,7 @@ public class ExpertGame extends Game {
     }
 
     public void use_213(int islandNumber) {
+        useCharacter(213);
         try{
             if(activeCardID != 213) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_213 temp = (Card_213) activeCard;
@@ -222,6 +230,7 @@ public class ExpertGame extends Game {
     }
 
     public void use_214() {
+        useCharacter(214);
         try {
             if(activeCardID != 214)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -237,6 +246,7 @@ public class ExpertGame extends Game {
      * @param p player that use the effect
      */
     public void use_216(Player p){
+        useCharacter(216);
         p.setAdditionalPoints(true);
     }
 
@@ -255,6 +265,7 @@ public class ExpertGame extends Game {
      * @param p
      */
     public void use_217(PawnColors p){
+        useCharacter(217);
         try{
             if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             activeCardID = 217;
@@ -273,6 +284,7 @@ public class ExpertGame extends Game {
      * @param number from 0 to 3 which is the number of the 4 student to take
      */
     public void use_219(Player player, int number) {
+        useCharacter(219);
         Scoreboard scoreboard = player.getScoreboard();
         Card_219 card = (Card_219) activeCard;
         scoreboard.addStudentOnDining(card.getStudent(number));

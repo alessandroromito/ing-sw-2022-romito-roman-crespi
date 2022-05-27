@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
+import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.Card_210;
 import org.junit.jupiter.api.AfterEach;
@@ -37,7 +38,7 @@ class ExpertGame_Card_210 {
         // setting player 1 that controls the first professor with 1 student, and player 2 also with 1 student in the same lane
         expertgame.getPlayerByNickname("Player 1").getScoreboard().addStudentOnDining(new StudentDisc(888, PawnColors.RED));
         expertgame.getPlayerByNickname("Player 2").getScoreboard().addStudentOnDining(new StudentDisc(889, PawnColors.RED));
-        expertgame.moveProfessor(PawnColors.RED,expertgame.getPlayerByNickname("Player 1"));
+        expertgame.getPlayerByNickname("Player 1").getScoreboard().addProfessor(new ProfessorPawn(2,PawnColors.RED));
         expertgame.setCard_210_ForTest();
 
     }
