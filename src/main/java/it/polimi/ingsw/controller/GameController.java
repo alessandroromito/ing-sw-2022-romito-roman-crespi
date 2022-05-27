@@ -130,7 +130,7 @@ public class GameController implements Observer {
         if (virtualViewMap.isEmpty()) {
             try{
                 virtualViewMap.put(nickname, virtualView);
-                //game.addObserver(virtualView);
+                game.addObserver(virtualView);
                 playersNicknames.add(nickname);
 
                 virtualView.showLoginResult(true, true, nickname);
@@ -142,7 +142,7 @@ public class GameController implements Observer {
             }
         } else if (virtualViewMap.size() < chosenPlayerNumber){
             virtualViewMap.put(nickname, virtualView);
-            //game.addObserver(virtualView);
+            game.addObserver(virtualView);
             playersNicknames.add(nickname);
 
             if(chosenPlayerNumber == playersNicknames.size()){

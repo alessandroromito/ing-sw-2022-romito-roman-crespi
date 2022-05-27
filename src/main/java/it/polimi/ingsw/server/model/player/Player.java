@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model.player;
 
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.exception.NullCurrentCardException;
@@ -10,7 +11,7 @@ import it.polimi.ingsw.server.model.component.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player extends Observable{
 
     private AssistantCard currentAssistantCard;
     private List<AssistantCard> hand = new ArrayList<>();
@@ -76,11 +77,6 @@ public class Player {
             e.printStackTrace();
         }
     }
-
-    public boolean isLastAssistantCard(){
-        return hand.isEmpty();
-    }
-
 
     public void setCurrentCard(AssistantCard chosenCard) {
         try {

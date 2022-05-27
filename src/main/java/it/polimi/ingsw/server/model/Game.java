@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
+import it.polimi.ingsw.network.message.CloudMessage;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
+import it.polimi.ingsw.network.message.LobbyMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
@@ -24,7 +26,7 @@ public class Game extends Observable {
     protected Map map;
     protected Bag bag;
 
-    public static final String SERVER_NAME = "main server";
+    public static final String SERVER_NAME = "GAME_SERVER";
 
     protected Player currentPlayer;
 
@@ -53,6 +55,8 @@ public class Game extends Observable {
         } catch (EntranceFullException e) {
             System.out.println("ERROR while gameInitialization()!");
         }
+
+        notifyObserver(new LobbyMessage(getPlayersNicknames(), playersNicknames.size()));
     }
 
     /**
@@ -198,6 +202,7 @@ public class Game extends Observable {
 
             }
         }
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**
@@ -211,7 +216,8 @@ public class Game extends Observable {
             if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
             player.setCurrentCard(chosenCard);
 
-            //notifyObserver(new ScoreBoardMessage(ScoreBoard ReducedScoreBoard));
+            notifyObserver(new GameScenarioMessage(getGameSerialized()));
+
         }catch (DoubleAssistantCardException | MissingAssistantCardException | NullCurrentCardException e) {
             throw new RuntimeException(e);
         }
@@ -220,19 +226,18 @@ public class Game extends Observable {
     /**
      *
      * @param numIsland index of the destination island
-     * @param studentID id of the student
+     * @param student the student
      */
-    public void moveStudentToIsland(int studentID, int numIsland) {
-        StudentDisc stud = (StudentDisc) getComponent(studentID);
-
+    public void moveStudentToIsland(StudentDisc student, int numIsland) {
         if(map.getIsland(numIsland).isDisabled()) {
             GhostIsland ghostIsland = map.getGhostIsland(numIsland);
-            ghostIsland.addStudent(stud);
+            ghostIsland.addStudent(student);
         }
         else {
             Island island = map.getIsland(numIsland);
-            island.addStudent(stud);
+            island.addStudent(student);
         }
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**
@@ -261,6 +266,9 @@ public class Game extends Observable {
                     island.addTower(p.getScoreboard().removeTower());
                 }
             }
+
+            notifyObserver(new GameScenarioMessage(getGameSerialized()));
+
         } catch (DisabledIslandException e) {
             throw new RuntimeException(e);
         }
@@ -285,10 +293,6 @@ public class Game extends Observable {
     public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException {
         currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
         checkProfessors(stud.getColor());
-    }
-
-    public void deleteActiveCard(){
-
     }
 
     public void checkInfluence(int islandID) {
@@ -328,10 +332,6 @@ public class Game extends Observable {
 
             notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
-    }
-
-    private GameSerialized getGameSerialized() {
-        return new GameSerialized(this);
     }
 
 
@@ -382,7 +382,7 @@ public class Game extends Observable {
         } catch (MissingCloudStudentsException e) {
             throw new RuntimeException(e);
         }
-
+        notifyObserver(new CloudMessage(getActivePlayer().getNickname(), getMap().getClouds()));
     }
 
     public Player getActivePlayer(){
@@ -413,7 +413,9 @@ public class Game extends Observable {
             if(!player.getNickname().equals(turnController.getActivePlayer())){
                 if(player.getCurrentCard().getValue() == card.getValue()){
                     if(player.getHand().size() == 1) return true;
-                    else return false;
+                    else {
+                        return false;
+                    }
                 }
             }
         }
@@ -422,6 +424,10 @@ public class Game extends Observable {
 
     public int getNumberOfPlayer() {
         return players.size();
+    }
+
+    public GameSerialized getGameSerialized() {
+        return new GameSerialized(this);
     }
 
     // -----------------------------------------------------------
@@ -480,4 +486,7 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+    public void deleteActiveCard(){
+        //ExpertGame method
+    }
 }

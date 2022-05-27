@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.exception.ZeroNoEntryTyleRemainingException;
@@ -109,6 +110,8 @@ public class ExpertGame extends Game {
                     activeCardID = activeCard.getID();
                     activeCard.addCost();
                     getActivePlayer().removeCoin(activeCard.getCost());
+
+                    notifyObserver(new GameScenarioMessage(getGameSerialized()));
                     return true;
                 }
 
