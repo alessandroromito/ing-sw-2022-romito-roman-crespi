@@ -1,11 +1,12 @@
 package it.polimi.ingsw.view.gui.scene;
 
+import it.polimi.ingsw.observer.ViewObservable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class LoginSceneManager {
+public class LoginSceneManager implements SceneManagerInterface {
 
     @FXML
     private Button ConnectButton;

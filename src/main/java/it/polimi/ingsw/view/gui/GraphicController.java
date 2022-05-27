@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
+import it.polimi.ingsw.view.gui.scene.LoginSceneManager;
 import it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +51,9 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askGameMode() {
-
+        GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
+        gameModeSelectSceneManager.addAllObservers(observers);
+        Platform.runLater(() -> SceneManager.paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
     @Override
