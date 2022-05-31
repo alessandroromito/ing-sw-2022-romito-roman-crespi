@@ -42,6 +42,7 @@ public class Client extends Observable {
                 try {
                     message = (Message) objectInputStream.readObject();
                 } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                     message = new ErrorMessage("Connection lost");
                     disconnect();
                     readExecutionQueue.shutdownNow();
@@ -54,10 +55,11 @@ public class Client extends Observable {
     public void sendMessage(Message message){
         try {
             objectOutputStream.writeObject(message);
-            objectInputStream.reset();
+            objectOutputStream.reset();
         } catch (IOException e) {
-            disconnect();
+            e.printStackTrace();
             notifyObserver(new ErrorMessage("Could not send message"));
+            disconnect();
         }
     }
 

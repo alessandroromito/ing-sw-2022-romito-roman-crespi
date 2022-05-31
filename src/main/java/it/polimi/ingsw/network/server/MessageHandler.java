@@ -150,7 +150,7 @@ public class MessageHandler {
     }
 
     /**
-     * Client don't send LoginRequest
+     * Handled by ClientHandler
      * @param loginRequest
      */
     public void handleMessage(LoginRequest loginRequest) {
