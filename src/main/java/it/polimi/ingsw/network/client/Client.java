@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.network.message.ErrorMessage;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.observer.Observable;
 
@@ -34,11 +35,40 @@ public class Client extends Observable {
     }
 
 
-    public void readMessage(){}
+    public void readMessage() {
+        readExecutionQueue.execute(() -> {
+            while (!readExecutionQueue.isShutdown()) {
+                Message message;
+                try {
+                    message = (Message) objectInputStream.readObject();
+                } catch (IOException | ClassNotFoundException e) {
+                    message = new ErrorMessage("Connection lost");
+                    disconnect();
+                    readExecutionQueue.shutdownNow();
+                }
+                notifyObserver(message);
+            }
+        });
+    }
 
-    public void sendMessage(Message message){}
+    public void sendMessage(Message message){
+        try {
+            objectOutputStream.writeObject(message);
+            objectInputStream.reset();
+        } catch (IOException e) {
+            disconnect();
+            notifyObserver(new ErrorMessage("Could not send message"));
+        }
+    }
 
-    public void disconnect() {}
-
-    public void enablePinger(boolean enabled) {}
+    public void disconnect() {
+        try {
+            if (!socket.isClosed()) {
+                readExecutionQueue.shutdownNow();
+                socket.close();
+            }
+        } catch (IOException e) {
+            notifyObserver(new ErrorMessage("Could not disconnect"));
+        }
+    }
 }

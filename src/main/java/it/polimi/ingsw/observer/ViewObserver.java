@@ -30,8 +30,6 @@ public interface ViewObserver {
 
     void onUpdateMoveStudent(List<StudentDisc> studentDiscsList, int position, int islandNumber);
 
-    void onUpdatePickCloud(Cloud cloud);
-
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
 
     void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards);

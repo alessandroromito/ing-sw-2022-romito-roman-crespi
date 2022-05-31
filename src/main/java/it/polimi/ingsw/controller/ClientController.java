@@ -28,7 +28,7 @@ public class ClientController implements ViewObserver, Observer {
      */
     public ClientController(View view) {
         this.view = view;
-        this.queue = Executors.newSingleThreadExecutor();
+        queue = Executors.newSingleThreadExecutor();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ClientController implements ViewObserver, Observer {
             client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
             client.addObserver(this);
             client.readMessage();
-            client.enablePinger(true);
+            //client.enablePinger(true);
             queue.execute(view::askPlayerNickname);
         }
         catch(IOException e){
@@ -128,12 +128,6 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards){
         client.sendMessage(new AssistantCardMessage(nickname, assistantCards));
-    }
-
-    @Override
-    public void onUpdatePickCloud(Cloud cloud) {
-        //client.sendMessage(new CloudMessage(this.nickname, List.of(cloud)));
-        //già implementata sopra come lista
     }
 
     @Override

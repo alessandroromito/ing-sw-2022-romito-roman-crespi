@@ -88,6 +88,7 @@ public class CLI extends ViewObservable implements View {
         FutureTask<String> futureTask = new FutureTask<>(new ReadTask());
         readThread = new Thread(futureTask);
         readThread.start();
+
         return futureTask.get();
     }
 
@@ -175,7 +176,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-
+        
     }
 
     @Override

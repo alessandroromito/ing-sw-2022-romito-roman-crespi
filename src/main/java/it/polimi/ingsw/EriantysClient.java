@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.view.cli.CLI;
+import it.polimi.ingsw.view.gui.GUI;
+import javafx.application.Application;
 
 public class EriantysClient {
 
@@ -15,7 +17,7 @@ public class EriantysClient {
                 cliView.initialization();
             }
             else {
-                //Application.launch(JavaFXGui.class);
+                Application.launch(GUI.class);
             }
         }
     }

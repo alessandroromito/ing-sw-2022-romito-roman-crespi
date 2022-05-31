@@ -3,15 +3,17 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.GameController;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketServer implements Runnable{
     private final Server server;
     private final int port;
+    private String DEFAULT_IP = "127.0.0.1";
     ServerSocket serverSocket;
 
-    public SocketServer ( Server server , int port) {
+    public SocketServer(Server server , int port) {
         this.server = server;
         this.port = port;
     }
@@ -19,19 +21,21 @@ public class SocketServer implements Runnable{
     @Override
     public void run() {
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port, 0, InetAddress.getByName(DEFAULT_IP));
         } catch (IOException e) {
             e.printStackTrace(); //temporary
             return;
         }
 
         System.out.println("Server Socket listening at port: " + port);
+        System.out.println("Server socket ready on IP: " + serverSocket.getInetAddress().getHostAddress());
 
         while(!Thread.currentThread().isInterrupted()) {
             Socket client = null;
             try {
                 client = serverSocket.accept();
                 client.setSoTimeout(8000);
+                System.out.println("Received client connection");
             } catch(IOException e) {
                 System.out.println("SocketServer.run(): Client connection not accepted");
                 continue;
