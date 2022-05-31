@@ -6,7 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-public class LoginSceneManager implements SceneManagerInterface {
+public class LoginSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
     private Button ConnectButton;
@@ -15,10 +15,8 @@ public class LoginSceneManager implements SceneManagerInterface {
     private TextField NicknameField;
 
     @FXML
-    private TextField PortField;
-
-    @FXML
-    void tryConnection(ActionEvent event) {
+    void onButtonClick(ActionEvent event) {
+        //send the message
 
     }
 
