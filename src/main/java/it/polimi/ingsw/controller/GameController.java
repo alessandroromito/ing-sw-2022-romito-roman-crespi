@@ -24,7 +24,7 @@ public class GameController implements Observer {
     private List<String> playersNicknames = new ArrayList<>();
     private Map<String, VirtualView> virtualViewMap;
 
-    private int chosenPlayerNumber = 0;
+    private int chosenPlayerNumber;
     private boolean chosenExpertMode = false;
 
     private GameState gameState;
@@ -47,6 +47,9 @@ public class GameController implements Observer {
     private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
+        for(VirtualView vv : virtualViewMap.values())
+            game.addObserver(vv);
+
         turnController = new TurnController(this, virtualViewMap);
         showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
@@ -120,7 +123,6 @@ public class GameController implements Observer {
 
         // Delete storage data
 
-
         init();
         System.out.println("Game Finished!");
     }
@@ -130,10 +132,9 @@ public class GameController implements Observer {
         if (virtualViewMap.isEmpty()) {
             try{
                 virtualViewMap.put(nickname, virtualView);
-                game.addObserver(virtualView);
                 playersNicknames.add(nickname);
 
-                virtualView.showLoginResult(true, true, nickname);
+                virtualView.showLoginResult(nickname,true, true);
                 virtualView.askPlayersNumber();
                 virtualView.askGameMode();
 
@@ -142,7 +143,6 @@ public class GameController implements Observer {
             }
         } else if (virtualViewMap.size() < chosenPlayerNumber){
             virtualViewMap.put(nickname, virtualView);
-            game.addObserver(virtualView);
             playersNicknames.add(nickname);
 
             if(chosenPlayerNumber == playersNicknames.size()){
@@ -152,7 +152,7 @@ public class GameController implements Observer {
                 startGame();
             }
         } else {
-            virtualView.showLoginResult(true, false, nickname);
+            virtualView.showLoginResult(nickname,true, false);
         }
     }
 
@@ -254,7 +254,6 @@ public class GameController implements Observer {
     public void pickCloud(CloudMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
             Cloud chosenCloud = message.getCloudList().get(0);
-            Player player = game.getPlayerByNickname(message.getNickname());
 
             game.pickAndPlaceFromCloud(chosenCloud.getCloudID());
         }

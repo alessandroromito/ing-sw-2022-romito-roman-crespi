@@ -42,6 +42,7 @@ public class CLI extends ViewObservable implements View {
     public void askServerParametersConfiguration() {
         HashMap<String, String> server = new HashMap<>();
         boolean validInput;
+
         out.println("Inserisci i seguenti parametri per iniziare a giocare!\n");
         do{
             out.println("Server address: ");
@@ -266,7 +267,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void showLoginResult(boolean playerNicknameAccepted, boolean connectionSuccessful, String nickname) {
+    public void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful) {
         if(playerNicknameAccepted && connectionSuccessful) {
             out.println("Sei stato connesso al server con successo! Benvenuto " + nickname);
         }

@@ -48,7 +48,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             case LOGIN_REPLY -> {
                 LoginReply loginReplyMessage = (LoginReply) message;
-                queue.execute(() -> view.showLoginResult(loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful(), loginReplyMessage.getNickname()));
+                queue.execute(() -> view.showLoginResult(loginReplyMessage.getNickname(), loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful()));
             }
             case MERGE_ISLANDS -> {
                 MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;
@@ -85,7 +85,7 @@ public class ClientController implements ViewObserver, Observer {
             queue.execute(view::askPlayerNickname);
         }
         catch(IOException e){
-            queue.execute(() -> view.showLoginResult(false, false, nickname));
+            queue.execute(() -> view.showLoginResult(nickname, false, false));
         }
     }
 
