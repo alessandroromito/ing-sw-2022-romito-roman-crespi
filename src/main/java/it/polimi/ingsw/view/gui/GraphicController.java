@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
@@ -72,7 +73,12 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void showGameScenario() {
+    public void showGameScenario(GameSerialized gameSerialized) {
+
+    }
+
+    @Override
+    public void showMergeIslandMessage(List<Integer> unifiedIsland) {
 
     }
 
