@@ -16,23 +16,28 @@ public class GUI extends Application {
 
     @Override
     public void start(Stage stage) {
-        GraphicController graphicController = new GraphicController();
-        ClientController clientController = new ClientController(graphicController);
-        graphicController.addObserver(clientController);
+        try {
+            GraphicController graphicController = new GraphicController();
+            ClientController clientController = new ClientController(graphicController);
+            graphicController.addObserver(clientController);
 
-        InputStream inputStream = GUI.class.getClassLoader().getResourceAsStream("images/icon.png");
-        if(inputStream!=null) stage.getIcons().add(new Image(inputStream));
+            InputStream inputStream = GUI.class.getClassLoader().getResourceAsStream("images/icon.png");
+            if(inputStream!=null) stage.getIcons().add(new Image(inputStream));
 
-        stage.setScene(new Scene(new Pane()));
-        stage.setMaximized(true);
-        stage.setFullScreen(true);
-        stage.setFullScreenExitHint("");
-        stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        stage.setTitle("Eryantis Game");
+            stage.setScene(new Scene(new Pane()));
+            //stage.setMaximized(true);
+            //stage.setFullScreen(true);
+            stage.setFullScreenExitHint("");
+            stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+            stage.setTitle("Eryantis Game");
 
-        GraphicController.setLayout(stage.getScene(), "fxml/scene_menu.fxml");
+            GraphicController.setLayout(stage.getScene(), "fxml/login_scene.fxml");
 
-        stage.show();
+            stage.show();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

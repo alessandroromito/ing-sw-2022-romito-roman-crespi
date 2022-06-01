@@ -15,10 +15,12 @@ public class EriantysClient {
                 ClientController clientcontroller = new ClientController(cliView);
                 cliView.addObserver(clientcontroller);
                 cliView.initialization();
+                break;
             }
             else {
-                Application.launch(GUI.class);
+               // Application.launch(GUI.class);
             }
         }
+        Application.launch(GUI.class);
     }
 }
