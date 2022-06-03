@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.extra.SerializableIsland;
+import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -177,7 +179,21 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-        
+        SerializableScoreboard[] scoreboards = gameSerialized.getSerializableScoreboard();
+        SerializableIsland[] islands = gameSerialized.getSerializableIslands();
+
+        //islands
+        for(SerializableIsland i : islands)
+        {
+            out.println("Island " + i.getId() + ":");
+            out.println("\t Tower color : " + i.getTowerColor());
+            if (i.getRedStudents() != 0) out.println("\t Number of red students : " + i.getRedStudents());
+            if (i.getBlueStudents() != 0) out.println("\t Number of blue students : " + i.getBlueStudents());
+            if (i.getGreenStudents() != 0) out.println("\t Number of green students : " + i.getGreenStudents());
+            if (i.getYellowStudents() != 0) out.println("\t Number of yellow students : " + i.getYellowStudents());
+            if (i.getPinkStudents() != 0) out.println("\t Number of pink students : " + i.getPinkStudents());
+        }
+
     }
 
     @Override
