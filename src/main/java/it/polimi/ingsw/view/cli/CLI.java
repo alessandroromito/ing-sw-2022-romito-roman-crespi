@@ -259,7 +259,7 @@ public class CLI extends ViewObservable implements View {
             out.println("Scegli tra le seguenti Carte Assistente:");
             int i = 0;
             for (AssistantCard assistantCard : assistantCards){
-                out.println("Scelta : " + i + "ID : " + assistantCard.getID() + "Valore : " + assistantCard.getValue() + "Numero passi: " + assistantCard.getMovement());
+                out.println("Scelta : " + i + " ID : " + assistantCard.getID() + " Valore : " + assistantCard.getValue() + " Numero passi: " + assistantCard.getMovement());
                 i++;
             }
             out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
