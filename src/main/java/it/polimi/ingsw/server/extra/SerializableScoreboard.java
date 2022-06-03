@@ -73,4 +73,6 @@ public class SerializableScoreboard implements Serializable {
     public TowerColors getTowerColor() {
         return towerColor;
     }
+
+    public ArrayList<PawnColors> availableProfessors(){ return professors; }
 }

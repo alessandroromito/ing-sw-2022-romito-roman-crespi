@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
@@ -19,6 +20,8 @@ public class CLI extends ViewObservable implements View {
 
     private final PrintStream out;
     private Thread readThread;
+
+    private String nickname;
 
     public CLI(){
         out = System.out;
@@ -152,6 +155,7 @@ public class CLI extends ViewObservable implements View {
         catch(ExecutionException | InterruptedException e){
             out.println("Errore");
         }
+        this.nickname = nickname;
     }
 
     @Override
@@ -181,18 +185,34 @@ public class CLI extends ViewObservable implements View {
     public void showGameScenario(GameSerialized gameSerialized) {
         SerializableScoreboard[] scoreboards = gameSerialized.getSerializableScoreboard();
         SerializableIsland[] islands = gameSerialized.getSerializableIslands();
+        //TEMPORANEO... DA SISTEMARE CON IL NICKNAME SULLA SCOREBOARD
+        SerializableScoreboard currentPlayerScoreboard = scoreboards[1];
 
         //islands
         for(SerializableIsland i : islands)
         {
-            out.println("Island " + i.getId() + ":");
-            out.println("\t Tower color : " + i.getTowerColor());
-            if (i.getRedStudents() != 0) out.println("\t Number of red students : " + i.getRedStudents());
-            if (i.getBlueStudents() != 0) out.println("\t Number of blue students : " + i.getBlueStudents());
-            if (i.getGreenStudents() != 0) out.println("\t Number of green students : " + i.getGreenStudents());
-            if (i.getYellowStudents() != 0) out.println("\t Number of yellow students : " + i.getYellowStudents());
-            if (i.getPinkStudents() != 0) out.println("\t Number of pink students : " + i.getPinkStudents());
+            out.println("Isola " + i.getId() + ":");
+            out.println("\t Colore e numero delle torri : " + i.getTowerNumber() + i.getTowerColor());
+            if (i.getRedStudents() != 0) out.println("\t Numero di studenti rossi : " + i.getRedStudents());
+            if (i.getBlueStudents() != 0) out.println("\t Numero di studenti blu : " + i.getBlueStudents());
+            if (i.getGreenStudents() != 0) out.println("\t Numero di studenti verdi : " + i.getGreenStudents());
+            if (i.getYellowStudents() != 0) out.println("\t Numero di studenti gialli : " + i.getYellowStudents());
+            if (i.getPinkStudents() != 0) out.println("\t Numero di studenti rosa : " + i.getPinkStudents());
         }
+
+        //scoreboard
+        out.println("La tua scoreboard:");
+        out.println("Studenti in entrata:");
+        if(currentPlayerScoreboard.getRedStudents() != 0)    out.println("\t Numero di studenti rossi : " + currentPlayerScoreboard.getRedStudents());
+        if(currentPlayerScoreboard.getBlueStudents() != 0)    out.println("\t Numero di studenti blu : " + currentPlayerScoreboard.getBlueStudents());
+        if(currentPlayerScoreboard.getGreenStudents() != 0)    out.println("\t Numero di studenti verdi : " + currentPlayerScoreboard.getGreenStudents());
+        if(currentPlayerScoreboard.getYellowStudents() != 0)    out.println("\t Numero di studenti gialli : " + currentPlayerScoreboard.getYellowStudents());
+        if(currentPlayerScoreboard.getPinkStudents() != 0)    out.println("\t Numero di studenti rosa : " + currentPlayerScoreboard.getPinkStudents());
+        out.println("Professori che possiedi:");
+        for(PawnColors i : currentPlayerScoreboard.availableProfessors()) {
+            out.println("Professore " + i.toString());
+        }
+
 
     }
 
