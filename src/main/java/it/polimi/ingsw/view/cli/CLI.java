@@ -200,7 +200,7 @@ public class CLI extends ViewObservable implements View {
 
         //scoreboard
         for(SerializableScoreboard scoreboard : scoreboards){
-            if(scoreboard.getNickname() == nickname){
+            if(scoreboard.getNickname().equals(nickname)){
                 out.println("La tua scoreboard:");
             }
             else {
@@ -214,11 +214,11 @@ public class CLI extends ViewObservable implements View {
 
     public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
         out.println("\t Studenti in entrata:");
-        if(currentPlayerScoreboard.getRedStudents() != 0)    out.println("\t Numero di studenti rossi : " + currentPlayerScoreboard.getRedStudents());
-        if(currentPlayerScoreboard.getBlueStudents() != 0)    out.println("\t Numero di studenti blu : " + currentPlayerScoreboard.getBlueStudents());
-        if(currentPlayerScoreboard.getGreenStudents() != 0)    out.println("\t Numero di studenti verdi : " + currentPlayerScoreboard.getGreenStudents());
-        if(currentPlayerScoreboard.getYellowStudents() != 0)    out.println("\t Numero di studenti gialli : " + currentPlayerScoreboard.getYellowStudents());
-        if(currentPlayerScoreboard.getPinkStudents() != 0)    out.println("\t Numero di studenti rosa : " + currentPlayerScoreboard.getPinkStudents());
+        if(currentPlayerScoreboard.getRedStudents() != 0)    out.println("\t\t Numero di studenti rossi : " + currentPlayerScoreboard.getRedStudents());
+        if(currentPlayerScoreboard.getBlueStudents() != 0)    out.println("\t\t Numero di studenti blu : " + currentPlayerScoreboard.getBlueStudents());
+        if(currentPlayerScoreboard.getGreenStudents() != 0)    out.println("\t\t Numero di studenti verdi : " + currentPlayerScoreboard.getGreenStudents());
+        if(currentPlayerScoreboard.getYellowStudents() != 0)    out.println("\t\t Numero di studenti gialli : " + currentPlayerScoreboard.getYellowStudents());
+        if(currentPlayerScoreboard.getPinkStudents() != 0)    out.println("\t\t Numero di studenti rosa : " + currentPlayerScoreboard.getPinkStudents());
         out.println("Professori posseduti:");
         for(PawnColors i : currentPlayerScoreboard.availableProfessors()) {
             out.println("\t Professore " + i.toString());
@@ -257,7 +257,11 @@ public class CLI extends ViewObservable implements View {
         int choose = -1;
         do {
             out.println("Scegli tra le seguenti Carte Assistente:");
-            for (AssistantCard assistantCard : assistantCards) out.println(assistantCard);
+            int i = 0;
+            for (AssistantCard assistantCard : assistantCards){
+                out.println("Scelta : " + i + "ID : " + assistantCard.getID() + "Valore : " + assistantCard.getValue() + "Numero passi: " + assistantCard.getMovement());
+                i++;
+            }
             out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
             try {
                 choose = Integer.parseInt(readRow());
