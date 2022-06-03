@@ -9,18 +9,18 @@ public class EriantysClient {
 
     public static void main(String[] args) {
 
+        boolean cliOn = false;
+
         for (String arg : args) {
             if (arg.equals("--cli")) {
                 CLI cliView = new CLI();
                 ClientController clientcontroller = new ClientController(cliView);
                 cliView.addObserver(clientcontroller);
                 cliView.initialization();
+                cliOn = true;
                 break;
             }
-            else {
-               // Application.launch(GUI.class);
-            }
         }
-        Application.launch(GUI.class);
+        if(!cliOn) Application.launch(GUI.class);
     }
 }
