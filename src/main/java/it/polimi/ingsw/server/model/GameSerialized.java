@@ -11,39 +11,36 @@ import java.util.ArrayList;
 public class GameSerialized implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private final SerializableIsland[] serializableIslands = new SerializableIsland[12];
-    private final SerializableScoreboard[] serializableScoreboard = new SerializableScoreboard[0];
+    private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
+    private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
 
     public GameSerialized(Game game){
-        int i = 0;
+
         for(Island island : game.getMap().getIslands()){
             if(island.isDisabled()) {
-                serializableIslands[i] = new SerializableIsland(game.getMap().getGhostIsland(island.getID()));
+                serializableIslands.add(new SerializableIsland(game.getMap().getGhostIsland(island.getID())));
                 ArrayList<Integer> referencedIslands = new ArrayList<>();
                 for(Island isl : game.getMap().getIslands()){
                     if(isl.isDisabled()){
                         referencedIslands.add(isl.getGroupID());
                     }
                 }
-                serializableIslands[i].setReferencedIslands(referencedIslands);
+                serializableIslands.get(serializableIslands.size()).setReferencedIslands(referencedIslands);
             }
             else{
-                serializableIslands[i] = new SerializableIsland(island);
+                serializableIslands.add(new SerializableIsland(island));
             }
-            i++;
         }
-        int j = 0;
         for(Player player : game.getPlayers()){
-            serializableScoreboard[j] = new SerializableScoreboard(player.getScoreboard(), player.getNickname());
-            j++;
+            serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player.getNickname()));
         }
     }
 
-    public SerializableIsland[] getSerializableIslands() {
+    public ArrayList<SerializableIsland> getSerializableIslands() {
         return serializableIslands;
     }
 
-    public SerializableScoreboard[] getSerializableScoreboard() {
+    public ArrayList<SerializableScoreboard> getSerializableScoreboard() {
         return serializableScoreboard;
     }
 }

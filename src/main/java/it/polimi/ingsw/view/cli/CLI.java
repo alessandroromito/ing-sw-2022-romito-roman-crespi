@@ -183,10 +183,8 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-        SerializableScoreboard[] scoreboards = gameSerialized.getSerializableScoreboard();
-        SerializableIsland[] islands = gameSerialized.getSerializableIslands();
-        //TEMPORANEO... DA SISTEMARE CON IL NICKNAME SULLA SCOREBOARD
-        SerializableScoreboard currentPlayerScoreboard = scoreboards[1];
+        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
+        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
         //islands
         for(SerializableIsland i : islands)
