@@ -201,19 +201,30 @@ public class CLI extends ViewObservable implements View {
         }
 
         //scoreboard
-        out.println("La tua scoreboard:");
-        out.println("Studenti in entrata:");
+        for(SerializableScoreboard scoreboard : scoreboards){
+            if(scoreboard.getNickname() == nickname){
+                out.println("La tua scoreboard:");
+            }
+            else {
+                out.println("Scoreboard giocatore " + scoreboard.getNickname() + ":");
+            }
+            showScoreboard(scoreboard);
+        }
+
+
+    }
+
+    public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
+        out.println("\t Studenti in entrata:");
         if(currentPlayerScoreboard.getRedStudents() != 0)    out.println("\t Numero di studenti rossi : " + currentPlayerScoreboard.getRedStudents());
         if(currentPlayerScoreboard.getBlueStudents() != 0)    out.println("\t Numero di studenti blu : " + currentPlayerScoreboard.getBlueStudents());
         if(currentPlayerScoreboard.getGreenStudents() != 0)    out.println("\t Numero di studenti verdi : " + currentPlayerScoreboard.getGreenStudents());
         if(currentPlayerScoreboard.getYellowStudents() != 0)    out.println("\t Numero di studenti gialli : " + currentPlayerScoreboard.getYellowStudents());
         if(currentPlayerScoreboard.getPinkStudents() != 0)    out.println("\t Numero di studenti rosa : " + currentPlayerScoreboard.getPinkStudents());
-        out.println("Professori che possiedi:");
+        out.println("Professori posseduti:");
         for(PawnColors i : currentPlayerScoreboard.availableProfessors()) {
-            out.println("Professore " + i.toString());
+            out.println("\t Professore " + i.toString());
         }
-
-
     }
 
     @Override
