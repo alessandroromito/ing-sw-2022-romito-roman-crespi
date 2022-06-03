@@ -132,6 +132,7 @@ public class Island {
     }
 
     public TowerColors getTowerColor(){
+        if (towers.isEmpty()) return null;
         return towers.get(0).getColor();
     }
 
