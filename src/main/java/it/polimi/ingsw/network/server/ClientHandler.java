@@ -19,8 +19,8 @@ public class ClientHandler implements Runnable {
     private final Object inputLock;
     private final Object outputLock;
 
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private final ObjectOutputStream out;
+    private final ObjectInputStream in;
 
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
         this.socketServer = socketServer;
@@ -69,7 +69,7 @@ public class ClientHandler implements Runnable {
                     client.close();
                 }
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
             connected = false;
             Thread.currentThread().interrupt();

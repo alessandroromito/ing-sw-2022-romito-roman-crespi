@@ -54,6 +54,7 @@ public class ClientController implements ViewObserver, Observer {
                 MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;
                 //
             }
+            case PLAYER_NUMBER_REQUEST -> queue.execute(view::askPlayersNumber);
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
                 queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));

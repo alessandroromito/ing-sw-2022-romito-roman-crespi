@@ -274,7 +274,10 @@ public class GameController implements Observer {
         virtualView.showGenericMessage(message);
     }
 
-
+    public void showDisconnectionMessage(String nickname, String message) {
+        VirtualView virtualView = virtualViewMap.get(nickname);
+        virtualView.showDisconnectedPlayerMessage(nickname, message);
+    }
 
     public void refillClouds(){
         game.refillClouds();

@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.message.ErrorMessage;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.observer.Observable;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -41,13 +42,16 @@ public class Client extends Observable {
                 Message message;
                 try {
                     message = (Message) objectInputStream.readObject();
+                    notifyObserver(message);
+                } catch (EOFException e){
+
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     message = new ErrorMessage("Connection lost");
+                    notifyObserver(message);
                     disconnect();
                     readExecutionQueue.shutdownNow();
                 }
-                notifyObserver(message);
             }
         });
     }

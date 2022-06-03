@@ -34,7 +34,6 @@ public class SocketServer implements Runnable{
             Socket client = null;
             try {
                 client = serverSocket.accept();
-                client.setSoTimeout(8000);
                 System.out.println("Received client connection");
             } catch(IOException e) {
                 System.out.println("SocketServer.run(): Client connection not accepted");

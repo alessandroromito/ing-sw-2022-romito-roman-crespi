@@ -13,12 +13,14 @@ import java.util.Map;
 
 public class Server {
     private final GameController gameController;
-
     private final Map<String, ClientHandler> clientHandlerMap;
+
+    private final Object lock;
 
     public Server(GameController gameController) {
         this.gameController = gameController;
         this.clientHandlerMap = new HashMap<>();
+        this.lock = new Object();
     }
 
     public void addClient(String nickname, ClientHandler clientHandler) {
@@ -45,7 +47,20 @@ public class Server {
     }
 
     public void onDisconnect(ClientHandler clientHandler) {
+        synchronized (lock) {
+            String nickname = getNicknameFromClientHandler(clientHandler);
 
+            if (nickname != null) {
+                if (gameController.getGameState() == GameState.GAME_STARTED) {
+
+                }
+                else{
+                    gameController.showDisconnectionMessage(nickname, " disconnected from the server!");
+                }
+
+                removeClient(nickname);
+            }
+        }
     }
 
     public GameState getGameState(){
