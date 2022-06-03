@@ -2,7 +2,11 @@ package it.polimi.ingsw.server.model.component;
 
 import it.polimi.ingsw.server.enumerations.Animals;
 
-public class AssistantCard extends Component{
+import java.io.Serializable;
+
+public class AssistantCard extends Component implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Animals animal;
     private int value;
     private int movement;
