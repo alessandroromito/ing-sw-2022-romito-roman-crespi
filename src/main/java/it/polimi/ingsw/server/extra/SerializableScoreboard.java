@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class SerializableScoreboard implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String nickname;
     private int redStudents = 0;
     private int greenStudents = 0;
     private int blueStudents = 0;
@@ -21,7 +22,8 @@ public class SerializableScoreboard implements Serializable {
     private TowerColors towerColor;
     private ArrayList<PawnColors> professors = new ArrayList<>();
 
-    public SerializableScoreboard(Scoreboard scoreboard){
+    public SerializableScoreboard(Scoreboard scoreboard, String nickname){
+        this.nickname = nickname;
         setColors(scoreboard);
         setProfessors(scoreboard);
         this.towerColor = scoreboard.getTowerColor();
@@ -75,4 +77,8 @@ public class SerializableScoreboard implements Serializable {
     }
 
     public ArrayList<PawnColors> availableProfessors(){ return professors; }
+
+    public String getNickname() {
+        return nickname;
+    }
 }

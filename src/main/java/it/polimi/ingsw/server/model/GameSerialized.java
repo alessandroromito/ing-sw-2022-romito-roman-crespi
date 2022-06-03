@@ -6,22 +6,35 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class GameSerialized implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private SerializableIsland[] serializableIslands = new SerializableIsland[12];
-    private SerializableScoreboard[] serializableScoreboard = new SerializableScoreboard[3];
+    private final SerializableIsland[] serializableIslands = new SerializableIsland[12];
+    private final SerializableScoreboard[] serializableScoreboard = new SerializableScoreboard[3];
 
     public GameSerialized(Game game){
         int i = 0;
         for(Island island : game.getMap().getIslands()){
-            serializableIslands[i] = new SerializableIsland(island);
+            if(island.isDisabled()) {
+                serializableIslands[i] = new SerializableIsland(game.getMap().getGhostIsland(island.getID()));
+                ArrayList<Integer> referencedIslands = new ArrayList<>();
+                for(Island isl : game.getMap().getIslands()){
+                    if(isl.isDisabled()){
+                        referencedIslands.add(isl.getGroupID());
+                    }
+                }
+                serializableIslands[i].setReferencedIslands(referencedIslands);
+            }
+            else{
+                serializableIslands[i] = new SerializableIsland(island);
+            }
             i++;
         }
         int j = 0;
         for(Player player : game.getPlayers()){
-            serializableScoreboard[j] = new SerializableScoreboard(player.getScoreboard());
+            serializableScoreboard[j] = new SerializableScoreboard(player.getScoreboard(), player.getNickname());
             j++;
         }
     }

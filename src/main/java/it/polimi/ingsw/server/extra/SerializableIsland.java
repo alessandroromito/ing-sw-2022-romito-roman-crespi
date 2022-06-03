@@ -2,14 +2,18 @@ package it.polimi.ingsw.server.extra;
 
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SerializableIsland implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int id;
+    private final boolean isGhost;
+    private ArrayList<Integer> referencedIslands;
     private int redStudents = 0;
     private int greenStudents = 0;
     private int blueStudents = 0;
@@ -20,9 +24,17 @@ public class SerializableIsland implements Serializable {
 
     public SerializableIsland(Island island){
         this.id  = island.getID();
+        this.isGhost = false;
         setColors(island);
         this.towerColor = island.getTowerColor();
         this.towerNumber = island.getTowerNumber();
+    }
+
+    public SerializableIsland(GhostIsland ghostIsland){
+        this.isGhost = true;
+        setColors(ghostIsland);
+        this.towerColor = ghostIsland.getTowerColor();
+        this.towerNumber = ghostIsland.getTowerNumber();
     }
 
     private void setColors(Island island) {
@@ -67,5 +79,17 @@ public class SerializableIsland implements Serializable {
 
     public TowerColors getTowerColor() {
         return towerColor;
+    }
+
+    public boolean isGhost() {
+        return isGhost;
+    }
+
+    public ArrayList<Integer> getReferencedIslands() {
+        return referencedIslands;
+    }
+
+    public void setReferencedIslands(ArrayList<Integer> referencedIslands) {
+        this.referencedIslands = referencedIslands;
     }
 }
