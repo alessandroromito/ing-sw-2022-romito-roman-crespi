@@ -12,7 +12,7 @@ public class GameSerialized implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final SerializableIsland[] serializableIslands = new SerializableIsland[12];
-    private final SerializableScoreboard[] serializableScoreboard = new SerializableScoreboard[3];
+    private final SerializableScoreboard[] serializableScoreboard = new SerializableScoreboard[0];
 
     public GameSerialized(Game game){
         int i = 0;
