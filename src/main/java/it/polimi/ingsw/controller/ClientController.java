@@ -55,6 +55,10 @@ public class ClientController implements ViewObserver, Observer {
                 //
             }
             case PLAYER_NUMBER_REQUEST -> queue.execute(view::askPlayersNumber);
+            case PLAY_ASSISTANT_CARD -> {
+                AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;
+                queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards()));
+            }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
                 queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));

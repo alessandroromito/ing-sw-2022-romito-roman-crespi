@@ -26,9 +26,10 @@ public class Player extends Observable{
         int val = 1;
         int movement = 1;
         for(int i = 0; i < 10; i++){
-            hand.add(new AssistantCard(i, val, movement));
+            this.hand.add(new AssistantCard(i, val, movement));
             val++;
-            hand.add(new AssistantCard(i, val, movement));
+            i++;
+            this.hand.add(new AssistantCard(i, val, movement));
             val++;
             movement++;
         }
