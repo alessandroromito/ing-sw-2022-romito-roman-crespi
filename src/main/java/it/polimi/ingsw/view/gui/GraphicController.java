@@ -15,13 +15,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class GraphicController extends ViewObservable implements View {
-
-    private static GraphicController graphicController = null;
 
     public static <T> T setLayout(Scene scene, String path) {
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource(path));
@@ -34,16 +31,25 @@ public class GraphicController extends ViewObservable implements View {
             Logger.getLogger("client").severe(e.getMessage());
             return null;
         }
-
         return fxmlLoader.getController();
     }
 
-    public void askServerParametersConfiguration(){
-        HashMap<String, String> server = new HashMap<>();
-        server.put("address", "127.0.0.1");
-        server.put("port", "1511");
-        notifyObserver(obs -> obs.onUpdateServerDetails(server));
+    /*public static <T> T setLayout(Scene scene, String path, ClientController clientController) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource(path));
+
+        Pane pane;
+        try {
+            pane = fxmlLoader.load();
+            scene.setRoot(pane);
+        } catch (IOException e) {
+            Logger.getLogger("client").severe(e.getMessage());
+            return null;
+        }
+        StartMenuSceneManager manager = new StartMenuSceneManager();
+        manager.addObserver(clientController);
+        return fxmlLoader.getController();
     }
+     */
 
     @Override
     public void askPlayerNickname() {

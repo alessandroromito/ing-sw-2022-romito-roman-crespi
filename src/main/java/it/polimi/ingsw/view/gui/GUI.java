@@ -1,14 +1,20 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.controller.ClientController;
+import it.polimi.ingsw.network.client.Client;
+import it.polimi.ingsw.view.View;
+import it.polimi.ingsw.view.gui.scene.StartMenuSceneManager;
 import javafx.application.Platform;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class GUI extends Application {
@@ -31,7 +37,6 @@ public class GUI extends Application {
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.setTitle("Eryantis Game");
 
-            graphicController.askServerParametersConfiguration();
             GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 
             stage.show();

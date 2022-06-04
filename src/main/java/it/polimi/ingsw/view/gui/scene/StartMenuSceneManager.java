@@ -19,17 +19,12 @@ public class StartMenuSceneManager extends ViewObservable implements SceneManage
     private Button quitButton;
 
     @FXML
-    public void initialize() {
-        playButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onPlayButtonClick);
-        quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.exit(0));
-    }
-
-    @FXML
     private void onPlayButtonClick(Event event) {
-        SceneManager.paneTransition(observers, event, "connect_scene.fxml");
+        SceneManager.paneTransition(observers, event, "addressPort_scene.fxml");
     }
 
     @FXML
     public void onQuitButtonClick(ActionEvent actionEvent) {
+        System.exit(0);
     }
 }

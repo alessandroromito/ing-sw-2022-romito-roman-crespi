@@ -21,6 +21,6 @@ public class EriantysClient {
                 break;
             }
         }
-        if(!cliOn) Application.launch(GUI.class);
+        if(!cliOn)  Application.launch(GUI.class);
     }
 }

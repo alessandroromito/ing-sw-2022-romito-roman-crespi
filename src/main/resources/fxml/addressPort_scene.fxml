@@ -4,10 +4,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.AddressPortManager">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.AddressPortSceneManager">
    <children>
-      <Button fx:id="ConnectButton" layoutX="264.0" layoutY="261.0" mnemonicParsing="false" onAction="#onButtonClick" text="CONNETTI" />
+      <Button fx:id="connectButton" layoutX="264.0" layoutY="261.0" mnemonicParsing="false" onAction="#onButtonClick" text="CONNETTI" />
       <TextField fx:id="addressField" layoutX="226.0" layoutY="135.0" promptText="Indirizzo" text="127.0.0.1" />
-      <TextField fx:id="portfield" layoutX="226.0" layoutY="175.0" promptText="Porta" text="1511" />
+      <TextField fx:id="portField" layoutX="226.0" layoutY="175.0" promptText="Porta" text="1511" />
    </children>
 </Pane>
