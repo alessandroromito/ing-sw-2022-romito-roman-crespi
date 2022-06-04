@@ -26,5 +26,6 @@ public interface Scoreboard {
     Tower removeTower();
     void addTower(Tower tower);
     List<StudentDisc> getEntrance();
+    Integer[] getDiningRoom();
     ArrayList<ProfessorPawn> getProfessorList();
 }

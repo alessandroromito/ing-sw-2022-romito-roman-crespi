@@ -13,18 +13,19 @@ public class SerializableScoreboard implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String nickname;
-    private int redStudents = 0;
-    private int greenStudents = 0;
-    private int blueStudents = 0;
-    private int yellowStudents = 0;
-    private int pinkStudents = 0;
+    private ArrayList<PawnColors> entrance = new ArrayList<>();
+    private int diningRedStudents = 0;
+    private int diningGreenStudents = 0;
+    private int diningBlueStudents = 0;
+    private int diningYellowStudents = 0;
+    private int diningPinkStudents = 0;
     private int towerNumber = 0;
     private TowerColors towerColor;
     private ArrayList<PawnColors> professors = new ArrayList<>();
 
     public SerializableScoreboard(Scoreboard scoreboard, String nickname){
         this.nickname = nickname;
-        setColors(scoreboard);
+        setStudents(scoreboard);
         setProfessors(scoreboard);
         this.towerColor = scoreboard.getTowerColor();
         this.towerNumber = scoreboard.getNumTowers();
@@ -36,36 +37,36 @@ public class SerializableScoreboard implements Serializable {
         }
     }
 
-    private void setColors(Scoreboard scoreboard) {
+    private void setStudents(Scoreboard scoreboard) {
         for(StudentDisc studentDisc : scoreboard.getEntrance()){
-            switch (studentDisc.getColor()) {
-                case RED -> this.redStudents++;
-                case BLUE -> this.blueStudents++;
-                case GREEN -> this.greenStudents++;
-                case YELLOW -> this.yellowStudents++;
-                case PINK -> this.pinkStudents++;
-            }
+            entrance.add(studentDisc.getColor());
         }
+        Integer[] dining = scoreboard.getDiningRoom();
+        diningRedStudents = dining[0];
+        diningBlueStudents = dining[1];
+        diningGreenStudents = dining[2];
+        diningYellowStudents = dining[3];
+        diningPinkStudents = dining[4];
     }
 
-    public int getRedStudents() {
-        return redStudents;
+    public int getDiningRedStudents() {
+        return diningRedStudents;
     }
 
-    public int getGreenStudents() {
-        return greenStudents;
+    public int getDiningGreenStudents() {
+        return diningGreenStudents;
     }
 
-    public int getBlueStudents() {
-        return blueStudents;
+    public int getDiningBlueStudents() {
+        return diningBlueStudents;
     }
 
-    public int getYellowStudents() {
-        return yellowStudents;
+    public int getDiningYellowStudents() {
+        return diningYellowStudents;
     }
 
-    public int getPinkStudents() {
-        return pinkStudents;
+    public int getDiningPinkStudents() {
+        return diningPinkStudents;
     }
 
     public int getTowerNumber() {
@@ -80,5 +81,9 @@ public class SerializableScoreboard implements Serializable {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public ArrayList<PawnColors> getEntrance() {
+        return entrance;
     }
 }

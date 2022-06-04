@@ -80,22 +80,23 @@ public class Game extends Observable {
      */
     public void gameInitialization() throws EntranceFullException {
         System.out.println("STARTING GameInitialization...");
-        // 1) Place MotherNature to a random island
+        // Place MotherNature to a random island
         Random r = new Random();
         int pos = r.nextInt( 12);
         map.setMotherNaturePos(pos);
 
-        // 3) Move 1 student to each island
+        // Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
         for(int i=0; i<10; i++) {
             tempArrayStudents.add(bag.pickSorted());
         }
         Collections.shuffle(tempArrayStudents);
+        int islandNum = 0;
         for(StudentDisc stud: tempArrayStudents) {
-            int islandNum = 0;
-            if(!(islandNum == oppositePosition())){
+            if(islandNum != oppositePosition()){
                 map.getIsland(islandNum).addStudent(stud);
             }
+            islandNum++;
         }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
@@ -213,12 +214,10 @@ public class Game extends Observable {
             Player player = getPlayerByNickname(nickname);
             AssistantCard chosenCard = player.getPlayerCard(cardIndex);
             if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
-            if(!validateCard(chosenCard)) throw new DoubleAssistantCardException("Another player already played this card!");
-            player.setCurrentCard(chosenCard);
-
-            notifyObserver(new GameScenarioMessage(getGameSerialized()));
-
-        }catch (DoubleAssistantCardException | MissingAssistantCardException | NullCurrentCardException e) {
+            if(validateCard(chosenCard))
+                player.setCurrentCard(chosenCard);
+            else throw new DoubleAssistantCardException("Another player already played this card!");
+        }catch (DoubleAssistantCardException | MissingAssistantCardException e) {
             throw new RuntimeException(e);
         }
     }
@@ -408,14 +407,11 @@ public class Game extends Observable {
      * @param card the player's card he wants to choose
      * @return true if it's valid or false if it's not
      */
-    private boolean validateCard(AssistantCard card) throws NullCurrentCardException {
+    private boolean validateCard(AssistantCard card) {
         for(Player player: players){
-            if(!player.getNickname().equals(turnController.getActivePlayer())){
+            if(!(player.getNickname().equals(turnController.getActivePlayer())) && player.getCurrentCard() != null) {
                 if(player.getCurrentCard().getValue() == card.getValue()){
-                    if(player.getHand().size() == 1) return true;
-                    else {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
@@ -428,6 +424,10 @@ public class Game extends Observable {
 
     public GameSerialized getGameSerialized() {
         return new GameSerialized(this);
+    }
+
+    public void setTurnController(TurnController turnController) {
+        this.turnController = turnController;
     }
 
     // -----------------------------------------------------------

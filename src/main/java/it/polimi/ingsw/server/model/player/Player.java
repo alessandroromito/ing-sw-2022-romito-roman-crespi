@@ -3,10 +3,8 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
-import it.polimi.ingsw.server.exception.NullCurrentCardException;
 import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
-import it.polimi.ingsw.server.model.component.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +23,11 @@ public class Player extends Observable{
 
         int val = 1;
         int movement = 1;
-        for(int i = 0; i < 10; i++){
-            this.hand.add(new AssistantCard(i, val, movement));
+        for(int i = 1; i <= 10; i++){
+            hand.add(new AssistantCard(i, val, movement));
             val++;
             i++;
-            this.hand.add(new AssistantCard(i, val, movement));
+            hand.add(new AssistantCard(i, val, movement));
             val++;
             movement++;
         }
@@ -44,16 +42,8 @@ public class Player extends Observable{
         return this.nickname;
     }
 
-    // public getImage()
-
     public AssistantCard getPlayerCard(int cardNumber){
         return hand.get(cardNumber);
-    }
-
-    public void setPlayerCards(List<Component> cards){
-        int i;
-        for(i=0; i<10; i++)
-            hand.add((AssistantCard) cards.get(i));
     }
 
     public Scoreboard getScoreboard(){
@@ -95,12 +85,6 @@ public class Player extends Observable{
     }
 
     public AssistantCard getCurrentCard() {
-        try {
-            if(currentAssistantCard == null)
-                throw new NullCurrentCardException("Current " + nickname + " AssistantCard Null! ");
-        } catch (NullCurrentCardException e) {
-            throw new RuntimeException(e);
-        }
         return currentAssistantCard;
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static it.polimi.ingsw.server.enumerations.PhaseState.ACTION_PHASE;
+import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 
 /**
  * This Class contains all the methods used to manage every single turn of the match.
@@ -69,9 +70,9 @@ public class TurnController {
 
     private void askAssistantCard() {
         Player player = game.getPlayerByNickname(getActivePlayer());
-        List<AssistantCard> assistantCardLists = new ArrayList<>(player.getHand());
+        List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
         VirtualView virtualView = virtualViewMap.get(getActivePlayer());
-        virtualView.askAssistantCard(assistantCardLists);
+        virtualView.askAssistantCard(assistantCardList);
     }
 
     /**
@@ -87,7 +88,11 @@ public class TurnController {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
-        actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
+        if(phaseState == PLANNING_PHASE)
+            askAssistantCard();
+        else {
+            actionPhase();
+        }
     }
 
 
@@ -122,8 +127,6 @@ public class TurnController {
                 }
                 default -> throw new InvalidActionPhaseStateException();
             }
-
-            if (getPhaseState() == ACTION_PHASE) actionPhase();
 
         }catch(InvalidActionPhaseStateException e) {
             throw new RuntimeException(e);
