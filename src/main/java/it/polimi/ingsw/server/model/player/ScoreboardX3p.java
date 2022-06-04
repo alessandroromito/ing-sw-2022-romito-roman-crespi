@@ -156,6 +156,11 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
+    public Integer[] getDiningRoom() {
+        return diningRoom;
+    }
+
+    @Override
     public ArrayList<ProfessorPawn> getProfessorList() {
         return professorList;
     }
