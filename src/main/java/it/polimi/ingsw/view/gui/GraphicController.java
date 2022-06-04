@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,6 +36,13 @@ public class GraphicController extends ViewObservable implements View {
         }
 
         return fxmlLoader.getController();
+    }
+
+    public void askServerParametersConfiguration(){
+        HashMap<String, String> server = new HashMap<>();
+        server.put("address", "127.0.0.1");
+        server.put("port", "1511");
+        notifyObserver(obs -> obs.onUpdateServerDetails(server));
     }
 
     @Override

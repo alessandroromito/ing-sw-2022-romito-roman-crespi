@@ -3,7 +3,9 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.view.gui.scene.SceneManagerInterface;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
@@ -61,5 +63,10 @@ public class SceneManager extends ViewObservable {
         }catch(IOException e) {
             Logger.getLogger("client").severe(e.getMessage());
         }
+    }
+
+    public static <T> T paneTransition(List<ViewObserver> observerList, Event event, String fxml){
+        Scene scene = ((Node) event.getSource()).getScene();
+        return paneTransition(observerList, scene, fxml);
     }
 }

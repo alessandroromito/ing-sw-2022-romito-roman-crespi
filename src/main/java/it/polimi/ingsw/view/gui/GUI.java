@@ -31,7 +31,8 @@ public class GUI extends Application {
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.setTitle("Eryantis Game");
 
-            GraphicController.setLayout(stage.getScene(), "fxml/login_scene.fxml");
+            graphicController.askServerParametersConfiguration();
+            GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 
             stage.show();
         }
