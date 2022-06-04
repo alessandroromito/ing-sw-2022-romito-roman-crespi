@@ -136,6 +136,7 @@ public class MessageHandler {
     public void handleMessage(AssistantCardMessage assistantCardMessage) {
         if(gameController.getGameState() == GameState.IN_GAME){
             if(gameController.checkUser(assistantCardMessage)){
+                System.out.println("Handling AssistantCardMessage");
                 gameController.setAssistantCard(assistantCardMessage);
             }
         }

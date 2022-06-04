@@ -23,6 +23,17 @@ public class CLI extends ViewObservable implements View {
 
     private String nickname;
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String ANSI_GREY = "\u001B[30;1m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_BLUE = "\u001B[34m";
+    public static final String ANSI_PINK = "\u001b[35;1m";
+    public static final String ANSI_CYAN = "\u001B[36m";
+    public static final String ANSI_WHITE = "\u001b[37;1m";
+
     public CLI(){
         out = System.out;
     }
@@ -50,13 +61,13 @@ public class CLI extends ViewObservable implements View {
 
         out.println("Inserisci i seguenti parametri per iniziare a giocare!\n");
         do{
-            out.println("Server address: ");
-            String address = null;
-            try {
-                address = readRow();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            //out.println("Server address: ");
+            String address = "127.0.0.1";
+            //try {
+            //    address = readRow();
+            //} catch (ExecutionException | InterruptedException e) {
+            //    e.printStackTrace();
+            //}
             if(Validator.validateIpAddress(address)) {
                 server.put("address", address);
                 validInput = true;
@@ -69,13 +80,13 @@ public class CLI extends ViewObservable implements View {
         }while(!validInput);
 
         do{
-            out.println("Port address: ");
-            String port = null;
-            try {
-                port = readRow();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
+            //out.println("Port address: ");
+            String port = "1511";
+            //try {
+            //    port = readRow();
+            //} catch (ExecutionException | InterruptedException e) {
+            //    e.printStackTrace();
+            //}
             if(Validator.validatePort(port)) {
                 server.put("port", port);
                 validInput = true;
@@ -187,41 +198,77 @@ public class CLI extends ViewObservable implements View {
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
         //islands
-        for(SerializableIsland i : islands)
+        for(SerializableIsland island : islands)
         {
-            out.println("Isola " + i.getId() + ":");
-            out.println("\t Colore e numero delle torri : " + i.getTowerNumber() + i.getTowerColor());
-            if (i.getRedStudents() != 0) out.println("\t Numero di studenti rossi : " + i.getRedStudents());
-            if (i.getBlueStudents() != 0) out.println("\t Numero di studenti blu : " + i.getBlueStudents());
-            if (i.getGreenStudents() != 0) out.println("\t Numero di studenti verdi : " + i.getGreenStudents());
-            if (i.getYellowStudents() != 0) out.println("\t Numero di studenti gialli : " + i.getYellowStudents());
-            if (i.getPinkStudents() != 0) out.println("\t Numero di studenti rosa : " + i.getPinkStudents());
+            out.println("ISOLA " + (island.getId()+1) + ":");
+            if(island.getTowerNumber() != 0){
+                for(int i=0; i < island.getTowerNumber(); i++)
+                    switch (island.getTowerColor()){
+                        case BLACK -> out.print(ANSI_BLACK + "T" + ANSI_RESET);
+                        case GREY -> out.print(ANSI_GREY + "T" + ANSI_RESET);
+                        case WHITE -> out.print(ANSI_WHITE + "T" + ANSI_RESET);
+                    }
+            }
+            for(int i=0; i < island.getRedStudents(); i++)
+                out.print(ANSI_RED + "o" + ANSI_RESET);
+            for(int i=0; i < island.getBlueStudents(); i++)
+                out.print(ANSI_BLUE + "o" + ANSI_RESET);
+            for(int i=0; i < island.getYellowStudents(); i++)
+                out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+            for(int i=0; i < island.getGreenStudents(); i++)
+                out.print(ANSI_GREEN + "o" + ANSI_RESET);
+            for(int i=0; i < island.getPinkStudents(); i++)
+                out.print(ANSI_PINK + "o" + ANSI_RESET);
+
+            out.println();
         }
 
         //scoreboard
         for(SerializableScoreboard scoreboard : scoreboards){
             if(scoreboard.getNickname().equals(nickname)){
-                out.println("La tua scoreboard:");
+                out.println("LA TUA SCOREBOARD:");
             }
             else {
-                out.println("Scoreboard giocatore " + scoreboard.getNickname() + ":");
+                out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
             }
             showScoreboard(scoreboard);
         }
-
-
     }
 
     public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
-        out.println("\t Studenti in entrata:");
-        if(currentPlayerScoreboard.getRedStudents() != 0)    out.println("\t\t Numero di studenti rossi : " + currentPlayerScoreboard.getRedStudents());
-        if(currentPlayerScoreboard.getBlueStudents() != 0)    out.println("\t\t Numero di studenti blu : " + currentPlayerScoreboard.getBlueStudents());
-        if(currentPlayerScoreboard.getGreenStudents() != 0)    out.println("\t\t Numero di studenti verdi : " + currentPlayerScoreboard.getGreenStudents());
-        if(currentPlayerScoreboard.getYellowStudents() != 0)    out.println("\t\t Numero di studenti gialli : " + currentPlayerScoreboard.getYellowStudents());
-        if(currentPlayerScoreboard.getPinkStudents() != 0)    out.println("\t\t Numero di studenti rosa : " + currentPlayerScoreboard.getPinkStudents());
+        out.println("Studenti nella dining room:");
+        for(int i = 0; i < currentPlayerScoreboard.getDiningRedStudents(); i++)
+            out.print(ANSI_RED + "o" + ANSI_RESET);
+        for(int i = 0; i < currentPlayerScoreboard.getDiningBlueStudents(); i++)
+            out.print(ANSI_BLUE + "o" + ANSI_RESET);
+        for(int i = 0; i < currentPlayerScoreboard.getDiningYellowStudents(); i++)
+            out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+        for(int i = 0; i < currentPlayerScoreboard.getDiningGreenStudents(); i++)
+            out.print(ANSI_GREEN + "o" + ANSI_RESET);
+        for(int i = 0; i < currentPlayerScoreboard.getDiningPinkStudents(); i++)
+            out.print(ANSI_PINK + "o" + ANSI_RESET);
+
+        out.println("Studenti in entrata:");
+        for(PawnColors color : currentPlayerScoreboard.getEntrance()) {
+            switch (color){
+                case RED -> out.print(ANSI_RED + "o" + ANSI_RESET);
+                case BLUE -> out.print(ANSI_BLUE + "o" + ANSI_RESET);
+                case YELLOW -> out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+                case PINK -> out.print(ANSI_PINK + "o" + ANSI_RESET);
+                case GREEN -> out.print(ANSI_GREEN + "o" + ANSI_RESET);
+            }
+        }
+        out.println();
+
         out.println("Professori posseduti:");
-        for(PawnColors i : currentPlayerScoreboard.availableProfessors()) {
-            out.println("\t Professore " + i.toString());
+        for(PawnColors color : currentPlayerScoreboard.availableProfessors()) {
+            switch (color){
+                case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
+                case BLUE -> out.println(ANSI_BLUE + "PROFESSOR BLUE" + ANSI_RESET);
+                case YELLOW -> out.print(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
+                case PINK -> out.println(ANSI_PINK + "PROFESSOR PINK" + ANSI_RESET);
+                case GREEN -> out.println(ANSI_GREEN + "PROFESSOR GREEN" + ANSI_RESET);
+            }
         }
     }
 
@@ -269,15 +316,18 @@ public class CLI extends ViewObservable implements View {
                 e.printStackTrace();
             }
             if(choose >= assistantCards.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
-        }while(choose >= assistantCards.size()-1 || choose < 0);
+        } while(choose >= assistantCards.size()-1 || choose < 0);
         List<AssistantCard> response = new ArrayList<>();
         response.add(assistantCards.get(choose));
-        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(response));
+        notifyObserver(obs -> {
+            obs.onUpdatePlayAssistantCard(response);
+        });
     }
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
-
+        out.println("E' il tuo turno...");
+        out.println("Scegli ");
     }
 
     @Override

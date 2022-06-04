@@ -47,13 +47,15 @@ public class GameController implements Observer {
     private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
+
         for(VirtualView vv : virtualViewMap.values())
             game.addObserver(vv);
 
         turnController = new TurnController(this, virtualViewMap);
+        game.setTurnController(turnController);
+
         showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
-
     }
 
     public void askToMoveStudent() {
@@ -286,13 +288,15 @@ public class GameController implements Observer {
     public void setAssistantCard(AssistantCardMessage assistantCardMessage) {
         if(turnController.getPhaseState() == PhaseState.PLANNING_PHASE){
             game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
-
+            showMessage(assistantCardMessage.getNickname(), "Assistant Card Set!");
+            /*
             //Verifica se tutti l'hanno settata
             for(Player p : game.getPlayers()){
                 if(p.getCurrentCard() == null)
                     return;
             }
-            turnController.nextPhase();
+             */
+            turnController.next();
         }
 
         else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");

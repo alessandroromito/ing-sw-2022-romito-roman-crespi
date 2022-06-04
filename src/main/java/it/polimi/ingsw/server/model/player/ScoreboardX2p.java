@@ -15,6 +15,7 @@ import java.util.List;
 public class ScoreboardX2p implements Scoreboard{
 
     private final StudentDisc[] entrance = new StudentDisc[7];
+
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
 
@@ -152,6 +153,11 @@ public class ScoreboardX2p implements Scoreboard{
             tempList.add(entrance[i]);
         }
         return tempList;
+    }
+
+    @Override
+    public Integer[] getDiningRoom() {
+        return diningRoom;
     }
 
     @Override
