@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.view.gui.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,8 +24,12 @@ public class StartMenuSceneManager extends ViewObservable implements SceneManage
         quitButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> System.exit(0));
     }
 
+    @FXML
     private void onPlayButtonClick(Event event) {
         SceneManager.paneTransition(observers, event, "connect_scene.fxml");
     }
 
+    @FXML
+    public void onQuitButtonClick(ActionEvent actionEvent) {
+    }
 }
