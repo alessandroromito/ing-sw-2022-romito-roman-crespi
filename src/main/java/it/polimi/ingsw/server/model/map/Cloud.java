@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.model.component.StudentDisc;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Cloud {
+public class Cloud implements Serializable {
 
     private ArrayList<StudentDisc> cloudStudents;
     private int cloudID;

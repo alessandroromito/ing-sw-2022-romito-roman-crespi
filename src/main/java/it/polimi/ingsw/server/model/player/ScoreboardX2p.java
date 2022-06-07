@@ -113,13 +113,17 @@ public class ScoreboardX2p implements Scoreboard{
     @Override
     public void addStudentOnDining(StudentDisc student) {
         diningRoom[student.getColorInt()]++;
+        for(int i = 0; i < 7; i++){
+            if(entrance[i].equals(student))
+                entrance[i] = null;
+        }
     }
 
     @Override
     public void moveFromEntranceToDining(StudentDisc student) {
         try {
             for (int i = 0; i < 7; i++)
-                if (entrance[i].equals(student)) {
+                if (entrance[i].getID() == student.getID()) {
                     diningRoom[entrance[i].getColorInt()]++;
                     entrance[i] = null;
                     return;

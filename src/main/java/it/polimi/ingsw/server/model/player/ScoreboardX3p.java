@@ -112,6 +112,10 @@ public class ScoreboardX3p implements Scoreboard{
     @Override
     public void addStudentOnDining(StudentDisc student) {
         diningRoom[student.getColorInt()]++;
+        for(int i = 0; i<entrance.length; i++){
+            if(entrance[i].equals(student))
+                entrance[i] = null;
+        }
     }
 
     @Override
@@ -119,7 +123,7 @@ public class ScoreboardX3p implements Scoreboard{
         try{
             int c=0;
             for(int i=0;i<9;i++)
-                if(entrance[c].equals(student)) {
+                if(entrance[c].getID() == student.getID()) {
                     diningRoom[entrance[c].getColorInt()]++;
                     entrance[c] = null;
                     return;

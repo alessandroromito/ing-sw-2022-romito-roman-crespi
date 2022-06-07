@@ -114,4 +114,8 @@ public class Player extends Observable{
         this.nickname = nickname;
     }
 
+    @Override
+    public String toString(){
+        return this.nickname;
+    }
 }

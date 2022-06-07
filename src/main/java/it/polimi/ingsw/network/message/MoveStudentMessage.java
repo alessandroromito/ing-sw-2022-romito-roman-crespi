@@ -40,6 +40,6 @@ public class MoveStudentMessage extends Message{
 
     @Override
     public String toString() {
-        return "MoveStudent[" + "nickname:" + getNickname() + ", islandNumber:" + this.islandNumber + ", studentID:" + studentDiscs + ",position:" + position + "]";
+        return "MoveStudent[" + "nickname:" + getNickname() + ", studentID:" + studentDiscs.get(0).getID() + ", position:" + position + ", islandNumber:" + this.islandNumber + "]";
     }
 }

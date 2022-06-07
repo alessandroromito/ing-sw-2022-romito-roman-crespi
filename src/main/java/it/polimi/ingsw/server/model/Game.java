@@ -236,6 +236,8 @@ public class Game extends Observable {
             Island island = map.getIsland(numIsland);
             island.addStudent(student);
         }
+        checkInfluence(numIsland);
+
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
@@ -289,13 +291,13 @@ public class Game extends Observable {
      *
      * @param stud id of the student to move
      */
-    public void moveStudentToDiningRoom(StudentDisc stud) throws StudentNotInEntranceException {
-        currentPlayer.getScoreboard().moveFromEntranceToDining(stud);
+    public void moveStudentToDiningRoom(StudentDisc stud) {
+        getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
         checkProfessors(stud.getColor());
     }
 
     public void checkInfluence(int islandID) {
-        int bestInfluence = 0;
+        int bestInfluence = -1;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
         Player opponentPlayer = null;
@@ -315,7 +317,9 @@ public class Game extends Observable {
                     dominantPlayer = p;
                 }
             }
-            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
+            if (dominantPlayer != null) {
+                moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
+            }
         }
 
         // CASE there is already a tower
@@ -339,10 +343,16 @@ public class Game extends Observable {
         int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
 
         for(Player player: players){
-            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent){
+            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent && player.getScoreboard().getProfessor(color)){
                 currentPlayer.getScoreboard().addProfessor(player.getScoreboard().removeProfessor(color));
             }
+            else currentPlayer.getScoreboard().addProfessor((ProfessorPawn) components.get(1 + color.ordinal()));
         }
+    }
+
+    public void addStudentOnDining(Player player, StudentDisc student) {
+        player.getScoreboard().moveFromEntranceToDining(student);
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**

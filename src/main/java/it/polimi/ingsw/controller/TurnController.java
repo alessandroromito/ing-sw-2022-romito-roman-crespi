@@ -102,8 +102,8 @@ public class TurnController {
     public void nextPhase() {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
-                buildQueue(nicknameQueue);
                 System.out.println("Building nickname queue");
+                buildQueue(nicknameQueue);
                 phaseState = ACTION_PHASE;
                 actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
                 actionPhase();
@@ -135,6 +135,7 @@ public class TurnController {
     }
 
     private void buildQueue(List<String> playersList) {
+
         List<Player> players = new ArrayList<>();
 
         for (String s : playersList) {
@@ -142,7 +143,6 @@ public class TurnController {
             players.add(p);
         }
 
-        //to be tested
         players.sort(new ComparatorAssistantCard());
 
         nicknameQueue.clear();
@@ -150,6 +150,8 @@ public class TurnController {
         for(Player player : players) {
             nicknameQueue.add(player.getNickname());
         }
+
+        activePlayer = nicknameQueue.get(0);
     }
 
     public PhaseState getPhaseState(){

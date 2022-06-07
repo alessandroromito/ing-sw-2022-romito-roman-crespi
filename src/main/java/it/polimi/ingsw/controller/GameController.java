@@ -239,11 +239,8 @@ public class GameController implements Observer {
             Player player = game.getPlayerByNickname(message.getNickname());
 
             switch (message.getPosition()) {
-                case 0 -> player.getScoreboard().addStudentOnEntrance(student);
-                case 1 -> {
-                    game.getMap().getIsland(message.getIslandNumber()).addStudent(student);
-                    game.checkInfluence(message.getIslandNumber());
-                }
+                case 0 -> game.moveStudentToDiningRoom(student);
+                case 1 -> game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber());
                 default -> showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
             }
 

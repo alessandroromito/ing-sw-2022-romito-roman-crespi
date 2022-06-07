@@ -247,6 +247,7 @@ public class CLI extends ViewObservable implements View {
         for(int i = 0; i < currentPlayerScoreboard.getDiningPinkStudents(); i++)
             out.print(ANSI_PINK + "o" + ANSI_RESET);
 
+        out.println();
         out.println("Studenti in entrata:");
         for(PawnColors color : currentPlayerScoreboard.getEntrance()) {
             switch (color){
@@ -328,62 +329,73 @@ public class CLI extends ViewObservable implements View {
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         int choose = -1;
         String dest = null;
+        boolean toIsland = false;
         int islandDest = -1;
+        boolean error = false;
+        StudentDisc studentToReturn = null;
 
         out.println("E' il tuo turno...");
-        // SCELTA STUDENTE
-        do {
+
+        try{
+            // SCELTA STUDENTE
             out.println("Scegli uno studente da muovere");
-            int i=0;
-            for(StudentDisc student : studentDiscs){
-                out.println(i + " " + printStudent(student));
-                i++;
-            }
-            try {
-                choose = Integer.parseInt(readRow());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(choose >= studentDiscs.size()-1 || choose < 0)
-                out.println("Numero inserito non valido. Riprovare");
-        } while(choose >= studentDiscs.size()-1 || choose < 0);
-
-        //SCELTA DESTINAZIONE
-        do {
-            out.println("Dove vuoi spostarlo? (Isola o Sala)");
-            try {
-                dest = readRow();
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(!checkDest(dest))
-                out.println("Destinazione non corretta. Ricontrollare");
-        } while(!checkDest(dest));
-
-        //SCELTA ISOLA
-        if(dest == "Isola" || dest == "isola"){
             do {
-                out.println("Inserisci numero dell'isola");
-
-                try {
-                    islandDest = Integer.parseInt(readRow());
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
+                int i=0;
+                for(StudentDisc student : studentDiscs){
+                    out.println(i + " " + printStudent(student));
+                    i++;
                 }
-                if(islandDest < 1 || islandDest > 12)
+
+                choose = Integer.parseInt(readRow());
+                studentToReturn = studentDiscs.get(choose);
+
+
+                if(choose >= studentDiscs.size() || choose < 0 || studentToReturn == null){
                     out.println("Numero inserito non valido. Riprovare");
-            } while(islandDest < 1 || islandDest > 12 );
+                    error = true;
+                }
+            }while(error);
+
+            //SCELTA DESTINAZIONE
+            do {
+                out.println("Dove vuoi spostarlo? (Isola o Sala)");
+
+                dest = readRow();
+
+                if(Objects.equals(dest, "Isola"))
+                    toIsland = true;
+                if (dest != null && !checkDest(dest)){
+                    out.println("Destinazione non corretta. Ricontrollare");
+                    error = true;
+                }
+            } while(error);
+
+            //SCELTA ISOLA
+            do{
+                if(toIsland) {
+                    out.println("Inserisci numero dell'isola");
+
+                    islandDest = Integer.parseInt(readRow());
+
+                    if(islandDest < 1 || islandDest > 12){
+                        out.println("Numero inserito non valido. Riprovare");
+                        error = true;
+                    }
+                }
+            }while (error);
+
+        }catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
         }
 
-        StudentDisc studentToReturn = studentDiscs.get(choose);
+        StudentDisc finalStudentToReturn = studentToReturn;
         int finalIslandDest = islandDest;
-        if(dest == "Isola" || dest == "isola") {
+        if(toIsland) {
             notifyObserver(obs -> {
-            obs.onUpdateMoveStudent(studentToReturn, 1, finalIslandDest);
+            obs.onUpdateMoveStudent(finalStudentToReturn, 1, finalIslandDest);
         });
-        }
-        else notifyObserver(obs -> {
-            obs.onUpdateMoveStudent(studentToReturn, 0, finalIslandDest);
+        } else notifyObserver(obs -> {
+            obs.onUpdateMoveStudent(finalStudentToReturn, 0, finalIslandDest);
         });
     }
 
@@ -443,21 +455,23 @@ public class CLI extends ViewObservable implements View {
     }
 
     public String printStudent(StudentDisc stud){
-        switch (stud.getColor()){
-            case RED -> {
-                return (ANSI_RED + "o" + ANSI_RESET);
-            }
-            case BLUE -> {
-                return (ANSI_BLUE + "o" + ANSI_RESET);
-            }
-            case YELLOW -> {
-                return (ANSI_YELLOW + "o" + ANSI_RESET);
-            }
-            case PINK -> {
-                return (ANSI_PINK + "o" + ANSI_RESET);
-            }
-            case GREEN -> {
-                return (ANSI_GREEN + "o" + ANSI_RESET);
+        if(stud != null){
+            switch (stud.getColor()){
+                case RED -> {
+                    return (ANSI_RED + "o" + ANSI_RESET);
+                }
+                case BLUE -> {
+                    return (ANSI_BLUE + "o" + ANSI_RESET);
+                }
+                case YELLOW -> {
+                    return (ANSI_YELLOW + "o" + ANSI_RESET);
+                }
+                case PINK -> {
+                    return (ANSI_PINK + "o" + ANSI_RESET);
+                }
+                case GREEN -> {
+                    return (ANSI_GREEN + "o" + ANSI_RESET);
+                }
             }
         }
         return null;
