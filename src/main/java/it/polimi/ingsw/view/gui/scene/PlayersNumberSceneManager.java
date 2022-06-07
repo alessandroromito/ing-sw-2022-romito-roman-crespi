@@ -9,17 +9,15 @@ import javafx.event.ActionEvent;
         import javafx.fxml.Initializable;
         import javafx.scene.control.Button;
         import javafx.scene.control.ChoiceBox;
-
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PlayersNumberSceneManager extends ViewObservable implements SceneManagerInterface,Initializable {
 
-    private ObservableList<Integer> choices = FXCollections.observableArrayList(1,2);
+    private ObservableList<Integer> choices = FXCollections.observableArrayList(2,3);
 
     @FXML
-    private Button selectButton;
+    private Button confirmButton;
 
     @FXML
     private ChoiceBox<Integer> n_player;
@@ -27,8 +25,9 @@ public class PlayersNumberSceneManager extends ViewObservable implements SceneMa
 
     @FXML
     void onButtonClick(ActionEvent event) {
-        //send the message
-
+        confirmButton.setDisable(true);
+        int playerNumberFinal = getSelection();
+        new Thread( () -> notifyObserver( obs -> obs.onUpdatePlayersNumber(playerNumberFinal)));
     }
 
     public Integer getSelection(){
