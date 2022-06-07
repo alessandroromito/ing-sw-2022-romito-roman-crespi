@@ -26,15 +26,15 @@ public class GUI extends Application {
             if(inputStream!=null) stage.getIcons().add(new Image(inputStream));
 
             stage.setScene(new Scene(new Pane()));
-            stage.setMaximized(true);
-            stage.setFullScreen(true);
+            //stage.setMaximized(true);
+            //stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.setTitle("Eryantis Game");
 
             //GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 
-            StartMenuSceneManager manager = GraphicController.setLayout(stage.getScene(), "fxml/scoreboard_scene.fxml");;
+            StartMenuSceneManager manager = GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");;
             manager.addObserver(clientController);
 
             stage.show();
