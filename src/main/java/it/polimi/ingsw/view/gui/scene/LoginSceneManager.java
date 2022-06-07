@@ -9,15 +9,15 @@ import javafx.scene.control.TextField;
 public class LoginSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
-    private Button ConnectButton;
+    private Button connectButton;
 
     @FXML
-    private TextField NicknameField;
+    private TextField nicknameField;
 
     @FXML
     void onButtonClick(ActionEvent event) {
-        //send the message
-
+        connectButton.setDisable(true);
+        String nickname = nicknameField.getText();
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateNickname(nickname)) ).start();
     }
-
 }
