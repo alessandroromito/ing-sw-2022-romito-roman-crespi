@@ -16,7 +16,7 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
     private ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperto");
 
     @FXML
-    private Button selectButton;
+    private Button confirmButton;
 
     @FXML
     private ChoiceBox<String> gameMode;
@@ -24,12 +24,13 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
 
     @FXML
     void onButtonClick(ActionEvent event) {
-        //send the message
-
+        confirmButton.setDisable(true);
+        String gameMode = getSelection();
+        new Thread( () -> notifyObserver( obs -> obs.onUpdateGameMode(gameMode)));
     }
-//ritorna true se modalità esperto
-    public boolean getSelection(){
-        return (gameMode.getSelectionModel().getSelectedItem() == "Esperto");
+
+    public String getSelection(){
+        return gameMode.getSelectionModel().getSelectedItem();
     }
 
     @Override
