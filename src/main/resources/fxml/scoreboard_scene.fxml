@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.view.gui.scene.ScoreboardSceneManager">
+   <children>
+      <ImageView fx:id="scorebrd" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0">
+         <image>
+            <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="coin" fitHeight="81.0" fitWidth="82.0" layoutX="359.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="509.0">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2_Rosso.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
