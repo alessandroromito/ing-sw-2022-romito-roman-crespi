@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,8 +17,15 @@ public class LoginSceneManager extends ViewObservable implements SceneManagerInt
 
     @FXML
     void onButtonClick(ActionEvent event) {
-        connectButton.setDisable(true);
         String nickname = nicknameField.getText();
-        new Thread( () -> notifyObserver(obs -> obs.onUpdateNickname(nickname)) ).start();
+        boolean isNicknameValid;
+        isNicknameValid = !nickname.equals("");
+
+        nicknameField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isNicknameValid);
+
+        if(isNicknameValid) {
+            connectButton.setDisable(true);
+            new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
+        }
     }
 }
