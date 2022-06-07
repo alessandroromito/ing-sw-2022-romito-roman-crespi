@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.view.gui.scene.Map2pSceneController">
+   <children>
+      <Rectangle fx:id="bg" arcHeight="5.0" arcWidth="5.0" fill="#69bae9" height="1080.0" layoutX="24.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="1920.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ImageView fx:id="island7" fitHeight="329.0" fitWidth="312.0" layoutX="31.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island2" fitHeight="329.0" fitWidth="312.0" layoutX="1516.0" layoutY="710.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island11" fitHeight="329.0" fitWidth="312.0" layoutX="1184.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island4" fitHeight="329.0" fitWidth="312.0" layoutX="824.0" layoutY="768.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island5" fitHeight="329.0" fitWidth="312.0" layoutX="463.0" layoutY="769.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island12" fitHeight="329.0" fitWidth="312.0" layoutX="1517.0" layoutY="83.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island3" fitHeight="329.0" fitWidth="312.0" layoutX="1178.0" layoutY="772.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island8" fitHeight="329.0" fitWidth="312.0" layoutX="146.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola2.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island10" fitWidth="312.0" layoutX="832.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island9" fitHeight="329.0" fitWidth="312.0" layoutX="486.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola3.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island1" fitHeight="329.0" fitWidth="312.0" layoutX="1598.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="island6" fitHeight="329.0" fitWidth="312.0" layoutX="125.0" layoutY="717.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/isola3.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="213.0" fitWidth="256.0" layoutX="633.0" layoutY="448.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="cloud2" fitHeight="213.0" fitWidth="262.0" layoutX="1104.0" layoutY="457.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
