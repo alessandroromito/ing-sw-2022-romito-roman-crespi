@@ -33,19 +33,15 @@ public class AddressPortSceneManager extends ViewObservable implements SceneMana
         boolean isAddressValid = Validator.validateIpAddress(address);
         boolean isPortValid = Validator.validatePort(port);
 
-        //addressField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isAddressValid);
-        //portField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isPortValid);
+        addressField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isAddressValid);
+        portField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isPortValid);
 
         if(isAddressValid && isPortValid) {
-            //connectButton.setDisable(true);
-
+            connectButton.setDisable(true);
             HashMap<String, String> server = new HashMap<>();
             server.put("address", address);
             server.put("port", port);
-            System.out.println(address + "   " + port);
             new Thread(() -> notifyObserver(obs -> obs.onUpdateServerDetails(server))).start();
-            //notifyObserver(obs -> obs.onUpdateServerDetails(server));
-            System.out.println("notifica");
         }
     }
 

@@ -8,7 +8,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager">
    <children>
-      <Button fx:id="selectButton" alignment="CENTER" contentDisplay="BOTTOM" layoutX="283.0" layoutY="248.0" mnemonicParsing="false" onAction="#onButtonClick" text="OK" textAlignment="CENTER" />
+      <Button fx:id="confirmButton" alignment="CENTER" contentDisplay="BOTTOM" layoutX="283.0" layoutY="248.0" mnemonicParsing="false" onAction="#onButtonClick" text="OK" textAlignment="CENTER" />
       <ChoiceBox fx:id="n_player" layoutX="225.0" layoutY="200.0" prefWidth="150.0" />
       <Label fx:id="instruction" layoutX="146.0" layoutY="98.0" text="SELEZIONA NUMERO DI GIOCATORI">
          <font>
