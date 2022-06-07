@@ -142,20 +142,20 @@ public class MessageHandler {
         }
     }
 
-    public void handleMessage(Card209Message card209Message) {
-        if(gameController.getGameState() == GameState.IN_GAME){
-            if(gameController.checkUser(card209Message)){
-                gameController.applyEffect(card209Message);
-            }
-        }
-    }
-
     /**
      * Handled by ClientHandler
      * @param loginRequest
      */
     public void handleMessage(LoginRequest loginRequest) {
 
+    }
+
+    public void handleMessage(Card209Message card209Message) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(card209Message)){
+                gameController.applyEffect(card209Message);
+            }
+        }
     }
 
     public void handleMessage(Card210Message card210Message) {

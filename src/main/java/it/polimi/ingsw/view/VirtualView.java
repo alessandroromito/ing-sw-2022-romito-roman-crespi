@@ -105,6 +105,7 @@ public class VirtualView implements View, Observer {
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         clientHandler.sendMessage(new MoveStudentMessage(Game.SERVER_NAME, studentDiscs, position, islandNumber));
+        System.out.println("Server -> Client: MoveStudentMessage");
     }
 
     @Override

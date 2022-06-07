@@ -6,7 +6,6 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 
@@ -34,6 +33,8 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void update(Message message) {
         switch(message.getMessageType()){
+            case PING -> {
+            }
             case ERROR -> {
                 ErrorMessage errorMessage = (ErrorMessage) message;
                 view.showErrorMessage(errorMessage.getError());
@@ -45,6 +46,8 @@ public class ClientController implements ViewObserver, Observer {
             case LOBBY -> {
                 LobbyMessage lobbyMessage = (LobbyMessage) message;
                 queue.execute(() -> view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers()));
+            }
+            case LOGIN_REQUEST -> {
             }
             case LOGIN_REPLY -> {
                 LoginReply loginReplyMessage = (LoginReply) message;
@@ -59,6 +62,8 @@ public class ClientController implements ViewObserver, Observer {
                 AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;
                 queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards()));
             }
+            case PLAYER_NUMBER_REPLY -> {
+            }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
                 queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
@@ -72,18 +77,53 @@ public class ClientController implements ViewObserver, Observer {
                 GameScenarioMessage gameScenarioMessage = (GameScenarioMessage) message;
                 queue.execute(() -> view.showGameScenario(gameScenarioMessage.getGameSerialized()));
             }
+            case MOVE_MOTHER_NATURE -> {
+
+            }
+            case MOVE_STUDENT -> {
+                MoveStudentMessage moveStudentMessage = (MoveStudentMessage) message;
+                queue.execute(() -> view.askToMoveAStudent(moveStudentMessage.getStudentDiscs(), moveStudentMessage.getPosition(), moveStudentMessage.getIslandNumber()));
+            }
+            case PICK_CLOUD -> {
+                CloudMessage cloudMessage = (CloudMessage) message;
+                queue.execute(() -> view.askToChooseACloud(cloudMessage.getCloudList()));
+            }
+            case GAME_MODE -> {
+                GameModeMessage gameModeMessage = (GameModeMessage) message;
+                queue.execute(view::askGameMode);
+            }
+            case USE_EFFECT -> {
+
+            }
+            case CARD209 -> {
+            }
+            case CARD210 -> {
+            }
+            case CARD211 -> {
+            }
+            case CARD212 -> {
+            }
+            case CARD213 -> {
+            }
+            case CARD214 -> {
+            }
+            case CARD216 -> {
+            }
+            case CARD217 -> {
+            }
+            case CARD219 -> {
+            }
         }
     }
 
     @Override
     public void onUpdateGameMode(String gameMode) {
-        client.sendMessage(new GameModeMessage(gameMode.equals("Expert")));
+        client.sendMessage(new GameModeMessage(gameMode.equals("Esperta")));
     }
 
     @Override
     public void onUpdateServerDetails(HashMap<String, String> server){
         try{
-            System.out.println("chiamata a onUpdateServerDetails... taac");
             client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
             client.addObserver(this);
             client.readMessage();
@@ -107,11 +147,6 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdateUseEffect(CharacterCard characterCard) {
-    //    client.sendMessage(new UseEffectMessage(this.nickname, List.of(characterCard)));
-    }
-
-    @Override
     public void onUpdateMotherNaturePosition(int steps) {
         client.sendMessage(new MoveMotherNatureMessage(this.nickname, steps));
     }
@@ -119,16 +154,6 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdatePickCloud(List<Cloud> cloudList) {
         client.sendMessage(new CloudMessage(this.nickname, cloudList));
-    }
-
-    @Override
-    public void onUpdateMoveStudent(int position, int islandNumber) {
-
-    }
-
-    @Override
-    public void onUpdateMoveStudent(List<StudentDisc> studentDiscsList, int position, int islandNumber) {
-
     }
 
     @Override

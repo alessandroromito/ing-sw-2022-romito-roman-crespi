@@ -3,7 +3,6 @@ package it.polimi.ingsw.observer;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
 import java.util.HashMap;
@@ -20,15 +19,9 @@ public interface ViewObserver {
 
     void onUpdatePlayersNumber(int playersNumber);
 
-    void onUpdateUseEffect(CharacterCard characterCard);
-
     void onUpdateMotherNaturePosition(int steps);
 
     void onUpdatePickCloud(List<Cloud> cloudList);
-
-    void onUpdateMoveStudent(int position, int islandNumber);
-
-    void onUpdateMoveStudent(List<StudentDisc> studentDiscsList, int position, int islandNumber);
 
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
 
@@ -36,5 +29,5 @@ public interface ViewObserver {
 
     void update(Message message);
 
-    void onUpdateGameMode(String finalGamemode);
+    void onUpdateGameMode(String mode);
 }

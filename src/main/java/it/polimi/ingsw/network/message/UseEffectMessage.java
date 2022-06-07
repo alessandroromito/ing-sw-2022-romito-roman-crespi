@@ -14,4 +14,9 @@ public abstract class UseEffectMessage extends Message {
     public int getCardID() {
         return cardID;
     }
+
+    @Override
+    public String toString() {
+        return "UseEffect[nickname:" + getNickname() + " CardID: " + cardID +"]";
+    }
 }

@@ -148,6 +148,7 @@ public class CLI extends ViewObservable implements View {
                 }
                 if(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta")) out.println("Errore! Scegliere tra Normale ed Esperta");
             }while(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta"));
+
             String finalGamemode = gamemode;
             notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
         }
@@ -166,7 +167,6 @@ public class CLI extends ViewObservable implements View {
         catch(ExecutionException | InterruptedException e){
             out.println("Errore");
         }
-        this.nickname = nickname;
     }
 
     @Override
@@ -180,7 +180,6 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-        //readThread.interrupt();   //con la persistenza alle disconnessioni non serve
         out.println("\n" + nicknameDisconnected + text);
         System.exit(1);
     }
@@ -315,7 +314,8 @@ public class CLI extends ViewObservable implements View {
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-            if(choose >= assistantCards.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
+            if(choose >= assistantCards.size()-1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare.");
         } while(choose >= assistantCards.size()-1 || choose < 0);
         List<AssistantCard> response = new ArrayList<>();
         response.add(assistantCards.get(choose));
@@ -326,8 +326,69 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
+        int choose = -1;
+        String dest = null;
+        int islandDest = -1;
+
         out.println("E' il tuo turno...");
-        out.println("Scegli ");
+        // SCELTA STUDENTE
+        do {
+            out.println("Scegli uno studente da muovere");
+            int i=0;
+            for(StudentDisc student : studentDiscs){
+                out.println(i + " " + printStudent(student));
+                i++;
+            }
+            try {
+                choose = Integer.parseInt(readRow());
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(choose >= studentDiscs.size()-1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare");
+        } while(choose >= studentDiscs.size()-1 || choose < 0);
+
+        //SCELTA DESTINAZIONE
+        do {
+            out.println("Dove vuoi spostarlo? (Isola o Sala)");
+            try {
+                dest = readRow();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(!checkDest(dest))
+                out.println("Destinazione non corretta. Ricontrollare");
+        } while(!checkDest(dest));
+
+        //SCELTA ISOLA
+        if(dest == "Isola" || dest == "isola"){
+            do {
+                out.println("Inserisci numero dell'isola");
+
+                try {
+                    islandDest = Integer.parseInt(readRow());
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(islandDest < 1 || islandDest > 12)
+                    out.println("Numero inserito non valido. Riprovare");
+            } while(islandDest < 1 || islandDest > 12 );
+        }
+
+        StudentDisc studentToReturn = studentDiscs.get(choose);
+        int finalIslandDest = islandDest;
+        if(dest == "Isola" || dest == "isola") {
+            notifyObserver(obs -> {
+            obs.onUpdateMoveStudent(studentToReturn, 1, finalIslandDest);
+        });
+        }
+        else notifyObserver(obs -> {
+            obs.onUpdateMoveStudent(studentToReturn, 0, finalIslandDest);
+        });
+    }
+
+    private boolean checkDest(String dest) {
+        return dest.equals("isola") || dest.equals("sala") || dest.equals("Isola") || dest.equals("Sala");
     }
 
     @Override
@@ -379,5 +440,26 @@ public class CLI extends ViewObservable implements View {
     public void showVictoryMessage(String winner) {
         out.println("Il gioco è terminato. Il vincitore è " + winner + "!");
         System.exit(1);
+    }
+
+    public String printStudent(StudentDisc stud){
+        switch (stud.getColor()){
+            case RED -> {
+                return (ANSI_RED + "o" + ANSI_RESET);
+            }
+            case BLUE -> {
+                return (ANSI_BLUE + "o" + ANSI_RESET);
+            }
+            case YELLOW -> {
+                return (ANSI_YELLOW + "o" + ANSI_RESET);
+            }
+            case PINK -> {
+                return (ANSI_PINK + "o" + ANSI_RESET);
+            }
+            case GREEN -> {
+                return (ANSI_GREEN + "o" + ANSI_RESET);
+            }
+        }
+        return null;
     }
 }

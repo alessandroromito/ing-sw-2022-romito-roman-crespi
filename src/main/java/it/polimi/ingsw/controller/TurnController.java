@@ -103,6 +103,7 @@ public class TurnController {
         switch (getPhaseState()) {
             case PLANNING_PHASE -> {
                 buildQueue(nicknameQueue);
+                System.out.println("Building nickname queue");
                 phaseState = ACTION_PHASE;
                 actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
                 actionPhase();
