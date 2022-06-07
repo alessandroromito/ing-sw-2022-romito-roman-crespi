@@ -83,6 +83,7 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateServerDetails(HashMap<String, String> server){
         try{
+            System.out.println("chiamata a onUpdateServerDetails... taac");
             client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
             client.addObserver(this);
             client.readMessage();
