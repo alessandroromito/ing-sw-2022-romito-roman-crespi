@@ -62,6 +62,7 @@ public class SceneManager extends ViewObservable {
             activeScene.setRoot(parent);
         }catch(IOException e) {
             Logger.getLogger("client").severe(e.getMessage());
+            e.printStackTrace();
         }
     }
 
