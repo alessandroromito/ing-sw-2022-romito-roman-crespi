@@ -60,14 +60,15 @@ public class GraphicController extends ViewObservable implements View {
     public void askPlayersNumber() {
         PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
         playersNumberSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
+        System.out.println("Finestra playerNumber");
+        Platform.runLater(() -> SceneManager.paneTransitionNoController(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
     @Override
     public void askGameMode() {
         GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
         gameModeSelectSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
+        Platform.runLater(() -> SceneManager.paneTransitionNoController(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
     @Override
