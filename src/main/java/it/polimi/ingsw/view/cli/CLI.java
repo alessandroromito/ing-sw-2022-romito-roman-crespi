@@ -27,11 +27,10 @@ public class CLI extends ViewObservable implements View {
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_GREY = "\u001B[30;1m";
     public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_GREEN = "\u001b[32;1m";
+    public static final String ANSI_YELLOW = "\u001b[33;1m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PINK = "\u001b[35;1m";
-    public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001b[37;1m";
 
     public CLI(){
@@ -162,6 +161,7 @@ public class CLI extends ViewObservable implements View {
         out.println("Inserisci il tuo nickname: ");
         try{
             String nickname = readRow();
+            this.nickname = nickname;
             notifyObserver(obs -> obs.onUpdateNickname(nickname));
         }
         catch(ExecutionException | InterruptedException e){
@@ -199,7 +199,11 @@ public class CLI extends ViewObservable implements View {
         //islands
         for(SerializableIsland island : islands)
         {
-            out.println("ISOLA " + (island.getId()+1) + ":");
+            out.print("ISOLA " + (island.getId()+1) + ":");
+            if(gameSerialized.getMotherNaturePos() == island.getId())
+                out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
+            else out.println();
+
             if(island.getTowerNumber() != 0){
                 for(int i=0; i < island.getTowerNumber(); i++)
                     switch (island.getTowerColor()){
@@ -262,7 +266,7 @@ public class CLI extends ViewObservable implements View {
 
         out.println("Professori posseduti:");
         for(PawnColors color : currentPlayerScoreboard.availableProfessors()) {
-            switch (color){
+            switch (color) {
                 case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
                 case BLUE -> out.println(ANSI_BLUE + "PROFESSOR BLUE" + ANSI_RESET);
                 case YELLOW -> out.print(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
@@ -301,37 +305,35 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-        int choose = -1;
-        do {
-            out.println("Scegli tra le seguenti Carte Assistente:");
-            int i = 0;
-            for (AssistantCard assistantCard : assistantCards){
-                out.println("Scelta : " + i + " ID : " + assistantCard.getID() + " Valore : " + assistantCard.getValue() + " Numero passi: " + assistantCard.getMovement());
-                i++;
-            }
-            out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
-            try {
+        int choose;
+        try{
+            do {
+                out.println("Scegli tra le seguenti Carte Assistente:");
+                int i = 0;
+                for (AssistantCard assistantCard : assistantCards){
+                    out.println("Carta " + i + " | Valore: " + assistantCard.getValue() + " Numero Passi: " + assistantCard.getMovement());
+                    i++;
+                }
+                out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
                 choose = Integer.parseInt(readRow());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(choose >= assistantCards.size()-1 || choose < 0)
-                out.println("Numero inserito non valido. Riprovare.");
-        } while(choose >= assistantCards.size()-1 || choose < 0);
-        List<AssistantCard> response = new ArrayList<>();
-        response.add(assistantCards.get(choose));
-        notifyObserver(obs -> {
-            obs.onUpdatePlayAssistantCard(response);
-        });
+                if(choose > assistantCards.size()-1 || choose < 0)
+                    out.println("Numero inserito non valido. Riprovare.");
+            } while(choose > assistantCards.size()-1 || choose < 0);
+
+            int finalChoose = choose;
+            notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose))));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
-        int choose = -1;
-        String dest = null;
+        int choose;
+        String dest;
         boolean toIsland = false;
         int islandDest = -1;
-        boolean error = false;
+        boolean error;
         StudentDisc studentToReturn = null;
 
         out.println("E' il tuo turno...");
@@ -340,24 +342,30 @@ public class CLI extends ViewObservable implements View {
             // SCELTA STUDENTE
             out.println("Scegli uno studente da muovere");
             do {
+                error = false;
                 int i=0;
+
                 for(StudentDisc student : studentDiscs){
                     out.println(i + " " + printStudent(student));
                     i++;
                 }
-
                 choose = Integer.parseInt(readRow());
-                studentToReturn = studentDiscs.get(choose);
 
-
-                if(choose >= studentDiscs.size() || choose < 0 || studentToReturn == null){
+                if(choose >= studentDiscs.size() || choose < 0){
                     out.println("Numero inserito non valido. Riprovare");
                     error = true;
+                }else {
+                    studentToReturn = studentDiscs.get(choose);
+                    if(studentToReturn == null) {
+                        out.println("Nessuno studente in quella posizione! Riprova!");
+                        error = true;
+                    }
                 }
             }while(error);
 
             //SCELTA DESTINAZIONE
             do {
+                error = false;
                 out.println("Dove vuoi spostarlo? (Isola o Sala)");
 
                 dest = readRow();
@@ -372,6 +380,8 @@ public class CLI extends ViewObservable implements View {
 
             //SCELTA ISOLA
             do{
+                error = false;
+
                 if(toIsland) {
                     out.println("Inserisci numero dell'isola");
 
@@ -391,12 +401,8 @@ public class CLI extends ViewObservable implements View {
         StudentDisc finalStudentToReturn = studentToReturn;
         int finalIslandDest = islandDest;
         if(toIsland) {
-            notifyObserver(obs -> {
-            obs.onUpdateMoveStudent(finalStudentToReturn, 1, finalIslandDest);
-        });
-        } else notifyObserver(obs -> {
-            obs.onUpdateMoveStudent(finalStudentToReturn, 0, finalIslandDest);
-        });
+            notifyObserver(obs -> obs.onUpdateMoveStudent(finalStudentToReturn, 1, finalIslandDest));
+        } else notifyObserver(obs -> obs.onUpdateMoveStudent(finalStudentToReturn, 0, finalIslandDest));
     }
 
     private boolean checkDest(String dest) {
@@ -413,10 +419,10 @@ public class CLI extends ViewObservable implements View {
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-            if(steps <= 0 || steps >= maxSteps) out.println("Impossibile muoversi di " + steps + "passi. Riprova!");
+            if(steps <= 0 || steps > maxSteps) out.println("Impossibile muoversi di " + steps + "passi. Riprova!");
             int finalSteps = steps;
             notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
-        }while(steps <= 0 || steps >= maxSteps);
+        } while(steps <= 0 || steps >= maxSteps);
     }
 
     @Override
@@ -424,7 +430,13 @@ public class CLI extends ViewObservable implements View {
         int choose = -1;
         do {
             out.println("Scegli tra le seguenti Nuvole:");
-            for (Cloud cloud : cloudList) out.println(cloud);
+            for (Cloud cloud : cloudList) {
+                out.println("Nuvola " + cloud.getCloudID());
+                for(StudentDisc studentDisc : cloud.getCloudStudents()){
+                    printStudent(studentDisc);
+                }
+            }
+
             out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
             try {
                 choose = Integer.parseInt(readRow());
@@ -433,9 +445,9 @@ public class CLI extends ViewObservable implements View {
             }
             if(choose >= cloudList.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
         }while(choose >= cloudList.size()-1 || choose < 0);
-        List<Cloud> response = new ArrayList<>();
-        response.add(cloudList.get(choose));
-        notifyObserver(obs -> obs.onUpdatePickCloud(response));
+
+        int finalChoose = choose;
+        notifyObserver(obs -> obs.onUpdatePickCloud(List.of(cloudList.get(finalChoose))));
     }
 
     @Override
@@ -443,9 +455,12 @@ public class CLI extends ViewObservable implements View {
         if(playerNicknameAccepted && connectionSuccessful) {
             out.println("Sei stato connesso al server con successo! Benvenuto " + nickname);
         }
-        else if(connectionSuccessful)    askPlayerNickname();
-            else if(playerNicknameAccepted) out.println("Max numero di giocatori raggiunto.");
-                else showErrorMessage("Impossibile contattare il server. Riprova più tardi.");
+        else if(connectionSuccessful)
+            askPlayerNickname();
+        else if(playerNicknameAccepted)
+            out.println("Max numero di giocatori raggiunto.");
+        else
+            showErrorMessage("Impossibile contattare il server. Riprova più tardi.");
     }
 
     @Override

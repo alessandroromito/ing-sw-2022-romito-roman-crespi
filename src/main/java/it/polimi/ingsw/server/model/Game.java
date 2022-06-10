@@ -82,21 +82,20 @@ public class Game extends Observable {
         System.out.println("STARTING GameInitialization...");
         // Place MotherNature to a random island
         Random r = new Random();
-        int pos = r.nextInt( 12);
+        int pos = r.nextInt(12);
         map.setMotherNaturePos(pos);
 
         // Move 1 student to each island
         ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<12; i++) {
             tempArrayStudents.add(bag.pickSorted());
         }
         Collections.shuffle(tempArrayStudents);
-        int islandNum = 0;
-        for(StudentDisc stud: tempArrayStudents) {
-            if(islandNum != oppositePosition()){
-                map.getIsland(islandNum).addStudent(stud);
+
+        for(Island island: map.getIslands()) {
+            if(island.getID() != oppositePosition() || island.getID() != map.getMotherNaturePosition()){
+                island.addStudent(tempArrayStudents.remove(0));
             }
-            islandNum++;
         }
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
@@ -177,7 +176,7 @@ public class Game extends Observable {
      * @param ID the ID of the component to be found
      * @return the component given his {@code ID}, {@code null} otherwise.
      */
-    public Component getComponent(int ID){
+    public Component getComponent(int ID) {
         for(Component component : components){
             if(ID == component.getID()) return component;
         }
@@ -209,10 +208,10 @@ public class Game extends Observable {
     /**
      * Set the assistant card for the turn
      */
-    public void setAssistantCard(String nickname, int cardIndex) {
+    public void setAssistantCard(String nickname, int cardID) {
         try{
             Player player = getPlayerByNickname(nickname);
-            AssistantCard chosenCard = player.getPlayerCard(cardIndex);
+            AssistantCard chosenCard = player.getPlayerCard(cardID);
             if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
             if(validateCard(chosenCard))
                 player.setCurrentCard(chosenCard);
@@ -228,15 +227,15 @@ public class Game extends Observable {
      * @param student the student
      */
     public void moveStudentToIsland(StudentDisc student, int numIsland) {
-        if(map.getIsland(numIsland).isDisabled()) {
-            GhostIsland ghostIsland = map.getGhostIsland(numIsland);
+        if(map.getIsland(numIsland-1).isDisabled()) {
+            GhostIsland ghostIsland = map.getGhostIsland(numIsland-1);
             ghostIsland.addStudent(student);
         }
         else {
-            Island island = map.getIsland(numIsland);
+            Island island = map.getIsland(numIsland-1);
             island.addStudent(student);
         }
-        checkInfluence(numIsland);
+        checkInfluence(numIsland-1);
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
@@ -319,6 +318,9 @@ public class Game extends Observable {
             }
             if (dominantPlayer != null) {
                 moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
+
+                notifyObserver(new GameScenarioMessage(getGameSerialized()));
+                return;
             }
         }
 
@@ -327,11 +329,12 @@ public class Game extends Observable {
         for(Player p : players){
             if(p.getScoreboard().getTowerColor() == island.getTowerColor()){
                 opponentPlayer = p;
+                break;
             }
         }
 
-        if(island.getInfluence(Objects.requireNonNull(opponentPlayer)) > currentPlayerInfluence){
-            moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
+        if(opponentPlayer != null && island.getInfluence(opponentPlayer) < currentPlayerInfluence){
+            moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
 
             notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
@@ -348,11 +351,6 @@ public class Game extends Observable {
             }
             else currentPlayer.getScoreboard().addProfessor((ProfessorPawn) components.get(1 + color.ordinal()));
         }
-    }
-
-    public void addStudentOnDining(Player player, StudentDisc student) {
-        player.getScoreboard().moveFromEntranceToDining(student);
-        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**
@@ -398,18 +396,14 @@ public class Game extends Observable {
         return getPlayerByNickname(turnController.getActivePlayer());
     }
 
-    /**
-     * @param min minimum number can be generated
-     * @param max maximum number can be generated
-     * @return a random number in range min - max
-     */
-    public int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
-    }
-
     private int oppositePosition() {
         int motherNaturePosition = map.getMotherNaturePosition();
-        return (motherNaturePosition + 12) / 2;
+        for(int i=0; i<6; i++){
+            motherNaturePosition++;
+            if(motherNaturePosition == 12)
+                motherNaturePosition = 0;
+        }
+        return motherNaturePosition;
     }
 
     /**
@@ -438,6 +432,12 @@ public class Game extends Observable {
 
     public void setTurnController(TurnController turnController) {
         this.turnController = turnController;
+    }
+
+    public void printComponents(){
+        for(Component component : components){
+            System.out.println("ID: " + component.getID() + "Type: " + component.getClass());
+        }
     }
 
     // -----------------------------------------------------------
@@ -489,7 +489,11 @@ public class Game extends Observable {
     }
 
     public void disableCardEffects (){
-        throw new RuntimeException();
+        try{
+            throw new RuntimeException();
+        }catch (RuntimeException e){
+
+        }
     }
 
     public List<CharacterCard> getCharacterCards() {

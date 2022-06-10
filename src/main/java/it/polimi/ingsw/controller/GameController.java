@@ -70,7 +70,7 @@ public class GameController implements Observer {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
 
         VirtualView virtualView = virtualViewMap.get(player.getNickname());
-        virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement() );
+        virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement());
     }
 
     public void askToChooseACloud() {

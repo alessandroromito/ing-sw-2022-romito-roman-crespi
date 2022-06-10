@@ -24,6 +24,9 @@ public class ScoreboardX3p implements Scoreboard{
     public ScoreboardX3p(TowerColors towerColor){
         for(int i=0; i<9; i++) entrance[i] = null;
 
+        for(int i=0; i<6; i++)
+            towers.add(new Tower(i, towerColor));
+
         professorTable = new boolean[5];
         diningRoom = new Integer[5];
         for(int i=0;i<5;i++){

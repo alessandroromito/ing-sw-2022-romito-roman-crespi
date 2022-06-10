@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class GameSerialized implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private final int motherNaturePos;
     private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
 
@@ -34,6 +35,8 @@ public class GameSerialized implements Serializable {
         for(Player player : game.getPlayers()){
             serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player.getNickname()));
         }
+
+        this.motherNaturePos = game.getMap().getMotherNaturePosition();
     }
 
     public ArrayList<SerializableIsland> getSerializableIslands() {
@@ -42,5 +45,9 @@ public class GameSerialized implements Serializable {
 
     public ArrayList<SerializableScoreboard> getSerializableScoreboard() {
         return serializableScoreboard;
+    }
+
+    public int getMotherNaturePos() {
+        return motherNaturePos;
     }
 }

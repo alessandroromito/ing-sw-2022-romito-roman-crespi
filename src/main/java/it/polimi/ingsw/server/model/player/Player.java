@@ -43,7 +43,7 @@ public class Player extends Observable{
     }
 
     public AssistantCard getPlayerCard(int cardNumber){
-        return hand.get(cardNumber);
+        return cardNumber <= 10 ? hand.get(cardNumber-1) : null;
     }
 
     public Scoreboard getScoreboard(){
@@ -72,8 +72,8 @@ public class Player extends Observable{
     public void setCurrentCard(AssistantCard chosenCard) {
         try {
             for(AssistantCard card: hand){
-                if(card.equals(chosenCard)){
-                    this.currentAssistantCard = chosenCard;
+                if(card.getValue() == chosenCard.getValue()){
+                    this.currentAssistantCard = card;
                     return;
                 }
             }
@@ -85,7 +85,7 @@ public class Player extends Observable{
     }
 
     public AssistantCard getCurrentCard() {
-        return currentAssistantCard;
+        return currentAssistantCard == null ? null : currentAssistantCard;
     }
 
     public List<AssistantCard> getHand() {

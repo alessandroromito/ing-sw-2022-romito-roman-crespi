@@ -26,6 +26,10 @@ public class ScoreboardX2p implements Scoreboard{
     public ScoreboardX2p(TowerColors towerColor){
         for(int i=0; i<7; i++) entrance[i] = null;
 
+        this.towerColor = towerColor;
+        for(int i=0; i<8; i++)
+            towers.add(new Tower(i, towerColor));
+
         professorTable = new boolean[5];
         diningRoom = new Integer[5];
         for(int i=0;i<5;i++){
@@ -123,7 +127,7 @@ public class ScoreboardX2p implements Scoreboard{
     public void moveFromEntranceToDining(StudentDisc student) {
         try {
             for (int i = 0; i < 7; i++)
-                if (entrance[i].getID() == student.getID()) {
+                if (entrance[i] != null && entrance[i].getID() == student.getID()) {
                     diningRoom[entrance[i].getColorInt()]++;
                     entrance[i] = null;
                     return;

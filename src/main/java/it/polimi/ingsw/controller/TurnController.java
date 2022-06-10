@@ -63,8 +63,11 @@ public class TurnController {
         gameController.showGenericMessageToAll("Turn of " + activePlayer + "...");
         // 1
         gameController.refillClouds();
+        System.out.println("Refill Clouds!");
         // 2
         gameController.refreshAssistantCard();
+        System.out.println("Refresh Assistant Cards!");
+
         askAssistantCard();
     }
 

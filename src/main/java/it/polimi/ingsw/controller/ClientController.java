@@ -166,5 +166,4 @@ public class ClientController implements ViewObserver, Observer {
         client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));
     }
 
-
 }

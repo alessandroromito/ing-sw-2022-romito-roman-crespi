@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
-import it.polimi.ingsw.server.exception.ZeroNoEntryTyleRemainingException;
 import it.polimi.ingsw.server.model.component.Coin;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -20,7 +19,7 @@ import java.util.Objects;
 public class ExpertGame extends Game {
     private int activeCardID;
     private CharacterCard activeCard;
-    private ArrayList<CharacterCard> pool = new ArrayList<>(3);
+    private final ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
     /**
      * Default constructor
@@ -47,41 +46,35 @@ public class ExpertGame extends Game {
         Collections.shuffle(vector12);
 
         for(int i=0;i<3;i++) {
-            switch(vector12.get(i)){
-                case 0:
-                    ArrayList<StudentDisc> t = new ArrayList<StudentDisc>();
-                    for(int k=0;k<4;k++)
+            switch (vector12.get(i)) {
+                case 0 -> {
+                    ArrayList<StudentDisc> t = new ArrayList<>();
+                    for (int k = 0; k < 4; k++)
                         t.add(bag.pickSorted());
                     pool.add(new Card_209(t));
-                    break;
-                case 1:
-                    Player mps[] = new Player [5];
-                    for(Player p: players)
-                        for(int k=0;k<5;k++)
-                            if(p.getScoreboard().getProfessor(PawnColors.values()[k]))
+                }
+                case 1 -> {
+                    Player[] mps = new Player[5];
+                    for (Player p : players)
+                        for (int k = 0; k < 5; k++)
+                            if (p.getScoreboard().getProfessor(PawnColors.values()[k]))
                                 mps[k] = p;
                     pool.add(new Card_210(mps));
-                    break;
-                case 2: pool.add(new Card_211());   break;
-                case 3: pool.add(new Card_212());   break;
-                case 4:
-                    for(int j=221; j<=224; j++){
-                        components.add(new NoEntryTile(j));
-                    }
-                    int pos = 0;
-                    while(!getComponent(209).equals(components.get(pos)))
-                        pos++;
-                    pool.add(new Card_213(components.subList(pos,pos+5)));
-                    break;
-                case 5: pool.add(new Card_214());   break;
-                case 6: pool.add(new Card_216());   break;
-                case 7: pool.add(new Card_217());   break;
-                case 8:
-                    ArrayList<StudentDisc> s = new ArrayList<StudentDisc>();
-                    for(int k=0;k<4;k++)
+                }
+                case 2 -> pool.add(new Card_211());
+                case 3 -> pool.add(new Card_212());
+                case 4 -> {
+                    pool.add(new Card_213(List.of(getComponent(221),getComponent(222),getComponent(223),getComponent(224))));
+                }
+                case 5 -> pool.add(new Card_214());
+                case 6 -> pool.add(new Card_216());
+                case 7 -> pool.add(new Card_217());
+                case 8 -> {
+                    ArrayList<StudentDisc> s = new ArrayList<>();
+                    for (int k = 0; k < 4; k++)
                         s.add(bag.pickSorted());
                     pool.add(new Card_219(s));
-                    break;
+                }
             }
         }
     }
@@ -97,6 +90,13 @@ public class ExpertGame extends Game {
         for(int i=209; i<=220; i++){
             components.add(new CharacterCard(i));
         }
+
+        for (int j = 221; j <= 224; j++) {
+            components.add(new NoEntryTile(j));
+        }
+
+        printComponents();
+
     }
 
     public boolean useCharacter(int characterCardID){
@@ -136,7 +136,7 @@ public class ExpertGame extends Game {
     }
 
     public void setCard_210_ForTest(){
-        Player t[] = new Player [5];
+        Player[] t = new Player [5];
         for(Player p: players)
             for(int i=0;i<5;i++)
                 if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
@@ -166,9 +166,8 @@ public class ExpertGame extends Game {
             if(activeCardID != 210)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_210 temp = (Card_210) activeCard;
-            activeCardID = 210;
 
-            Player t[] = new Player [5];
+            Player[] t = new Player [5];
             for(Player p: players)
                 for(int i=0;i<5;i++)
                     if(p.getScoreboard().getProfessor(PawnColors.values()[i]))
@@ -225,7 +224,7 @@ public class ExpertGame extends Game {
             if(activeCardID != 213) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
             Card_213 temp = (Card_213) activeCard;
             map.getIsland(islandNumber).addNoEntryTile(temp.use());
-        } catch (ActiveCardAlreadyExistingException | ZeroNoEntryTyleRemainingException e) {
+        } catch (ActiveCardAlreadyExistingException  e) {
 
         }
 
@@ -270,7 +269,6 @@ public class ExpertGame extends Game {
         useCharacter(217);
         try{
             if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-            activeCardID = 217;
             Card_217 card = (Card_217) activeCard;
             card.setDisColor(p);
         } catch (ActiveCardAlreadyExistingException e) {
@@ -309,7 +307,6 @@ public class ExpertGame extends Game {
     public void checkInfluence(int islandID) {
         if(activeCardID == 214) {
             int bestInfluence = 0;
-            Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
             Player dominantPlayer = null;
             Player opponentPlayer = null;
 
@@ -323,6 +320,7 @@ public class ExpertGame extends Game {
                 for(int i=0;i<3;i++)
                     if(pool.get(i).getClass() == Card_213.class)
                         temp = (Card_213) pool.get(i);
+                assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
@@ -355,7 +353,6 @@ public class ExpertGame extends Game {
         if(activeCardID == 217){
             Card_217 card = (Card_217) activeCard;
             int bestInfluence = 0;
-            Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
             Player dominantPlayer = null;
             Player opponentPlayer = null;
 
@@ -369,6 +366,8 @@ public class ExpertGame extends Game {
                 for(int i=0;i<3;i++)
                     if(pool.get(i).getClass() == Card_213.class)
                         temp = (Card_213) pool.get(i);
+
+                assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
             }
@@ -401,6 +400,5 @@ public class ExpertGame extends Game {
             super.checkInfluence(islandID);
         }
     }
-
 
 }

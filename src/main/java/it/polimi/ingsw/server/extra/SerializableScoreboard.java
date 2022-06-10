@@ -39,7 +39,8 @@ public class SerializableScoreboard implements Serializable {
 
     private void setStudents(Scoreboard scoreboard) {
         for(StudentDisc studentDisc : scoreboard.getEntrance()){
-            entrance.add(studentDisc.getColor());
+            if(studentDisc != null)
+                entrance.add(studentDisc.getColor());
         }
         Integer[] dining = scoreboard.getDiningRoom();
         diningRedStudents = dining[0];
@@ -77,7 +78,9 @@ public class SerializableScoreboard implements Serializable {
         return towerColor;
     }
 
-    public ArrayList<PawnColors> availableProfessors(){ return professors; }
+    public ArrayList<PawnColors> availableProfessors(){
+        return professors;
+    }
 
     public String getNickname() {
         return nickname;
