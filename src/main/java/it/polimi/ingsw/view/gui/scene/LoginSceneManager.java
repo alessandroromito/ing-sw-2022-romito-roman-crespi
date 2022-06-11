@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 public class LoginSceneManager extends ViewObservable implements SceneManagerInterface {
 
@@ -14,6 +15,9 @@ public class LoginSceneManager extends ViewObservable implements SceneManagerInt
 
     @FXML
     private TextField nicknameField;
+
+    @FXML
+    private ImageView loading;
 
     @FXML
     void onButtonClick(ActionEvent event) {
