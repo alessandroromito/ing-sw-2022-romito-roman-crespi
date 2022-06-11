@@ -12,7 +12,7 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PlayersNumberSceneManager extends ViewObservable implements SceneManagerInterface,Initializable {
+public class PlayersNumberSceneManager extends ViewObservable implements SceneManagerInterface {
 
     private ObservableList<Integer> choices = FXCollections.observableArrayList(2,3);
 
@@ -34,8 +34,8 @@ public class PlayersNumberSceneManager extends ViewObservable implements SceneMa
         return n_player.getSelectionModel().getSelectedItem();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         n_player.setItems(choices);
     }
 }

@@ -12,7 +12,7 @@ import javafx.scene.control.ChoiceBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameModeSelectSceneManager extends ViewObservable implements SceneManagerInterface, Initializable {
+public class GameModeSelectSceneManager extends ViewObservable implements SceneManagerInterface {
     private ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperto");
 
     @FXML
@@ -33,8 +33,8 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
         return gameMode.getSelectionModel().getSelectedItem();
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    @FXML
+    public void initialize() {
         gameMode.setItems(choices);
     }
 }
