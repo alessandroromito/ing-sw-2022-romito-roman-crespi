@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
 import it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager;
+import it.polimi.ingsw.view.gui.scene.WaitingRoomHostSceneManager;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -73,7 +74,20 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showLobby(List<String> playersNickname, int numPlayers) {
-
+        WaitingRoomHostSceneManager waitingRoomHostSceneManager;
+        try{
+            waitingRoomHostSceneManager = (WaitingRoomHostSceneManager) SceneManager.getActiveManager();
+            waitingRoomHostSceneManager.setPlayersNickname(playersNickname);
+            waitingRoomHostSceneManager.setNumMaxPlayers(numPlayers);
+            Platform.runLater(waitingRoomHostSceneManager::updateValues);
+        } catch (ClassCastException e){
+            waitingRoomHostSceneManager = new WaitingRoomHostSceneManager();
+            waitingRoomHostSceneManager.addAllObservers(observers);
+            waitingRoomHostSceneManager.setPlayersNickname(playersNickname);
+            waitingRoomHostSceneManager.setNumMaxPlayers(numPlayers);
+            WaitingRoomHostSceneManager lobbySceneManagerToExecute = waitingRoomHostSceneManager;
+            Platform.runLater( () -> SceneManager.paneTransitionNoController(lobbySceneManagerToExecute, "waitingRoomHost_scene.fxml"));
+        }
     }
 
     @Override

@@ -7,17 +7,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="it.polimi.ingsw.view.gui.scene.WaitingRoomHostSceneManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.WaitingRoomHostSceneManager">
    <children>
-      <Button fx:id="startBtn" disable="true" layoutX="255.0" layoutY="284.0" mnemonicParsing="false" onAction="#startGame" prefHeight="36.0" prefWidth="90.0" text="START" textFill="#080808">
+      <Button fx:id="startButton" disable="true" layoutX="255.0" layoutY="290.0" mnemonicParsing="false" onAction="#startGame" prefHeight="36.0" prefWidth="90.0" text="START" textFill="#080808">
          <font>
             <Font size="17.0" />
          </font></Button>
       <Accordion layoutX="199.0" layoutY="104.0" />
-      <ListView fx:id="playersList" focusTraversable="false" layoutX="200.0" layoutY="138.0" pickOnBounds="false" prefHeight="109.0" prefWidth="200.0" />
-      <Label fx:id="information" alignment="CENTER" contentDisplay="CENTER" layoutX="236.0" layoutY="78.0" text="GIOCATORI" textAlignment="CENTER">
+      <ListView fx:id="playersList" focusTraversable="false" layoutX="200.0" layoutY="150.0" pickOnBounds="false" prefHeight="82.0" prefWidth="200.0" />
+      <Label fx:id="information" alignment="CENTER" contentDisplay="CENTER" layoutX="236.0" layoutY="58.0" text="GIOCATORI" textAlignment="CENTER">
          <font>
             <Font size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="information1" alignment="CENTER" contentDisplay="CENTER" layoutX="138.0" layoutY="248.0" text="in attesa degli altri giocatori..." textAlignment="CENTER">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label fx:id="connectedPlayersNumber" layoutX="194.0" layoutY="104.0" text="Numero giocatori in attesa">
+         <font>
+            <Font size="18.0" />
          </font>
       </Label>
    </children>
