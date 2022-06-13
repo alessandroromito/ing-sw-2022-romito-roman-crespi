@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui.scene;
 
+import it.polimi.ingsw.observer.ViewObservable;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -21,7 +22,7 @@ import java.util.random.RandomGenerator;
 
 import static java.lang.Math.abs;
 
-public class MapSceneManager implements Initializable {
+public class MapSceneManager extends ViewObservable implements SceneManagerInterface,Initializable {
 
     @FXML
     private Rectangle bg;
