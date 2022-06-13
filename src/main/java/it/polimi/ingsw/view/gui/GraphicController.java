@@ -62,15 +62,14 @@ public class GraphicController extends ViewObservable implements View {
     public void askPlayersNumber() {
         PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
         playersNumberSceneManager.addAllObservers(observers);
-        System.out.println("Finestra playerNumber");
-        Platform.runLater(() -> SceneManager.paneTransitionNoController(playersNumberSceneManager, "playersNumber_scene.fxml"));
+        Platform.runLater(() -> SceneManager.paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
     @Override
     public void askGameMode() {
         GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
         gameModeSelectSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransitionNoController(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
+        Platform.runLater(() -> SceneManager.paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
     @Override
@@ -97,13 +96,17 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void showErrorMessage(String error) {
-
+    public void showErrorMessage(String errorMessage) {
+        Platform.runLater( () -> {
+            SceneManager.showErrorMessage("ERROR", errorMessage);
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        } );
     }
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-
+        System.out.println("Starting game scenario");
+        MapSceneManager mapSceneManager = getMapSceneManager();
     }
 
     @Override
@@ -123,7 +126,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        Platform.runLater( () -> {
+            SceneManager.showGenericMessage("GenericMessage", genericMessage);
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        } );
     }
 
     @Override

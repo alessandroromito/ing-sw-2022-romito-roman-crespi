@@ -3,17 +3,15 @@ package it.polimi.ingsw.view.gui.scene;
 import it.polimi.ingsw.observer.ViewObservable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.scene.input.MouseEvent;
 
 public class GameModeSelectSceneManager extends ViewObservable implements SceneManagerInterface {
-    private ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperto");
+
+    private final ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperto");
 
     @FXML
     private Button confirmButton;
@@ -23,10 +21,10 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
 
 
     @FXML
-    void onButtonClick(ActionEvent event) {
+    private void onButtonClick(Event event) {
         confirmButton.setDisable(true);
         String gameMode = getSelection();
-        new Thread( () -> notifyObserver( obs -> obs.onUpdateGameMode(gameMode)));
+        new Thread( () -> notifyObserver( obs -> obs.onUpdateGameMode(gameMode))).start();
     }
 
     public String getSelection(){
@@ -36,5 +34,6 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
     @FXML
     public void initialize() {
         gameMode.setItems(choices);
+        confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onButtonClick);
     }
 }
