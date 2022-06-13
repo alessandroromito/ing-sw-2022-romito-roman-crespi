@@ -34,8 +34,11 @@ public class GUI extends Application {
 
             //GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 
-            StartMenuSceneManager manager = GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");;
-            manager.addObserver(clientController);
+            StartMenuSceneManager manager = GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
+            if (manager != null) {
+                manager.addObserver(clientController);
+            }
+            else throw new NullPointerException();
 
             stage.show();
         }

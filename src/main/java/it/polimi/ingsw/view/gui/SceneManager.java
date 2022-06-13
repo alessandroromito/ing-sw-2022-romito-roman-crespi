@@ -2,6 +2,8 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.view.gui.scene.ErrorMessageSceneManager;
+import it.polimi.ingsw.view.gui.scene.GenericMessageSceneManager;
 import it.polimi.ingsw.view.gui.scene.SceneManagerInterface;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
@@ -87,5 +89,45 @@ public class SceneManager extends ViewObservable {
     public static <T> T paneTransition(List<ViewObserver> observerList, Event event, String fxml){
         Scene scene = ((Node) event.getSource()).getScene();
         return paneTransition(observerList, scene, fxml);
+    }
+
+    public static void showErrorMessage(String errorTitle, String errorMessage) {
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/messageAlert_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        //nel caso in cui non avessimo il controllo da parte di fxml manager
+        //ErrorMessageManager errorMessageManager = fxmlLoader.getController();
+        //altrimenti
+        ErrorMessageSceneManager errorMessageSceneManager = new ErrorMessageSceneManager();
+        Scene errorMessageScene = new Scene(parent);
+        errorMessageSceneManager.setScene(errorMessageScene);
+        errorMessageSceneManager.setErrorTitle(errorTitle);
+        errorMessageSceneManager.setErrorMessage(errorMessage);
+        errorMessageSceneManager.showMessage();
+    }
+
+    public static void showGenericMessage(String genericMessageTitle, String genericMessageText) {
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/genericMessage_scene"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        //nel caso in cui non avessimo il controllo da parte di fxml manager
+        //ErrorMessageManager errorMessageManager = fxmlLoader.getController();
+        //altrimenti
+        GenericMessageSceneManager genericMessageSceneManager = new GenericMessageSceneManager();
+        Scene errorMessageScene = new Scene(parent);
+        genericMessageSceneManager.setScene(errorMessageScene);
+        genericMessageSceneManager.setErrorTitle(genericMessageTitle);
+        genericMessageSceneManager.setErrorMessage(genericMessageText);
+        genericMessageSceneManager.showMessage();
     }
 }
