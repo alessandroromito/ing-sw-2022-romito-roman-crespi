@@ -1,41 +1,39 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-        import javafx.fxml.FXML;
-        import javafx.fxml.Initializable;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.ChoiceBox;
-import java.net.URL;
-import java.util.ResourceBundle;
+import javafx.event.Event;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.input.MouseEvent;
 
 public class PlayersNumberSceneManager extends ViewObservable implements SceneManagerInterface {
 
-    private ObservableList<Integer> choices = FXCollections.observableArrayList(2,3);
+    private final ObservableList<Integer> choices = FXCollections.observableArrayList(2,3);
 
     @FXML
     private Button confirmButton;
 
     @FXML
-    private ChoiceBox<Integer> n_player;
+    private ChoiceBox<Integer> nplayer;
 
 
     @FXML
-    void onButtonClick(ActionEvent event) {
+    void onButtonClick(Event event) {
         confirmButton.setDisable(true);
         int playerNumberFinal = getSelection();
-        new Thread( () -> notifyObserver( obs -> obs.onUpdatePlayersNumber(playerNumberFinal)));
+        new Thread( () -> notifyObserver( obs -> obs.onUpdatePlayersNumber(playerNumberFinal))).start();
     }
 
     public Integer getSelection(){
-        return n_player.getSelectionModel().getSelectedItem();
+        return nplayer.getSelectionModel().getSelectedItem();
     }
 
     @FXML
     public void initialize() {
-        n_player.setItems(choices);
+        nplayer.setItems(choices);
+        confirmButton.addEventHandler(MouseEvent.MOUSE_CLICKED, this::onButtonClick);
     }
 }
