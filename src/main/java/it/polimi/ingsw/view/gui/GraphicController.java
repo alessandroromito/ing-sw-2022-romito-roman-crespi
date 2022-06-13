@@ -96,8 +96,11 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void showErrorMessage(String error) {
-
+    public void showErrorMessage(String errorMessage) {
+        Platform.runLater( () -> {
+            SceneManager.showErrorMessage("ERROR", errorMessage);
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        } );
     }
 
     @Override
@@ -123,7 +126,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-
+        Platform.runLater( () -> {
+            SceneManager.showGenericMessage("GenericMessage", genericMessage);
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        } );
     }
 
     @Override
