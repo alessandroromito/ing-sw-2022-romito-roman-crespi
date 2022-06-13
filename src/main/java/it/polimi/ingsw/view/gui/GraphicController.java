@@ -62,15 +62,14 @@ public class GraphicController extends ViewObservable implements View {
     public void askPlayersNumber() {
         PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
         playersNumberSceneManager.addAllObservers(observers);
-        System.out.println("Finestra playerNumber");
-        Platform.runLater(() -> SceneManager.paneTransitionNoController(playersNumberSceneManager, "playersNumber_scene.fxml"));
+        Platform.runLater(() -> SceneManager.paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
     @Override
     public void askGameMode() {
         GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
         gameModeSelectSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransitionNoController(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
+        Platform.runLater(() -> SceneManager.paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
     @Override
@@ -103,7 +102,8 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-
+        System.out.println("Inizio game scenario");
+        MapSceneManager mapSceneManager = getMapSceneManager();
     }
 
     @Override
@@ -164,6 +164,7 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager = new MapSceneManager();
             mapSceneManager.addAllObservers(observers);
             MapSceneManager finalMapSceneManager = mapSceneManager;
+            System.out.println("runLater ella board");
             Platform.runLater( () -> SceneManager.paneTransitionNoController(finalMapSceneManager, "mapExpert_scene.fxml") );
         }
         return mapSceneManager;
