@@ -137,11 +137,10 @@ public class GameController implements Observer {
                 playersNicknames.add(nickname);
 
                 virtualView.showLoginResult(nickname,true, true);
-                virtualView.askPlayersNumber();
                 virtualView.askGameMode();
 
             } catch(GameAlreadyStartedException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         } else if (virtualViewMap.size() < chosenPlayerNumber){
             virtualViewMap.put(nickname, virtualView);
@@ -201,9 +200,11 @@ public class GameController implements Observer {
         }
     }
 
-    public void setChosenExpertMode(GameModeMessage message) {
+    public void setChosenExpertMode(GameModeReplyMessage message) {
         this.chosenExpertMode = message.getExpertMode();
         showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
+        VirtualView virtualView = virtualViewMap.get(message.getNickname());
+        virtualView.askPlayersNumber();
     }
 
     public boolean isNicknameTaken(String nickname) {

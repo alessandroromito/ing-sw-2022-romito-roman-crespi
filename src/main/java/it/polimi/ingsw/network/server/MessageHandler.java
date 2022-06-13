@@ -35,9 +35,6 @@ public class MessageHandler {
     }
 
     public void handleMessage(GameModeMessage message){
-        if(gameController.getGameState() == GameState.GAME_ROOM) {
-            gameController.setChosenExpertMode(message);
-        }
     }
 
     public void handleMessage(MoveStudentMessage message){
@@ -228,5 +225,11 @@ public class MessageHandler {
      */
     public void handleMessage(GameScenarioMessage gameScenarioMessage) {
 
+    }
+
+    public void handleMessage(GameModeReplyMessage message) {
+        if(gameController.getGameState() == GameState.GAME_ROOM) {
+            gameController.setChosenExpertMode(message);
+        }
     }
 }

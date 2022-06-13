@@ -118,7 +118,7 @@ public class ClientController implements ViewObserver, Observer {
 
     @Override
     public void onUpdateGameMode(String gameMode) {
-        client.sendMessage(new GameModeMessage(gameMode.equals("Esperta")));
+        client.sendMessage(new GameModeReplyMessage(this.nickname, gameMode.equals("Esperta")));
     }
 
     @Override
