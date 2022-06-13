@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
+import it.polimi.ingsw.view.gui.scene.MapSceneManager;
 import it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager;
 import it.polimi.ingsw.view.gui.scene.WaitingRoomHostSceneManager;
 import javafx.application.Platform;
@@ -153,5 +154,18 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showVictoryMessage(String winner) {
 
+    }
+
+    private MapSceneManager getMapSceneManager(){
+        MapSceneManager mapSceneManager;
+        try{
+            mapSceneManager = (MapSceneManager) SceneManager.getActiveManager();
+        } catch(ClassCastException e){
+            mapSceneManager = new MapSceneManager();
+            mapSceneManager.addAllObservers(observers);
+            MapSceneManager finalMapSceneManager = mapSceneManager;
+            Platform.runLater( () -> SceneManager.paneTransitionNoController(finalMapSceneManager, "mapExpert_scene.fxml") );
+        }
+        return mapSceneManager;
     }
 }
