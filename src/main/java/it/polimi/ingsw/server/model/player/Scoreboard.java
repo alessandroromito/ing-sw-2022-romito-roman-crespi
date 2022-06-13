@@ -14,6 +14,8 @@ public interface Scoreboard {
     void setTowerColor(TowerColors t);
     void addProfessor(ProfessorPawn professor);
     ProfessorPawn removeProfessor(PawnColors color);
+    Tower removeTower();
+    StudentDisc removeStudent(StudentDisc student);
     boolean getProfessor(PawnColors color);
     int getNumTowers();
     int getNumStudentsFromEntrance();
@@ -23,7 +25,6 @@ public interface Scoreboard {
     void addStudentOnDining(StudentDisc student);
     void moveFromEntranceToDining(StudentDisc student);
     TowerColors getTowerColor();
-    Tower removeTower();
     void addTower(Tower tower);
     List<StudentDisc> getEntrance();
     Integer[] getDiningRoom();

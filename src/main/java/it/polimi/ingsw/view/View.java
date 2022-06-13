@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface View {
@@ -54,7 +55,7 @@ public interface View {
     void askToMoveMotherNature(int maxSteps);
 
     //ask to choose a Cloud
-    void askToChooseACloud(List<Cloud> cloudList);
+    void askToChooseACloud(ArrayList<Cloud> cloudList);
 
     //show if the login has gone successful
     void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful);

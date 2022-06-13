@@ -72,8 +72,8 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
             connected = false;
-            Thread.currentThread().interrupt();
             socketServer.onDisconnect(this);
+            Thread.currentThread().interrupt();
         }
     }
 

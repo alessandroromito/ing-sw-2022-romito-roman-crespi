@@ -3,7 +3,6 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
-import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
@@ -85,7 +84,7 @@ public class TurnController {
         int currentActive = nicknameQueue.indexOf(activePlayer);
         if (currentActive + 1 < nicknameQueue.size()) {
             currentActive = currentActive + 1;
-            if(game.getClass().equals(ExpertGame.class)) game.deleteActiveCard();
+            game.deleteActiveCard();
         } else {
             nextPhase();
             return;
@@ -131,9 +130,8 @@ public class TurnController {
                 }
                 default -> throw new InvalidActionPhaseStateException();
             }
-
         }catch(InvalidActionPhaseStateException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 

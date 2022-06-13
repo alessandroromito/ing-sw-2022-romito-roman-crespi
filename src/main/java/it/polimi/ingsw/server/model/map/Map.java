@@ -62,7 +62,7 @@ public class Map {
     }
 
     public ArrayList<Cloud> getClouds(){
-        return this.clouds;
+        return clouds;
     }
 
     public void setMotherNaturePos(int motherNaturePos) {

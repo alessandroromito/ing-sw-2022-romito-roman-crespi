@@ -292,7 +292,8 @@ public class Game extends Observable {
      */
     public void moveStudentToDiningRoom(StudentDisc stud) {
         getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
-        checkProfessors(stud.getColor());
+        if(!getPlayerByNickname(turnController.getActivePlayer()).getScoreboard().getProfessor(stud.getColor()))
+            checkProfessors(stud.getColor());
     }
 
     public void checkInfluence(int islandID) {
@@ -360,7 +361,7 @@ public class Game extends Observable {
         // Get MotherNature
         int motherNaturePos = map.getMotherNaturePosition();
         // Calculate nextIsland
-        for(int i=0; i<steps; i++){
+        for(int i=0; i < steps; i++){
             motherNaturePos++;
             if(map.getIsland(motherNaturePos).isDisabled()){
                 int groupID = map.getIsland(motherNaturePos).getGroupID();
@@ -502,5 +503,10 @@ public class Game extends Observable {
 
     public void deleteActiveCard(){
         //ExpertGame method
+        try{
+            throw new RuntimeException();
+        }catch (RuntimeException e){
+
+        }
     }
 }

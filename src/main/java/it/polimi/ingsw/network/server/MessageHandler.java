@@ -34,7 +34,18 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * Client don't send GameModeMessage
+     * @param message
+     */
     public void handleMessage(GameModeMessage message){
+
+    }
+
+    public void handleMessage(GameModeReplyMessage message) {
+        if(gameController.getGameState() == GameState.GAME_ROOM) {
+            gameController.setChosenExpertMode(message);
+        }
     }
 
     public void handleMessage(MoveStudentMessage message){
@@ -227,9 +238,4 @@ public class MessageHandler {
 
     }
 
-    public void handleMessage(GameModeReplyMessage message) {
-        if(gameController.getGameState() == GameState.GAME_ROOM) {
-            gameController.setChosenExpertMode(message);
-        }
-    }
 }

@@ -76,6 +76,16 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
+    public StudentDisc removeStudent(StudentDisc student){
+        int studentID = student.getID();
+        for(int i = 0; i < 7; i++){
+            if(entrance[i] != null && entrance[i].getID() == studentID)
+                entrance[i] = null;
+        }
+        return null;
+    }
+
+    @Override
     public boolean getProfessor(PawnColors color) {
         return this.professorTable[color.ordinal()];
     }

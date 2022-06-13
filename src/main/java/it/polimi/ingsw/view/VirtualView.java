@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualView implements View, Observer {
@@ -114,7 +115,7 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askToChooseACloud(List<Cloud> cloudList) {
+    public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         clientHandler.sendMessage(new CloudMessage(Game.SERVER_NAME, cloudList));
     }
 

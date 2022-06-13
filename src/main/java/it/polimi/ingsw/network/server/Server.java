@@ -52,7 +52,7 @@ public class Server {
 
             if (nickname != null) {
                 if (gameController.getGameState() == GameState.GAME_STARTED) {
-
+                    //
                 }
                 else{
                     gameController.showDisconnectionMessage(nickname, " disconnected from the server!");

@@ -269,7 +269,7 @@ public class CLI extends ViewObservable implements View {
             switch (color) {
                 case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
                 case BLUE -> out.println(ANSI_BLUE + "PROFESSOR BLUE" + ANSI_RESET);
-                case YELLOW -> out.print(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
+                case YELLOW -> out.println(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
                 case PINK -> out.println(ANSI_PINK + "PROFESSOR PINK" + ANSI_RESET);
                 case GREEN -> out.println(ANSI_GREEN + "PROFESSOR GREEN" + ANSI_RESET);
             }
@@ -296,6 +296,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer) {
+
     }
 
     @Override
@@ -412,21 +413,29 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         int steps = 0;
-        do {
-            out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + "passi.");
-            try {
+        boolean error;
+        try{
+            do {
+                error = false;
+                out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + " passi.");
+
                 steps = Integer.parseInt(readRow());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(steps <= 0 || steps > maxSteps) out.println("Impossibile muoversi di " + steps + "passi. Riprova!");
-            int finalSteps = steps;
-            notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
-        } while(steps <= 0 || steps >= maxSteps);
+
+                if(steps <= 0 || steps > maxSteps){
+                    out.println("Impossibile muoversi di " + steps + " passi. Riprova!");
+                    error = true;
+                }
+            } while(error);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        int finalSteps = steps;
+        notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
     }
 
     @Override
-    public void askToChooseACloud(List<Cloud> cloudList) {
+    public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         int choose = -1;
         do {
             out.println("Scegli tra le seguenti Nuvole:");
@@ -447,7 +456,10 @@ public class CLI extends ViewObservable implements View {
         }while(choose >= cloudList.size()-1 || choose < 0);
 
         int finalChoose = choose;
-        notifyObserver(obs -> obs.onUpdatePickCloud(List.of(cloudList.get(finalChoose))));
+        ArrayList<Cloud> cloud = new ArrayList<>();
+        cloud.add(cloudList.get(finalChoose));
+
+        notifyObserver(obs -> obs.onUpdatePickCloud(cloud));
     }
 
     @Override
