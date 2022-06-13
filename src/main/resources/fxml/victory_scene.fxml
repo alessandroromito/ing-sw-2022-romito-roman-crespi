@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.VictorySceneManager">
+   <children>
+      <ImageView fx:id="victoryGif" fitHeight="600.0" fitWidth="800.0" layoutX="224.0" layoutY="94.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@../Graphical_Assets/GIF/victory.gif" />
+         </image>
+      </ImageView>
+      <Text fx:id="winner" fill="#ff6f00" layoutX="155.0" layoutY="513.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VINCITORE" textAlignment="CENTER" wrappingWidth="490.09375" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="154.90625">
+         <font>
+            <Font name="Arial Bold" size="65.0" />
+         </font>
+         <effect>
+            <Bloom threshold="0.35" />
+         </effect>
+      </Text>
+   </children>
+</AnchorPane>
