@@ -102,7 +102,7 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-        System.out.println("Inizio game scenario");
+        System.out.println("Starting game scenario");
         MapSceneManager mapSceneManager = getMapSceneManager();
     }
 
@@ -164,7 +164,6 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager = new MapSceneManager();
             mapSceneManager.addAllObservers(observers);
             MapSceneManager finalMapSceneManager = mapSceneManager;
-            System.out.println("runLater ella board");
             Platform.runLater( () -> SceneManager.paneTransitionNoController(finalMapSceneManager, "mapExpert_scene.fxml") );
         }
         return mapSceneManager;
