@@ -185,7 +185,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void addColor(int color){
-        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));;
+        Image image = null;
         ImageView pawn = new ImageView();
 
         switch (color){
@@ -407,6 +407,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    public void chooseIsland(MouseEvent mouseEvent) {
+        int choosenIsland;
+
+        //mouseEvent.getSource().toString().charAt();
+    }
+
     //passare numero isola precedente in senso orario
     public void build(int island) {
         switch(island){
@@ -578,4 +584,5 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         setTower(8,2);
 
     }
+
 }
