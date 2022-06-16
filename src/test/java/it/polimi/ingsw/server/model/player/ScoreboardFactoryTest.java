@@ -18,13 +18,13 @@ class ScoreboardFactoryTest {
 
     @Test
     void createScoreboardX2p() {
-        Object s2 = s.createScoreboard(2, TowerColors.BLACK);
+        Object s2 = s.createScoreboard(2, TowerColors.BLACK,new Player("Player 1"));
         assertTrue(s2 instanceof ScoreboardX2p );
     }
 
     @Test
     void createScoreboardX3p() {
-        Object s2 = s.createScoreboard(3,TowerColors.BLACK);
+        Object s2 = s.createScoreboard(3,TowerColors.BLACK,new Player("Player 1"));
         assertTrue(s2 instanceof ScoreboardX3p );
     }
 }
