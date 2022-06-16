@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
 import it.polimi.ingsw.view.gui.scene.MapSceneManager;
@@ -56,6 +57,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askPlayerNickname() {
         Platform.runLater(() -> SceneManager.paneTransition(observers, "login_scene.fxml"));
+        showGenericMessage("genericMessageTry");
     }
 
     @Override
@@ -92,7 +94,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-
+        Platform.runLater( () -> {
+            SceneManager.showGenericMessage("FINE DELLA PARTITA", "Il gicatore " + nicknameDisconnected + " si è disconnesso.");
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        });
     }
 
     @Override
@@ -107,11 +112,17 @@ public class GraphicController extends ViewObservable implements View {
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
         MapSceneManager mapSceneManager = getMapSceneManager();
+        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
     }
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
-
+        MapSceneManager mapSceneManager = getMapSceneManager();
+        //max 2 alla volta
+        Integer minValue = 12;
+        for (Integer integer : unifiedIsland) if (integer < minValue) minValue = integer;
+        Integer finalMinValue = minValue;
+        Platform.runLater( () -> mapSceneManager.build(finalMinValue) );
     }
 
     @Override
@@ -127,8 +138,8 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater( () -> {
-            SceneManager.showGenericMessage("GenericMessage", genericMessage);
-            SceneManager.paneTransition(observers, "scene_menu.fxml");
+            SceneManager.showGenericMessage("INFO", genericMessage);
+            //SceneManager.paneTransition(observers, "scene_menu.fxml");
         } );
     }
 
@@ -144,7 +155,8 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-
+        MapSceneManager mapSceneManager = getMapSceneManager();
+        Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
     }
 
     @Override
