@@ -15,9 +15,10 @@ public class Island {
     protected final int ID;
     protected Integer[] numberOfColors = {0,0,0,0,0};
     protected ArrayList<StudentDisc> students = new ArrayList<>();
-    private int groupID = -1;
     protected ArrayList<Tower> towers = new ArrayList<>();
-    private boolean disabled = false;
+
+    protected int groupID = -1;
+    protected boolean disabled = false;
     protected NoEntryTile noTile = null;
 
     /**
@@ -132,8 +133,7 @@ public class Island {
     }
 
     public TowerColors getTowerColor(){
-        if (towers.isEmpty()) return null;
-        return towers.get(0).getColor();
+        return towers.isEmpty() ? null : towers.get(0).getColor();
     }
 
     public ArrayList<Tower> switchTowerColor(ArrayList<Tower> towers){

@@ -37,9 +37,7 @@ public class Map {
     }
 
     public GhostIsland getGhostIsland(int islandNumber){
-        if(getIsland(islandNumber).isDisabled())
-            return ghostIslands[getIsland(islandNumber).getGroupID()];
-        return null;
+        return ghostIslands[getIsland(islandNumber).getGroupID()];
     }
 
     public ArrayList<Island> getIslands(){
@@ -138,7 +136,7 @@ public class Map {
             island2.setGroupID(groupID);
         }
         //ISLAND 1 NO, ISLAND 2 GHOST
-        else if (island1.getGroupID() == -1 && island2.getGroupID() == -1) {
+        else if (island1.getGroupID() == -1 && island2.getGroupID() != -1) {
             groupID = island2.getGroupID();
             ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
 
@@ -150,7 +148,7 @@ public class Map {
             int i = 0;
             for(GhostIsland ghostIsland : ghostIslands) {
                 if (ghostIsland == null) {
-                    ghostIslands[i] = new GhostIsland(i, students , towers );
+                    ghostIslands[i] = new GhostIsland(i, students, towers);
                     groupID = i;
                 }
                 i++;
@@ -212,5 +210,35 @@ public class Map {
         while(ghostIslands[c]!=null)
             c++;
         return c;
+    }
+
+    public Island getNext(int islandID){
+        Island island = getIsland(islandID);
+        Island islandSucc;
+
+        if(islandID == 0)
+            islandSucc = getIsland(11);
+        else
+            islandSucc = getIsland(islandID - 1);
+
+        if(island.isDisabled() && islandSucc.isDisabled() && island.getGroupID() == islandSucc.getGroupID())
+            getNext(islandSucc.getID());
+
+        return islandSucc.isDisabled() ? getGhostIsland(islandSucc.getID()) : islandSucc;
+    }
+
+    public Island getPrev(int islandID){
+        Island island = getIsland(islandID);
+        Island islandPrev;
+
+        if(islandID == 0)
+            islandPrev = getIsland(11);
+        else
+            islandPrev = getIsland(islandID - 1);
+
+        if(island.isDisabled() && islandPrev.isDisabled() && island.getGroupID() == islandPrev.getGroupID())
+            getPrev(islandPrev.getID());
+
+        return islandPrev.isDisabled() ? getGhostIsland(islandPrev.getID()) : islandPrev;
     }
 }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
@@ -199,19 +200,24 @@ public class CLI extends ViewObservable implements View {
         //islands
         for(SerializableIsland island : islands)
         {
-            out.print("ISOLA " + (island.getId()+1) + ":");
+            if(island.isGhost()){
+                Iterator<Integer> i = island.getReferencedIslands().iterator();
+                out.print("ISOLA ");
+                while(i.hasNext())
+                    out.print(i.next() + ", ");
+                out.println(":");
+            }else {
+                out.println("ISOLA " + (island.getId() + 1) + ":");
+            }
+
             if(gameSerialized.getMotherNaturePos() == island.getId())
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
-            else out.println();
 
             if(island.getTowerNumber() != 0){
                 for(int i=0; i < island.getTowerNumber(); i++)
-                    switch (island.getTowerColor()){
-                        case BLACK -> out.print(ANSI_BLACK + "T" + ANSI_RESET);
-                        case GREY -> out.print(ANSI_GREY + "T" + ANSI_RESET);
-                        case WHITE -> out.print(ANSI_WHITE + "T" + ANSI_RESET);
-                    }
+                    out.println(printTower(island.getTowerColor()));
             }
+
             for(int i=0; i < island.getRedStudents(); i++)
                 out.print(ANSI_RED + "o" + ANSI_RESET);
             for(int i=0; i < island.getBlueStudents(); i++)
@@ -239,20 +245,31 @@ public class CLI extends ViewObservable implements View {
     }
 
     public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
-        out.println("Studenti nella dining room:");
+
+        out.println("Torri:");
+        for(int i=0; i< currentPlayerScoreboard.getTowerNumber(); i++){
+            out.print(printTower(currentPlayerScoreboard.getTowerColor()));
+        }
+        out.println();
+
+        out.println("Dining Room:");
         for(int i = 0; i < currentPlayerScoreboard.getDiningRedStudents(); i++)
             out.print(ANSI_RED + "o" + ANSI_RESET);
+        out.println();
         for(int i = 0; i < currentPlayerScoreboard.getDiningBlueStudents(); i++)
             out.print(ANSI_BLUE + "o" + ANSI_RESET);
+        out.println();
         for(int i = 0; i < currentPlayerScoreboard.getDiningYellowStudents(); i++)
             out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+        out.println();
         for(int i = 0; i < currentPlayerScoreboard.getDiningGreenStudents(); i++)
             out.print(ANSI_GREEN + "o" + ANSI_RESET);
+        out.println();
         for(int i = 0; i < currentPlayerScoreboard.getDiningPinkStudents(); i++)
             out.print(ANSI_PINK + "o" + ANSI_RESET);
 
         out.println();
-        out.println("Studenti in entrata:");
+        out.println("Entrata:");
         for(PawnColors color : currentPlayerScoreboard.getEntrance()) {
             switch (color){
                 case RED -> out.print(ANSI_RED + "o" + ANSI_RESET);
@@ -264,7 +281,7 @@ public class CLI extends ViewObservable implements View {
         }
         out.println();
 
-        out.println("Professori posseduti:");
+        out.println("Professori:");
         for(PawnColors color : currentPlayerScoreboard.availableProfessors()) {
             switch (color) {
                 case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
@@ -274,6 +291,7 @@ public class CLI extends ViewObservable implements View {
                 case GREEN -> out.println(ANSI_GREEN + "PROFESSOR GREEN" + ANSI_RESET);
             }
         }
+        out.println();
     }
 
     @Override
@@ -511,4 +529,20 @@ public class CLI extends ViewObservable implements View {
         }
         return null;
     }
+
+    public String printTower(TowerColors color) {
+        switch (color) {
+            case BLACK -> {
+                return (ANSI_BLACK + "T" + ANSI_RESET);
+            }
+            case GREY -> {
+                return (ANSI_GREY + "T" + ANSI_RESET);
+            }
+            case WHITE -> {
+                return (ANSI_WHITE + "T" + ANSI_RESET);
+            }
+        }
+        return null;
+    }
+
 }

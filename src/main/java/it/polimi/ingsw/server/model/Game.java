@@ -217,19 +217,19 @@ public class Game extends Observable {
 
     /**
      *
-     * @param numIsland index of the destination island
+     * @param islandID index of the destination island
      * @param student the student
      */
-    public void moveStudentToIsland(StudentDisc student, int numIsland) {
-        if(map.getIsland(numIsland-1).isDisabled()) {
-            GhostIsland ghostIsland = map.getGhostIsland(numIsland-1);
+    public void moveStudentToIsland(StudentDisc student, int islandID) {
+        if(map.getIsland(islandID).isDisabled()) {
+            GhostIsland ghostIsland = map.getGhostIsland(islandID);
             ghostIsland.addStudent(student);
         }
         else {
-            Island island = map.getIsland(numIsland-1);
+            Island island = map.getIsland(islandID);
             island.addStudent(student);
         }
-        checkInfluence(numIsland-1);
+        checkInfluence(islandID);
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
@@ -237,29 +237,35 @@ public class Game extends Observable {
     /**
      *
      * @param tower
-     * @param numIsland
+     * @param islandID
      * @throws DisabledIslandException
      */
-    public void moveTowerToIsland(Tower tower, int numIsland) {
+    public void moveTowerToIsland(Tower tower, int islandID) {
+
         try{
-             Island island = map.getIsland(numIsland);
+             Island island = map.getIsland(islandID);
 
              if(island.isDisabled()) {
-                //check Ghost Island
-                if(map.getGhostIsland(numIsland) != null)
-                    island = map.getGhostIsland(numIsland);
+                if(map.getGhostIsland(islandID) != null)
+                    island = map.getGhostIsland(islandID);
                 else throw new DisabledIslandException("Error in island");
              }
 
-            for(Player p : players){
-                TowerColors oldColor = p.getScoreboard().getTowerColor();
-                if(island.getTowerColor() == oldColor){
-                    // Add 1 tower to the old dominant player
-                    p.getScoreboard().addTower(tower);
-                    // switch island tower color
-                    island.addTower(p.getScoreboard().removeTower());
-                }
-            }
+             if(island.getTowers().isEmpty()) {
+                 island.addTower(tower);
+                 System.out.println("Move Tower " + tower.getColor() + " To Island " + islandID);
+             }
+             else{
+                 for(Player p : players){
+                     TowerColors oldColor = island.getTowerColor();
+                     if(p.getScoreboard().getTowerColor() == oldColor){
+                         p.getScoreboard().addTower(island.getTowers().get(0)); // Add 1 tower to the old dominant player
+                         island.addTower(tower); //add tower to island
+                         System.out.println("Move Tower " + tower.getColor() + " To Island " + islandID);
+                         System.out.println("Move Tower " + tower.getColor() + " Back To " + p.getNickname());
+                     }
+                 }
+             }
 
             notifyObserver(new GameScenarioMessage(getGameSerialized()));
 
@@ -323,13 +329,12 @@ public class Game extends Observable {
         // CASE there is already a tower
         int currentPlayerInfluence = island.getInfluence(currentPlayer);
         for(Player p : players){
-            if(p.getScoreboard().getTowerColor() == island.getTowerColor()){
+            if(p.getScoreboard().getTowerColor() == island.getTowerColor() && p.getScoreboard().getTowerColor() != currentPlayer.getScoreboard().getTowerColor()){
                 opponentPlayer = p;
                 break;
             }
         }
-
-        if(opponentPlayer != null && island.getInfluence(opponentPlayer) < currentPlayerInfluence){
+        if(opponentPlayer != null && currentPlayerInfluence > island.getInfluence(opponentPlayer)){
             moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
             checkMerge(islandID);
 
@@ -351,25 +356,21 @@ public class Game extends Observable {
     }
 
     private void checkMerge(int islandID){
-        try{
-            Island island = map.getIsland(islandID);
-            Island islandPrec = map.getIsland(islandID - 1);
-            Island islandSucc = map.getIsland(islandID + 1);
+        Island island = map.getIsland(islandID);
+        Island islandSucc = map.getNext(islandID);
+        Island islandPrev = map.getPrev(islandID);
 
-            if(islandPrec.getTowerColor() == island.getTowerColor())
-                map.merge(islandPrec.getID(), island.getID());
-            else throw new DifferentColorTowerException("Different tower. Impossible merging.");
-        } catch (DifferentColorTowerException e) {
-            e.printStackTrace();
-        }
+        if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty())
+            map.merge(island.getID(), islandSucc.getID());
 
+        if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty())
+            map.merge(island.getID(), islandPrev.getID());
     }
 
     /**
      * Move Mother Nature forward by @param steps
      */
     public void moveMotherNature(int steps){
-        // Get MotherNature
         int motherNaturePos = map.getMotherNaturePosition();
         // Calculate nextIsland
         for(int i=0; i < steps; i++){
@@ -385,6 +386,8 @@ public class Game extends Observable {
         }
         // Set the position
         map.setMotherNaturePos(motherNaturePos);
+
+        checkInfluence(motherNaturePos);
     }
 
     /**
@@ -400,9 +403,10 @@ public class Game extends Observable {
             }
             cloud.reset();
         } catch (MissingCloudStudentsException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        //notifyObserver(new CloudMessage(getActivePlayer().getNickname(), getMap().getClouds()));
+
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     public Player getActivePlayer(){

@@ -22,11 +22,11 @@ public class GameSerialized implements Serializable {
                 serializableIslands.add(new SerializableIsland(game.getMap().getGhostIsland(island.getID())));
                 ArrayList<Integer> referencedIslands = new ArrayList<>();
                 for(Island isl : game.getMap().getIslands()){
-                    if(isl.isDisabled()){
+                    if(isl.isDisabled() && isl.getGroupID() == island.getGroupID()){
                         referencedIslands.add(isl.getGroupID());
                     }
                 }
-                serializableIslands.get(serializableIslands.size()).setReferencedIslands(referencedIslands);
+                serializableIslands.get(serializableIslands.size()-1).setReferencedIslands(referencedIslands);
             }
             else{
                 serializableIslands.add(new SerializableIsland(island));
