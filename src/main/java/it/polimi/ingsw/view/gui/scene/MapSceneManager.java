@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.model.GameSerialized;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -638,4 +639,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    public void updateValues(GameSerialized gameSerialized) {
+    }
 }

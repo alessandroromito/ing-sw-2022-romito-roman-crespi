@@ -57,7 +57,6 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askPlayerNickname() {
         Platform.runLater(() -> SceneManager.paneTransition(observers, "login_scene.fxml"));
-        showGenericMessage("genericMessageTry");
     }
 
     @Override
