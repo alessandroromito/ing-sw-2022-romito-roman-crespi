@@ -26,7 +26,7 @@ public class ScoreboardX3p implements Scoreboard{
     public ScoreboardX3p(TowerColors towerColor,Player p){
         this.player = p;
         for(int i=0;i<5;i++)
-            for(int k=0;k<5;k++)
+            for(int k=0;k<3;k++)
                 avaibleCoin[i][k] = true;
 
         for(int i=0; i<9; i++) entrance[i] = null;
