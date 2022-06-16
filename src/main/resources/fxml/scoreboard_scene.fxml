@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.ScoreboardSceneManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.ScoreboardSceneManager">
    <children>
       <ImageView fx:id="scorebrd" fitHeight="1080.0" fitWidth="1920.0" layoutX="-1.0" layoutY="247.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -46,7 +46,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="red" fitHeight="81.0" fitWidth="82.0" layoutX="541.0" layoutY="489.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="red2" fitHeight="81.0" fitWidth="82.0" layoutX="541.0" layoutY="489.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
@@ -318,27 +318,27 @@
             <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="entrance" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="352.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="entrance0" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="351.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="entrance1" fitHeight="81.0" fitWidth="82.0" layoutX="63.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="entrance1" fitHeight="81.0" fitWidth="82.0" layoutX="63.0" layoutY="489.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="entrance2" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="entrance2" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="489.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="entrance3" fitHeight="81.0" fitWidth="82.0" layoutX="63.0" layoutY="626.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="entrance3" fitHeight="81.0" fitWidth="82.0" layoutX="63.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="entrance4" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="626.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="entrance4" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
