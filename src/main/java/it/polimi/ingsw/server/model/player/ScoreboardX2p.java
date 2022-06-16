@@ -29,7 +29,7 @@ public class ScoreboardX2p implements Scoreboard{
     public ScoreboardX2p(TowerColors towerColor,Player p){
         this.player = p;
         for(int i=0;i<5;i++)
-            for(int k=0;k<5;k++)
+            for(int k=0;k<3;k++)
                 avaibleCoin[i][k] = true;
 
         for(int i=0; i<7; i++) entrance[i] = null;
