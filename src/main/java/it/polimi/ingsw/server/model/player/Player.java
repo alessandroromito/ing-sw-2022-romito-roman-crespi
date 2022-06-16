@@ -35,7 +35,7 @@ public class Player extends Observable{
 
     public void createScoreboard(int numberOfPlayers, TowerColors towerColor){
         ScoreboardFactory s = new ScoreboardFactory();
-        this.scoreboard = s.createScoreboard(numberOfPlayers, towerColor);
+        this.scoreboard = s.createScoreboard(numberOfPlayers, towerColor,this);
     }
 
     public String getNickname(){

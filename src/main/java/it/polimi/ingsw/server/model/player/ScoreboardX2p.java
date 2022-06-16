@@ -14,6 +14,9 @@ import java.util.List;
 
 public class ScoreboardX2p implements Scoreboard{
 
+    private Player player;
+    private boolean avaibleCoin[][] = new boolean[5][3];
+
     private final StudentDisc[] entrance = new StudentDisc[7];
 
     private final Integer[] diningRoom;
@@ -23,7 +26,12 @@ public class ScoreboardX2p implements Scoreboard{
     private ArrayList<Tower> towers = new ArrayList<>(8);
     private TowerColors towerColor;
 
-    public ScoreboardX2p(TowerColors towerColor){
+    public ScoreboardX2p(TowerColors towerColor,Player p){
+        this.player = p;
+        for(int i=0;i<5;i++)
+            for(int k=0;k<3;k++)
+                avaibleCoin[i][k] = true;
+
         for(int i=0; i<7; i++) entrance[i] = null;
 
         this.towerColor = towerColor;
@@ -139,6 +147,13 @@ public class ScoreboardX2p implements Scoreboard{
             for (int i = 0; i < 7; i++)
                 if (entrance[i] != null && entrance[i].getID() == student.getID()) {
                     diningRoom[entrance[i].getColorInt()]++;
+
+                    if(diningRoom[entrance[i].getColorInt()] %3 == 0)
+                        if(avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ]){
+                            avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ] = false;
+                            player.addCoin();
+                        }
+
                     entrance[i] = null;
                     return;
                 }

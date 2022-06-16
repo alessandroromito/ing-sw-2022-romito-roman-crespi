@@ -14,6 +14,8 @@ import java.util.List;
 
 public class ScoreboardX3p implements Scoreboard{
 
+    private Player player;
+    private boolean avaibleCoin[][] = new boolean[5][3];
     private final StudentDisc[] entrance = new StudentDisc[9];
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
@@ -21,7 +23,12 @@ public class ScoreboardX3p implements Scoreboard{
     private ArrayList<Tower> towers = new ArrayList<>(6);
     private TowerColors towerColor;
 
-    public ScoreboardX3p(TowerColors towerColor){
+    public ScoreboardX3p(TowerColors towerColor,Player p){
+        this.player = p;
+        for(int i=0;i<5;i++)
+            for(int k=0;k<5;k++)
+                avaibleCoin[i][k] = true;
+
         for(int i=0; i<9; i++) entrance[i] = null;
 
         for(int i=0; i<6; i++)
@@ -133,12 +140,18 @@ public class ScoreboardX3p implements Scoreboard{
 
     @Override
     public void moveFromEntranceToDining(StudentDisc student) {
-        try{
-            int c=0;
-            for(int i=0;i<9;i++)
-                if(entrance[c].getID() == student.getID()) {
-                    diningRoom[entrance[c].getColorInt()]++;
-                    entrance[c] = null;
+        try {
+            for (int i = 0; i < 9; i++)
+                if (entrance[i] != null && entrance[i].getID() == student.getID()) {
+                    diningRoom[entrance[i].getColorInt()]++;
+
+                    if(diningRoom[entrance[i].getColorInt()] %3 == 0)
+                        if(avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ]){
+                            avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ] = false;
+                            player.addCoin();
+                        }
+
+                    entrance[i] = null;
                     return;
                 }
             throw new StudentNotInEntranceException("Student not found in entrance");
