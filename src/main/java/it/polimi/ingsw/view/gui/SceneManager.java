@@ -5,6 +5,7 @@ import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.view.gui.scene.ErrorMessageSceneManager;
 import it.polimi.ingsw.view.gui.scene.GenericMessageSceneManager;
 import it.polimi.ingsw.view.gui.scene.SceneManagerInterface;
+import it.polimi.ingsw.view.gui.scene.VictorySceneManager;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -129,5 +130,21 @@ public class SceneManager extends ViewObservable {
         genericMessageSceneManager.setGenericTitle(genericMessageTitle);
         genericMessageSceneManager.setGenericMessage(genericMessageText);
         genericMessageSceneManager.showMessage();
+    }
+
+    public static void showWinner(String winner) {
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/victory_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        VictorySceneManager victorySceneManager = fxmlLoader.getController();
+        Scene victoryScene = new Scene(parent);
+        victorySceneManager.setScene(victoryScene);
+        victorySceneManager.setWinner(winner);
+        victorySceneManager.showVictoryScene();
     }
 }

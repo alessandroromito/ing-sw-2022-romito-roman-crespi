@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
 import it.polimi.ingsw.view.gui.scene.MapSceneManager;
@@ -170,7 +171,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showVictoryMessage(String winner) {
-
+        Platform.runLater( () -> {
+            SceneManager.showWinner(winner);
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        });
     }
 
     private MapSceneManager getMapSceneManager(){
