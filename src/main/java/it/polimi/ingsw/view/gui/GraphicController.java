@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -92,7 +93,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-
+        Platform.runLater( () -> {
+            SceneManager.showGenericMessage("FINE DELLA PARTITA", "Il gicatore " + nicknameDisconnected + " si è disconnesso.");
+            SceneManager.paneTransition(observers, "scene_menu.fxml");
+        });
     }
 
     @Override
@@ -107,11 +111,17 @@ public class GraphicController extends ViewObservable implements View {
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
         MapSceneManager mapSceneManager = getMapSceneManager();
+        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
     }
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
-
+        MapSceneManager mapSceneManager = getMapSceneManager();
+        //max 2 alla volta
+        Integer minValue = 12;
+        for (Integer integer : unifiedIsland) if (integer < minValue) minValue = integer;
+        Integer finalMinValue = minValue;
+        Platform.runLater( () -> mapSceneManager.build(finalMinValue) );
     }
 
     @Override
@@ -127,8 +137,8 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater( () -> {
-            SceneManager.showGenericMessage("GenericMessage", genericMessage);
-            SceneManager.paneTransition(observers, "scene_menu.fxml");
+            SceneManager.showGenericMessage("INFO", genericMessage);
+            //SceneManager.paneTransition(observers, "scene_menu.fxml");
         } );
     }
 
@@ -144,11 +154,12 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-
+        MapSceneManager mapSceneManager = getMapSceneManager();
+        Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
     }
 
     @Override
-    public void askToChooseACloud(List<Cloud> cloudList) {
+    public void askToChooseACloud(ArrayList<Cloud> cloudList) {
 
     }
 

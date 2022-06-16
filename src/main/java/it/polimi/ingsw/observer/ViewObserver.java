@@ -5,6 +5,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface ViewObserver {
 
     void onUpdateMotherNaturePosition(int steps);
 
-    void onUpdatePickCloud(List<Cloud> cloudList);
+    void onUpdatePickCloud(ArrayList<Cloud> cloudList);
 
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
 

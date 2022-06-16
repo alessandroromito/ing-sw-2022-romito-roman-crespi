@@ -32,7 +32,7 @@ public class Island {
     }
 
     public int getID(){
-        return this.ID;
+        return ID;
     }
 
     public int getGroupID(){

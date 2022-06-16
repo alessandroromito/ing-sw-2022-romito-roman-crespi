@@ -62,7 +62,7 @@ public class ScoreboardX2p implements Scoreboard{
     @Override
     public void addProfessor(ProfessorPawn professor) {
         professorList.add(professor);
-        professorTable[professor.getColorInt()] = true;
+        professorTable[professor.getColor().ordinal()] = true;
     }
 
     @Override
@@ -84,8 +84,23 @@ public class ScoreboardX2p implements Scoreboard{
     }
 
     @Override
+    public StudentDisc removeStudent(StudentDisc student){
+        int studentID = student.getID();
+        for(int i = 0; i < 7; i++){
+            if(entrance[i] != null && entrance[i].getID() == studentID)
+                entrance[i] = null;
+        }
+        return null;
+    }
+
+    @Override
     public boolean getProfessor(PawnColors color) {
-        return this.professorTable[color.ordinal()];
+        //return this.professorTable[color.ordinal()];
+        for(ProfessorPawn professor : professorList){
+            if(professor.getColor() == color)
+                return true;
+        }
+        return false;
     }
 
     @Override

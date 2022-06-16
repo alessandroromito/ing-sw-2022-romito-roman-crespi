@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -48,6 +49,7 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers()));
             }
             case LOGIN_REQUEST -> {
+
             }
             case LOGIN_REPLY -> {
                 LoginReply loginReplyMessage = (LoginReply) message;
@@ -78,7 +80,7 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.showGameScenario(gameScenarioMessage.getGameSerialized()));
             }
             case MOVE_MOTHER_NATURE -> {
-
+                queue.execute(() -> view.askToMoveMotherNature(((MoveMotherNatureMessage) message).getSteps()));
             }
             case MOVE_STUDENT -> {
                 MoveStudentMessage moveStudentMessage = (MoveStudentMessage) message;
@@ -89,7 +91,6 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.askToChooseACloud(cloudMessage.getCloudList()));
             }
             case GAME_MODE -> {
-                GameModeMessage gameModeMessage = (GameModeMessage) message;
                 queue.execute(view::askGameMode);
             }
             case USE_EFFECT -> {
@@ -152,8 +153,8 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdatePickCloud(List<Cloud> cloudList) {
-        client.sendMessage(new CloudMessage(this.nickname, cloudList));
+    public void onUpdatePickCloud(ArrayList<Cloud> clouds) {
+        client.sendMessage(new CloudMessage(this.nickname, clouds));
     }
 
     @Override

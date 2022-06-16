@@ -62,7 +62,7 @@ public class Map {
     }
 
     public ArrayList<Cloud> getClouds(){
-        return this.clouds;
+        return clouds;
     }
 
     public void setMotherNaturePos(int motherNaturePos) {
@@ -73,6 +73,7 @@ public class Map {
         return motherNaturePos;
     }
 
+    /*
     public void merge(int IDIsland1, int IDIsland2) {
         int groupID = 0;
         ArrayList<StudentDisc> students = islands.get(IDIsland1).getStudents();
@@ -101,6 +102,66 @@ public class Map {
         }
     }
 
+     */
+
+    public void merge(int IDIsland1, int IDIsland2) {
+        int groupID = 0;
+
+        Island island1 = islands.get(IDIsland1);
+        if(island1.isDisabled())
+            island1 = getGhostIsland(IDIsland1);
+        Island island2 = islands.get(IDIsland2);
+        if(island1.isDisabled())
+            island2 = getGhostIsland(IDIsland2);
+
+        ArrayList<StudentDisc> students = new ArrayList<>(island1.getStudents());
+        ArrayList<Tower> towers = new ArrayList<>(island1.getTowers());
+        students.addAll(island2.getStudents());
+        towers.addAll(island2.getTowers());
+
+        //DUE GHOST ISLAND
+        if(island1.getGroupID() != -1 && island2.getGroupID() != -1) {
+            groupID = Math.min(island1.getGroupID(), island2.getGroupID());
+            ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
+            for(Island island : islands) {
+                if(island.getGroupID() == Math.max(island1.getGroupID(), island2.getGroupID()))
+                    island.setGroupID(groupID);
+            }
+            ghostIslands[Math.max(island1.getGroupID(), island2.getGroupID())] = null;
+        }
+        //ISLAND 1 GHOST, ISLAND 2 NO
+        else if (island1.getGroupID() != -1 && island2.getGroupID() == -1) {
+            groupID = island1.getGroupID();
+            ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
+
+            island2.disable();
+            island2.setGroupID(groupID);
+        }
+        //ISLAND 1 NO, ISLAND 2 GHOST
+        else if (island1.getGroupID() == -1 && island2.getGroupID() == -1) {
+            groupID = island2.getGroupID();
+            ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
+
+            island1.disable();
+            island1.setGroupID(groupID);
+        }
+        // DUE NO GHOST
+        else {
+            int i = 0;
+            for(GhostIsland ghostIsland : ghostIslands) {
+                if (ghostIsland == null) {
+                    ghostIslands[i] = new GhostIsland(i, students , towers );
+                    groupID = i;
+                }
+                i++;
+            }
+            island1.disable();
+            island2.disable();
+            island1.setGroupID(groupID);
+            island2.setGroupID(groupID);
+        }
+    }
+
     public void mergeHybridGhostFeature(int IDGhostIsland, int IDIsland) throws DifferentColorTowerException {
         //da implementare
         /*
@@ -126,7 +187,6 @@ public class Map {
         noc1 = groupIDsGhostIsland[IDGhostIsland1].getNumberOfColors();
         noc2 = groupIDsGhostIsland[IDGhostIsland2].getNumberOfColors();
 
-
         //merge dei noc
         for(int i = 0; i < PawnColors.values().length - 1; i++) noc1[i] += noc2[i];
         */
@@ -147,7 +207,7 @@ public class Map {
         ghostIslands[IDGhostIsland2] = null;
     }
 
-    public int getGhostIslandNumber() {
+    public int getNumberOfGhostIsland() {
         int c=0;
         while(ghostIslands[c]!=null)
             c++;

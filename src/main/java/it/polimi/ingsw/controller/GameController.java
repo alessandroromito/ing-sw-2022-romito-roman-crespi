@@ -54,6 +54,9 @@ public class GameController implements Observer {
         turnController = new TurnController(this, virtualViewMap);
         game.setTurnController(turnController);
 
+        inputController.setGame(game);
+        inputController.setVirtualViewMap(virtualViewMap);
+
         showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
     }
@@ -203,6 +206,7 @@ public class GameController implements Observer {
     public void setChosenExpertMode(GameModeReplyMessage message) {
         this.chosenExpertMode = message.getExpertMode();
         showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
+
         VirtualView virtualView = virtualViewMap.get(message.getNickname());
         virtualView.askPlayersNumber();
     }
@@ -228,10 +232,10 @@ public class GameController implements Observer {
             if (inputController.moveCheck(message)) {
                 game.moveMotherNature(steps);
 
-                // Go to the next action phase
                 turnController.nextActionPhase();
             }
         }
+        else System.out.println("Incorrect ActionPhase to move MotherNature!");
     }
 
     public void moveStudent(MoveStudentMessage message) {
@@ -240,8 +244,13 @@ public class GameController implements Observer {
             Player player = game.getPlayerByNickname(message.getNickname());
 
             switch (message.getPosition()) {
-                case 0 -> game.moveStudentToDiningRoom(student);
-                case 1 -> game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber());
+                case 0 -> {
+                    game.moveStudentToDiningRoom(student);
+                }
+                case 1 -> {
+                    game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber());
+                    game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);
+                }
                 default -> showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
             }
 
@@ -256,6 +265,10 @@ public class GameController implements Observer {
             Cloud chosenCloud = message.getCloudList().get(0);
 
             game.pickAndPlaceFromCloud(chosenCloud.getCloudID());
+
+            showMessage(message.getNickname(), "Attesa che gli altri giocatori finiscano il turno...");
+
+            turnController.next();
         }
     }
 
@@ -287,28 +300,20 @@ public class GameController implements Observer {
         if(turnController.getPhaseState() == PhaseState.PLANNING_PHASE){
             game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
             showMessage(assistantCardMessage.getNickname(), "Assistant Card Set!");
-            /*
-            //Verifica se tutti l'hanno settata
-            for(Player p : game.getPlayers()){
-                if(p.getCurrentCard() == null)
-                    return;
-            }
-             */
+
             turnController.next();
         }
-
         else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");
     }
 
     public void sendInfo(GameInfoMessage gameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(gameInfoMessage.getNickname());
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
     }
 
     public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
-        ExpertGame tempGame = (ExpertGame) game ;
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
     }
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
@@ -377,13 +382,9 @@ public class GameController implements Observer {
         switch (message.getMessageType()) {
 
             case WINNER_DECLARATION -> win(game.getPlayerByNickname(message.getNickname()));
-            case ERROR -> {
-                ErrorMessage errMsg = (ErrorMessage) message;
-                System.out.println(((ErrorMessage) message).getError());
-            }
+            case ERROR -> System.out.println(((ErrorMessage) message).getError());
             default -> showGenericMessageToAll("Invalid update!");
         }
-
     }
 
     /**
@@ -423,7 +424,7 @@ public class GameController implements Observer {
     }
 
     public Game getGame() {
-        return game;
+        return this.game;
     }
 
     public List<String> getPlayersNicknames() {

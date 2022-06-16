@@ -112,7 +112,7 @@ public class SceneManager extends ViewObservable {
     }
 
     public static void showGenericMessage(String genericMessageTitle, String genericMessageText) {
-        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/genericMessage_scene"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/genericMessage_scene.fxml"));
         Parent parent;
         try {
             parent = fxmlLoader.load();
@@ -121,13 +121,13 @@ public class SceneManager extends ViewObservable {
             return;
         }
         //nel caso in cui non avessimo il controllo da parte di fxml manager
-        //ErrorMessageManager errorMessageManager = fxmlLoader.getController();
+        GenericMessageSceneManager genericMessageSceneManager = fxmlLoader.getController();
         //altrimenti
-        GenericMessageSceneManager genericMessageSceneManager = new GenericMessageSceneManager();
-        Scene errorMessageScene = new Scene(parent);
-        genericMessageSceneManager.setScene(errorMessageScene);
-        genericMessageSceneManager.setErrorTitle(genericMessageTitle);
-        genericMessageSceneManager.setErrorMessage(genericMessageText);
+        //GenericMessageSceneManager genericMessageSceneManager = new GenericMessageSceneManager();
+        Scene genericMessageScene = new Scene(parent);
+        genericMessageSceneManager.setScene(genericMessageScene);
+        genericMessageSceneManager.setGenericTitle(genericMessageTitle);
+        genericMessageSceneManager.setGenericMessage(genericMessageText);
         genericMessageSceneManager.showMessage();
     }
 }

@@ -75,4 +75,12 @@ public class InputController {
         else
             return true;
     }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
+        this.virtualViewMap = virtualViewMap;
+    }
 }

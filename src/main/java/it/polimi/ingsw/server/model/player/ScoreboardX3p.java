@@ -80,8 +80,23 @@ public class ScoreboardX3p implements Scoreboard{
     }
 
     @Override
+    public StudentDisc removeStudent(StudentDisc student){
+        int studentID = student.getID();
+        for(int i = 0; i < 9; i++){
+            if(entrance[i].getID() == studentID)
+                entrance[i] = null;
+        }
+        return null;
+    }
+
+    @Override
     public boolean getProfessor(PawnColors color) {
-        return this.professorTable[color.ordinal()];
+        //return this.professorTable[color.ordinal()];
+        for(ProfessorPawn professor : professorList){
+            if(professor.getColor() == color)
+                return true;
+        }
+        return false;
     }
 
     @Override
