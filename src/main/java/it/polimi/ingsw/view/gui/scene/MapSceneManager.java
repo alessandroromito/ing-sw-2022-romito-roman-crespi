@@ -183,8 +183,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             card1.setImage(image);
         }
     }
-
-    public void addColor(int color){
+//color: 1/5  isalnd:0/11
+    public void addColor(int color,int id,int island){
         Image image = null;
         ImageView pawn = new ImageView();
 
@@ -198,6 +198,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         pawn.setImage(image);
         DropShadow dr = new DropShadow(); dr.setWidth(15); dr.setHeight(15);
         pawn.setOnMouseExited(ex -> pawn.setEffect(dr));
+
         switch(color){
             case 1: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.55))); break;
             case 2: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.23))); break;
@@ -206,8 +207,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 5: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.55))); break;
         }
 
+    // ritorna l'id del pawn scelto   pawn.setOnMouseClicked(ck -> pawn.getId());
         pawn.setEffect(dr);
-//        pawn.setAccessibleText("colore da mettere");
+        pawn.setId(Integer.toString(id));
         pawns.add(pawn);
 
         pawn.setFitHeight(r*2);
@@ -216,13 +218,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         Point pos = findCoord(0);
 
-        pawn.setX(islandsPosCentre[0].getX()-rIsl+pos.getX()-rIsl*0.1);
-        pawn.setY(islandsPosCentre[0].getY()-rIsl+pos.getY()-rIsl*0.1);
+        pawn.setX(islandsPosCentre[island].getX()-rIsl+pos.getX()-rIsl*0.1);
+        pawn.setY(islandsPosCentre[island].getY()-rIsl+pos.getY()-rIsl*0.1);
         pawn.setLayoutX(r/2);
 
         pane.getChildren().addAll(pawn);
-        switchIslands = false;
-        darkAll();
+    }
+
+    public void removePawn(int id){
+        for(ImageView p: pawns)
+            if(p.getId().equals(Integer.toString(id)))
+                pane.getChildren().remove(p);
     }
 
     private void darkAll() {
@@ -295,7 +301,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
     }
 
-    public void setMotherNaturePoses(int island){
+    public void setMotherNaturePose(int island){
         motherNature.setLayoutX(motherNaturePoses[island].getX());
         motherNature.setLayoutY(motherNaturePoses[island].getY());
         motherNature.setVisible(true);
@@ -303,10 +309,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveMotherNature(int pos){
-        //    if(motherNaturePos+)
+            if(motherNaturePos+pos<=11){
+                motherNaturePos += pos;
+                setMotherNaturePose(motherNaturePos);
+            }else{
+                motherNaturePos += pos-11;
+                setMotherNaturePose(motherNaturePos);
+            }
     }
 
     public void light(MouseEvent mouseEvent) {
+        System.out.println();
         Effect e = new Bloom();
         if(switchIslands)
             switch(mouseEvent.getSource().toString().charAt(19)){
@@ -373,7 +386,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    //island: 0=black 1=white 2=grey
+    //color: 0=black 1=white 2=grey
     public void setTower(int island,int color){
         Image image = null;
 
@@ -410,7 +423,50 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void chooseIsland(MouseEvent mouseEvent) {
         int choosenIsland;
 
-        //mouseEvent.getSource().toString().charAt();
+        switch(mouseEvent.getSource().toString().charAt(19)) {
+            case '2':
+                choosenIsland = 2;
+                break;
+            case '3':
+                choosenIsland = 3;
+                break;
+            case '4':
+                choosenIsland = 4;
+                break;
+            case '5':
+                choosenIsland = 5;
+                break;
+            case '6':
+                choosenIsland = 6;
+                break;
+            case '7':
+                choosenIsland = 7;
+                break;
+            case '8':
+                choosenIsland = 8;
+                break;
+            case '9':
+                choosenIsland = 9;
+                break;
+            case '1':
+                switch (mouseEvent.getSource().toString().charAt(20)) {
+                    case '0':
+                        choosenIsland = 10;
+                        break;
+                    case '1':
+                        choosenIsland = 11;
+                        break;
+                    case '2':
+                        choosenIsland = 12;
+                        break;
+                    default:
+                        choosenIsland = 1;
+                        break;
+                }
+        }
+        //chosen island isola scelta
+        switchIslands = false;
+        darkAll();
     }
 
     //passare numero isola precedente in senso orario
@@ -579,9 +635,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void build(ActionEvent actionEvent) {
-        setTower(0,1);
-        setTower(5,0);
-        setTower(8,2);
 
     }
 
