@@ -91,7 +91,12 @@ public class ScoreboardX3p implements Scoreboard{
 
     @Override
     public boolean getProfessor(PawnColors color) {
-        return this.professorTable[color.ordinal()];
+        //return this.professorTable[color.ordinal()];
+        for(ProfessorPawn professor : professorList){
+            if(professor.getColor() == color)
+                return true;
+        }
+        return false;
     }
 
     @Override

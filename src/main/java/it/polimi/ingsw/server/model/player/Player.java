@@ -43,7 +43,11 @@ public class Player extends Observable{
     }
 
     public AssistantCard getPlayerCard(int cardNumber){
-        return cardNumber <= 10 ? hand.get(cardNumber-1) : null;
+        for(AssistantCard assistantCard : hand){
+            if(assistantCard.getID() == cardNumber)
+                return assistantCard;
+        }
+        return null;
     }
 
     public Scoreboard getScoreboard(){

@@ -101,6 +101,7 @@ public class VirtualView implements View, Observer {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         clientHandler.sendMessage(new AssistantCardMessage(Game.SERVER_NAME, assistantCards));
+        System.out.println("Server -> Client: AssistantCardMessage");
     }
 
     @Override
@@ -112,11 +113,13 @@ public class VirtualView implements View, Observer {
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         clientHandler.sendMessage(new MoveMotherNatureMessage(Game.SERVER_NAME, maxSteps));
+        System.out.println("Server -> Client: MoveMotherNature");
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         clientHandler.sendMessage(new CloudMessage(Game.SERVER_NAME, cloudList));
+        System.out.println("Server -> Client: CloudMessage");
     }
 
     @Override

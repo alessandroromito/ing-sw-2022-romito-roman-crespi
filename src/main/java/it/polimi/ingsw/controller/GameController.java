@@ -266,6 +266,9 @@ public class GameController implements Observer {
 
             game.pickAndPlaceFromCloud(chosenCloud.getCloudID());
 
+            showMessage(message.getNickname(), "Attesa che gli altri giocatori finiscano il turno...");
+
+            turnController.next();
         }
     }
 
@@ -305,13 +308,12 @@ public class GameController implements Observer {
 
     public void sendInfo(GameInfoMessage gameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(gameInfoMessage.getNickname());
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
     }
 
     public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
-        ExpertGame tempGame = (ExpertGame) game ;
-        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getGhostIslandNumber(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
+        virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
     }
 
     public void applyEffect(UseEffectMessage useEffectMessage) {
@@ -380,13 +382,9 @@ public class GameController implements Observer {
         switch (message.getMessageType()) {
 
             case WINNER_DECLARATION -> win(game.getPlayerByNickname(message.getNickname()));
-            case ERROR -> {
-                ErrorMessage errMsg = (ErrorMessage) message;
-                System.out.println(((ErrorMessage) message).getError());
-            }
+            case ERROR -> System.out.println(((ErrorMessage) message).getError());
             default -> showGenericMessageToAll("Invalid update!");
         }
-
     }
 
     /**

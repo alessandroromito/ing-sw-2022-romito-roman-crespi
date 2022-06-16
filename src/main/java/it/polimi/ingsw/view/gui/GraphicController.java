@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
-import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.view.View;
 import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
 import it.polimi.ingsw.view.gui.scene.MapSceneManager;
@@ -18,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -159,7 +159,7 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void askToChooseACloud(List<Cloud> cloudList) {
+    public void askToChooseACloud(ArrayList<Cloud> cloudList) {
 
     }
 

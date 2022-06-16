@@ -30,7 +30,7 @@ public class GUI extends Application {
             //stage.setFullScreen(true);
             stage.setFullScreenExitHint("");
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            stage.setTitle("Eryantis Game");
+            stage.setTitle("Eriantys Game");
 
             //GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 

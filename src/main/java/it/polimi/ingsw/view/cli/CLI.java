@@ -278,7 +278,10 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland){
-
+        out.println("Isole unite:");
+        for(Integer i : unifiedIsland){
+            out.print( i + ", ");
+        }
     }
 
     @Override
@@ -437,23 +440,28 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         int choose = -1;
-        do {
-            out.println("Scegli tra le seguenti Nuvole:");
-            for (Cloud cloud : cloudList) {
-                out.println("Nuvola " + cloud.getCloudID());
-                for(StudentDisc studentDisc : cloud.getCloudStudents()){
-                    printStudent(studentDisc);
+        try{
+            do {
+                out.println("Scegli tra le seguenti Nuvole:");
+                for (Cloud cloud : cloudList) {
+                    out.println("Nuvola " + cloud.getCloudID());
+                    for(StudentDisc studentDisc : cloud.getCloudStudents()){
+                        out.print(printStudent(studentDisc));
+                    }
+                    out.println();
                 }
-            }
 
-            out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
-            try {
+                out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
+
                 choose = Integer.parseInt(readRow());
-            } catch (ExecutionException | InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(choose >= cloudList.size()-1 || choose < 0) out.println("Numero inserito non valido. Riprovare.");
-        }while(choose >= cloudList.size()-1 || choose < 0);
+
+                if(choose > cloudList.size()-1 || choose < 0)
+                    out.println("Numero inserito non valido. Riprovare.");
+
+            }while(choose > cloudList.size()-1 || choose < 0);
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
 
         int finalChoose = choose;
         ArrayList<Cloud> cloud = new ArrayList<>();

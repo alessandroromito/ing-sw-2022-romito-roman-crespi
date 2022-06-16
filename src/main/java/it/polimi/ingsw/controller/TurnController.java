@@ -93,7 +93,7 @@ public class TurnController {
         if(phaseState == PLANNING_PHASE)
             askAssistantCard();
         else {
-            actionPhase();
+            nextActionPhase();
         }
     }
 
@@ -126,7 +126,6 @@ public class TurnController {
                 case PICK_CLOUD -> {
                     gameController.askToChooseACloud();
                     game.disableCardEffects();
-                    next();
                 }
                 default -> throw new InvalidActionPhaseStateException();
             }

@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.controller.TurnController;
-import it.polimi.ingsw.network.message.CloudMessage;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.LobbyMessage;
 import it.polimi.ingsw.observer.Observable;
@@ -17,7 +16,10 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class Game extends Observable {
 
@@ -27,8 +29,6 @@ public class Game extends Observable {
     protected Bag bag;
 
     public static final String SERVER_NAME = "GAME_SERVER";
-
-    protected Player currentPlayer;
 
     protected TurnController turnController;
 
@@ -188,20 +188,14 @@ public class Game extends Observable {
      */
     public void refillClouds() {
         for(Cloud cloud: map.getClouds()){
-            try {
-                if (cloud.getCloudStudents().isEmpty()) {
-                    cloud.addStudent(bag.pickSorted());
-                    cloud.addStudent(bag.pickSorted());
-                    cloud.addStudent(bag.pickSorted());
+            cloud.addStudent(bag.pickSorted());
+            cloud.addStudent(bag.pickSorted());
+            cloud.addStudent(bag.pickSorted());
 
-                    if (players.size() == 3)
-                        cloud.addStudent(bag.pickSorted());
-                }
-                else throw new CloudNotEmptyException("Cloud is NOT empty before refill!");
-            } catch (CloudNotEmptyException e) {
-
-            }
+            if (players.size() == 3)
+                cloud.addStudent(bag.pickSorted());
         }
+
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
@@ -319,6 +313,7 @@ public class Game extends Observable {
             }
             if (dominantPlayer != null) {
                 moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
+                checkMerge(islandID);
 
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
                 return;
@@ -336,6 +331,7 @@ public class Game extends Observable {
 
         if(opponentPlayer != null && island.getInfluence(opponentPlayer) < currentPlayerInfluence){
             moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
+            checkMerge(islandID);
 
             notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
@@ -343,15 +339,30 @@ public class Game extends Observable {
 
 
     private void checkProfessors(PawnColors color) {
-        Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
-        int numStudent = currentPlayer.getScoreboard().getPlayerStudentFromDining(color);
+        Player activePlayer = getActivePlayer();
+        int numStudent = activePlayer.getScoreboard().getPlayerStudentFromDining(color);
 
-        for(Player player: players){
-            if(!player.equals(currentPlayer) && player.getScoreboard().getPlayerStudentFromDining(color) < numStudent && player.getScoreboard().getProfessor(color)){
-                currentPlayer.getScoreboard().addProfessor(player.getScoreboard().removeProfessor(color));
-            }
-            else currentPlayer.getScoreboard().addProfessor((ProfessorPawn) components.get(1 + color.ordinal()));
+        for (Player player : players) {
+            if (!player.equals(activePlayer) && numStudent > player.getScoreboard().getPlayerStudentFromDining(color) && player.getScoreboard().getProfessor(color)) {
+                activePlayer.getScoreboard().addProfessor(player.getScoreboard().removeProfessor(color));
+            } else if((!player.equals(activePlayer) && numStudent > player.getScoreboard().getPlayerStudentFromDining(color) && !player.getScoreboard().getProfessor(color)))
+                activePlayer.getScoreboard().addProfessor((ProfessorPawn) components.get(1 + color.ordinal()));
         }
+    }
+
+    private void checkMerge(int islandID){
+        try{
+            Island island = map.getIsland(islandID);
+            Island islandPrec = map.getIsland(islandID - 1);
+            Island islandSucc = map.getIsland(islandID + 1);
+
+            if(islandPrec.getTowerColor() == island.getTowerColor())
+                map.merge(islandPrec.getID(), island.getID());
+            else throw new DifferentColorTowerException("Different tower. Impossible merging.");
+        } catch (DifferentColorTowerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -363,6 +374,7 @@ public class Game extends Observable {
         // Calculate nextIsland
         for(int i=0; i < steps; i++){
             motherNaturePos++;
+            if((motherNaturePos) == 12) motherNaturePos = 0;
             if(map.getIsland(motherNaturePos).isDisabled()){
                 int groupID = map.getIsland(motherNaturePos).getGroupID();
                 do{
@@ -384,13 +396,13 @@ public class Game extends Observable {
             Cloud cloud = map.getCloud(cloudID);
             if(cloud.getCloudStudents() == null) throw new MissingCloudStudentsException("Cloud empty or already chosen!");
             for(StudentDisc student: cloud.getCloudStudents()){
-                currentPlayer.getScoreboard().addStudentOnEntrance(student);
+                getPlayerByNickname(turnController.getActivePlayer()).getScoreboard().addStudentOnEntrance(student);
             }
             cloud.reset();
         } catch (MissingCloudStudentsException e) {
             throw new RuntimeException(e);
         }
-        notifyObserver(new CloudMessage(getActivePlayer().getNickname(), getMap().getClouds()));
+        //notifyObserver(new CloudMessage(getActivePlayer().getNickname(), getMap().getClouds()));
     }
 
     public Player getActivePlayer(){

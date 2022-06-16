@@ -20,7 +20,7 @@ public class Cloud implements Serializable {
     }
 
     public ArrayList<StudentDisc> getCloudStudents(){
-        return this.cloudStudents;
+        return cloudStudents;
     }
 
     public void reset(){

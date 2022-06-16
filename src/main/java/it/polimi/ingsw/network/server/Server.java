@@ -68,7 +68,7 @@ public class Server {
     }
 
     public String getNicknameFromClientHandler(ClientHandler clientHandler){
-        return "";
+        return String.valueOf(clientHandlerMap.get(clientHandler));
     }
 
     public GameController getGameController() {
