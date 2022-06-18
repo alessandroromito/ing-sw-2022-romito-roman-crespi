@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.extra.SerializableIsland;
+import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.animation.FadeTransition;
@@ -166,8 +168,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private double r = 22;
     private double rIsl;
 
+
+    ImageView[] cloudStudents1 = new ImageView[3];
+    ImageView[] cloudStudents2 = new ImageView[3];
     ImageView[] towerBases = new ImageView[12];
-    ArrayList<ImageView> pawns = new ArrayList<ImageView>();
+    ArrayList<ImageView>[] pawns = new ArrayList[12];
     ArrayList<Point>[] islands = new ArrayList[12];
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
@@ -213,7 +218,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     // ritorna l'id del pawn scelto   pawn.setOnMouseClicked(ck -> pawn.getId());
         pawn.setEffect(dr);
         pawn.setId(Integer.toString(id));
-        pawns.add(pawn);
+        pawns[island].add(pawn);
 
         pawn.setFitHeight(r*2);
         pawn.setFitWidth(r*2);
@@ -229,9 +234,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void removePawn(int id){
-        for(ImageView p: pawns)
-            if(p.getId().equals(Integer.toString(id)))
-                pane.getChildren().remove(p);
+        for(int i=0;i<12;i++)
+            for(ImageView p: pawns[i])
+                if(p.getId().equals(Integer.toString(id)))
+                    pane.getChildren().remove(p);
     }
 
     private void darkAll() {
@@ -281,6 +287,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        for(int i=0;i<12;i++)   pawns[i] = new ArrayList<ImageView>();
+
         islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
         islandsPosCentre[1] = new Point(island2.getLayoutX()+island2.getFitWidth()/2,island2.getLayoutY()+island2.getFitHeight()/2);
         islandsPosCentre[2] = new Point(island3.getLayoutX()+island3.getFitWidth()/2,island3.getLayoutY()+island3.getFitHeight()/2);
@@ -378,15 +386,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enablePawns(){
         switchPawns = true;
-        for(ImageView pawn: pawns){
-            pawn.setDisable(false);
-        }
+        for(int i=0;i<12;i++)
+            for(ImageView pawn: pawns[i])
+                pawn.setDisable(false);
+
     }
 
     public void disablePawns(){
-        for(ImageView pawn: pawns){
-            pawn.setDisable(true);
-        }
+        for(int i=0;i<12;i++)
+            for(ImageView pawn: pawns[i])
+                pawn.setDisable(true);
+
     }
 
     //color: 0=black 1=white 2=grey
@@ -642,6 +652,50 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         SceneManager.showScoreboards();
     }
 
+    private int getColorFromId(int id){
+        if(id-59>=0 && id-58<=25)
+            return 1;
+        if(id-59>=26 && id-58<=51)
+            return 2;
+        if(id-59>=52 && id-58<=77)
+            return 3;
+        if(id-59>=78 && id-58<=103)
+            return 4;
+        if(id-59>=104 && id-58<=129)
+            return 5;
+
+        return 0;
+    }
+
     public void updateValues(GameSerialized gameSerialized) {
+        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
+        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+
+        setMotherNaturePose(gameSerialized.getMotherNaturePos());
+        for(SerializableIsland island : islands){
+
+            if(island.getTowerNumber() != 0){
+                for(int i=0; i < island.getTowerNumber(); i++)
+                    switch (island.getTowerColor()){
+                        case BLACK -> setTower(islands.indexOf(island),0);
+                        case GREY -> setTower(islands.indexOf(island),2);
+                        case WHITE -> setTower(islands.indexOf(island),1);
+                    }
+            }
+
+            for(int i=0;i<12;i++) {
+                boolean add = true;
+                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsid();
+
+                for (Integer id : islandPawnsId) {
+                    for (int j = 0; j < pawns[i].size(); j++)
+                        if (pawns[i].get(j).getId() == Integer.toString(id))
+                            add = false;
+
+                    if (add)
+                        addColor(getColorFromId(id),id,i);
+                }
+            }
+        }
     }
 }
