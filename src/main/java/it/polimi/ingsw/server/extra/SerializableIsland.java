@@ -14,6 +14,7 @@ public class SerializableIsland implements Serializable {
     private int id;
     private final boolean isGhost;
     private ArrayList<Integer> referencedIslands;
+    private ArrayList<Integer> islandsPawnsid = new ArrayList<>();
     private int redStudents = 0;
     private int greenStudents = 0;
     private int blueStudents = 0;
@@ -28,6 +29,8 @@ public class SerializableIsland implements Serializable {
         setColors(island);
         this.towerColor = island.getTowerColor();
         this.towerNumber = island.getTowerNumber();
+        for(StudentDisc s: island.getStudents())
+            islandsPawnsid.add(s.getID());
     }
 
     public SerializableIsland(GhostIsland ghostIsland){
@@ -35,6 +38,8 @@ public class SerializableIsland implements Serializable {
         setColors(ghostIsland);
         this.towerColor = ghostIsland.getTowerColor();
         this.towerNumber = ghostIsland.getTowerNumber();
+        for(StudentDisc s: ghostIsland.getStudents())
+            islandsPawnsid.add(s.getID());
     }
 
     private void setColors(Island island) {
@@ -88,6 +93,8 @@ public class SerializableIsland implements Serializable {
     public ArrayList<Integer> getReferencedIslands() {
         return referencedIslands;
     }
+
+    public ArrayList<Integer> getIslandsPawnsid() { return islandsPawnsid; }
 
     public void setReferencedIslands(ArrayList<Integer> referencedIslands) {
         this.referencedIslands = referencedIslands;
