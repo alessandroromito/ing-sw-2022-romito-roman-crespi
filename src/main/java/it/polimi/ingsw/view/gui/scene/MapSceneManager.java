@@ -2,8 +2,10 @@ package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -635,8 +637,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    public void build(ActionEvent actionEvent) {
-
+    //bottone temporaneo per prove
+    public void build (ActionEvent actionEvent) {
+        SceneManager.showScoreboards();
     }
 
     public void updateValues(GameSerialized gameSerialized) {
