@@ -120,7 +120,10 @@ public class GraphicController extends ViewObservable implements View {
         MapSceneManager mapSceneManager = getMapSceneManager();
         //max 2 alla volta
         Integer minValue = 12;
-        for (Integer integer : unifiedIsland) if (integer < minValue) minValue = integer;
+        for (Integer integer : unifiedIsland)
+            if (integer < minValue) minValue = integer;
+        if(minValue == 1 && (unifiedIsland.get(0) == 11 || unifiedIsland.get(1) == 11))
+            minValue = 11;
         Integer finalMinValue = minValue;
         Platform.runLater( () -> mapSceneManager.build(finalMinValue) );
     }
