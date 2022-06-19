@@ -412,7 +412,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGenericMessage(String genericMessage) {
-        out.println("GENERIC MESSAGE: " + genericMessage);
+        out.println(genericMessage);
     }
 
     @Override

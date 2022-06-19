@@ -65,6 +65,7 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards()));
             }
             case PLAYER_NUMBER_REPLY -> {
+
             }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
@@ -96,7 +97,12 @@ public class ClientController implements ViewObserver, Observer {
             case USE_EFFECT -> {
 
             }
+            case PLAY_CHARACTER_CARD -> {
+                CharacterCardMessage characterCardMessage = (CharacterCardMessage) message;
+                queue.execute(() -> view.askCharacterCard(characterCardMessage.getCharacterCards()));
+            }
             case CARD209 -> {
+
             }
             case CARD210 -> {
             }

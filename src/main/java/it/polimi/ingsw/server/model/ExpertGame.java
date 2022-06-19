@@ -303,6 +303,11 @@ public class ExpertGame extends Game {
         deleteActiveCard();
     }
 
+
+    public List<CharacterCard> getCharacterCards() {
+        return pool;
+    }
+
     @Override
     public void checkInfluence(int islandID) {
         if(activeCardID == 214) {

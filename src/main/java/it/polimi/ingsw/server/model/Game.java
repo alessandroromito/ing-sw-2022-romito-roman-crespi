@@ -29,6 +29,7 @@ public class Game extends Observable {
     protected Bag bag;
 
     public static final String SERVER_NAME = "GAME_SERVER";
+    public boolean expertMode;
 
     protected TurnController turnController;
 
@@ -455,6 +456,14 @@ public class Game extends Observable {
         for(Component component : components){
             System.out.println("ID: " + component.getID() + "Type: " + component.getClass());
         }
+    }
+
+    public boolean isExpertMode() {
+        return expertMode;
+    }
+
+    public void setExpertMode(boolean expertMode) {
+        this.expertMode = expertMode;
     }
 
     // -----------------------------------------------------------

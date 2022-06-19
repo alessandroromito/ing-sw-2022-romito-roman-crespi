@@ -107,7 +107,7 @@ public class TurnController {
                 System.out.println("Building nickname queue");
                 buildQueue(nicknameQueue);
                 phaseState = ACTION_PHASE;
-                actionPhaseState = ActionPhaseState.MOVE_STUDENT1;
+                actionPhaseState = ActionPhaseState.USE_EFFECT;
                 actionPhase();
             }
             case ACTION_PHASE -> {
@@ -121,6 +121,7 @@ public class TurnController {
     public void actionPhase() {
         try {
             switch (actionPhaseState) {
+                case USE_EFFECT -> gameController.askCharacterCard();
                 case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> gameController.askToMoveStudent();
                 case MOVE_MOTHER_NATURE -> gameController.askToMoveMotherNature();
                 case PICK_CLOUD -> {

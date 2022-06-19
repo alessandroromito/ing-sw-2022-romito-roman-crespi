@@ -85,6 +85,11 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
+    public void askCharacterCard(List<CharacterCard> characterCards) {
+        clientHandler.sendMessage(new CharacterCardMessage(Game.SERVER_NAME, characterCards));
+    }
+
+    @Override
     public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
         clientHandler.sendMessage(new ExpertGameInfoMessage(Game.SERVER_NAME, playersNicknames, unifiedIslandsNumber, remainingBagStudents, activePlayer, characterCards));
     }

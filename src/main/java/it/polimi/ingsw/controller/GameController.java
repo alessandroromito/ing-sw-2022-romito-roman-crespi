@@ -47,6 +47,7 @@ public class GameController implements Observer {
     private void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
+        game.setExpertMode(chosenExpertMode);
 
         for(VirtualView vv : virtualViewMap.values())
             game.addObserver(vv);
@@ -79,6 +80,17 @@ public class GameController implements Observer {
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askToChooseACloud(game.getMap().getClouds());
+    }
+
+
+    public void askCharacterCard() {
+        if(game.isExpertMode()){
+            VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+            virtualView.askCharacterCard(game.getCharacterCards());
+        }
+        else{
+            turnController.nextActionPhase();
+        }
     }
 
     /**
@@ -205,7 +217,7 @@ public class GameController implements Observer {
 
     public void setChosenExpertMode(GameModeReplyMessage message) {
         this.chosenExpertMode = message.getExpertMode();
-        showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "ExpertMode" : "NormalMode"));
+        showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "Esperta" : "Normale"));
 
         VirtualView virtualView = virtualViewMap.get(message.getNickname());
         virtualView.askPlayersNumber();
@@ -434,4 +446,5 @@ public class GameController implements Observer {
     public Map<String, VirtualView> getVirtualViewMap() {
         return virtualViewMap;
     }
+
 }

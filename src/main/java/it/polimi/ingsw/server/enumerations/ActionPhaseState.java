@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.enumerations;
 
 public enum ActionPhaseState {
+    USE_EFFECT,
     MOVE_MOTHER_NATURE,
     MOVE_STUDENT1,
     MOVE_STUDENT2,
@@ -9,6 +10,9 @@ public enum ActionPhaseState {
 
     public ActionPhaseState next(ActionPhaseState actionPhaseState){
         switch (actionPhaseState) {
+            case USE_EFFECT -> {
+                return MOVE_STUDENT1;
+            }
             case MOVE_STUDENT1 -> { return MOVE_STUDENT2;
             }
             case MOVE_STUDENT2 -> { return MOVE_STUDENT3;
