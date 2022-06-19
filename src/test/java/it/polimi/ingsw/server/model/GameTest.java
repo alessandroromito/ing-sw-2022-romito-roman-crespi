@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
@@ -34,7 +35,7 @@ public class GameTest {
         players.add("player3");
 
         game = new Game(players);
-        components = game.components;
+        components = game.getComponents();
 
     }
 /*
@@ -47,11 +48,14 @@ public class GameTest {
     @Test
     public void CreateComponents(){
 
+        game.createComponents();
+        components = game.getComponents();
+
         // Print a visual log of the component's ID and class type
-        for(int i = 0; i<188; i++) {
-            System.out.print("ID: " + components.get(i).getID() + " ");
-            System.out.println(components.get(i).getClass().getName());
-        }
+        //for(int i = 0; i<188; i++) {
+//            System.out.print("ID: " + components.get(i).getID() + " ");
+//            System.out.println(components.get(i).getClass().getName());
+//        }
 
         assertNotNull(components.get(0));
         assertEquals(MotherNature.class, components.get(0).getClass());
@@ -114,7 +118,11 @@ public class GameTest {
 
     @Test
     public void moveMotherNatureTest() throws DifferentColorTowerException, FullGroupIDListException {
+        /*
+        GameController gameController = new GameController();
+        //Game game = gameController.getGame();
         Map map = game.getMap();
+
         map.setMotherNaturePos(2);
 
         game.moveMotherNature(4);
@@ -122,6 +130,8 @@ public class GameTest {
         assertEquals(6, map.getMotherNaturePosition());
 
         map.merge(1,2);
+
+         */
 
     }
 
