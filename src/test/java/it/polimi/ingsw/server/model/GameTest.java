@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.Tower;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
@@ -144,6 +145,15 @@ public class GameTest {
 
     @Test
     public void refillClouds() {
+        Game game = new Game(players);
+        ArrayList<Cloud> clouds = game.getMap().getClouds();
+        if(clouds.get(0).getCloudStudents().isEmpty() && clouds.get(1).getCloudStudents().isEmpty())
+            game.refillClouds();
+        clouds = game.getMap().getClouds();
+        assertFalse(clouds.get(0).getCloudStudents().isEmpty());
+        assertEquals(4, clouds.get(0).getCloudStudents().size());
+        assertFalse(clouds.get(1).getCloudStudents().isEmpty());
+        assertEquals(4, clouds.get(1).getCloudStudents().size());
     }
 
     @Test
