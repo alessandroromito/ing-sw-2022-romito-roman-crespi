@@ -108,25 +108,38 @@ public class GameTest {
 
     @Test
     public void getPlayerByNicknameTest() throws MissingPlayerNicknameException {
-        String player1 = "Player 1";
-        String player2 = "Player 2";
-        String player3 = "Player 3";
+
+        Game game;
+        //già aggiunti
+        /*
+        String player1 = "Player1";
+        String player2 = "Player2";
+        String player3 = "Player3";
 
         players.add(player1);
         players.add(player2);
         players.add(player3);
+         */
 
-        this.game = new Game(players);
+        game = new Game(players);
 
-        assertEquals(players.get(0), game.getPlayerByNickname("Player 1"));
-        assertEquals(players.get(1), game.getPlayerByNickname("Player 2"));
-        assertEquals(players.get(2), game.getPlayerByNickname("Player 3"));
+        assertEquals(players.get(0), game.getPlayerByNickname("player1").getNickname());
+        assertEquals(players.get(1), game.getPlayerByNickname("player2").getNickname());
+        assertEquals(players.get(2), game.getPlayerByNickname("player3").getNickname());
 
     }
 
 
     @Test
     public void getPlayersNicknames() {
+        Game game = new Game(players);
+        List<String> playersListFromMethod = game.getPlayersNicknames();
+        List<String> realPlayerList = new ArrayList<>();
+        realPlayerList.add(players.get(0));
+        realPlayerList.add(players.get(1));
+        realPlayerList.add(players.get(2));
+
+        assertEquals(playersListFromMethod, realPlayerList);
     }
 
     @Test
