@@ -53,5 +53,5 @@ Per lanciare il client: .........
 
 ## Componenti del gruppo
 - [Alessandro Romito](https://github.com/alessandroromito)
-- [Gioele Crespi]() problema con link gh
+- [Gioele Crespi](https://github.com/GioeleCrespi)
 - [Matteo Roman](https://github.com/TeoRomensPoli)
