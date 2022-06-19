@@ -28,15 +28,15 @@ class GameControllerSetupTest {
     private GameState gameState;
     private TurnController turnController;
     private InputController inputController;
+    private GameController gameController;
 
     @BeforeEach
     void setUp() {
 
         this.players = new ArrayList<String>();
-        addPlayer();
-
-        this.inputController = new InputController(new GameController(), virtualViewMap);
+        this.gameController = new GameController();
         this.virtualViewMap = new HashMap<>();
+        this.inputController = new InputController(gameController, virtualViewMap);
         this.gameState = GameState.GAME_ROOM;
 
     }
@@ -73,6 +73,16 @@ class GameControllerSetupTest {
 
     @Test
     void getPlayersNicknames() {
+        String player1 = "Player1";
+        String player2 = "Player2";
+        String player3 = "Player3";
+
+        this.players.add(player1);
+        this.players.add(player2);
+        this.players.add(player3);
+
+        Game game = new Game(players);
+
         assertEquals(game.getPlayers().get(0).getNickname(),"Player1");
         assertEquals(game.getPlayers().get(1).getNickname(),"Player2");
         assertEquals(game.getPlayers().get(2).getNickname(),"Player3");
@@ -80,7 +90,26 @@ class GameControllerSetupTest {
 
     @Test
     void isNicknameTaken() {
-        assertFalse(inputController.checkLoginNickname("Player 1"));
+        String player1 = "Player1";
+        String player2 = "Player2";
+        String player3 = "Player3";
+
+        this.players.add(player1);
+        this.players.add(player2);
+        this.players.add(player3);
+
+        Game game = new Game(players);
+
+        List<String> playerList = game.getPlayersNicknames();
+
+        for(String playerName : playerList)
+            if(playerName.equals("Player2")) {
+                assertTrue(true);
+                return;
+            }
+        fail();
+
+        //assertFalse(inputController.checkLoginNickname(game.getPlayersNicknames().get(0)));
     }
 
 }

@@ -77,16 +77,34 @@ public class GameTest {
     public void GameInitialization(){
         Map map = game.getMap();
 
+        for(Integer integer : map.getIsland(map.getMotherNaturePosition()).getNumberOfColors())
+        {
+            System.out.println(integer);
+            assertEquals(0, (int) integer);
+        }
+
         // Opposite island free
-        Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
-        assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
+        int oppositeIslandNum;
+
+        if (map.getMotherNaturePosition() + 6 < 12)
+            oppositeIslandNum = map.getMotherNaturePosition() + 6;
+        else oppositeIslandNum = map.getMotherNaturePosition() +6 -12;
+
+        Island oppositeIsland = map.getIsland(oppositeIslandNum);
+        //Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
+        for(Integer integer : map.getIsland(oppositeIslandNum).getNumberOfColors())
+        {
+            System.out.println(integer);
+            assertEquals(0, (int) integer);
+        }
+        //assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
 
         // Scoreboard entrance is full
         Player p1 = null;
-        p1 = game.getPlayerByNickname("Player 1");
+        p1 = game.getPlayerByNickname("Player1");
         Scoreboard scoreboard1 = p1.getScoreboard();
 
-        Player p2 = game.getPlayerByNickname("Player 2");
+        Player p2 = game.getPlayerByNickname("Player2");
         Scoreboard scoreboard2 = p1.getScoreboard();
 
         assertEquals(7, scoreboard1.getNumStudentsFromEntrance());

@@ -93,6 +93,7 @@ class IslandTest {
 
     @Test
     void disable() {
+        island.disable();
         assertTrue(island.isDisabled());
     }
 
