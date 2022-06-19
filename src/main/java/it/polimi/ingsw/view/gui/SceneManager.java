@@ -2,10 +2,8 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
-import it.polimi.ingsw.view.gui.scene.ErrorMessageSceneManager;
-import it.polimi.ingsw.view.gui.scene.GenericMessageSceneManager;
-import it.polimi.ingsw.view.gui.scene.SceneManagerInterface;
-import it.polimi.ingsw.view.gui.scene.VictorySceneManager;
+import it.polimi.ingsw.view.gui.scene.*;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -130,6 +128,21 @@ public class SceneManager extends ViewObservable {
         genericMessageSceneManager.setGenericTitle(genericMessageTitle);
         genericMessageSceneManager.setGenericMessage(genericMessageText);
         genericMessageSceneManager.showMessage();
+    }
+
+    public static void showScoreboards() {
+        FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/scoreboard_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        ScoreboardSceneManager scoreboardSceneManager = fxmlLoader.getController();
+        Scene scoreboardScene = new Scene(parent);
+        scoreboardSceneManager.setScene(scoreboardScene);
+        scoreboardSceneManager.showScoreboards();
     }
 
     public static void showWinner(String winner) {

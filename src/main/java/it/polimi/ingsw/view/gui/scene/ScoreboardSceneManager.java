@@ -1,14 +1,22 @@
 package it.polimi.ingsw.view.gui.scene;
 
+import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ScoreboardSceneManager implements Initializable {
+public class ScoreboardSceneManager extends ViewObservable implements SceneManagerInterface, Initializable {
+
+    private final Stage stage;
 
     @FXML
     private ImageView blue0;
@@ -209,6 +217,13 @@ public class ScoreboardSceneManager implements Initializable {
     private ImageView[][] diningRoom = new ImageView[5][10];
 
 
+    public ScoreboardSceneManager() {
+        stage = new Stage();
+        stage.initOwner(SceneManager.getActiveScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setAlwaysOnTop(true);
+    }
 
 
     @FXML
@@ -241,5 +256,13 @@ public class ScoreboardSceneManager implements Initializable {
                 diningRoom[i][k].setVisible(false);
                 diningRoom[i][k].setDisable(true);
             }
+    }
+
+    public void showScoreboards() {
+        stage.showAndWait();
+    }
+
+    public void setScene(Scene scene) {
+        stage.setScene(scene);
     }
 }
