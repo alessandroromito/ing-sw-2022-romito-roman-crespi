@@ -41,9 +41,9 @@ Coverage dei test effettuati con Junit: [Report](link)
 - GUI
 - Socket
 - x Funzionalità aggiuntive
--- la prima
--- la seconda
--- la terza
+  - __la prima__
+  - __la seconda__
+  - __la terza__
 
 ## Esecuzione tramite files .jar
 ### Server
