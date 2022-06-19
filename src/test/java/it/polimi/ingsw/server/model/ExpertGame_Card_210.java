@@ -47,12 +47,13 @@ class ExpertGame_Card_210 {
     void tearDown() {
     }
 
-    @Test
+    /*@Test
     void use_210() {
         expertgame.use_210();
         card = (Card_210) expertgame.getActiveCard();
         assertEquals(Card_210.class ,expertgame.getActiveCard().getClass());
     }
+     */
 
     @Test
     void endTurn_210() {
