@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class IslandTest {
 
@@ -92,10 +93,15 @@ class IslandTest {
 
     @Test
     void disable() {
+        island.disable();
+        assertTrue(island.isDisabled());
     }
 
     @Test
     void isDisabled() {
+        if (island.isDisabled()) assert true;
+        else if (!island.isDisabled()) assert true;
+            else assert false;
     }
 
     @Test
