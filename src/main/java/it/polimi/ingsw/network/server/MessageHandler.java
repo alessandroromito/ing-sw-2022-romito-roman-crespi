@@ -238,4 +238,10 @@ public class MessageHandler {
 
     }
 
+    /**
+     * Client don't send CharacterCardMessage
+     * @param characterCardMessage
+     */
+    public void handleMessage(CharacterCardMessage characterCardMessage) {
+    }
 }

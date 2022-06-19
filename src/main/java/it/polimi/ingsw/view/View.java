@@ -37,9 +37,10 @@ public interface View {
 
     void showMergeIslandMessage(List<Integer> unifiedIsland);
 
+    void askCharacterCard(List<CharacterCard> characterCards);
+
     //show game info detailed
     void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards);
-
     void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer);
 
     //show generic message
@@ -62,10 +63,6 @@ public interface View {
 
     //show victory message
     void showVictoryMessage(String winner);
-
-
-
-
 
 
 }

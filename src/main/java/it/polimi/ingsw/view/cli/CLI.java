@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.charactercards.Card_209;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
@@ -174,7 +175,7 @@ public class CLI extends ViewObservable implements View {
     public void showLobby(List<String> playersNickname, int numPlayers) {
         out.println("Giocatori presenti nella lobby:");
         for(String nickname : playersNickname) {
-            out.println(nickname + "\n");
+            out.println(nickname);
         }
         out.println("Stato della lobby: " + playersNickname.size() + " / " + numPlayers);
     }
@@ -303,11 +304,95 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
+    public void askCharacterCard(List<CharacterCard> characterCards) {
+        int choose;
+        try{
+            do {
+                out.println("Scegli tra le seguenti Carte Personaggio:");
+                int i = 0;
+                for (CharacterCard characterCard : characterCards){
+                    out.println("Carta " + i + " - Costo " + characterCard.getCost());
+                    printEffect(characterCard.getID());
+                    i++;
+                }
+                out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
+                choose = Integer.parseInt(readRow());
+                if(choose > characterCards.size() - 1 || choose < 0)
+                    out.println("Numero inserito non valido. Riprovare.");
+            } while(choose > characterCards.size() - 1 || choose < 0);
+
+            applyEffect(characterCards.get(choose));
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void applyEffect(CharacterCard characterCard) {
+        switch (characterCard.getID()){
+            case 209 -> {
+                Card_209 card209 = (Card_209) characterCard;
+                try{
+                    int choose;
+                    boolean error;
+                    do {
+                        error = false;
+                        out.println("Scegli 1 studente:");
+                        int i = 0;
+                        for (StudentDisc student : card209.getStudents()){
+                            out.println(i + " " + printStudent(student));
+                            i++;
+                        }
+                        choose = Integer.parseInt(readRow());
+                        if(choose > i - 1 || choose < 0) {
+                            out.println("Numero inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+
+                    do {
+                        error = false;
+                        out.println("Scegli 1 isola:");
+                        choose = Integer.parseInt(readRow());
+                        if(choose > 12 || choose < 0) {
+                            out.println("Numero inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
+            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
+            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
+            case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
+            case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
+            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
+            case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
+            case 219 -> out.println(ANSI_GREEN + "Prendi uno studente da questa carta e piazzalo nella tua sala, poi pescane uno nuovo dal saccetto e posizionalo su questa carta." + ANSI_RESET );
+        }
+    }
+
+    private void printEffect(int ID) {
+        switch (ID){
+            case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET );
+            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
+            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
+            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
+            case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
+            case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
+            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
+            case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
+            case 219 -> out.println(ANSI_GREEN + "Prendi uno studente da questa carta e piazzalo nella tua sala, poi pescane uno nuovo dal saccetto e posizionalo su questa carta." + ANSI_RESET );
+        }
+    }
+
+    @Override
+    public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
         out.println("Informazioni chiave:");
         out.println("Giocatori in partita: ");
-        for(String nickname : playersNickname) {
-            out.println(nickname + "\n");
+        for(String nickname : playersNicknames) {
+            out.println(nickname);
         }
         out.println("Numero di isole unificate: " + unifiedIslandsNumber);
         out.println("Studenti rimanenti nella bag: " + remainingBagStudents);
@@ -317,12 +402,17 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer) {
-
+        out.println("Informazioni chiave:");
+        out.println("Giocatori in partita: ");
+        for(String nickname : playersNicknames) {
+            out.println(nickname);
+        }
+        out.println("Player che sta giocando: " + activePlayer);
     }
 
     @Override
     public void showGenericMessage(String genericMessage) {
-        out.println(genericMessage);
+        out.println("GENERIC MESSAGE: " + genericMessage);
     }
 
     @Override
@@ -503,7 +593,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showVictoryMessage(String winner) {
-        out.println("Il gioco è terminato. Il vincitore è " + winner + "!");
+        out.println("Il gioco è terminato. Il VINCITORE è " + winner + "!");
         System.exit(1);
     }
 

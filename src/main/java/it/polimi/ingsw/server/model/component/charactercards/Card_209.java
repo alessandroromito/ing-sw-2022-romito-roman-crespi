@@ -5,7 +5,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import java.util.ArrayList;
 
 public class Card_209 extends CharacterCard {
-    ArrayList<StudentDisc> students = new ArrayList<StudentDisc>();
+    ArrayList<StudentDisc> students;
 
     public Card_209(ArrayList<StudentDisc> students) {
         super(209);
@@ -19,5 +19,9 @@ public class Card_209 extends CharacterCard {
         students.remove(studentPos);
         students.add(next);
         return removed;
+    }
+
+    public ArrayList<StudentDisc> getStudents() {
+        return students;
     }
 }
