@@ -2,7 +2,7 @@
 
 ![image](https://user-images.githubusercontent.com/100211656/158979476-5ec96f53-0aeb-411f-8213-95391322a81d.png)
 
-Sviluppo di una versione software del gioco da tavolo Eriantys.
+Sviluppo di una versione software del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys).
 
 Il progetto consiste nello sviluppare un sistema distribuito composto da un server in grado di gestire una partita alla volta e da client multipli.
 L'interazione avviene tramite socket di rete.
