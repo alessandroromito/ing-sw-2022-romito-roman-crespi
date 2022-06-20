@@ -130,19 +130,20 @@ public class SceneManager extends ViewObservable {
         genericMessageSceneManager.showMessage();
     }
 
-    public static void showScoreboards() {
+    public static ScoreboardSceneManager showScoreboards() {
         FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/scoreboard_scene.fxml"));
         Parent parent;
         try {
             parent = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return null;
         }
         ScoreboardSceneManager scoreboardSceneManager = fxmlLoader.getController();
         Scene scoreboardScene = new Scene(parent);
         scoreboardSceneManager.setScene(scoreboardScene);
         scoreboardSceneManager.showScoreboards();
+        return scoreboardSceneManager;
     }
 
     public static void showWinner(String winner) {

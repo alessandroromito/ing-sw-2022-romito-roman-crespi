@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -265,4 +266,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
+
+    public void updateValues(GameSerialized gameSerialized) { }
 }

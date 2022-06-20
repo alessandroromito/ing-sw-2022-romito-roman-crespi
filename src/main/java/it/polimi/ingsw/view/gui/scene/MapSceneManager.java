@@ -171,6 +171,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private double rIsl;
 
 
+    GameSerialized gameSerialized;
     ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[3];
     ImageView[] cloudStudents2 = new ImageView[3];
@@ -545,7 +546,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     //bottone temporaneo per prove
     public void build (ActionEvent actionEvent) {
-        SceneManager.showScoreboards();
+        ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
+        scoreboardSceneManager.updateValues(gameSerialized);
         //addStudentToIsland(3,100,4);
     }
 
@@ -565,6 +567,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void updateValues(GameSerialized gameSerialized) {
+        this.gameSerialized = gameSerialized;
         ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
