@@ -837,12 +837,16 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void choosenAssistant(MouseEvent mouseEvent) {
+        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(27,27));
+
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new DropShadow());
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new InnerShadow());
     }
 
     public void enableAssistant(){
