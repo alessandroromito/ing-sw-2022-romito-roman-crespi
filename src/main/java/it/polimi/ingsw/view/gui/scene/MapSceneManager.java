@@ -171,6 +171,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private double rIsl;
 
 
+    ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[3];
     ImageView[] cloudStudents2 = new ImageView[3];
         ImageView[] towerBases = new ImageView[12];
@@ -241,6 +242,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     //number: 1/2
     public void addStudentsToCloud(Cloud cloud, int number){
+        clouds.add(cloud);
         Image image = null;
         ImageView student = new ImageView();
 
@@ -763,12 +765,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         switchIslands = false;
         cloud1.setEffect(null);
+        selectCloudObserverNotification(1);
     }
 
     public void selectedCloud2(MouseEvent mouseEvent) {
 
         switchIslands = false;
         cloud1.setEffect(null);
+        selectCloudObserverNotification(2);
+    }
+
+    public void selectCloudObserverNotification(int cloudNumber) {
+        ArrayList<Cloud> finalCloud = new ArrayList<>();
+        finalCloud.add(clouds.get(cloudNumber));
+        new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
+        clouds.clear();
     }
 
     public void inCloud1(MouseEvent mouseEvent) {
