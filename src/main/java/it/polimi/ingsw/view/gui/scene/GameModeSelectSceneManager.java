@@ -25,6 +25,7 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
         confirmButton.setDisable(true);
         String gameMode = getSelection();
         new Thread( () -> notifyObserver( obs -> obs.onUpdateGameMode(gameMode))).start();
+        //anche se si sceglie esperto viene inviato messaggio di ritorno con modalità normale
     }
 
     public String getSelection(){
