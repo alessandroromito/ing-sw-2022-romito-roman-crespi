@@ -136,7 +136,7 @@ public class GraphicController extends ViewObservable implements View {
         }
 
         Platform.runLater( () -> {
-            getMapSceneManager().initializeCards(finalCharacterNumbers);
+            getMapSceneManager().initializeCharacterCards(finalCharacterNumbers);
         });
     }
 
@@ -160,7 +160,9 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-
+        Platform.runLater( () -> {
+            getMapSceneManager().enableAssistant(assistantCards);
+        });
     }
 
     @Override

@@ -4,6 +4,7 @@ import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.SceneManager;
@@ -22,9 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.random.RandomGenerator;
 
 import static java.lang.Math.abs;
@@ -202,6 +201,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
 
     GameSerialized gameSerialized;
+    List<AssistantCard> assistantCardsList = new ArrayList<>();
     ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[3];
     ImageView[] cloudStudents2 = new ImageView[3];
@@ -223,7 +223,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         disableStudents();
     }
 
-    public void initializeCards(int[] number){
+    public void initializeCharacterCards(int[] number){
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
         card1.setImage(image);
         image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
@@ -323,6 +323,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
             pane.getChildren().addAll(student);
         }
+
+        chooseCharacterCard();
+    }
+
+    public void chooseCharacterCard() {
+        //da inserire la notify e da implementare
     }
 
     public void removeStudent(int id){
@@ -408,7 +414,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudentsPos2[0] = new Point(1373,583); cloudStudentsPos2[1] = new Point(1300,532); cloudStudentsPos2[2] = new Point(1376,496);
         cloudStudentsPos1[0] = new Point(1373-805,583); cloudStudentsPos1[1] = new Point(1300-805,532); cloudStudentsPos1[2] = new Point(1376-805,496);
 
-        enableAssistant();
+        //enableAssistant();
     }
 
     public void setMotherNaturePose(int island){
@@ -626,11 +632,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
                 for (Integer id : islandPawnsId) {
                     for (int j = 0; j < students[i].size(); j++)
-                        if (students[i].get(j).getId() == Integer.toString(id))
+                        if (Objects.equals(students[i].get(j).getId(), Integer.toString(id)))
                             add = false;
 
-                    if (add)
-                        addStudentToIsland(getColorFromId(id),id,i);
+                    if (add) {
+                        System.out.println("Aggiunta di uno studente alla map");
+                        addStudentToIsland(getColorFromId(id), id, i);
+                    }
                 }
             }
         }
@@ -841,6 +849,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(27,27));
 
+        for(int i = 0; i < 10 ; i++) {
+            if (assistantUsed == i) {
+                AssistantCard finalAssistantCard = assistantCardsList.get(i);
+                new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard)))).start();
+                return;
+            }
+        }
 
         assistantCards[assistantUsed].setVisible(false);
         assistantCards[assistantUsed].setDisable(true);
@@ -851,12 +866,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
-        System.out.println(mouseEvent.getSource().toString());
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new InnerShadow());
     }
 
-    public void enableAssistant(){
-        for(ImageView i: assistantCards){
+    public void enableAssistant(List<AssistantCard> assistantCards){
+        this.assistantCardsList = assistantCards;
+        for(ImageView i: this.assistantCards){
             i.setVisible(true);
             i.setDisable(false);
         }
