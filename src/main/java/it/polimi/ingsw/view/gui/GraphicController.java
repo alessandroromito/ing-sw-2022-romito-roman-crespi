@@ -129,7 +129,15 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
+        int[] finalCharacterNumbers = new int[3];
+        for(int i = 0 ; i < characterCards.size(); i++)
+        {
+            finalCharacterNumbers[i] = characterCards.get(i).getID() - 213;
+        }
 
+        Platform.runLater( () -> {
+            getMapSceneManager().initializeCards(finalCharacterNumbers);
+        });
     }
 
     @Override
