@@ -38,6 +38,36 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private Rectangle bgCards;
 
     @FXML
+    private ImageView assistentCard0;
+
+    @FXML
+    private ImageView assistentCard1;
+
+    @FXML
+    private ImageView assistentCard2;
+
+    @FXML
+    private ImageView assistentCard3;
+
+    @FXML
+    private ImageView assistentCard4;
+
+    @FXML
+    private ImageView assistentCard5;
+
+    @FXML
+    private ImageView assistentCard6;
+
+    @FXML
+    private ImageView assistentCard7;
+
+    @FXML
+    private ImageView assistentCard8;
+
+    @FXML
+    private ImageView assistentCard9;
+
+    @FXML
     private ImageView card1;
 
     @FXML
@@ -175,7 +205,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[3];
     ImageView[] cloudStudents2 = new ImageView[3];
-        ImageView[] towerBases = new ImageView[12];
+    ImageView[] towerBases = new ImageView[12];
+    ImageView[] assistantCards = new ImageView[10];
     ArrayList<ImageView>[] students = new ArrayList[12];
     ArrayList<Point>[] islands = new ArrayList[12];
     Point[] cloudStudentsPos1 = new Point[3];
@@ -193,10 +224,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void initializeCards(int[] number){
-        for(int n:number){
-            Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+n+".jpg"));
-            card1.setImage(image);
-        }
+        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
+        card1.setImage(image);
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
+        card2.setImage(image);
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[2]+".jpg"));
+        card3.setImage(image);
     }
 
 //color: 1/5  isalnd:0/11
@@ -365,6 +398,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         for(int i=0;i<12;i++)
             islands[i] = new ArrayList<Point>();
+
+        assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
@@ -808,5 +843,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
+    }
+
+    public void enableAssistant(){
+        for(ImageView i: assistantCards){
+            i.setVisible(true);
+            i.setDisable(false);
+        }
     }
 }
