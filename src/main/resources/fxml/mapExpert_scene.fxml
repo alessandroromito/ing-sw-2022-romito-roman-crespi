@@ -235,7 +235,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard0" fitHeight="288.0" fitWidth="261.0" layoutX="330.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard0" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="330.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(1).png" />
          </image>
@@ -243,7 +243,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard1" fitHeight="288.0" fitWidth="261.0" layoutX="590.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard1" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="590.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(2).png" />
          </image>
@@ -251,7 +251,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard2" fitHeight="288.0" fitWidth="261.0" layoutX="855.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard2" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="855.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(3).png" />
          </image>
@@ -259,7 +259,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard3" fitHeight="288.0" fitWidth="261.0" layoutX="1113.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard3" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="1113.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(4).png" />
          </image>
@@ -267,7 +267,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard4" fitHeight="288.0" fitWidth="261.0" layoutX="1367.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard4" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="1367.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(5).png" />
          </image>
@@ -275,7 +275,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard5" fitHeight="288.0" fitWidth="261.0" layoutX="330.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard5" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="330.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(6).png" />
          </image>
@@ -283,7 +283,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard6" fitHeight="288.0" fitWidth="261.0" layoutX="590.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard6" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="590.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(7).png" />
          </image>
@@ -291,7 +291,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard7" fitHeight="288.0" fitWidth="261.0" layoutX="855.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard7" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="855.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(8).png" />
          </image>
@@ -299,7 +299,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard8" fitHeight="288.0" fitWidth="261.0" layoutX="1113.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard8" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="1113.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(9).png" />
          </image>
@@ -307,7 +307,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="assistentCard9" fitHeight="288.0" fitWidth="261.0" layoutX="1367.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCard9" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="1367.0" layoutY="592.0" onMouseClicked="#choosenAssistant" onMouseDragged="#outAssistant" onMouseEntered="#inAssistant" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../Graphical_Assets/Assistenti/2x/Assistente(10).png" />
          </image>
