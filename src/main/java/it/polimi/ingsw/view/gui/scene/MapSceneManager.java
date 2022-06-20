@@ -223,7 +223,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
         }
 
-    // ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
+    //  ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
         student.setEffect(dr);
         student.setId(Integer.toString(id));
         students[island].add(student);
@@ -799,5 +799,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void outCloud2(MouseEvent mouseEvent) {
         cloud2.setEffect(null);
+    }
+
+    public void choosenAssistant(MouseEvent mouseEvent) {
+    }
+
+    public void outAssistant(MouseEvent mouseEvent) {
+    }
+
+    public void inAssistant(MouseEvent mouseEvent) {
     }
 }
