@@ -17,7 +17,6 @@ import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -81,23 +80,19 @@ public class Game extends Observable {
      */
     public void gameInitialization() throws EntranceFullException {
         System.out.println("STARTING GameInitialization...");
+
         // Place MotherNature to a random island
         Random r = new Random();
         int pos = r.nextInt(12);
         map.setMotherNaturePos(pos);
 
         // Move 1 student to each island
-        ArrayList<StudentDisc> tempArrayStudents = new ArrayList<>();
-        for(int i=0; i<12; i++) {
-            tempArrayStudents.add(bag.pickSorted());
-        }
-        Collections.shuffle(tempArrayStudents);
-
         for(Island island: map.getIslands()) {
-            if(island.getID() != oppositePosition() || island.getID() != map.getMotherNaturePosition()){
-                island.addStudent(tempArrayStudents.remove(0));
+            if(island.getID() != oppositePosition() && island.getID() != map.getMotherNaturePosition()){
+                island.addStudent(bag.pickSorted());
             }
         }
+
         // Place 7/9 students on scoreboard's entrance
         for(Player p: this.getPlayers()){
             for(int i=0; i<7; i++) {
@@ -415,13 +410,13 @@ public class Game extends Observable {
     }
 
     private int oppositePosition() {
-        int motherNaturePosition = map.getMotherNaturePosition();
+        int startingPosition = map.getMotherNaturePosition();
         for(int i=0; i<6; i++){
-            motherNaturePosition++;
-            if(motherNaturePosition == 12)
-                motherNaturePosition = 0;
+            startingPosition++;
+            if(startingPosition == 11)
+                startingPosition = 0;
         }
-        return motherNaturePosition;
+        return startingPosition;
     }
 
     /**

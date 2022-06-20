@@ -31,4 +31,6 @@ public interface ViewObserver {
     void update(Message message);
 
     void onUpdateGameMode(String mode);
+
+    void onUpdateUse209(int studentPos, int island);
 }

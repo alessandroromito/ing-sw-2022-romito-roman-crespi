@@ -306,8 +306,15 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
         int choose;
+        char answer;
         try{
             do {
+                out.println("Vuoi usare una carta personaggio?");
+                answer = readRow().charAt(0);
+                if(answer == 'N'){
+                    return;
+                }
+
                 out.println("Scegli tra le seguenti Carte Personaggio:");
                 int i = 0;
                 for (CharacterCard characterCard : characterCards){
@@ -331,8 +338,10 @@ public class CLI extends ViewObservable implements View {
         switch (characterCard.getID()){
             case 209 -> {
                 Card_209 card209 = (Card_209) characterCard;
+                int studentPos;
+                int islandNum;
+
                 try{
-                    int choose;
                     boolean error;
                     do {
                         error = false;
@@ -342,8 +351,8 @@ public class CLI extends ViewObservable implements View {
                             out.println(i + " " + printStudent(student));
                             i++;
                         }
-                        choose = Integer.parseInt(readRow());
-                        if(choose > i - 1 || choose < 0) {
+                        studentPos = Integer.parseInt(readRow());
+                        if(studentPos > i - 1 || studentPos < 0) {
                             out.println("Numero inserito non valido. Riprovare.");
                             error = true;
                         }
@@ -352,17 +361,22 @@ public class CLI extends ViewObservable implements View {
                     do {
                         error = false;
                         out.println("Scegli 1 isola:");
-                        choose = Integer.parseInt(readRow());
-                        if(choose > 12 || choose < 0) {
+                        islandNum = Integer.parseInt(readRow());
+                        if(islandNum > 12 || islandNum < 0) {
                             out.println("Numero inserito non valido. Riprovare.");
                             error = true;
                         }
                     } while(error);
+
+                    int finalStudentPos = studentPos;
+                    int finalIslandNum = islandNum;
+                    notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
+
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
+            case 210 -> out.println(ANSI_GREEN + "" + ANSI_RESET );
             case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
             case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
             case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );

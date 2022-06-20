@@ -173,4 +173,8 @@ public class ClientController implements ViewObserver, Observer {
         client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));
     }
 
+    @Override
+    public void onUpdateUse209(int studentPos, int island){
+        client.sendMessage(new Card209Message(this.nickname, studentPos, island));
+    }
 }

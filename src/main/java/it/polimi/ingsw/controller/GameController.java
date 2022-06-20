@@ -335,7 +335,7 @@ public class GameController implements Observer {
                     case 209 -> {
                         Card209Message card209Message = (Card209Message) useEffectMessage;
                         if(game.useCharacter(209))
-                            game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber());
+                            game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber()-1);
                     }
                     case 210 -> {
                         if(game.useCharacter(210))

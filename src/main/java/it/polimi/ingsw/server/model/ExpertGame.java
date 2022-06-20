@@ -144,15 +144,15 @@ public class ExpertGame extends Game {
         pool.add(new Card_210(t));
     }
 
-    public void use_209 (int studentPos, int islandNumber) {
+    public void use_209 (int studentPos, int islandID) {
         useCharacter(209);
         try {
             if(activeCardID != 209)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-            Card_209 temp = (Card_209) activeCard;
+            Card_209 card209 = (Card_209) activeCard;
 
-            StudentDisc moving = temp.use(studentPos, bag.pickSorted());
-            map.getIsland(islandNumber).addStudent(moving);
+            StudentDisc moving = card209.use(studentPos, bag.pickSorted());
+            map.getIsland(islandID).addStudent(moving);
             deleteActiveCard();
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
