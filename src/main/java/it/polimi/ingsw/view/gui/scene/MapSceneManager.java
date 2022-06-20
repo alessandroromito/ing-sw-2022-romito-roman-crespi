@@ -4,6 +4,9 @@ import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.component.AssistantCard;
+import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -20,9 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.random.RandomGenerator;
 
 import static java.lang.Math.abs;
@@ -34,6 +35,36 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private Rectangle bgCards;
+
+    @FXML
+    private ImageView assistentCard0;
+
+    @FXML
+    private ImageView assistentCard1;
+
+    @FXML
+    private ImageView assistentCard2;
+
+    @FXML
+    private ImageView assistentCard3;
+
+    @FXML
+    private ImageView assistentCard4;
+
+    @FXML
+    private ImageView assistentCard5;
+
+    @FXML
+    private ImageView assistentCard6;
+
+    @FXML
+    private ImageView assistentCard7;
+
+    @FXML
+    private ImageView assistentCard8;
+
+    @FXML
+    private ImageView assistentCard9;
 
     @FXML
     private ImageView card1;
@@ -169,32 +200,42 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private double rIsl;
 
 
+    GameSerialized gameSerialized;
+    List<AssistantCard> assistantCardsList = new ArrayList<>();
+    ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[3];
     ImageView[] cloudStudents2 = new ImageView[3];
     ImageView[] towerBases = new ImageView[12];
-    ArrayList<ImageView>[] pawns = new ArrayList[12];
+    ImageView[] assistantCards = new ImageView[10];
+    ArrayList<ImageView>[] students = new ArrayList[12];
     ArrayList<Point>[] islands = new ArrayList[12];
+    Point[] cloudStudentsPos1 = new Point[3];
+    Point[] cloudStudentsPos2 = new Point[3];
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
-    int motherNaturePos;
+    int motherNaturePos = -1;
     private boolean switchIslands = false;
-    private boolean switchPawns = false;
+    private boolean switchStudents = false;
+    private boolean switchClouds = false;
 
     public void enableIslands(ActionEvent actionEvent) {
         switchIslands = true;
-        disablePawns();
+        disableStudents();
     }
 
-    public void initializeCards(int[] number){
-        for(int n:number){
-            Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+n+".jpg"));
-            card1.setImage(image);
-        }
+    public void initializeCharacterCards(int[] number){
+        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
+        card1.setImage(image);
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
+        card2.setImage(image);
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[2]+".jpg"));
+        card3.setImage(image);
     }
+
 //color: 1/5  isalnd:0/11
-    public void addColor(int color,int id,int island){
+    public void addStudentToIsland(int color,int id,int island){
         Image image = null;
-        ImageView pawn = new ImageView();
+        ImageView student = new ImageView();
 
         switch (color){
             case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png")); break;
@@ -203,39 +244,96 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png")); break;
             case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png")); break;
         }
-        pawn.setImage(image);
+        student.setImage(image);
         DropShadow dr = new DropShadow(); dr.setWidth(15); dr.setHeight(15);
-        pawn.setOnMouseExited(ex -> pawn.setEffect(dr));
+        student.setOnMouseExited(ex -> student.setEffect(dr));
 
         switch(color){
-            case 1: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.55))); break;
-            case 2: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.23))); break;
-            case 3: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.65))); break;
-            case 4: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.48))); break;
-            case 5: pawn.setOnMouseEntered(en -> pawn.setEffect(new Bloom(0.55))); break;
+            case 1: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
+            case 2: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.23))); break;
+            case 3: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.65))); break;
+            case 4: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.48))); break;
+            case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
         }
 
-    // ritorna l'id del pawn scelto   pawn.setOnMouseClicked(ck -> pawn.getId());
-        pawn.setEffect(dr);
-        pawn.setId(Integer.toString(id));
-        pawns[island].add(pawn);
+    //  ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
+        student.setEffect(dr);
+        student.setId(Integer.toString(id));
+        students[island].add(student);
 
-        pawn.setFitHeight(r*2);
-        pawn.setFitWidth(r*2);
-        pawn.setDisable(true);
+        student.setFitHeight(r*2);
+        student.setFitWidth(r*2);
+        student.setDisable(true);
 
         Point pos = findCoord(0);
 
-        pawn.setX(islandsPosCentre[island].getX()-rIsl+pos.getX()-rIsl*0.1);
-        pawn.setY(islandsPosCentre[island].getY()-rIsl+pos.getY()-rIsl*0.1);
-        pawn.setLayoutX(r/2);
+        student.setX(islandsPosCentre[island].getX()-rIsl+pos.getX()-rIsl*0.1);
+        student.setY(islandsPosCentre[island].getY()-rIsl+pos.getY()-rIsl*0.1);
+        student.setLayoutX(r/2);
 
-        pane.getChildren().addAll(pawn);
+        pane.getChildren().addAll(student);
     }
 
-    public void removePawn(int id){
+    //number: 1/2
+    public void addStudentsToCloud(Cloud cloud, int number){
+        clouds.add(cloud);
+        Image image = null;
+        ImageView student = new ImageView();
+
+        for(int i=0;i<3;i++) {
+            StudentDisc s = cloud.getCloudStudents().get(i);
+            switch (s.getColorInt()) {
+                case 1:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
+                    break;
+                case 2:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
+                    break;
+                case 3:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png"));
+                    break;
+                case 4:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
+                    break;
+                case 5:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
+                    break;
+            }
+            student.setImage(image);
+            DropShadow dr = new DropShadow();
+            dr.setWidth(15);
+            dr.setHeight(15);
+
+            // ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
+            student.setEffect(dr);
+            student.setId(Integer.toString(s.getID()));
+
+
+            student.setFitHeight(r * 2);
+            student.setFitWidth(r * 2);
+            student.setDisable(true);
+
+            if(number == 1) {
+                student.setX(cloudStudentsPos1[i].getX());
+                student.setY(cloudStudentsPos1[i].getY());
+            }else{
+                student.setX(cloudStudentsPos2[i].getX());
+                student.setY(cloudStudentsPos2[i].getY());
+            }
+
+            pane.getChildren().addAll(student);
+        }
+
+        chooseCharacterCard();
+    }
+
+    public void chooseCharacterCard() {
+        //da inserire la notify e da implementare
+    }
+
+    public void removeStudent(int id){
         for(int i=0;i<12;i++)
-            for(ImageView p: pawns[i])
+            for(ImageView p: students[i])
                 if(p.getId().equals(Integer.toString(id)))
                     pane.getChildren().remove(p);
     }
@@ -287,7 +385,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for(int i=0;i<12;i++)   pawns[i] = new ArrayList<ImageView>();
+        for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
 
         islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
         islandsPosCentre[1] = new Point(island2.getLayoutX()+island2.getFitWidth()/2,island2.getLayoutY()+island2.getFitHeight()/2);
@@ -302,14 +400,22 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         islandsPosCentre[10] = new Point(island11.getLayoutX()+island11.getFitWidth()/2,island11.getLayoutY()+island11.getFitHeight()/2);
         islandsPosCentre[11] = new Point(island12.getLayoutX()+island12.getFitWidth()/2,island12.getLayoutY()+island12.getFitHeight()/2);
 
-        rIsl = island1.getFitHeight()/2;
+        rIsl = (island1.getFitHeight()+17)/2;
 
         for(int i=0;i<12;i++)
             islands[i] = new ArrayList<Point>();
+        disableIslands();
+
+        assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
+
+        cloudStudentsPos2[0] = new Point(1373,583); cloudStudentsPos2[1] = new Point(1300,532); cloudStudentsPos2[2] = new Point(1376,496);
+        cloudStudentsPos1[0] = new Point(1373-805,583); cloudStudentsPos1[1] = new Point(1300-805,532); cloudStudentsPos1[2] = new Point(1376-805,496);
+
+        //enableAssistant();
     }
 
     public void setMotherNaturePose(int island){
@@ -330,7 +436,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void light(MouseEvent mouseEvent) {
-        System.out.println();
         Effect e = new Bloom();
         if(switchIslands)
             switch(mouseEvent.getSource().toString().charAt(19)){
@@ -384,17 +489,47 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    public void enablePawns(){
-        switchPawns = true;
+    public void disableIslands(){
+        island1.setDisable(true);
+        island2.setDisable(true);
+        island3.setDisable(true);
+        island4.setDisable(true);
+        island5.setDisable(true);
+        island6.setDisable(true);
+        island7.setDisable(true);
+        island8.setDisable(true);
+        island9.setDisable(true);
+        island10.setDisable(true);
+        island11.setDisable(true);
+        island12.setDisable(true);
+    }
+
+    public void enableIslands(){
+        island2.setDisable(false);
+        island1.setDisable(false);
+        island3.setDisable(false);
+        island4.setDisable(false);
+        island5.setDisable(false);
+        island6.setDisable(false);
+        island7.setDisable(false);
+        island8.setDisable(false);
+        island9.setDisable(false);
+        island10.setDisable(false);
+        island11.setDisable(false);
+        island12.setDisable(false);
+    }
+
+    public void enableStudents(){
+        switchStudents = true;
         for(int i=0;i<12;i++)
-            for(ImageView pawn: pawns[i])
+            for(ImageView pawn: students[i])
                 pawn.setDisable(false);
 
     }
 
-    public void disablePawns(){
+    public void disableStudents(){
         for(int i=0;i<12;i++)
-            for(ImageView pawn: pawns[i])
+            for(ImageView pawn: students[i])
                 pawn.setDisable(true);
 
     }
@@ -480,6 +615,63 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         //chosen island isola scelta
         switchIslands = false;
         darkAll();
+    }
+
+    //bottone temporaneo per prove
+    public void build (ActionEvent actionEvent) {
+        ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
+        scoreboardSceneManager.updateValues(gameSerialized);
+        //addStudentToIsland(3,100,4);
+    }
+
+    private int getColorFromId(int id){
+        if(id-59>=0 && id-58<=25)
+            return 1;
+        if(id-59>=26 && id-58<=51)
+            return 2;
+        if(id-59>=52 && id-58<=77)
+            return 3;
+        if(id-59>=78 && id-58<=103)
+            return 4;
+        if(id-59>=104 && id-58<=129)
+            return 5;
+
+        return 0;
+    }
+
+    public void updateValues(GameSerialized gameSerialized) {
+        this.gameSerialized = gameSerialized;
+        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
+        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+
+        setMotherNaturePose(gameSerialized.getMotherNaturePos());
+        for(SerializableIsland island : islands){
+
+            if(island.getTowerNumber() != 0){
+                for(int i=0; i < island.getTowerNumber(); i++)
+                    switch (island.getTowerColor()){
+                        case BLACK -> setTower(islands.indexOf(island),0);
+                        case GREY -> setTower(islands.indexOf(island),2);
+                        case WHITE -> setTower(islands.indexOf(island),1);
+                    }
+            }
+
+            for(int i=0;i<12;i++) {
+                boolean add = true;
+                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsid();
+
+                for (Integer id : islandPawnsId) {
+                    for (int j = 0; j < students[i].size(); j++)
+                        if (Objects.equals(students[i].get(j).getId(), Integer.toString(id)))
+                            add = false;
+
+                    if (add) {
+                        System.out.println("Aggiunta di uno studente alla map");
+                        addStudentToIsland(getColorFromId(id), id, i);
+                    }
+                }
+            }
+        }
     }
 
     //passare numero isola precedente in senso orario
@@ -647,55 +839,72 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    //bottone temporaneo per prove
-    public void build (ActionEvent actionEvent) {
-        SceneManager.showScoreboards();
+    public void selectedCloud1(MouseEvent mouseEvent) {
+
+        switchIslands = false;
+        cloud1.setEffect(null);
+        selectCloudObserverNotification(1);
     }
 
-    private int getColorFromId(int id){
-        if(id-59>=0 && id-58<=25)
-            return 1;
-        if(id-59>=26 && id-58<=51)
-            return 2;
-        if(id-59>=52 && id-58<=77)
-            return 3;
-        if(id-59>=78 && id-58<=103)
-            return 4;
-        if(id-59>=104 && id-58<=129)
-            return 5;
+    public void selectedCloud2(MouseEvent mouseEvent) {
 
-        return 0;
+        switchIslands = false;
+        cloud1.setEffect(null);
+        selectCloudObserverNotification(2);
     }
 
-    public void updateValues(GameSerialized gameSerialized) {
-        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
-        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+    public void selectCloudObserverNotification(int cloudNumber) {
+        ArrayList<Cloud> finalCloud = new ArrayList<>();
+        finalCloud.add(clouds.get(cloudNumber));
+        new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
+        clouds.clear();
+    }
 
-        setMotherNaturePose(gameSerialized.getMotherNaturePos());
-        for(SerializableIsland island : islands){
+    public void inCloud1(MouseEvent mouseEvent) {
+        if(switchClouds)    cloud1.setEffect(new Bloom(0.95));
+    }
 
-            if(island.getTowerNumber() != 0){
-                for(int i=0; i < island.getTowerNumber(); i++)
-                    switch (island.getTowerColor()){
-                        case BLACK -> setTower(islands.indexOf(island),0);
-                        case GREY -> setTower(islands.indexOf(island),2);
-                        case WHITE -> setTower(islands.indexOf(island),1);
-                    }
+    public void outCloud1(MouseEvent mouseEvent) {
+        cloud1.setEffect(null);
+    }
+
+    public void inCloud2(MouseEvent mouseEvent) {
+        if(switchClouds)    cloud2.setEffect(new Bloom(0.95));
+    }
+
+    public void outCloud2(MouseEvent mouseEvent) {
+        cloud2.setEffect(null);
+    }
+
+    public void choosenAssistant(MouseEvent mouseEvent) {
+        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
+
+        for(int i = 0; i < 10 ; i++) {
+            if (assistantUsed == i) {
+                AssistantCard finalAssistantCard = assistantCardsList.get(i);
+                new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard)))).start();
+                return;
             }
+        }
 
-            for(int i=0;i<12;i++) {
-                boolean add = true;
-                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsid();
+        assistantCards[assistantUsed].setVisible(false);
+        assistantCards[assistantUsed].setDisable(true);
+    }
 
-                for (Integer id : islandPawnsId) {
-                    for (int j = 0; j < pawns[i].size(); j++)
-                        if (pawns[i].get(j).getId() == Integer.toString(id))
-                            add = false;
+    public void outAssistant(MouseEvent mouseEvent) {
 
-                    if (add)
-                        addColor(getColorFromId(id),id,i);
-                }
-            }
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new DropShadow());
+    }
+
+    public void inAssistant(MouseEvent mouseEvent) {
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new InnerShadow());
+    }
+
+    public void enableAssistant(List<AssistantCard> assistantCards){
+        this.assistantCardsList = assistantCards;
+        for(ImageView i: this.assistantCards){
+            i.setVisible(true);
+            i.setDisable(false);
         }
     }
 }

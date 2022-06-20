@@ -1,10 +1,12 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
@@ -215,6 +217,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
+    private int[] visibleStudents = new int[5];
+    private boolean[] entranceFree = new boolean[7];
 
 
     public ScoreboardSceneManager() {
@@ -256,6 +260,50 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 diningRoom[i][k].setVisible(false);
                 diningRoom[i][k].setDisable(true);
             }
+
+        for (int i=0;i<5;i++)   visibleStudents[i] = 0;
+        for (int i=0;i<7;i++)   entranceFree[i] = false;
+    }
+
+    //color: 1/5
+    public void addStudentOnDining(int color){
+        diningRoom[color-1][visibleStudents[color-1]].setVisible(true);
+        visibleStudents[color-1]++;
+    }
+
+    //da testare se funziona onmouseclicked
+    public void addStudentOnEntrance(int color,int id){
+        for (int i=0;i<7;i++)
+            if(entranceFree[i]){
+                entranceFree[i] = false;
+                ImageView temp = entrance[i];
+                entrance[i].setImage(createImage(color));
+                entrance[i].setId(Integer.toString(id));
+                entrance[i].setOnMouseClicked(ck -> openOptionMenu(temp.getId()));
+                return;
+            }
+    }
+
+    public void openOptionMenu(String id){
+
+    }
+/*
+    public ImageView findById(String id){
+
+    }
+*/
+    public Image createImage(int color){
+        Image image = null;
+
+        switch (color){
+            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/1_Verde.png")); break;
+            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/2_Rosso.png")); break;
+            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/3_Giallo.png")); break;
+            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/4_Viola.png")); break;
+            case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/5_Azzurro.png")); break;
+        }
+
+        return image;
     }
 
     public void showScoreboards() {
@@ -265,4 +313,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
+
+    public void updateValues(GameSerialized gameSerialized) { }
 }

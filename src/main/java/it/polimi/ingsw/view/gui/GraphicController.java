@@ -129,7 +129,15 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
+        int[] finalCharacterNumbers = new int[3];
+        for(int i = 0 ; i < characterCards.size(); i++)
+        {
+            finalCharacterNumbers[i] = characterCards.get(i).getID() - 213;
+        }
 
+        Platform.runLater( () -> {
+            getMapSceneManager().initializeCharacterCards(finalCharacterNumbers);
+        });
     }
 
     @Override
@@ -152,7 +160,9 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-
+        Platform.runLater( () -> {
+            getMapSceneManager().enableAssistant(assistantCards);
+        });
     }
 
     @Override
@@ -168,7 +178,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
-
+        Platform.runLater( () -> {
+            getMapSceneManager().addStudentsToCloud(cloudList.get(0),1);
+            getMapSceneManager().addStudentsToCloud(cloudList.get(1),2);}
+        );
     }
 
     @Override
