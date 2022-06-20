@@ -31,62 +31,62 @@
             </RadialGradient>
          </fill>
       </Rectangle>
-      <ImageView fx:id="island7" fitHeight="329.0" fitWidth="312.0" layoutX="7.0" layoutY="397.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island7" fitHeight="312.0" fitWidth="312.0" layoutX="7.0" layoutY="397.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island2" fitHeight="329.0" fitWidth="312.0" layoutX="1492.0" layoutY="716.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island2" fitHeight="312.0" fitWidth="312.0" layoutX="1492.0" layoutY="716.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island11" fitHeight="329.0" fitWidth="312.0" layoutX="1160.0" layoutY="32.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island11" fitHeight="312.0" fitWidth="312.0" layoutX="1160.0" layoutY="32.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island4" fitHeight="329.0" fitWidth="312.0" layoutX="819.0" layoutY="781.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island4" fitHeight="312.0" fitWidth="312.0" layoutX="819.0" layoutY="781.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island5" fitHeight="329.0" fitWidth="312.0" layoutX="442.0" layoutY="769.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island5" fitHeight="312.0" fitWidth="312.0" layoutX="442.0" layoutY="769.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island12" fitHeight="329.0" fitWidth="312.0" layoutX="1493.0" layoutY="83.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island12" fitHeight="312.0" fitWidth="312.0" layoutX="1493.0" layoutY="83.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island3" fitHeight="329.0" fitWidth="312.0" layoutX="1154.0" layoutY="772.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island3" fitHeight="312.0" fitWidth="312.0" layoutX="1154.0" layoutY="772.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island8" fitHeight="329.0" fitWidth="312.0" layoutX="130.0" layoutY="97.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island8" fitHeight="312.0" fitWidth="312.0" layoutX="130.0" layoutY="97.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island10" fitHeight="329.0" fitWidth="312.0" layoutX="796.0" layoutY="7.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island10" fitHeight="312.0" fitWidth="312.0" layoutX="796.0" layoutY="7.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island9" fitHeight="329.0" fitWidth="312.0" layoutX="462.0" layoutY="31.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island9" fitHeight="312.0" fitWidth="312.0" layoutX="462.0" layoutY="31.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island1" fitHeight="329.0" fitWidth="312.0" layoutX="1573.0" layoutY="395.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island1" fitHeight="312.0" fitWidth="312.0" layoutX="1573.0" layoutY="395.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island6" fitHeight="329.0" fitWidth="312.0" layoutX="101.0" layoutY="717.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island6" fitHeight="312.0" fitWidth="312.0" layoutX="101.0" layoutY="717.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
@@ -105,7 +105,7 @@
       <ImageView fx:id="card2" fitHeight="205.0" fitWidth="140.0" layoutX="876.0" layoutY="436.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="card3" fitHeight="205.0" fitWidth="140.0" layoutX="1052.0" layoutY="436.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="selectionSwitch" layoutX="1344.0" layoutY="373.0" mnemonicParsing="false" onAction="#enableIslands" text="Enable Islands" />
-      <Button fx:id="selectionSwitch1" layoutX="1344.0" layoutY="406.0" mnemonicParsing="false" onAction="#enablePawns" text="Enable Pawns" />
+      <Button fx:id="selectionSwitch1" layoutX="1344.0" layoutY="406.0" mnemonicParsing="false" onAction="#enableStudents" text="Enable Pawns" />
       <ImageView fx:id="bridge_10_11" fitHeight="117.0" fitWidth="190.0" layoutX="1050.0" layoutY="73.0" opacity="0.0" pickOnBounds="true" rotate="-14.9">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
