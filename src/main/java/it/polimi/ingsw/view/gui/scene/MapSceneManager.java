@@ -404,6 +404,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         for(int i=0;i<12;i++)
             islands[i] = new ArrayList<Point>();
+        disableIslands();
 
         assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
@@ -435,7 +436,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void light(MouseEvent mouseEvent) {
-        System.out.println();
         Effect e = new Bloom();
         if(switchIslands)
             switch(mouseEvent.getSource().toString().charAt(19)){
@@ -487,6 +487,36 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             }
 
         }
+    }
+
+    public void disableIslands(){
+        island1.setDisable(true);
+        island2.setDisable(true);
+        island3.setDisable(true);
+        island4.setDisable(true);
+        island5.setDisable(true);
+        island6.setDisable(true);
+        island7.setDisable(true);
+        island8.setDisable(true);
+        island9.setDisable(true);
+        island10.setDisable(true);
+        island11.setDisable(true);
+        island12.setDisable(true);
+    }
+
+    public void enableIslands(){
+        island2.setDisable(false);
+        island1.setDisable(false);
+        island3.setDisable(false);
+        island4.setDisable(false);
+        island5.setDisable(false);
+        island6.setDisable(false);
+        island7.setDisable(false);
+        island8.setDisable(false);
+        island9.setDisable(false);
+        island10.setDisable(false);
+        island11.setDisable(false);
+        island12.setDisable(false);
     }
 
     public void enableStudents(){
@@ -847,7 +877,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void choosenAssistant(MouseEvent mouseEvent) {
-        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(27,27));
+        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
 
         for(int i = 0; i < 10 ; i++) {
             if (assistantUsed == i) {
@@ -862,11 +892,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
-        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new DropShadow());
+
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new DropShadow());
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
-        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new InnerShadow());
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new InnerShadow());
     }
 
     public void enableAssistant(List<AssistantCard> assistantCards){
