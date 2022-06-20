@@ -91,12 +91,12 @@
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cloud1" fitHeight="199.0" fitWidth="194.0" layoutX="407.0" layoutY="446.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1" fitHeight="199.0" fitWidth="194.0" layoutX="405.0" layoutY="445.0" onMouseClicked="#selectedCloud1" onMouseEntered="#inCloud1" onMouseExited="#outCloud1" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cloud2" fitHeight="180.0" fitWidth="186.0" layoutX="1285.0" layoutY="445.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud2" fitHeight="180.0" fitWidth="186.0" layoutX="1285.0" layoutY="445.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
          </image>

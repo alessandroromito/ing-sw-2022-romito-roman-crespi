@@ -4,6 +4,8 @@ import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -181,6 +183,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     int motherNaturePos = -1;
     private boolean switchIslands = false;
     private boolean switchStudents = false;
+    private boolean switchClouds = false;
 
     public void enableIslands(ActionEvent actionEvent) {
         switchIslands = true;
@@ -234,6 +237,56 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         student.setLayoutX(r/2);
 
         pane.getChildren().addAll(student);
+    }
+
+    //number: 1/2
+    public void addStudentsToCloud(Cloud cloud, int number){
+        Image image = null;
+        ImageView student = new ImageView();
+
+        for(int i=0;i<3;i++) {
+            StudentDisc s = cloud.getCloudStudents().get(i);
+            switch (s.getColorInt()) {
+                case 1:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
+                    break;
+                case 2:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
+                    break;
+                case 3:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png"));
+                    break;
+                case 4:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
+                    break;
+                case 5:
+                    image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
+                    break;
+            }
+            student.setImage(image);
+            DropShadow dr = new DropShadow();
+            dr.setWidth(15);
+            dr.setHeight(15);
+
+            // ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
+            student.setEffect(dr);
+            student.setId(Integer.toString(s.getID()));
+
+
+            student.setFitHeight(r * 2);
+            student.setFitWidth(r * 2);
+            student.setDisable(true);
+
+            if(number == 1) {
+                student.setX(cloudStudentsPos1[i].getX());
+                student.setY(cloudStudentsPos1[i].getY());
+            }else{
+                student.setX(cloudStudentsPos2[i].getX());
+                student.setY(cloudStudentsPos2[i].getY());
+            }
+
+            pane.getChildren().addAll(student);
+        }
     }
 
     public void removeStudent(int id){
@@ -305,7 +358,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         islandsPosCentre[10] = new Point(island11.getLayoutX()+island11.getFitWidth()/2,island11.getLayoutY()+island11.getFitHeight()/2);
         islandsPosCentre[11] = new Point(island12.getLayoutX()+island12.getFitWidth()/2,island12.getLayoutY()+island12.getFitHeight()/2);
 
-        rIsl = island1.getFitHeight()/2;
+        rIsl = (island1.getFitHeight()+17)/2;
 
         for(int i=0;i<12;i++)
             islands[i] = new ArrayList<Point>();
@@ -313,6 +366,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
+
+        cloudStudentsPos2[0] = new Point(1373,583); cloudStudentsPos2[1] = new Point(1300,532); cloudStudentsPos2[2] = new Point(1376,496);
+        cloudStudentsPos1[0] = new Point(1373-805,583); cloudStudentsPos1[1] = new Point(1300-805,532); cloudStudentsPos1[2] = new Point(1376-805,496);
     }
 
     public void setMotherNaturePose(int island){
@@ -487,7 +543,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     //bottone temporaneo per prove
     public void build (ActionEvent actionEvent) {
-        //SceneManager.showScoreboards();
+        SceneManager.showScoreboards();
         //addStudentToIsland(3,100,4);
     }
 
@@ -701,5 +757,33 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         ft.play();
         tt.play();
+    }
+
+    public void selectedCloud1(MouseEvent mouseEvent) {
+
+        switchIslands = false;
+        cloud1.setEffect(null);
+    }
+
+    public void selectedCloud2(MouseEvent mouseEvent) {
+
+        switchIslands = false;
+        cloud1.setEffect(null);
+    }
+
+    public void inCloud1(MouseEvent mouseEvent) {
+        if(switchClouds)    cloud1.setEffect(new Bloom(0.95));
+    }
+
+    public void outCloud1(MouseEvent mouseEvent) {
+        cloud1.setEffect(null);
+    }
+
+    public void inCloud2(MouseEvent mouseEvent) {
+        if(switchClouds)    cloud2.setEffect(new Bloom(0.95));
+    }
+
+    public void outCloud2(MouseEvent mouseEvent) {
+        cloud2.setEffect(null);
     }
 }

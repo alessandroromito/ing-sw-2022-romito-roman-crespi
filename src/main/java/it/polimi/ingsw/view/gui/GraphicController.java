@@ -168,7 +168,10 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
-
+        Platform.runLater( () -> {
+            getMapSceneManager().addStudentsToCloud(cloudList.get(0),1);
+            getMapSceneManager().addStudentsToCloud(cloudList.get(1),2);}
+        );
     }
 
     @Override
