@@ -407,6 +407,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         cloudStudentsPos2[0] = new Point(1373,583); cloudStudentsPos2[1] = new Point(1300,532); cloudStudentsPos2[2] = new Point(1376,496);
         cloudStudentsPos1[0] = new Point(1373-805,583); cloudStudentsPos1[1] = new Point(1300-805,532); cloudStudentsPos1[2] = new Point(1376-805,496);
+
+        enableAssistant();
     }
 
     public void setMotherNaturePose(int island){
@@ -839,6 +841,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(27,27));
 
+
+        assistantCards[assistantUsed].setVisible(false);
+        assistantCards[assistantUsed].setDisable(true);
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
@@ -846,6 +851,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
+        System.out.println(mouseEvent.getSource().toString());
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(27,27))].setEffect(new InnerShadow());
     }
 
