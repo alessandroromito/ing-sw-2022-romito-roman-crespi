@@ -521,6 +521,10 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+    public CharacterCard getCharacterCardByID(int ID) {
+        throw new RuntimeException();
+    }
+
     public void deleteActiveCard(){
         //ExpertGame method
         try{

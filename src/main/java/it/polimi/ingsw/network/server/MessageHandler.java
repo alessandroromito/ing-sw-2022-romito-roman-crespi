@@ -244,4 +244,12 @@ public class MessageHandler {
      */
     public void handleMessage(CharacterCardMessage characterCardMessage) {
     }
+
+    public void handleMessage(CharacterCardReplyMessage characterCardReplyMessage) {
+        if(gameController.getGameState() == GameState.IN_GAME){
+            if(gameController.checkUser(characterCardReplyMessage)){
+                gameController.noApplyEffect();
+            }
+        }
+    }
 }

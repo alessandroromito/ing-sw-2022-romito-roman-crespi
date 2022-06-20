@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.extra.SerializableIsland;
@@ -9,6 +10,7 @@ import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.Card_209;
+import it.polimi.ingsw.server.model.component.charactercards.Card_219;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
@@ -24,6 +26,9 @@ public class CLI extends ViewObservable implements View {
     private Thread readThread;
 
     private String nickname;
+    boolean expertMode;
+
+    private int activeCardID;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -152,9 +157,10 @@ public class CLI extends ViewObservable implements View {
 
             String finalGamemode = gamemode;
             notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
+            expertMode = finalGamemode != "Normale";
         }
         catch (ExecutionException e) {
-            out.println("Errore!");
+            out.println("ExecutionException!");
         }
     }
 
@@ -241,6 +247,7 @@ public class CLI extends ViewObservable implements View {
             else {
                 out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
             }
+            if(expertMode) out.println("Coin: " + scoreboard.getCoins());
             showScoreboard(scoreboard);
         }
     }
@@ -309,10 +316,10 @@ public class CLI extends ViewObservable implements View {
         char answer;
         try{
             do {
-                out.println("Vuoi usare una carta personaggio?");
+                out.println("Vuoi usare una carta personaggio? Y/N");
                 answer = readRow().charAt(0);
                 if(answer == 'N'){
-                    return;
+                    notifyObserver(obs -> obs.onUpdateUseEffect(false));
                 }
 
                 out.println("Scegli tra le seguenti Carte Personaggio:");
@@ -376,19 +383,126 @@ public class CLI extends ViewObservable implements View {
                     e.printStackTrace();
                 }
             }
-            case 210 -> out.println(ANSI_GREEN + "" + ANSI_RESET );
-            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
-            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
-            case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
-            case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
-            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
-            case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
-            case 219 -> out.println(ANSI_GREEN + "Prendi uno studente da questa carta e piazzalo nella tua sala, poi pescane uno nuovo dal saccetto e posizionalo su questa carta." + ANSI_RESET );
+            case 210 -> {
+                notifyObserver(ViewObserver::onUpdateUse210);
+            }
+            case 211 -> {
+                int islandNum;
+
+                try{
+                    boolean error;
+                    do {
+                        error = false;
+                        out.println("Scegli 1 isola:");
+                        islandNum = Integer.parseInt(readRow());
+                        if(islandNum > 12 || islandNum < 0) {
+                            out.println("Numero inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+
+                    int finalIslandNum = islandNum;
+                    notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
+
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            case 212 -> {
+                activeCardID = 212;
+                notifyObserver(ViewObserver::onUpdateUse212);
+            }
+            case 213 -> {
+                int islandNum;
+
+                try{
+                    boolean error;
+                    do {
+                        error = false;
+                        out.println("Scegli 1 isola:");
+                        islandNum = Integer.parseInt(readRow());
+                        if(islandNum > 12 || islandNum < 0) {
+                            out.println("Numero inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+
+                    int finalIslandNum = islandNum;
+                    notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
+
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            case 214 -> notifyObserver(ViewObserver::onUpdateUse214);
+            case 216 -> notifyObserver(ViewObserver::onUpdateUse216);
+            case 217 -> {
+                String color;
+
+                try{
+                    boolean error;
+                    do {
+                        error = false;
+                        out.println("Scegli un colore:");
+                        out.print((ANSI_RED + "rosso, " + ANSI_RESET));
+                        out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
+                        out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
+                        out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
+                        out.println((ANSI_PINK + "rosa" + ANSI_RESET));
+
+                        color = readRow();
+                        if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
+                            out.println("Colore inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+
+                    switch (color){
+                        case "rosso" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.RED));
+                        case "giallo" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.YELLOW));
+                        case "verde" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.GREEN));
+                        case "blu" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.BLUE));
+                        case "rosa" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.PINK));
+                    }
+
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            case 219 -> {
+                Card_219 card219 = (Card_219) characterCard;
+                int studentPos;
+
+                try{
+                    boolean error;
+                    do {
+                        error = false;
+                        out.println("Scegli 1 studente:");
+                        int i = 0;
+                        for (StudentDisc student : card219.getStudents()){
+                            out.println(i + " " + printStudent(student));
+                            i++;
+                        }
+                        studentPos = Integer.parseInt(readRow());
+                        if(studentPos > i - 1 || studentPos < 0) {
+                            out.println("Numero inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                    } while(error);
+
+                    int finalStudent = studentPos;
+                    notifyObserver(obs -> obs.onUpdateUse219(finalStudent));
+
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + characterCard.getID());
         }
     }
 
     private void printEffect(int ID) {
-        switch (ID){
+        switch(ID){
             case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET );
             case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
             case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
@@ -397,7 +511,7 @@ public class CLI extends ViewObservable implements View {
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
             case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
             case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
-            case 219 -> out.println(ANSI_GREEN + "Prendi uno studente da questa carta e piazzalo nella tua sala, poi pescane uno nuovo dal saccetto e posizionalo su questa carta." + ANSI_RESET );
+            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET );
         }
     }
 
@@ -542,6 +656,7 @@ public class CLI extends ViewObservable implements View {
         try{
             do {
                 error = false;
+                if(activeCardID == 212) maxSteps = maxSteps + 2;
                 out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + " passi.");
 
                 steps = Integer.parseInt(readRow());
@@ -557,6 +672,7 @@ public class CLI extends ViewObservable implements View {
 
         int finalSteps = steps;
         notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
+        activeCardID = -1;
     }
 
     @Override

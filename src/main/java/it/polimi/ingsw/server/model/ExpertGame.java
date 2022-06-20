@@ -154,6 +154,9 @@ public class ExpertGame extends Game {
             StudentDisc moving = card209.use(studentPos, bag.pickSorted());
             map.getIsland(islandID).addStudent(moving);
             deleteActiveCard();
+
+            turnController.nextActionPhase();
+
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
         }
@@ -183,8 +186,11 @@ public class ExpertGame extends Game {
                                 temp.updateOnePos(p,i);
                                 moveProfessor(PawnColors.values()[i], getActivePlayer());
                             }
-        } catch (ActiveCardAlreadyExistingException e) {
 
+            turnController.nextActionPhase();
+
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
         }
     }
 
@@ -306,6 +312,15 @@ public class ExpertGame extends Game {
 
     public List<CharacterCard> getCharacterCards() {
         return pool;
+    }
+
+    public CharacterCard getCharacterCardByID(int ID) {
+        for(CharacterCard characterCard : pool){
+            if(characterCard.getID() == ID)
+                return characterCard;
+        }
+        System.out.println("CharacterCard Not Found");
+        return null;
     }
 
     @Override

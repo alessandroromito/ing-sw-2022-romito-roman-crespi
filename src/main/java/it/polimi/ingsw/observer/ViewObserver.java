@@ -1,6 +1,7 @@
 package it.polimi.ingsw.observer;
 
 import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
@@ -28,9 +29,28 @@ public interface ViewObserver {
 
     void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards);
 
-    void update(Message message);
 
     void onUpdateGameMode(String mode);
 
+    void onUpdateUseEffect(boolean useEffect);
+
     void onUpdateUse209(int studentPos, int island);
+
+    void onUpdateUse210();
+    
+    void update(Message message);
+    
+    void onUpdateUse211(int islandNum);
+
+    void onUpdateUse212();
+
+    void onUpdateUse213(int islandNum);
+
+    void onUpdateUse214();
+
+    void onUpdateUse216();
+
+    void onUpdateUse217(PawnColors color);
+
+    void onUpdateUse219(int finalStudentPos);
 }

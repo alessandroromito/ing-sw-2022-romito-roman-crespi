@@ -67,13 +67,10 @@ public class InputController {
      * @return
      */
     public boolean checkCoin(UseEffectMessage message) {
-        int cost = game.getCharacterCards().get(message.getCardID()).getCost();
+        int cost = game.getCharacterCardByID(message.getCardID()).getCost();
         Player player = game.getPlayerByNickname(message.getNickname());
 
-        if(player.getCoin() < cost)
-            return false;
-        else
-            return true;
+        return player.getCoin() >= cost;
     }
 
     public void setGame(Game game) {

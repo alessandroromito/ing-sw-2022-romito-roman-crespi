@@ -33,7 +33,7 @@ public class GameSerialized implements Serializable {
             }
         }
         for(Player player : game.getPlayers()){
-            serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player.getNickname()));
+            serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player));
         }
 
         this.motherNaturePos = game.getMap().getMotherNaturePosition();

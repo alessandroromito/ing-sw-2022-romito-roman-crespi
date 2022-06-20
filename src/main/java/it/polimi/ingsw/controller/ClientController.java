@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.client.Client;
 import it.polimi.ingsw.network.message.*;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
@@ -123,9 +124,15 @@ public class ClientController implements ViewObserver, Observer {
         }
     }
 
+
     @Override
     public void onUpdateGameMode(String gameMode) {
         client.sendMessage(new GameModeReplyMessage(this.nickname, gameMode.equals("Esperta")));
+    }
+
+    @Override
+    public void onUpdateUseEffect(boolean useEffect) {
+        client.sendMessage(new CharacterCardReplyMessage(this.nickname, false));
     }
 
     @Override
@@ -176,5 +183,47 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateUse209(int studentPos, int island){
         client.sendMessage(new Card209Message(this.nickname, studentPos, island));
+    }
+
+    @Override
+    public void onUpdateUse210() {
+        client.sendMessage(new Card210Message(this.nickname));
+    }
+
+
+    @Override
+    public void onUpdateUse211(int islandNum) {
+        client.sendMessage(new Card211Message(this.nickname, islandNum));
+    }
+
+    @Override
+    public void onUpdateUse212() {
+        client.sendMessage(new Card212Message(this.nickname));
+    }
+
+    @Override
+    public void onUpdateUse213(int islandNum) {
+        client.sendMessage(new Card213Message(this.nickname, islandNum));
+    }
+
+    @Override
+    public void onUpdateUse214() {
+        client.sendMessage(new Card214Message(this.nickname));
+
+    }
+
+    @Override
+    public void onUpdateUse216() {
+        client.sendMessage(new Card216Message(this.nickname));
+    }
+
+    @Override
+    public void onUpdateUse217(PawnColors color) {
+        client.sendMessage(new Card217Message(this.nickname, color));
+    }
+
+    @Override
+    public void onUpdateUse219(int studentNum) {
+        client.sendMessage(new Card219Message(this.nickname, studentNum));
     }
 }

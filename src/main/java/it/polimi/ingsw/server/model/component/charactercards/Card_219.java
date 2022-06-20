@@ -22,6 +22,10 @@ public class Card_219 extends CharacterCard {
         return null;
     }
 
+    public ArrayList<StudentDisc> getStudents() {
+        return students;
+    }
+
     public void addStudent(StudentDisc stud){
         students.add(stud);
     }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
 import java.io.Serializable;
@@ -19,14 +20,17 @@ public class SerializableScoreboard implements Serializable {
     private int diningBlueStudents = 0;
     private int diningYellowStudents = 0;
     private int diningPinkStudents = 0;
-    private int towerNumber = 0;
+    private int towerNumber;
+
+    private int coins;
     private TowerColors towerColor;
     private ArrayList<PawnColors> professors = new ArrayList<>();
 
-    public SerializableScoreboard(Scoreboard scoreboard, String nickname){
-        this.nickname = nickname;
+    public SerializableScoreboard(Scoreboard scoreboard, Player player){
+        this.nickname = player.getNickname();
         setStudents(scoreboard);
         setProfessors(scoreboard);
+        this.coins = player.getCoin();
         this.towerColor = scoreboard.getTowerColor();
         this.towerNumber = scoreboard.getNumTowers();
     }
@@ -80,6 +84,10 @@ public class SerializableScoreboard implements Serializable {
 
     public ArrayList<PawnColors> availableProfessors(){
         return professors;
+    }
+
+    public int getCoins() {
+        return coins;
     }
 
     public String getNickname() {

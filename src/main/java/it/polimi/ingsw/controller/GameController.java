@@ -328,6 +328,11 @@ public class GameController implements Observer {
         virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
     }
 
+    public void noApplyEffect() {
+        if(turnController.getPhaseState() == PhaseState.ACTION_PHASE && turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+    }
+
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
             if(inputController.checkCoin(useEffectMessage)){
@@ -377,6 +382,7 @@ public class GameController implements Observer {
             }
             else{
                 showMessage(useEffectMessage.getNickname(), "You don't have enough coin!");
+                turnController.nextActionPhase();
             }
         }
         else{
@@ -446,5 +452,8 @@ public class GameController implements Observer {
     public Map<String, VirtualView> getVirtualViewMap() {
         return virtualViewMap;
     }
+
+
+
 
 }
