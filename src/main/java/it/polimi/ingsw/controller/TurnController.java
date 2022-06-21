@@ -70,7 +70,7 @@ public class TurnController {
         askAssistantCard();
     }
 
-    private void askAssistantCard() {
+    public void askAssistantCard() {
         Player player = game.getPlayerByNickname(getActivePlayer());
         List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
         VirtualView virtualView = virtualViewMap.get(getActivePlayer());
@@ -121,8 +121,18 @@ public class TurnController {
     public void actionPhase() {
         try {
             switch (actionPhaseState) {
-                case USE_EFFECT -> gameController.askCharacterCard();
+                case USE_EFFECT -> {
+                    if(game.isExpertMode()){
+                        gameController.askCharacterCard();
+                    }
+                    else nextActionPhase();
+                }
                 case MOVE_STUDENT1, MOVE_STUDENT2, MOVE_STUDENT3 -> gameController.askToMoveStudent();
+                case MOVE_STUDENT4 -> {
+                    if(gameController.getChosenPlayerNumber() == 3)
+                        gameController.askToMoveStudent();
+                    else nextActionPhase();
+                }
                 case MOVE_MOTHER_NATURE -> gameController.askToMoveMotherNature();
                 case PICK_CLOUD -> {
                     gameController.askToChooseACloud();

@@ -58,7 +58,7 @@ public class SocketServer implements Runnable{
         server.addClient(nickname, clientHandler);
     }
 
-    public void onDisconnect (ClientHandler clientHandler) {
+    public void onDisconnect(ClientHandler clientHandler) {
         server.onDisconnect(clientHandler);
     }
 

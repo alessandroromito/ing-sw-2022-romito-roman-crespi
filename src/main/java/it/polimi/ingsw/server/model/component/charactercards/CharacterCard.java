@@ -11,7 +11,7 @@ public class CharacterCard extends Component {
     }
 
     public int getCost() {
-        return cost;
+        return this.cost;
     }
 
     public void addCost(){

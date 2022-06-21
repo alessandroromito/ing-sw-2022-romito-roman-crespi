@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.network.message.MoveMotherNatureMessage;
 import it.polimi.ingsw.network.message.UseEffectMessage;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -58,6 +59,22 @@ public class InputController {
             virtualView.showMessage(message.getNickname(), "You can't move Mother Nature so far!");
             return false;
         }
+    }
+
+    /**
+     *
+     * @param card the player's card he wants to choose
+     * @return true if it's valid or false if it's not
+     */
+    public boolean validateCard(AssistantCard card) {
+        for(Player player: game.getPlayers()){
+            if(!(player.getNickname().equals(game.getActivePlayer().getNickname())) && player.getCurrentCard() != null) {
+                if(player.getCurrentCard().getValue() == card.getValue()){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

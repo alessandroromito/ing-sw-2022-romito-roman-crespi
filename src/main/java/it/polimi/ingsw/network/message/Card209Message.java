@@ -28,6 +28,6 @@ public class Card209Message extends UseEffectMessage{
 
     @Override
     public String toString() {
-        return "Card209Message[nickname:" + getNickname() + "island number: " + islandNumber + "student position: " + studentPos + "]";
+        return "Card209Message[nickname:" + getNickname() + ", island number: " + islandNumber + ", student position: " + studentPos + "]";
     }
 }

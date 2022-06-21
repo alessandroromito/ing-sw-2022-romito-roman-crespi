@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.network.message.GameScenarioMessage;
+import it.polimi.ingsw.network.message.GenericMessage;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.model.component.Coin;
@@ -17,8 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ExpertGame extends Game {
-    private int activeCardID;
-    private CharacterCard activeCard;
+    private int activeCardID = -1;
+    private CharacterCard activeCard = null;
     private final ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
     /**
@@ -28,8 +29,6 @@ public class ExpertGame extends Game {
      */
     public ExpertGame(List<String> playersNicknames) {
         super(playersNicknames);
-        activeCardID = -1;
-        activeCard = null;
         ExpertGameInitialization();
     }
 
@@ -100,24 +99,16 @@ public class ExpertGame extends Game {
     }
 
     public boolean useCharacter(int characterCardID){
-        try{
-            if(activeCardID != -1)
-                throw new ActiveCardAlreadyExistingException("There is an active card already!");
+        for(CharacterCard characterCard : pool)
+            if(characterCard.getID() == characterCardID){
+                activeCard = characterCard;
+                activeCardID = characterCard.getID();
+                getActivePlayer().removeCoin(characterCard.getCost());
+                characterCard.addCost();
 
-            for(int i=0;i<3;i++)
-                if(pool.get(i).getID() == characterCardID){
-                    activeCard = pool.get(i);
-                    activeCardID = activeCard.getID();
-                    activeCard.addCost();
-                    getActivePlayer().removeCoin(activeCard.getCost());
+                return true;
+            }
 
-                    notifyObserver(new GameScenarioMessage(getGameSerialized()));
-                    return true;
-                }
-
-        } catch (ActiveCardAlreadyExistingException e) {
-            throw new RuntimeException(e);
-        }
         return false;
     }
 
@@ -155,10 +146,11 @@ public class ExpertGame extends Game {
             map.getIsland(islandID).addStudent(moving);
             deleteActiveCard();
 
+            notifyObserver(new GameScenarioMessage(getGameSerialized()));
             turnController.nextActionPhase();
 
         } catch (ActiveCardAlreadyExistingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -187,6 +179,7 @@ public class ExpertGame extends Game {
                                 moveProfessor(PawnColors.values()[i], getActivePlayer());
                             }
 
+            notifyObserver(new GenericMessage("Effetto 210 Applicato!"));
             turnController.nextActionPhase();
 
         } catch (ActiveCardAlreadyExistingException e) {
@@ -210,6 +203,8 @@ public class ExpertGame extends Game {
         } catch (ActiveCardAlreadyExistingException e) {
             throw new RuntimeException(e);
         }
+
+        turnController.nextActionPhase();
     }
 
     //Sposta mother nature fino a 2 pos in più
@@ -219,9 +214,12 @@ public class ExpertGame extends Game {
             if(activeCardID != 212)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         } catch (ActiveCardAlreadyExistingException e) {
-
+            e.printStackTrace();
         }
         activeCardID = 212;
+
+        turnController.nextActionPhase();
+
     }
 
     public void use_213(int islandNumber) {
@@ -231,9 +229,10 @@ public class ExpertGame extends Game {
             Card_213 temp = (Card_213) activeCard;
             map.getIsland(islandNumber).addNoEntryTile(temp.use());
         } catch (ActiveCardAlreadyExistingException  e) {
-
+            e.printStackTrace();
         }
 
+        turnController.nextActionPhase();
     }
 
     public void use_214() {
@@ -242,9 +241,11 @@ public class ExpertGame extends Game {
             if(activeCardID != 214)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         } catch (ActiveCardAlreadyExistingException e) {
-
+            e.printStackTrace();
         }
         activeCardID = 214;
+
+        turnController.nextActionPhase();
     }
 
     /**
@@ -255,6 +256,9 @@ public class ExpertGame extends Game {
     public void use_216(Player p){
         useCharacter(216);
         p.setAdditionalPoints(true);
+        notifyObserver(new GenericMessage("CharacterCard Impostata!"));
+
+        turnController.nextActionPhase();
     }
 
     /**
@@ -278,8 +282,10 @@ public class ExpertGame extends Game {
             Card_217 card = (Card_217) activeCard;
             card.setDisColor(p);
         } catch (ActiveCardAlreadyExistingException e) {
-
+            e.printStackTrace();
         }
+
+        turnController.nextActionPhase();
     }
 
     /**
@@ -295,6 +301,8 @@ public class ExpertGame extends Game {
         Card_219 card = (Card_219) activeCard;
         scoreboard.addStudentOnDining(card.getStudent(number));
         ((Card_219) activeCard).addStudent(bag.pickSorted());
+
+        turnController.nextActionPhase();
     }
 
     /**
@@ -337,9 +345,9 @@ public class ExpertGame extends Game {
 
             if (island.checkNoEntryTile()) {
                 Card_213 temp = null;
-                for(int i=0;i<3;i++)
-                    if(pool.get(i).getClass() == Card_213.class)
-                        temp = (Card_213) pool.get(i);
+                for(CharacterCard characterCard : pool)
+                    if(characterCard.getClass() == Card_213.class)
+                        temp = (Card_213) characterCard;
                 assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
@@ -383,9 +391,9 @@ public class ExpertGame extends Game {
 
             if (island.checkNoEntryTile()) {
                 Card_213 temp = null;
-                for(int i=0;i<3;i++)
-                    if(pool.get(i).getClass() == Card_213.class)
-                        temp = (Card_213) pool.get(i);
+                for(CharacterCard characterCard : pool)
+                    if(characterCard.getClass() == Card_213.class)
+                        temp = (Card_213) characterCard;
 
                 assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());

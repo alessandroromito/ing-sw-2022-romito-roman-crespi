@@ -24,7 +24,7 @@ public class GameController implements Observer {
     private List<String> playersNicknames = new ArrayList<>();
     private Map<String, VirtualView> virtualViewMap;
 
-    private int chosenPlayerNumber;
+    private int chosenPlayerNumber = 3;
     private boolean chosenExpertMode = false;
 
     private GameState gameState;
@@ -84,13 +84,8 @@ public class GameController implements Observer {
 
 
     public void askCharacterCard() {
-        if(game.isExpertMode()){
-            VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
-            virtualView.askCharacterCard(game.getCharacterCards());
-        }
-        else{
-            turnController.nextActionPhase();
-        }
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askCharacterCard(game.getCharacterCards());
     }
 
     /**
@@ -159,21 +154,38 @@ public class GameController implements Observer {
             }
         } else if (virtualViewMap.size() < chosenPlayerNumber){
             virtualViewMap.put(nickname, virtualView);
-            playersNicknames.add(nickname);
+            if(!playersNicknames.contains(nickname))
+                playersNicknames.add(nickname);
 
-            if(chosenPlayerNumber == playersNicknames.size()){
+            if(chosenPlayerNumber == virtualViewMap.size()){
 
                 //check if there is a saved game
+                /*
+                StorageData storageData = new StorageData();
+
+                GameController savedGameController = storageData.restore();
+                if (savedGameController != null &&
+                        game.getPlayersNicknames().containsAll(savedGameController.getTurnController().getNicknameQueue())) {
+                    restoreControllers(savedGameController);
+                    broadcastRestoreMessages();
+                    Server.LOGGER.info("Saved Match restored.");
+                    turnController.newTurn();
+                } else {
+                    startGame();
+                }
+                 */
 
                 startGame();
             }
+
+            virtualView.showLoginResult(nickname,true, true);
+
         } else {
             virtualView.showLoginResult(nickname,true, false);
         }
     }
 
     /*
-            if (game.getNumCurrentPlayers() == game.getChosenPlayersNumber()) { // If all players logged
 
                 // check saved matches.
                 StorageData storageData = new StorageData();
@@ -206,8 +218,11 @@ public class GameController implements Observer {
 
     public void setChosenPlayerNumber(PlayerNumberReply message) {
         if(inputController.playerNumberReplyCheck(message.getPlayerNumber())) {
-            this.chosenPlayerNumber = message.getPlayerNumber();
-            showGenericMessageToAll("Waiting for other players...");
+            chosenPlayerNumber = message.getPlayerNumber();
+            if(message.getPlayerNumber() == virtualViewMap.size())
+                startGame();
+            else
+                showGenericMessageToAll("Waiting for other players...");
         }
         else{
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
@@ -251,7 +266,7 @@ public class GameController implements Observer {
     }
 
     public void moveStudent(MoveStudentMessage message) {
-        if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT1 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT2 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT3)) {
+        if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT1 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT2 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT3 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT4)) {
             StudentDisc student = message.getStudentDiscs().get(0);
             Player player = game.getPlayerByNickname(message.getNickname());
 
@@ -300,8 +315,9 @@ public class GameController implements Observer {
     }
 
     public void showDisconnectionMessage(String nickname, String message) {
-        VirtualView virtualView = virtualViewMap.get(nickname);
-        virtualView.showDisconnectedPlayerMessage(nickname, message);
+        System.out.println("ShowDisconnectedMessage " + nickname);
+        for(VirtualView vv : virtualViewMap.values())
+            vv.showDisconnectedPlayerMessage(nickname, message);
     }
 
     public void refillClouds(){
@@ -310,10 +326,17 @@ public class GameController implements Observer {
 
     public void setAssistantCard(AssistantCardMessage assistantCardMessage) {
         if(turnController.getPhaseState() == PhaseState.PLANNING_PHASE){
-            game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
-            showMessage(assistantCardMessage.getNickname(), "Assistant Card Set!");
+            if(inputController.validateCard(assistantCardMessage.getAssistantCards().get(0))) {
+                game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
+                showMessage(assistantCardMessage.getNickname(), "Assistant Card Set!");
 
-            turnController.next();
+                turnController.next();
+            }
+            else{
+                showMessage(assistantCardMessage.getNickname(), "Qualcuno ha gia scelto questa carta! Scegline un'altra perfavore");
+                turnController.askAssistantCard();
+            }
+
         }
         else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");
     }
@@ -453,7 +476,9 @@ public class GameController implements Observer {
         return virtualViewMap;
     }
 
-
+    public int getChosenPlayerNumber() {
+        return chosenPlayerNumber;
+    }
 
 
 }

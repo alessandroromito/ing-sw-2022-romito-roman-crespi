@@ -16,9 +16,12 @@ public class ScoreboardX3p implements Scoreboard{
 
     private Player player;
     private boolean avaibleCoin[][] = new boolean[5][3];
+
     private final StudentDisc[] entrance = new StudentDisc[9];
+
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
+
     private ArrayList<ProfessorPawn> professorList = new ArrayList<>();
     private ArrayList<Tower> towers = new ArrayList<>(6);
     private TowerColors towerColor;
@@ -31,6 +34,7 @@ public class ScoreboardX3p implements Scoreboard{
 
         for(int i=0; i<9; i++) entrance[i] = null;
 
+        this.towerColor = towerColor;
         for(int i=0; i<6; i++)
             towers.add(new Tower(i, towerColor));
 
@@ -121,8 +125,7 @@ public class ScoreboardX3p implements Scoreboard{
     @Override
     public void addStudentOnEntrance(StudentDisc student) {
         try{
-            int k = 0;
-            for(k=0;k<=8;k++)
+            for(int k = 0; k < 9; k++)
                 if(entrance[k] == null){
                     entrance[k] = student;
                     return;

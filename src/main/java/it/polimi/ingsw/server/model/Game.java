@@ -42,7 +42,7 @@ public class Game extends Observable {
 
         players.get(0).createScoreboard(players.size(), TowerColors.BLACK);
         players.get(1).createScoreboard(players.size(), TowerColors.WHITE);
-        if(players.size() == 3)
+        if(players.get(2) != null)
             players.get(2).createScoreboard(players.size(), TowerColors.GREY);
 
         this.map = new Map(players.size());
@@ -203,11 +203,9 @@ public class Game extends Observable {
             Player player = getPlayerByNickname(nickname);
             AssistantCard chosenCard = player.getPlayerCard(cardID);
             if(chosenCard == null) throw new MissingAssistantCardException("AssistantCard not found!");
-            if(validateCard(chosenCard))
-                player.setCurrentCard(chosenCard);
-            else throw new DoubleAssistantCardException("Another player already played this card!");
-        }catch (DoubleAssistantCardException | MissingAssistantCardException e) {
-            throw new RuntimeException(e);
+            player.setCurrentCard(chosenCard);
+        }catch (MissingAssistantCardException e) {
+            e.printStackTrace();
         }
     }
 
@@ -417,22 +415,6 @@ public class Game extends Observable {
                 startingPosition = 0;
         }
         return startingPosition;
-    }
-
-    /**
-     *
-     * @param card the player's card he wants to choose
-     * @return true if it's valid or false if it's not
-     */
-    private boolean validateCard(AssistantCard card) {
-        for(Player player: players){
-            if(!(player.getNickname().equals(turnController.getActivePlayer())) && player.getCurrentCard() != null) {
-                if(player.getCurrentCard().getValue() == card.getValue()){
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     public int getNumberOfPlayer() {

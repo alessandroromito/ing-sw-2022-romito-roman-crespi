@@ -247,7 +247,9 @@ public class CLI extends ViewObservable implements View {
             else {
                 out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
             }
-            if(expertMode) out.println("Coin: " + scoreboard.getCoins());
+            if(expertMode)
+                out.println("Coin: " + scoreboard.getCoins());
+
             showScoreboard(scoreboard);
         }
     }
@@ -316,10 +318,12 @@ public class CLI extends ViewObservable implements View {
         char answer;
         try{
             do {
+                out.println("E' il tuo turno...");
                 out.println("Vuoi usare una carta personaggio? Y/N");
                 answer = readRow().charAt(0);
-                if(answer == 'N'){
+                if(answer != 'Y'){
                     notifyObserver(obs -> obs.onUpdateUseEffect(false));
+                    return;
                 }
 
                 out.println("Scegli tra le seguenti Carte Personaggio:");
@@ -575,8 +579,6 @@ public class CLI extends ViewObservable implements View {
         int islandDest = -1;
         boolean error;
         StudentDisc studentToReturn = null;
-
-        out.println("E' il tuo turno...");
 
         try{
             // SCELTA STUDENTE

@@ -43,14 +43,15 @@ public class Server {
     public void removeClient(String nickname) {
         clientHandlerMap.remove(nickname);
         gameController.getVirtualViewMap().remove(nickname);
-        gameController.showGenericMessageToAll("Player " + nickname + " disconnected!");
     }
 
     public void onDisconnect(ClientHandler clientHandler) {
         synchronized (lock) {
             String nickname = getNicknameFromClientHandler(clientHandler);
 
-            if (nickname != null) {
+            removeClient(nickname);
+
+            if(nickname != null) {
                 if (gameController.getGameState() == GameState.GAME_STARTED) {
                     //
                 }
@@ -58,7 +59,6 @@ public class Server {
                     gameController.showDisconnectionMessage(nickname, " disconnected from the server!");
                 }
 
-                removeClient(nickname);
             }
         }
     }
@@ -68,7 +68,7 @@ public class Server {
     }
 
     public String getNicknameFromClientHandler(ClientHandler clientHandler){
-        return String.valueOf(clientHandlerMap.get(clientHandler));
+        return clientHandler.getNickname();
     }
 
     public GameController getGameController() {

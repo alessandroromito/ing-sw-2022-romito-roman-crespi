@@ -3,7 +3,6 @@ package it.polimi.ingsw.server.model.player;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
-import it.polimi.ingsw.server.exception.ZeroCoinsException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 
 import java.util.ArrayList;
@@ -14,7 +13,10 @@ public class Player extends Observable{
     private AssistantCard currentAssistantCard;
     private List<AssistantCard> hand = new ArrayList<>();
     private int coin = 0;
+
     private String nickname;
+    private boolean connected;
+
     private Scoreboard scoreboard;
     private boolean additionalPoints = false;
 
@@ -63,14 +65,7 @@ public class Player extends Observable{
     }
 
     public void removeCoin(int coinToRemove) {
-        try {
-            if (coinToRemove >= this.coin)
-                this.coin = coin - coinToRemove;
-            else
-                throw new ZeroCoinsException("You have not enough coin!");
-        } catch (ZeroCoinsException e){
-            e.printStackTrace();
-        }
+        this.coin = coin - coinToRemove;
     }
 
     public void setCurrentCard(AssistantCard chosenCard) {
