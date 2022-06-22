@@ -206,7 +206,7 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager = new MapSceneManager();
             mapSceneManager.addAllObservers(observers);
             MapSceneManager finalMapSceneManager = mapSceneManager;
-            Platform.runLater( () -> SceneManager.paneTransitionNoController(finalMapSceneManager, "mapExpert_scene.fxml") );
+            Platform.runLater( () -> SceneManager.paneTransition(finalMapSceneManager, "mapExpert_scene.fxml") );
         }
         return mapSceneManager;
     }
