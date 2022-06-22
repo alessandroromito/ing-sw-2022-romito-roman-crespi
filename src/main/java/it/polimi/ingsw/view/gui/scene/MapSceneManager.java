@@ -642,6 +642,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         this.gameSerialized = gameSerialized;
         ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+        int motherNaturePos = gameSerialized.getMotherNaturePos();
 
         setMotherNaturePose(gameSerialized.getMotherNaturePos());
         for(SerializableIsland island : islands){
@@ -671,6 +672,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 }
             }
         }
+
+        setMotherNaturePose(motherNaturePos);
     }
 
     //passare numero isola precedente in senso orario
@@ -901,7 +904,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableAssistant(List<AssistantCard> assistantCards){
         this.assistantCardsList = assistantCards;
+
         for(ImageView i: this.assistantCards){
+            System.out.println("Setto una assCard visible");
             i.setVisible(true);
             i.setDisable(false);
         }
