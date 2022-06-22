@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,6 +12,7 @@
 <?import javafx.scene.paint.RadialGradient?>
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.MapSceneManager">
    <children>
@@ -233,7 +236,10 @@
             <Image url="@../Graphical_Assets/Reame/motherNature.png" />
          </image>
          <effect>
-            <DropShadow />
+            <DropShadow>
+               <input>
+                  <Bloom threshold="0.63" />
+               </input></DropShadow>
          </effect>
       </ImageView>
       <ImageView fx:id="assistentCard0" disable="true" fitHeight="288.0" fitWidth="261.0" layoutX="330.0" layoutY="221.0" onMouseClicked="#choosenAssistant" onMouseEntered="#inAssistant" onMouseExited="#outAssistant" opacity="0.0" pickOnBounds="true" preserveRatio="true" visible="true">
@@ -316,12 +322,12 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="switchHandMap" fitHeight="150.0" fitWidth="200.0" layoutX="843.0" layoutY="633.0" onMouseClicked="#switchView" onMouseEntered="#inEffect" onMouseExited="#outEffect" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="switchHandMap" fitHeight="150.0" fitWidth="200.0" layoutX="663.0" layoutY="634.0" onMouseClicked="#switchView" onMouseEntered="#inEffect" onMouseExited="#outEffect" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/handLogo.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="95.0" fitWidth="86.0" layoutX="1682.0" layoutY="66.0" onMouseClicked="#closeHand" onMouseEntered="#inX" onMouseExited="#outX" opacity="0.0" pickOnBounds="true" preserveRatio="true" fx:id="xButton">
+      <ImageView fitHeight="97.0" fitWidth="100.0" layoutX="1668.0" layoutY="66.0" onMouseClicked="#closeHand" onMouseEntered="#inX" onMouseExited="#outX" opacity="0.0" pickOnBounds="true" preserveRatio="true" fx:id="xButton">
          <image>
             <Image url="@../Graphical_Assets/Reame/x.png" />
          </image>
@@ -359,5 +365,61 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
+      <ImageView fx:id="toScoreboard" fitHeight="150.0" fitWidth="200.0" layoutX="893.0" layoutY="641.0" onMouseClicked="#moveToScoreboard" onMouseEntered="#inScrb" onMouseExited="#outScrb" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
+         </image>
+         <effect>
+            <DropShadow>
+               <input>
+                  <BoxBlur />
+               </input>
+            </DropShadow>
+         </effect>
+      </ImageView>
+      <Label fx:id="labelHand" disable="true" layoutX="709.0" layoutY="686.0" mouseTransparent="true" pickOnBounds="false" text="MANO" textFill="#f4f805">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="labelScrbd" disable="true" layoutX="921.0" layoutY="663.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
+         <font>
+            <Font size="36.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <ImageView fx:id="coin" fitHeight="75.0" fitWidth="73.0" layoutX="1122.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/motherNature.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label fx:id="labelCoins" layoutX="1171.0" layoutY="694.0" mouseTransparent="true" pickOnBounds="false" text="X 1" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="31.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
    </children>
 </AnchorPane>
