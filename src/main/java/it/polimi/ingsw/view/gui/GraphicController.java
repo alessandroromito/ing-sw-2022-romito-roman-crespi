@@ -153,13 +153,14 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater( () -> {
-            SceneManager.showGenericMessage("INFO", genericMessage);
+            //SceneManager.showGenericMessage("INFO", genericMessage);
             //SceneManager.paneTransition(observers, "scene_menu.fxml");
         } );
     }
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
+        System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
             getMapSceneManager().enableAssistant(assistantCards);
         });

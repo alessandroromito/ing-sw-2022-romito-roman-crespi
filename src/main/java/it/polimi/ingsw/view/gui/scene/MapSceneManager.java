@@ -36,6 +36,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private Rectangle bgCards;
 
     @FXML
+    private ImageView switchHandMap;
+
+    @FXML
+    private ImageView xButton;
+
+    @FXML
     private ImageView assistentCard0;
 
     @FXML
@@ -192,6 +198,24 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView towerBase9;
 
     @FXML
+    private ImageView cloud1Student0;
+
+    @FXML
+    private ImageView cloud1Student1;
+
+    @FXML
+    private ImageView cloud1Student2;
+
+    @FXML
+    private ImageView cloud2Student0;
+
+    @FXML
+    private ImageView cloud2Student1;
+
+    @FXML
+    private ImageView cloud2Student2;
+
+    @FXML
     private ImageView motherNature;
 
 
@@ -208,11 +232,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     ImageView[] assistantCards = new ImageView[10];
     ArrayList<ImageView>[] students = new ArrayList[12];
     ArrayList<Point>[] islands = new ArrayList[12];
-    Point[] cloudStudentsPos1 = new Point[3];
-    Point[] cloudStudentsPos2 = new Point[3];
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
+    private boolean[] assistantStillInHand = new boolean[10];
     private boolean switchIslands = false;
     private boolean switchStudents = false;
     private boolean switchClouds = false;
@@ -277,7 +300,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void addStudentsToCloud(Cloud cloud, int number){
         clouds.add(cloud);
         Image image = null;
-        ImageView student = new ImageView();
 
         for(int i=0;i<3;i++) {
             StudentDisc s = cloud.getCloudStudents().get(i);
@@ -298,32 +320,25 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
                     break;
             }
-            student.setImage(image);
-            DropShadow dr = new DropShadow();
-            dr.setWidth(15);
-            dr.setHeight(15);
-
-            // ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
-            student.setEffect(dr);
-            student.setId(Integer.toString(s.getID()));
-
-
-            student.setFitHeight(r * 2);
-            student.setFitWidth(r * 2);
-            student.setDisable(true);
 
             if(number == 1) {
-                student.setX(cloudStudentsPos1[i].getX());
-                student.setY(cloudStudentsPos1[i].getY());
+                cloudStudents1[i].setImage(image);
+                DropShadow dr = new DropShadow();
+                dr.setWidth(15);
+                dr.setHeight(15);
+
+                cloudStudents1[i].setEffect(dr);
+                cloudStudents1[i].setId(Integer.toString(s.getID()));
             }else{
-                student.setX(cloudStudentsPos2[i].getX());
-                student.setY(cloudStudentsPos2[i].getY());
+                cloudStudents2[i].setImage(image);
+                DropShadow dr = new DropShadow();
+                dr.setWidth(15);
+                dr.setHeight(15);
+
+                cloudStudents2[i].setEffect(dr);
+                cloudStudents2[i].setId(Integer.toString(s.getID()));
             }
-
-            pane.getChildren().addAll(student);
         }
-
-        chooseCharacterCard();
     }
 
     public void chooseCharacterCard() {
@@ -405,14 +420,16 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             islands[i] = new ArrayList<Point>();
         disableIslands();
 
+        for(int i=0;i<10;i++)   assistantStillInHand[i] = true;
+
         assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
 
-        cloudStudentsPos2[0] = new Point(1373,583); cloudStudentsPos2[1] = new Point(1300,532); cloudStudentsPos2[2] = new Point(1376,496);
-        cloudStudentsPos1[0] = new Point(1373-805,583); cloudStudentsPos1[1] = new Point(1300-805,532); cloudStudentsPos1[2] = new Point(1376-805,496);
+        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
+        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
 
         //enableAssistant();
     }
@@ -886,24 +903,109 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             }
         }
 
-        assistantCards[assistantUsed].setVisible(false);
-        assistantCards[assistantUsed].setDisable(true);
+        assistantStillInHand[assistantUsed] = false;
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
-
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new DropShadow());
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
+
+
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new InnerShadow());
     }
 
     public void enableAssistant(List<AssistantCard> assistantCards){
         this.assistantCardsList = assistantCards;
+
         for(ImageView i: this.assistantCards){
-            i.setVisible(true);
+            System.out.println("Setto una assCard visible");
             i.setDisable(false);
         }
+    }
+
+    public void disableAssistant(){
+        for(ImageView i: assistantCards)
+            i.setDisable(true);
+    }
+
+    public void switchView(MouseEvent mouseEvent) {
+        for(int k=0;k<10;k++)
+            if(assistantStillInHand[k]){
+            TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[k]);
+            FadeTransition ft = new FadeTransition(Duration.millis(1000),assistantCards[k]);
+            tt.setFromY(assistantCards[k].getY()+25);
+            tt.setToY(assistantCards[k].getY());
+            ft.setFromValue(0);
+            ft.setToValue(1);
+
+            ft.play();
+            tt.play();
+        }
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000),xButton);
+        tt.setFromY(xButton.getY()+25);
+        tt.setToY(xButton.getY());
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+        tt.play();
+        xButton.setDisable(false);
+
+        ft = new FadeTransition(Duration.millis(1000),switchHandMap);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        switchHandMap.setDisable(true);
+        ft.play();
+    }
+
+    public void inEffect(MouseEvent mouseEvent) {
+        switchHandMap.setEffect(new Glow(0.3));
+    }
+
+    public void outEffect(MouseEvent mouseEvent) {
+        switchHandMap.setEffect(null);
+    }
+
+    public void closeHand(MouseEvent mouseEvent) {
+        for(int k=0;k<10;k++)
+            if(assistantStillInHand[k]){
+            TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[k]);
+            FadeTransition ft = new FadeTransition(Duration.millis(1000),assistantCards[k]);
+            tt.setFromY(assistantCards[k].getY());
+            tt.setToY(assistantCards[k].getY()+25);
+            ft.setFromValue(1);
+            ft.setToValue(0);
+
+            ft.play();
+            tt.play();
+        }
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000),xButton);
+        tt.setFromY(xButton.getY());
+        tt.setToY(xButton.getY()+25);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+        tt.play();
+
+        xButton.setDisable(true);
+
+        ft = new FadeTransition(Duration.millis(1000),switchHandMap);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        switchHandMap.setDisable(false);
+        ft.play();
+    }
+
+    public void inX(MouseEvent mouseEvent) {
+        xButton.setEffect(new Bloom(0));
+    }
+
+    public void outX(MouseEvent mouseEvent) {
+        xButton.setEffect(new Bloom(0.25));
     }
 }
