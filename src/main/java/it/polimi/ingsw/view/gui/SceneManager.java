@@ -57,12 +57,34 @@ public class SceneManager extends ViewObservable {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/" + fxml));
 
+            //Parent parent = fxmlLoader.load();
+
+            //System.out.println((String) fxmlLoader.getController());
+            fxmlLoader.setController(sceneManager);
+            activeManager = sceneManager;
+            Parent parent = fxmlLoader.load();
+            activeScene = scene;
+            activeScene.setRoot(parent);
+        }catch(IOException e) {
+            Logger.getLogger("client").severe(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void paneTransitionGameScenario(SceneManagerInterface sceneManager, String fxml) {
+        paneTransitionGameScenario(sceneManager, activeScene, fxml);
+    }
+
+    public static void paneTransitionGameScenario(SceneManagerInterface sceneManager, Scene scene, String fxml) {
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource("/fxml/" + fxml));
+
             Parent parent = fxmlLoader.load();
 
             //System.out.println((String) fxmlLoader.getController());
             fxmlLoader.setController(sceneManager);
             activeManager = sceneManager;
-
+            //Parent parent = fxmlLoader.load();
             activeScene = scene;
             activeScene.setRoot(parent);
         }catch(IOException e) {
