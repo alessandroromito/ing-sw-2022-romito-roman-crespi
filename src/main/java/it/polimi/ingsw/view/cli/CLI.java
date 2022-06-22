@@ -234,7 +234,7 @@ public class CLI extends ViewObservable implements View {
                 out.println("ISOLA " + (island.getId() + 1) + ":");
             }
 
-            if(gameSerialized.getMotherNaturePos() == island.getId() || island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos()))
+            if(gameSerialized.getMotherNaturePos() == island.getId() || (!island.getReferencedIslands().isEmpty() && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
 
             if(island.getTowerNumber() != 0){
