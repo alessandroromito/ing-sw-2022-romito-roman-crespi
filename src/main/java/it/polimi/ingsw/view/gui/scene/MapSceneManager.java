@@ -13,6 +13,7 @@ import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,6 +38,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private ImageView switchHandMap;
+
+    @FXML
+    private ImageView toScoreboard;
 
     @FXML
     private ImageView xButton;
@@ -217,6 +221,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private ImageView motherNature;
+
+    @FXML
+    private ImageView coin;
+
+    @FXML
+    private Label labelHand;
+
+    @FXML
+    private Label labelScrbd;
+
+    @FXML
+    private Label labelCoins;
 
 
     private double r = 22;
@@ -399,6 +415,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
 
         islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
@@ -431,7 +448,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
         cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
 
-        //enableAssistant();
+        enableAssistant(null);
+        switchView(null);
     }
 
     public void setMotherNaturePose(int island){
@@ -635,9 +653,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     //bottone temporaneo per prove
     public void build (ActionEvent actionEvent) {
-        ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
-        scoreboardSceneManager.updateValues(gameSerialized);
-        //addStudentToIsland(3,100,4);
+        //ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
+        //scoreboardSceneManager.updateValues(gameSerialized);
+        addStudentToIsland(3,100,4);
+        addCoin();
     }
 
     private int getColorFromId(int id){
@@ -894,6 +913,23 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
+        System.out.println("entra in choosenassistant");
+
+        assistantStillInHand[assistantUsed] = false;
+        assistantCards[assistantUsed].setMouseTransparent(true);
+        //TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[assistantUsed]);
+        FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[assistantUsed]);
+        //tt.setFromY(assistantCards[assistantUsed].getY());
+        //tt.setToY(assistantCards[assistantUsed].getY()+25);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+        //tt.play();
+        assistantCards[assistantUsed].setDisable(true);
+
+        closeHand(null);
+        disableAssistant();
 
         for(int i = 0; i < 10 ; i++) {
             if (assistantUsed == i) {
@@ -902,8 +938,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 return;
             }
         }
-
-        assistantStillInHand[assistantUsed] = false;
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
@@ -933,8 +967,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void switchView(MouseEvent mouseEvent) {
         for(int k=0;k<10;k++)
             if(assistantStillInHand[k]){
-            TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[k]);
-            FadeTransition ft = new FadeTransition(Duration.millis(1000),assistantCards[k]);
+            assistantCards[k].setMouseTransparent(false);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
+            FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);
             tt.setFromY(assistantCards[k].getY()+25);
             tt.setToY(assistantCards[k].getY());
             ft.setFromValue(0);
@@ -943,8 +978,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             ft.play();
             tt.play();
         }
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),xButton);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),xButton);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(600),xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(600),xButton);
         tt.setFromY(xButton.getY()+25);
         tt.setToY(xButton.getY());
         ft.setFromValue(0);
@@ -954,10 +989,40 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
         xButton.setDisable(false);
 
-        ft = new FadeTransition(Duration.millis(1000),switchHandMap);
+        ft = new FadeTransition(Duration.millis(600),switchHandMap);
         ft.setFromValue(1);
         ft.setToValue(0);
         switchHandMap.setDisable(true);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),toScoreboard);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        toScoreboard.setDisable(true);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelHand);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        labelHand.setDisable(true);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelScrbd);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        labelScrbd.setDisable(true);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),coin);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        coin.setDisable(true);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelCoins);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+        labelCoins.setDisable(true);
         ft.play();
     }
 
@@ -972,8 +1037,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void closeHand(MouseEvent mouseEvent) {
         for(int k=0;k<10;k++)
             if(assistantStillInHand[k]){
-            TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[k]);
-            FadeTransition ft = new FadeTransition(Duration.millis(1000),assistantCards[k]);
+            assistantCards[k].setMouseTransparent(true);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
+            FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);
             tt.setFromY(assistantCards[k].getY());
             tt.setToY(assistantCards[k].getY()+25);
             ft.setFromValue(1);
@@ -982,8 +1048,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             ft.play();
             tt.play();
         }
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),xButton);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),xButton);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(600),xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(600),xButton);
         tt.setFromY(xButton.getY());
         tt.setToY(xButton.getY()+25);
         ft.setFromValue(1);
@@ -994,10 +1060,40 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         xButton.setDisable(true);
 
-        ft = new FadeTransition(Duration.millis(1000),switchHandMap);
+        ft = new FadeTransition(Duration.millis(600),switchHandMap);
         ft.setFromValue(0);
         ft.setToValue(1);
         switchHandMap.setDisable(false);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),toScoreboard);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        toScoreboard.setDisable(false);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelHand);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        labelHand.setDisable(false);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelScrbd);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        labelScrbd.setDisable(false);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),coin);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        coin.setDisable(false);
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),labelCoins);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        labelCoins.setDisable(false);
         ft.play();
     }
 
@@ -1007,5 +1103,39 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void outX(MouseEvent mouseEvent) {
         xButton.setEffect(new Bloom(0.25));
+    }
+
+    public void moveToScoreboard(MouseEvent mouseEvent) {
+        //cambia scena e vai sulla scoreboard
+    }
+
+    public void inScrb(MouseEvent mouseEvent) {
+        DropShadow et = new DropShadow();
+        BoxBlur et2 = new BoxBlur();
+        et2.setInput(new Glow(0.3));
+        et.setInput(et2);
+        toScoreboard.setEffect(et);
+    }
+
+    public void outScrb(MouseEvent mouseEvent) {
+        DropShadow et = new DropShadow();
+        et.setInput(new BoxBlur());
+        toScoreboard.setEffect(et);
+    }
+
+    public void addCoin(){
+        int coin = Integer.parseInt(String.valueOf(labelCoins.getText().charAt(2)));
+        coin++;
+        labelCoins.setText("X "+Integer.toString(coin));
+    }
+
+    public void removeCoin(){
+        int coin = Integer.parseInt(String.valueOf(labelCoins.getText().charAt(2)));
+        coin--;
+        labelCoins.setText("X "+Integer.toString(coin));
+    }
+
+    public void setCoin(int coin){
+        labelCoins.setText("X "+Integer.toString(coin));
     }
 }
