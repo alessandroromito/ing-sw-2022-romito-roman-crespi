@@ -42,7 +42,7 @@ public class Game extends Observable {
 
         players.get(0).createScoreboard(players.size(), TowerColors.BLACK);
         players.get(1).createScoreboard(players.size(), TowerColors.WHITE);
-        if(players.get(2) != null)
+        if(players.size() == 3)
             players.get(2).createScoreboard(players.size(), TowerColors.GREY);
 
         this.map = new Map(players.size());
@@ -223,7 +223,7 @@ public class Game extends Observable {
             Island island = map.getIsland(islandID);
             island.addStudent(student);
         }
-        checkInfluence(islandID);
+        //checkInfluence(islandID);
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
@@ -247,7 +247,7 @@ public class Game extends Observable {
 
              if(island.getTowers().isEmpty()) {
                  island.addTower(tower);
-                 System.out.println("Move Tower " + tower.getColor() + " To Island " + islandID);
+                 System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID) ;
              }
              else{
                  for(Player p : players){
@@ -255,7 +255,7 @@ public class Game extends Observable {
                      if(p.getScoreboard().getTowerColor() == oldColor){
                          p.getScoreboard().addTower(island.getTowers().get(0)); // Add 1 tower to the old dominant player
                          island.addTower(tower); //add tower to island
-                         System.out.println("Move Tower " + tower.getColor() + " To Island " + islandID);
+                         System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID);
                          System.out.println("Move Tower " + tower.getColor() + " Back To " + p.getNickname());
                      }
                  }
@@ -291,7 +291,7 @@ public class Game extends Observable {
     }
 
     public void checkInfluence(int islandID) {
-        int bestInfluence = -1;
+        int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
         Player opponentPlayer = null;
@@ -309,6 +309,9 @@ public class Game extends Observable {
                 if(playerInfluence > bestInfluence){
                     bestInfluence = playerInfluence;
                     dominantPlayer = p;
+                }
+                if (dominantPlayer != null && playerInfluence == bestInfluence && !dominantPlayer.equals(p)) {
+                    dominantPlayer = null;
                 }
             }
             if (dominantPlayer != null) {
@@ -349,16 +352,20 @@ public class Game extends Observable {
         }
     }
 
-    private void checkMerge(int islandID){
+    public void checkMerge(int islandID){
         Island island = map.getIsland(islandID);
         Island islandSucc = map.getNext(islandID);
         Island islandPrev = map.getPrev(islandID);
 
-        if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty())
-            map.merge(island.getID(), islandSucc.getID());
+        if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty()) {
+            System.out.println("Merge with Next (" + islandSucc.getID() + ")");
+            map.merge(islandID, islandID+1);
+        }
 
-        if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty())
-            map.merge(island.getID(), islandPrev.getID());
+        if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty()){
+            System.out.println("Merge with Previous(" + islandPrev.getID() + ")");
+            map.merge(islandID, islandID-1);
+        }
     }
 
     /**
@@ -367,7 +374,7 @@ public class Game extends Observable {
     public void moveMotherNature(int steps){
         int motherNaturePos = map.getMotherNaturePosition();
         // Calculate nextIsland
-        for(int i=0; i < steps; i++){
+        for(int i = 0; i < steps; i++){
             motherNaturePos++;
             if((motherNaturePos) == 12) motherNaturePos = 0;
             if(map.getIsland(motherNaturePos).isDisabled()){
@@ -515,4 +522,9 @@ public class Game extends Observable {
 
         }
     }
+
+    public int getActiveCardID() {
+        throw new RuntimeException();
+    }
+
 }

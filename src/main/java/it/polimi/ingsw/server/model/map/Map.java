@@ -109,7 +109,7 @@ public class Map {
         if(island1.isDisabled())
             island1 = getGhostIsland(IDIsland1);
         Island island2 = islands.get(IDIsland2);
-        if(island1.isDisabled())
+        if(island2.isDisabled())
             island2 = getGhostIsland(IDIsland2);
 
         ArrayList<StudentDisc> students = new ArrayList<>(island1.getStudents());
@@ -119,6 +119,8 @@ public class Map {
 
         //DUE GHOST ISLAND
         if(island1.getGroupID() != -1 && island2.getGroupID() != -1) {
+            System.out.println("Merging ghost islands "+ IDIsland1 + " " + IDIsland2);
+
             groupID = Math.min(island1.getGroupID(), island2.getGroupID());
             ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
             for(Island island : islands) {
@@ -129,6 +131,8 @@ public class Map {
         }
         //ISLAND 1 GHOST, ISLAND 2 NO
         else if (island1.getGroupID() != -1 && island2.getGroupID() == -1) {
+            System.out.println("Merging ghost island "+ IDIsland1 + " no ghost " + IDIsland2);
+
             groupID = island1.getGroupID();
             ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
 
@@ -137,6 +141,8 @@ public class Map {
         }
         //ISLAND 1 NO, ISLAND 2 GHOST
         else if (island1.getGroupID() == -1 && island2.getGroupID() != -1) {
+            System.out.println("Merging island "+ IDIsland1 + " with ghost " + IDIsland2);
+
             groupID = island2.getGroupID();
             ghostIslands[groupID] = new GhostIsland(groupID, students, towers);
 
@@ -145,14 +151,20 @@ public class Map {
         }
         // DUE NO GHOST
         else {
+            System.out.println("Merging island " + IDIsland1 + " " + IDIsland2);
+
             int i = 0;
             for(GhostIsland ghostIsland : ghostIslands) {
                 if (ghostIsland == null) {
                     ghostIslands[i] = new GhostIsland(i, students, towers);
                     groupID = i;
+                    break;
                 }
                 i++;
             }
+
+            System.out.println("Students: " + ghostIslands[i].getStudents().size() + " Towers: " + ghostIslands[i].getTowers().size());
+
             island1.disable();
             island2.disable();
             island1.setGroupID(groupID);
@@ -216,10 +228,10 @@ public class Map {
         Island island = getIsland(islandID);
         Island islandSucc;
 
-        if(islandID == 0)
-            islandSucc = getIsland(11);
+        if(islandID == 11)
+            islandSucc = getIsland(0);
         else
-            islandSucc = getIsland(islandID - 1);
+            islandSucc = getIsland(islandID + 1);
 
         if(island.isDisabled() && islandSucc.isDisabled() && island.getGroupID() == islandSucc.getGroupID())
             getNext(islandSucc.getID());

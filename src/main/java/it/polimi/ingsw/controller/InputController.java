@@ -54,7 +54,10 @@ public class InputController {
 
         if (player.getCurrentCard().getMovement() >= steps) {
             return true;
-        } else {
+        }else if(game.getActiveCardID() == 212) {
+            return player.getCurrentCard().getMovement() + 2 >= steps;
+        }
+        else{
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
             virtualView.showMessage(message.getNickname(), "You can't move Mother Nature so far!");
             return false;

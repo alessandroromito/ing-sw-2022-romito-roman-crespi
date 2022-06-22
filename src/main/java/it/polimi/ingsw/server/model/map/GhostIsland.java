@@ -13,6 +13,7 @@ public class GhostIsland extends Island{
      */
     public GhostIsland(int ghostID, ArrayList<StudentDisc> students , ArrayList<Tower> towers){
         super(ghostID);
+        this.groupID = ghostID;
         this.students = students;
         this.towers = towers;
     }

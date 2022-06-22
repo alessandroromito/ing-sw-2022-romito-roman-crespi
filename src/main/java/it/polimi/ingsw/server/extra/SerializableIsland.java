@@ -9,19 +9,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SerializableIsland implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 102L;
 
     private int id;
     private final boolean isGhost;
     private ArrayList<Integer> referencedIslands;
-    private ArrayList<Integer> islandsPawnsid = new ArrayList<>();
+    private final ArrayList<Integer> islandsPawnsID = new ArrayList<>();
     private int redStudents = 0;
     private int greenStudents = 0;
     private int blueStudents = 0;
     private int yellowStudents = 0;
     private int pinkStudents = 0;
-    private int towerNumber = 0;
-    private TowerColors towerColor;
+    private int towerNumber;
+    private final TowerColors towerColor;
 
     public SerializableIsland(Island island){
         this.id  = island.getID();
@@ -30,7 +30,7 @@ public class SerializableIsland implements Serializable {
         this.towerColor = island.getTowerColor();
         this.towerNumber = island.getTowerNumber();
         for(StudentDisc s: island.getStudents())
-            islandsPawnsid.add(s.getID());
+            islandsPawnsID.add(s.getID());
     }
 
     public SerializableIsland(GhostIsland ghostIsland){
@@ -39,7 +39,7 @@ public class SerializableIsland implements Serializable {
         this.towerColor = ghostIsland.getTowerColor();
         this.towerNumber = ghostIsland.getTowerNumber();
         for(StudentDisc s: ghostIsland.getStudents())
-            islandsPawnsid.add(s.getID());
+            islandsPawnsID.add(s.getID());
     }
 
     private void setColors(Island island) {
@@ -94,7 +94,7 @@ public class SerializableIsland implements Serializable {
         return referencedIslands;
     }
 
-    public ArrayList<Integer> getIslandsPawnsid() { return islandsPawnsid; }
+    public ArrayList<Integer> getIslandsPawnsID() { return islandsPawnsID; }
 
     public void setReferencedIslands(ArrayList<Integer> referencedIslands) {
         this.referencedIslands = referencedIslands;

@@ -408,8 +408,17 @@ public class ExpertGame extends Game {
                         bestInfluence = playerInfluence;
                         dominantPlayer = p;
                     }
+                    if (dominantPlayer != null && playerInfluence == bestInfluence && !dominantPlayer.equals(p)) {
+                        dominantPlayer = null;
+                    }
                 }
-                moveTowerToIsland(Objects.requireNonNull(dominantPlayer).getScoreboard().removeTower(), islandID);
+                if (dominantPlayer != null) {
+                    moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
+                    super.checkMerge(islandID);
+
+                    notifyObserver(new GameScenarioMessage(getGameSerialized()));
+                    return;
+                }
             }
 
             // CASE there is already a tower

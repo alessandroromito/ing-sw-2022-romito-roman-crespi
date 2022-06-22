@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.SceneManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -658,7 +657,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
             for(int i=0;i<12;i++) {
                 boolean add = true;
-                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsid();
+                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsID();
 
                 for (Integer id : islandPawnsId) {
                     for (int j = 0; j < students[i].size(); j++)

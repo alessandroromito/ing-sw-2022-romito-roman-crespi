@@ -16,22 +16,26 @@ public class GameSerialized implements Serializable {
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
 
     public GameSerialized(Game game){
+        ArrayList<Integer> groupIDs = new ArrayList<>();
 
         for(Island island : game.getMap().getIslands()){
-            if(island.isDisabled()) {
-                serializableIslands.add(new SerializableIsland(game.getMap().getGhostIsland(island.getID())));
-                ArrayList<Integer> referencedIslands = new ArrayList<>();
-                for(Island isl : game.getMap().getIslands()){
-                    if(isl.isDisabled() && isl.getGroupID() == island.getGroupID()){
-                        referencedIslands.add(isl.getGroupID());
+                if (island.isDisabled()) {
+                    if(!groupIDs.contains(island.getGroupID())){
+                        serializableIslands.add(new SerializableIsland(game.getMap().getGhostIsland(island.getID())));
+                        ArrayList<Integer> referencedIslands = new ArrayList<>();
+                        for (Island isl : game.getMap().getIslands()) {
+                            if (isl.isDisabled() && isl.getGroupID() == island.getGroupID()) {
+                                referencedIslands.add(isl.getID() + 1);
+                            }
+                        }
+                        serializableIslands.get(serializableIslands.size() - 1).setReferencedIslands(referencedIslands);
+                        groupIDs.add(island.getGroupID());
                     }
+                } else {
+                    serializableIslands.add(new SerializableIsland(island));
                 }
-                serializableIslands.get(serializableIslands.size()-1).setReferencedIslands(referencedIslands);
-            }
-            else{
-                serializableIslands.add(new SerializableIsland(island));
-            }
         }
+
         for(Player player : game.getPlayers()){
             serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player));
         }
@@ -49,5 +53,10 @@ public class GameSerialized implements Serializable {
 
     public int getMotherNaturePos() {
         return motherNaturePos;
+    }
+
+    @Override
+    public String toString() {
+        return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
     }
 }

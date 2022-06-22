@@ -261,6 +261,10 @@ public class GameController implements Observer {
 
                 turnController.nextActionPhase();
             }
+            else {
+                VirtualView virtualView = virtualViewMap.get(message.getNickname());
+                virtualView.askToMoveMotherNature(message.getSteps());
+            }
         }
         else System.out.println("Incorrect ActionPhase to move MotherNature!");
     }
@@ -278,10 +282,13 @@ public class GameController implements Observer {
                     game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber()-1);
                     game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);
                 }
-                default -> showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
+                default -> {
+                    showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
+                    VirtualView virtualView = virtualViewMap.get(message.getNickname());
+                    askToMoveStudent();
+                }
             }
 
-            // go to the next action phase move
             turnController.nextActionPhase();
         }
         else showMessage(turnController.getActivePlayer(), "You can't move a student in this phase!");

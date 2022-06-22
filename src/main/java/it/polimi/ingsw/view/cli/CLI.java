@@ -117,6 +117,19 @@ public class CLI extends ViewObservable implements View {
 
 
     public void clearCli() {
+        try {
+            final String os = System.getProperty("os.name");
+            if (os.contains("Windows")) {
+                    Runtime.getRuntime().exec("cls");
+            }
+            else {
+                Runtime.getRuntime().exec("clear");
+            }
+        }
+        catch (Exception e) {
+            //  Handle any exceptions.
+        }
+
         out.flush();
     }
 
@@ -203,6 +216,7 @@ public class CLI extends ViewObservable implements View {
     public void showGameScenario(GameSerialized gameSerialized) {
         ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+        out.println("------------------------------");
 
         //islands
         for(SerializableIsland island : islands)
@@ -210,14 +224,17 @@ public class CLI extends ViewObservable implements View {
             if(island.isGhost()){
                 Iterator<Integer> i = island.getReferencedIslands().iterator();
                 out.print("ISOLA ");
-                while(i.hasNext())
-                    out.print(i.next() + ", ");
+                out.print(i.next());
+                while(i.hasNext()) {
+                    out.print(", ");
+                    out.print(i.next());
+                }
                 out.println(":");
             }else {
                 out.println("ISOLA " + (island.getId() + 1) + ":");
             }
 
-            if(gameSerialized.getMotherNaturePos() == island.getId())
+            if(gameSerialized.getMotherNaturePos() == island.getId() || island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos()))
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
 
             if(island.getTowerNumber() != 0){
@@ -238,6 +255,8 @@ public class CLI extends ViewObservable implements View {
 
             out.println();
         }
+
+        out.println("------------------------------");
 
         //scoreboard
         for(SerializableScoreboard scoreboard : scoreboards){
@@ -509,7 +528,7 @@ public class CLI extends ViewObservable implements View {
         switch(ID){
             case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET );
             case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
-            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. In questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
+            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
             case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
             case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
@@ -612,7 +631,7 @@ public class CLI extends ViewObservable implements View {
 
                 dest = readRow();
 
-                if(Objects.equals(dest, "Isola"))
+                if(Objects.equals(dest, "Isola") || Objects.equals(dest, "isola") || Objects.equals(dest, "i"))
                     toIsland = true;
                 if (dest != null && !checkDest(dest)){
                     out.println("Destinazione non corretta. Ricontrollare");
@@ -708,6 +727,8 @@ public class CLI extends ViewObservable implements View {
         cloud.add(cloudList.get(finalChoose));
 
         notifyObserver(obs -> obs.onUpdatePickCloud(cloud));
+
+        clearCli();
     }
 
     @Override
