@@ -27,19 +27,6 @@ public class GraphicController extends ViewObservable implements View {
     private static Scene activeScene;
     private static SceneManagerInterface activeManager;
 
-    public static <T> T setLayout(Scene scene, String path) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource(path));
-
-        Pane pane;
-        try {
-            pane = fxmlLoader.load();
-            scene.setRoot(pane);
-        } catch (IOException e) {
-            Logger.getLogger("client").severe(e.getMessage());
-            return null;
-        }
-        return fxmlLoader.getController();
-    }
 
     public static Scene getActiveScene() {
         return activeScene;
