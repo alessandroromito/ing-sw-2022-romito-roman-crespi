@@ -82,7 +82,7 @@ public class GraphicController extends ViewObservable implements View {
     }
 
 
-    public synchronized MapSceneManager getAndPaneTransitionGameScenario() {
+    public synchronized void getAndPaneTransitionGameScenario() {
         if(!gameScenarioEnabled)
         {
             System.out.println("Game scenario in creation");
@@ -100,14 +100,12 @@ public class GraphicController extends ViewObservable implements View {
                 //Parent parent = fxmlLoader.load();
                 activeScene.setRoot(parent);
                 gameScenarioEnabled = true;
-                return mapSceneManager;
+                this.mapSceneManager = mapSceneManager;
             }catch(IOException e) {
                 Logger.getLogger("client").severe(e.getMessage());
                 e.printStackTrace();
             }
         }
-        return mapSceneManager;
-
     }
 
     public static void paneTransitionNoController(SceneManagerInterface sceneManager, String fxml) {
@@ -279,12 +277,12 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
-        Platform.runLater( () -> getAndPaneTransitionGameScenario().updateValues(gameSerialized) );
+        getAndPaneTransitionGameScenario();
+        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
     }
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
-        MapSceneManager mapSceneManager = getAndPaneTransitionGameScenario();
         //max 2 alla volta
         Integer minValue = 12;
         for (Integer integer : unifiedIsland)
@@ -304,7 +302,7 @@ public class GraphicController extends ViewObservable implements View {
         }
 
         Platform.runLater( () -> {
-            getAndPaneTransitionGameScenario().initializeCharacterCards(finalCharacterNumbers);
+            mapSceneManager.initializeCharacterCards(finalCharacterNumbers);
         });
     }
 
@@ -330,7 +328,7 @@ public class GraphicController extends ViewObservable implements View {
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
-            getAndPaneTransitionGameScenario().enableAssistant(assistantCards);
+            mapSceneManager.enableAssistant(assistantCards);
         });
     }
 
@@ -341,15 +339,14 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-        MapSceneManager mapSceneManager = getAndPaneTransitionGameScenario();
         Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
-            getAndPaneTransitionGameScenario().addStudentsToCloud(cloudList.get(0),1);
-            getAndPaneTransitionGameScenario().addStudentsToCloud(cloudList.get(1),2);}
+            mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
+            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);}
         );
     }
 
@@ -365,20 +362,4 @@ public class GraphicController extends ViewObservable implements View {
             paneTransition(observers, "scene_menu.fxml");
         });
     }
-
-    /*private MapSceneManager getMapSceneManager(){
-        MapSceneManager mapSceneManager;
-        try{
-            mapSceneManager = (MapSceneManager) getActiveManager();
-        } catch(ClassCastException e){
-            mapSceneManager = new MapSceneManager();
-            mapSceneManager.addAllObservers(observers);
-            MapSceneManager finalMapSceneManager = mapSceneManager;
-            Platform.runLater( () ->{
-                getAndPaneTransitionGameScenario(finalMapSceneManager, "mapExpert_scene.fxml");
-                //finalMapSceneManager.initialize();
-            });
-        }
-        return mapSceneManager;
-    }*/
 }
