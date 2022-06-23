@@ -252,14 +252,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
     private boolean[] assistantStillInHand = new boolean[10];
-    private boolean switchIslands = false;
-    private boolean switchStudents = false;
-    private boolean switchClouds = false;
-
-    public void enableIslands(ActionEvent actionEvent) {
-        switchIslands = true;
-        disableStudents();
-    }
 
     public void initializeCharacterCards(int[] number){
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
@@ -294,7 +286,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
         }
 
-    //  ritorna l'id dello student scelto   student.setOnMouseClicked(ck -> student.getId());
         student.setEffect(dr);
         student.setId(Integer.toString(id));
         students[island].add(student);
@@ -303,7 +294,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         student.setFitWidth(r*2);
         student.setDisable(true);
 
-        Point pos = findCoord(0);
+        Point pos = findCoord(island);
 
         student.setX(islandsPosCentre[island].getX()-rIsl+pos.getX()-rIsl*0.1);
         student.setY(islandsPosCentre[island].getY()-rIsl+pos.getY()-rIsl*0.1);
@@ -448,8 +439,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
         cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
 
-        enableAssistant(null);
-        switchView(null);
+        disableClouds();
     }
 
     public void setMotherNaturePose(int island){
@@ -470,8 +460,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void light(MouseEvent mouseEvent) {
-        Effect e = new Bloom();
-        if(switchIslands)
             switch(mouseEvent.getSource().toString().charAt(19)){
                 case '2':   island2.setEffect(new Bloom(0.72));   break;
                 case '3':   island3.setEffect(new Bloom(0.72));   break;
@@ -554,7 +542,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void enableStudents(){
-        switchStudents = true;
         for(int i=0;i<12;i++)
             for(ImageView pawn: students[i])
                 pawn.setDisable(false);
@@ -647,7 +634,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 }
         }
         //chosen island isola scelta
-        switchIslands = false;
+        disableIslands();
         darkAll();
     }
 
@@ -655,8 +642,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void build (ActionEvent actionEvent) {
         //ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
         //scoreboardSceneManager.updateValues(gameSerialized);
-        addStudentToIsland(3,100,4);
-        addCoin();
+        enableIslands();
     }
 
     private int getColorFromId(int id){
@@ -875,17 +861,23 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void selectedCloud1(MouseEvent mouseEvent) {
-
-        switchIslands = false;
         cloud1.setEffect(null);
         selectCloudObserverNotification(1);
     }
 
     public void selectedCloud2(MouseEvent mouseEvent) {
-
-        switchIslands = false;
         cloud1.setEffect(null);
         selectCloudObserverNotification(2);
+    }
+
+    public void disableClouds(){
+        cloud1.setDisable(false);
+        cloud2.setDisable(false);
+    }
+
+    public void enableClouds(){
+        cloud1.setDisable(true);
+        cloud2.setDisable(true);
     }
 
     public void selectCloudObserverNotification(int cloudNumber) {
@@ -896,7 +888,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inCloud1(MouseEvent mouseEvent) {
-        if(switchClouds)    cloud1.setEffect(new Bloom(0.95));
+        cloud1.setEffect(new Bloom(0.95));
     }
 
     public void outCloud1(MouseEvent mouseEvent) {
@@ -904,7 +896,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inCloud2(MouseEvent mouseEvent) {
-        if(switchClouds)    cloud2.setEffect(new Bloom(0.95));
+        cloud2.setEffect(new Bloom(0.95));
     }
 
     public void outCloud2(MouseEvent mouseEvent) {
@@ -1106,7 +1098,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
-        //cambia scena e vai sulla scoreboard
+        ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
+        scoreboardSceneManager.updateValues(gameSerialized);
     }
 
     public void inScrb(MouseEvent mouseEvent) {
