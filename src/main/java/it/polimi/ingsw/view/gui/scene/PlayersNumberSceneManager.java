@@ -7,6 +7,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class PlayersNumberSceneManager extends ViewObservable implements SceneManagerInterface {
@@ -19,11 +20,15 @@ public class PlayersNumberSceneManager extends ViewObservable implements SceneMa
     @FXML
     private ChoiceBox<Integer> nplayer;
 
+    @FXML
+    private ImageView loading;
+
 
     @FXML
     void onButtonClick(Event event) {
         confirmButton.setDisable(true);
         int playerNumberFinal = getSelection();
+        loading.setVisible(true);
         new Thread( () -> notifyObserver( obs -> obs.onUpdatePlayersNumber(playerNumberFinal))).start();
     }
 

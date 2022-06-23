@@ -409,7 +409,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Label fx:id="labelCoins" layoutX="1171.0" layoutY="694.0" mouseTransparent="true" pickOnBounds="false" text="X 1" textFill="#f4f805">
+      <Label fx:id="labelCoins" disable="true" layoutX="1171.0" layoutY="694.0" mouseTransparent="true" pickOnBounds="false" text="X 1" textFill="#f4f805">
          <font>
             <Font name="Arial Rounded MT Bold" size="31.0" />
          </font>
