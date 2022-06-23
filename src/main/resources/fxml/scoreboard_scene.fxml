@@ -293,7 +293,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="professor_green" fitHeight="81.0" fitWidth="82.0" layoutX="1360.0" layoutY="351.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="professor_green" fitHeight="81.0" fitWidth="82.0" layoutX="1360.0" layoutY="351.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
@@ -301,7 +301,7 @@
             <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="professor_red" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="488.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="professor_red" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="488.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
@@ -309,7 +309,7 @@
             <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="professor_yellow" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="624.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="professor_yellow" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="624.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
@@ -317,7 +317,7 @@
             <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="professor_purple" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="760.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="professor_purple" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="760.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
@@ -325,7 +325,7 @@
             <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="professor_blue" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="896.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="professor_blue" fitHeight="81.0" fitWidth="82.0" layoutX="1361.0" layoutY="896.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
          </image>
@@ -339,7 +339,7 @@
       <ImageView fx:id="entrance3" fitHeight="81.0" fitWidth="82.0" layoutX="64.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance4" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance5" fitHeight="81.0" fitWidth="82.0" layoutX="64.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="entrance6" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="entrance6" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance7" fitHeight="81.0" fitWidth="82.0" layoutX="64.0" layoutY="897.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance8" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="897.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <Circle fx:id="tower0" fill="#fff1f1" layoutX="1611.0" layoutY="458.0" radius="48.0" stroke="BLACK" strokeType="INSIDE">
@@ -378,6 +378,696 @@
          </effect>
       </Circle>
       <Circle fx:id="tower7" fill="WHITE" layoutX="1758.0" layoutY="869.0" radius="48.0" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <ImageView fx:id="green0_1" fitHeight="81.0" fitWidth="82.0" layoutX="80.0" layoutY="-7.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+         <effect>
+            <Glow level="0.6" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="green1_1" fitHeight="81.0" fitWidth="82.0" layoutX="112.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green2_1" fitHeight="81.0" fitWidth="82.0" layoutX="144.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green3_1" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green4_1" fitHeight="81.0" fitWidth="82.0" layoutX="207.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green5_1" fitHeight="81.0" fitWidth="82.0" layoutX="240.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green6_1" fitHeight="81.0" fitWidth="82.0" layoutX="272.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green7_1" fitHeight="81.0" fitWidth="82.0" layoutX="303.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green8_1" fitHeight="81.0" fitWidth="82.0" layoutX="334.0" layoutY="-7.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green9_1" fitHeight="81.0" fitWidth="82.0" layoutX="368.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red2_1" fitHeight="81.0" fitWidth="82.0" layoutX="144.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red0_1" fitHeight="81.0" fitWidth="82.0" layoutX="78.0" layoutY="38.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="red1_1" fitHeight="81.0" fitWidth="82.0" layoutX="112.0" layoutY="38.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red3_1" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red4_1" fitHeight="81.0" fitWidth="82.0" layoutX="207.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red5_1" fitHeight="81.0" fitWidth="82.0" layoutX="240.0" layoutY="38.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red6_1" fitHeight="81.0" fitWidth="82.0" layoutX="272.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red7_1" fitHeight="81.0" fitWidth="82.0" layoutX="303.0" layoutY="38.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red8_1" fitHeight="81.0" fitWidth="82.0" layoutX="334.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red9_1" fitHeight="81.0" fitWidth="82.0" layoutX="368.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow0_1" fitHeight="81.0" fitWidth="82.0" layoutX="80.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+         <effect>
+            <Glow level="0.77" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="yellow1_1" fitHeight="81.0" fitWidth="82.0" layoutX="112.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow2_1" fitHeight="81.0" fitWidth="82.0" layoutX="144.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow3_1" fitHeight="81.0" fitWidth="82.0" layoutX="177.0" layoutY="86.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow4_1" fitHeight="81.0" fitWidth="82.0" layoutX="207.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow5_1" fitHeight="81.0" fitWidth="82.0" layoutX="240.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow6_1" fitHeight="81.0" fitWidth="82.0" layoutX="272.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow7_1" fitHeight="81.0" fitWidth="82.0" layoutX="303.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow8_1" fitHeight="81.0" fitWidth="82.0" layoutX="334.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow9_1" fitHeight="81.0" fitWidth="82.0" layoutX="368.0" layoutY="89.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple0_1" fitHeight="81.0" fitWidth="82.0" layoutX="80.0" layoutY="133.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+         <effect>
+            <Glow level="0.53" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="purple1_1" fitHeight="81.0" fitWidth="82.0" layoutX="112.0" layoutY="135.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple2_1" fitHeight="81.0" fitWidth="82.0" layoutX="144.0" layoutY="135.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple3_1" fitHeight="81.0" fitWidth="82.0" layoutX="174.0" layoutY="135.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple4_1" fitHeight="81.0" fitWidth="82.0" layoutX="206.0" layoutY="135.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple5_1" fitHeight="81.0" fitWidth="82.0" layoutX="239.0" layoutY="134.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple6_1" fitHeight="81.0" fitWidth="82.0" layoutX="274.0" layoutY="135.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple7_1" fitHeight="81.0" fitWidth="82.0" layoutX="304.0" layoutY="133.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple8_1" fitHeight="81.0" fitWidth="82.0" layoutX="334.0" layoutY="133.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple9_1" fitHeight="81.0" fitWidth="82.0" layoutX="369.0" layoutY="133.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue0_1" fitHeight="81.0" fitWidth="82.0" layoutX="80.0" layoutY="183.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+         <effect>
+            <Glow level="0.65" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="blue1_1" fitHeight="81.0" fitWidth="82.0" layoutX="112.0" layoutY="181.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue2_1" fitHeight="81.0" fitWidth="82.0" layoutX="144.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue3_1" fitHeight="81.0" fitWidth="82.0" layoutX="176.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue4_1" fitHeight="81.0" fitWidth="82.0" layoutX="208.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue5_1" fitHeight="81.0" fitWidth="82.0" layoutX="241.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue6_1" fitHeight="81.0" fitWidth="82.0" layoutX="273.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue7_1" fitHeight="81.0" fitWidth="82.0" layoutX="303.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue8_1" fitHeight="81.0" fitWidth="82.0" layoutX="334.0" layoutY="183.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue9_1" fitHeight="81.0" fitWidth="82.0" layoutX="368.0" layoutY="181.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green0_2" fitHeight="81.0" fitWidth="82.0" layoutX="1347.0" layoutY="-2.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+         <effect>
+            <Glow level="0.6" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="green1_2" fitHeight="81.0" fitWidth="82.0" layoutX="1379.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green2_2" fitHeight="81.0" fitWidth="82.0" layoutX="1411.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green3_2" fitHeight="81.0" fitWidth="82.0" layoutX="1443.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green4_2" fitHeight="81.0" fitWidth="82.0" layoutX="1474.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green5_2" fitHeight="81.0" fitWidth="82.0" layoutX="1507.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green6_2" fitHeight="81.0" fitWidth="82.0" layoutX="1539.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green7_2" fitHeight="81.0" fitWidth="82.0" layoutX="1570.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green8_2" fitHeight="81.0" fitWidth="82.0" layoutX="1601.0" layoutY="-2.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="green9_2" fitHeight="81.0" fitWidth="82.0" layoutX="1635.0" layoutY="-3.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red2_2" fitHeight="81.0" fitWidth="82.0" layoutX="1411.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red0_2" fitHeight="81.0" fitWidth="82.0" layoutX="1345.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+         <effect>
+            <Glow level="1.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="red1_2" fitHeight="81.0" fitWidth="82.0" layoutX="1379.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red3_2" fitHeight="81.0" fitWidth="82.0" layoutX="1443.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red4_2" fitHeight="81.0" fitWidth="82.0" layoutX="1474.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red5_2" fitHeight="81.0" fitWidth="82.0" layoutX="1507.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red6_2" fitHeight="81.0" fitWidth="82.0" layoutX="1539.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red7_2" fitHeight="81.0" fitWidth="82.0" layoutX="1570.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red8_2" fitHeight="81.0" fitWidth="82.0" layoutX="1601.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="red9_2" fitHeight="81.0" fitWidth="82.0" layoutX="1635.0" layoutY="44.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow0_2" fitHeight="81.0" fitWidth="82.0" layoutX="1347.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+         <effect>
+            <Glow level="0.77" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="yellow1_2" fitHeight="81.0" fitWidth="82.0" layoutX="1379.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow2_2" fitHeight="81.0" fitWidth="82.0" layoutX="1411.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow3_2" fitHeight="81.0" fitWidth="82.0" layoutX="1444.0" layoutY="91.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow4_2" fitHeight="81.0" fitWidth="82.0" layoutX="1474.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow5_2" fitHeight="81.0" fitWidth="82.0" layoutX="1507.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow6_2" fitHeight="81.0" fitWidth="82.0" layoutX="1539.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow7_2" fitHeight="81.0" fitWidth="82.0" layoutX="1570.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow8_2" fitHeight="81.0" fitWidth="82.0" layoutX="1601.0" layoutY="92.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="yellow9_2" fitHeight="81.0" fitWidth="82.0" layoutX="1635.0" layoutY="94.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple0_2" fitHeight="81.0" fitWidth="82.0" layoutX="1347.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+         <effect>
+            <Glow level="0.53" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="purple1_2" fitHeight="81.0" fitWidth="82.0" layoutX="1379.0" layoutY="140.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple2_2" fitHeight="81.0" fitWidth="82.0" layoutX="1411.0" layoutY="140.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple3_2" fitHeight="81.0" fitWidth="82.0" layoutX="1441.0" layoutY="140.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple4_2" fitHeight="81.0" fitWidth="82.0" layoutX="1473.0" layoutY="140.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple5_2" fitHeight="81.0" fitWidth="82.0" layoutX="1506.0" layoutY="139.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple6_2" fitHeight="81.0" fitWidth="82.0" layoutX="1541.0" layoutY="140.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple7_2" fitHeight="81.0" fitWidth="82.0" layoutX="1571.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple8_2" fitHeight="81.0" fitWidth="82.0" layoutX="1601.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="purple9_2" fitHeight="81.0" fitWidth="82.0" layoutX="1636.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue0_2" fitHeight="81.0" fitWidth="82.0" layoutX="1347.0" layoutY="188.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+         <effect>
+            <Glow level="0.65" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="blue1_2" fitHeight="81.0" fitWidth="82.0" layoutX="1379.0" layoutY="186.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue2_2" fitHeight="81.0" fitWidth="82.0" layoutX="1411.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue3_2" fitHeight="81.0" fitWidth="82.0" layoutX="1443.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue4_2" fitHeight="81.0" fitWidth="82.0" layoutX="1475.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue5_2" fitHeight="81.0" fitWidth="82.0" layoutX="1508.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue6_2" fitHeight="81.0" fitWidth="82.0" layoutX="1540.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue7_2" fitHeight="81.0" fitWidth="82.0" layoutX="1570.0" layoutY="187.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue8_2" fitHeight="81.0" fitWidth="82.0" layoutX="1601.0" layoutY="188.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="blue9_2" fitHeight="81.0" fitWidth="82.0" layoutX="1635.0" layoutY="186.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="professor_green1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="-8.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_red1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_yellow1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_purple1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="134.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_blue1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_green2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="-4.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_red2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_yellow2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="91.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_purple2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="professor_blue2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="186.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
+         <image>
+            <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
+         </image>
+         <effect>
+            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+         </effect>
+      </ImageView>
+      <Circle fx:id="tower0_1" fill="#fff1f1" layoutX="545.0" layoutY="55.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower1_1" fill="WHITE" layoutX="596.0" layoutY="56.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower2_1" fill="WHITE" layoutX="545.0" layoutY="103.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower3_1" fill="WHITE" layoutX="596.0" layoutY="103.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower4_1" fill="WHITE" layoutX="544.0" layoutY="151.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower5_1" fill="WHITE" layoutX="596.0" layoutY="151.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower6_1" fill="WHITE" layoutX="544.0" layoutY="199.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower7_1" fill="WHITE" layoutX="596.0" layoutY="199.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower0_2" fill="#fff1f1" layoutX="1812.0" layoutY="59.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower1_2" fill="WHITE" layoutX="1863.0" layoutY="60.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower2_2" fill="WHITE" layoutX="1812.0" layoutY="107.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower3_2" fill="WHITE" layoutX="1863.0" layoutY="107.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower4_2" fill="WHITE" layoutX="1811.0" layoutY="155.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower5_2" fill="WHITE" layoutX="1863.0" layoutY="155.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower6_2" fill="WHITE" layoutX="1811.0" layoutY="203.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Circle>
+      <Circle fx:id="tower7_2" fill="WHITE" layoutX="1863.0" layoutY="203.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">
          <effect>
             <DropShadow />
          </effect>
