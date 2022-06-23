@@ -340,15 +340,19 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-        Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
+        Platform.runLater( () -> {
+            mapSceneManager.moveMotherNature(maxSteps);
+            showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
+        } );
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
             mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
-            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);}
-        );
+            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+            showGenericMessage("Nuvole", "Scegli l'isola che fa per te!");
+        });
     }
 
     @Override
