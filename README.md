@@ -19,8 +19,8 @@ Interfacce grafiche implementate: CLI e GUI.
 - Protocollo implementato: [Documentazione di protocollo](link)
 
 ### Documenti di peer review
-- [Prima peer review](link)
-- [Seconda peer review](link)
+- [Prima peer review](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/PeerReviews/Peer%20review%20per%20GC18%20UML%20Model.pdf)
+- [Seconda peer review](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/PeerReviews/Peer%20review%20per%20GC18%20Network.pdf)
 
 
 ### JavaDoc
