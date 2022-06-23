@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.LobbyMessage;
+import it.polimi.ingsw.network.message.VictoryMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.enumerations.TowerColors;
@@ -316,6 +317,7 @@ public class Game extends Observable {
             }
             if (dominantPlayer != null) {
                 moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
+                checkTowerWinner(dominantPlayer);
                 checkMerge(islandID);
 
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
@@ -339,6 +341,11 @@ public class Game extends Observable {
         }
     }
 
+    private void checkTowerWinner(Player player) {
+        if(player.getScoreboard().getNumTowers() == 0)
+            notifyObserver(new VictoryMessage(player.getNickname()));
+    }
+
 
     private void checkProfessors(PawnColors color) {
         Player activePlayer = getActivePlayer();
@@ -359,13 +366,21 @@ public class Game extends Observable {
 
         if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty()) {
             System.out.println("Merge with Next (" + islandSucc.getID() + ")");
-            map.merge(islandID, islandID+1);
+            map.merge(islandID, getNextInt(islandID));
         }
 
         if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty()){
             System.out.println("Merge with Previous(" + islandPrev.getID() + ")");
-            map.merge(islandID, islandID-1);
+            map.merge(islandID, getPrevInt(islandID));
         }
+    }
+
+    public int getNextInt(int islandID){
+        return islandID == 11 ? 0 : islandID + 1;
+    }
+
+    public int getPrevInt(int islandID){
+        return islandID == 0 ? 11 : islandID - 1;
     }
 
     /**

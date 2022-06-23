@@ -107,12 +107,19 @@ public class CLI extends ViewObservable implements View {
     }
 
 
-    public String readRow() throws ExecutionException, InterruptedException {
+
+    public String readRow() {
         FutureTask<String> futureTask = new FutureTask<>(new ReadTask());
         readThread = new Thread(futureTask);
         readThread.start();
 
-        return futureTask.get();
+        try {
+            return futureTask.get();
+        } catch (InterruptedException | ExecutionException e) {
+            out.println("Invalid Input! Retry...");
+            readRow();
+        }
+        return null;
     }
 
 
@@ -135,59 +142,43 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askPlayersNumber() {
-        int playersNumber = 0;
-        try{
-            do{
-                try{
-                    out.println("Inserire numero di giocatori: ");
-                    playersNumber = Integer.parseInt(readRow());
-                }catch(InterruptedException e){
-                    out.println("Errore!");
-                }
-                if(playersNumber>=4 || playersNumber<=1) out.println("Errore! Scegliere tra 2 e 3");
-            }while(playersNumber>=4 || playersNumber<=1);
-            int finalPlayersNumber = playersNumber;
-            notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayersNumber));
-        }
-        catch (ExecutionException e) {
-            out.println("Errore!");
-        }
+        int playersNumber;
+        do{
+            try{
+                out.println("Inserire numero di giocatori: ");
+                playersNumber = Integer.parseInt(readRow());
+            }catch(NumberFormatException e){
+                out.println("Inserisci un numero!");
+                playersNumber = Integer.parseInt(readRow());
+            }
+            if(playersNumber>=4 || playersNumber<=1) out.println("Errore! Scegli tra 2 e 3");
+        }while(playersNumber>=4 || playersNumber<=1);
+        int finalPlayersNumber = playersNumber;
+        notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayersNumber));
     }
 
     @Override
     public void askGameMode() {
-        String gamemode = "";
-        try{
-            do{
-                try{
-                    out.println("Scegli la modalità di gioco (Normale o Esperta): ");
-                    gamemode = readRow();
-                }catch(InterruptedException e){
-                    out.println("Errore!");
-                }
-                if(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta")) out.println("Errore! Scegliere tra Normale ed Esperta");
-            }while(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta"));
+        String gamemode;
+        do{
+            out.println("Scegli la modalità di gioco (Normale o Esperta): ");
+            gamemode = readRow();
 
-            String finalGamemode = gamemode;
-            notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
-            expertMode = finalGamemode != "Normale";
-        }
-        catch (ExecutionException e) {
-            out.println("ExecutionException!");
-        }
+            if(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta")) out.println("Errore! Scegliere tra Normale ed Esperta");
+        }while(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta"));
+
+        String finalGamemode = gamemode;
+        notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
+        expertMode = !finalGamemode.equals("Normale");
     }
 
     @Override
     public void askPlayerNickname() {
         out.println("Inserisci il tuo nickname: ");
-        try{
-            String nickname = readRow();
-            this.nickname = nickname;
-            notifyObserver(obs -> obs.onUpdateNickname(nickname));
-        }
-        catch(ExecutionException | InterruptedException e){
-            out.println("Errore");
-        }
+        String nickname = readRow();
+        this.nickname = nickname;
+
+        notifyObserver(obs -> obs.onUpdateNickname(nickname));
     }
 
     @Override
@@ -207,7 +198,11 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showErrorMessage(String error) {
-        readThread.interrupt();
+        try{
+            readThread.interrupt();
+        }catch (NullPointerException ignored){
+        }
+
         out.println("\nERRORE: " + error);
         System.exit(1);
     }
@@ -234,12 +229,13 @@ public class CLI extends ViewObservable implements View {
                 out.println("ISOLA " + (island.getId() + 1) + ":");
             }
 
-            if(gameSerialized.getMotherNaturePos() == island.getId() || (!island.getReferencedIslands().isEmpty() && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
+            if(gameSerialized.getMotherNaturePos() == island.getId() || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
 
             if(island.getTowerNumber() != 0){
                 for(int i=0; i < island.getTowerNumber(); i++)
-                    out.println(printTower(island.getTowerColor()));
+                    out.print(printTower(island.getTowerColor()));
+                out.println();
             }
 
             for(int i=0; i < island.getRedStudents(); i++)
@@ -335,101 +331,114 @@ public class CLI extends ViewObservable implements View {
     public void askCharacterCard(List<CharacterCard> characterCards) {
         int choose;
         char answer;
-        try{
-            do {
-                out.println("E' il tuo turno...");
-                out.println("Vuoi usare una carta personaggio? Y/N");
-                answer = readRow().charAt(0);
-                if(answer != 'Y'){
-                    notifyObserver(obs -> obs.onUpdateUseEffect(false));
-                    return;
-                }
+        do {
+            out.println("E' il tuo turno...");
+            out.println("Vuoi usare una carta personaggio? Y/N");
+            answer = readRow().charAt(0);
+            if(answer != 'Y'){
+                notifyObserver(obs -> obs.onUpdateUseEffect(false));
+                return;
+            }
 
-                out.println("Scegli tra le seguenti Carte Personaggio:");
-                int i = 0;
-                for (CharacterCard characterCard : characterCards){
-                    out.println("Carta " + i + " - Costo " + characterCard.getCost());
-                    printEffect(characterCard.getID());
-                    i++;
-                }
-                out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
+            out.println("Scegli tra le seguenti Carte Personaggio:");
+            int i = 0;
+            for (CharacterCard characterCard : characterCards){
+                out.println("Carta " + i + " - Costo " + characterCard.getCost());
+                printEffect(characterCard.getID());
+                i++;
+            }
+            out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
+
+            try{
                 choose = Integer.parseInt(readRow());
-                if(choose > characterCards.size() - 1 || choose < 0)
-                    out.println("Numero inserito non valido. Riprovare.");
-            } while(choose > characterCards.size() - 1 || choose < 0);
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                choose = Integer.parseInt(readRow());
+            }
 
-            applyEffect(characterCards.get(choose));
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+            if(choose > characterCards.size() - 1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare.");
+        } while(choose > characterCards.size() - 1 || choose < 0);
+
+        applyEffect(characterCards.get(choose));
     }
 
     private void applyEffect(CharacterCard characterCard) {
+        boolean error;
+
         switch (characterCard.getID()){
             case 209 -> {
                 Card_209 card209 = (Card_209) characterCard;
                 int studentPos;
                 int islandNum;
 
-                try{
-                    boolean error;
-                    do {
-                        error = false;
-                        out.println("Scegli 1 studente:");
-                        int i = 0;
-                        for (StudentDisc student : card209.getStudents()){
-                            out.println(i + " " + printStudent(student));
-                            i++;
-                        }
+                do {
+                    error = false;
+                    out.println("Scegli 1 studente:");
+                    int i = 0;
+                    for (StudentDisc student : card209.getStudents()) {
+                        out.println(i + " " + printStudent(student));
+                        i++;
+                    }
+
+                    try{
                         studentPos = Integer.parseInt(readRow());
-                        if(studentPos > i - 1 || studentPos < 0) {
-                            out.println("Numero inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        studentPos = Integer.parseInt(readRow());
+                    }
 
-                    do {
-                        error = false;
-                        out.println("Scegli 1 isola:");
+                    if (studentPos > i - 1 || studentPos < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
                         islandNum = Integer.parseInt(readRow());
-                        if(islandNum > 12 || islandNum < 0) {
-                            out.println("Numero inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
 
-                    int finalStudentPos = studentPos;
-                    int finalIslandNum = islandNum;
-                    notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
+                    if (islandNum > 12 || islandNum < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                int finalStudentPos = studentPos;
+                int finalIslandNum = islandNum;
+                notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
+
             }
-            case 210 -> {
-                notifyObserver(ViewObserver::onUpdateUse210);
-            }
+            case 210 -> notifyObserver(ViewObserver::onUpdateUse210);
             case 211 -> {
                 int islandNum;
 
-                try{
-                    boolean error;
-                    do {
-                        error = false;
-                        out.println("Scegli 1 isola:");
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
                         islandNum = Integer.parseInt(readRow());
-                        if(islandNum > 12 || islandNum < 0) {
-                            out.println("Numero inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
 
-                    int finalIslandNum = islandNum;
-                    notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
+                    if(islandNum > 12 || islandNum < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while(error);
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                int finalIslandNum = islandNum;
+                notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
             }
             case 212 -> {
                 activeCardID = 212;
@@ -438,87 +447,84 @@ public class CLI extends ViewObservable implements View {
             case 213 -> {
                 int islandNum;
 
-                try{
-                    boolean error;
-                    do {
-                        error = false;
-                        out.println("Scegli 1 isola:");
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
                         islandNum = Integer.parseInt(readRow());
-                        if(islandNum > 12 || islandNum < 0) {
-                            out.println("Numero inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
 
-                    int finalIslandNum = islandNum;
-                    notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
+                    if (islandNum > 12 || islandNum < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                int finalIslandNum = islandNum;
+                notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
+
             }
             case 214 -> notifyObserver(ViewObserver::onUpdateUse214);
             case 216 -> notifyObserver(ViewObserver::onUpdateUse216);
             case 217 -> {
                 String color;
 
-                try{
-                    boolean error;
-                    do {
-                        error = false;
-                        out.println("Scegli un colore:");
-                        out.print((ANSI_RED + "rosso, " + ANSI_RESET));
-                        out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
-                        out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
-                        out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
-                        out.println((ANSI_PINK + "rosa" + ANSI_RESET));
+                do {
+                    error = false;
+                    out.println("Scegli un colore:");
+                    out.print((ANSI_RED + "rosso, " + ANSI_RESET));
+                    out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
+                    out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
+                    out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
+                    out.println((ANSI_PINK + "rosa" + ANSI_RESET));
 
-                        color = readRow();
-                        if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
-                            out.println("Colore inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
-
-                    switch (color){
-                        case "rosso" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.RED));
-                        case "giallo" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.YELLOW));
-                        case "verde" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.GREEN));
-                        case "blu" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.BLUE));
-                        case "rosa" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.PINK));
+                    color = readRow();
+                    if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
+                        out.println("Colore inserito non valido. Riprovare.");
+                        error = true;
                     }
+                } while(error);
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
+                switch (color){
+                    case "rosso" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.RED));
+                    case "giallo" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.YELLOW));
+                    case "verde" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.GREEN));
+                    case "blu" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.BLUE));
+                    case "rosa" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.PINK));
                 }
+
             }
             case 219 -> {
                 Card_219 card219 = (Card_219) characterCard;
                 int studentPos;
 
-                try{
-                    boolean error;
-                    do {
-                        error = false;
-                        out.println("Scegli 1 studente:");
-                        int i = 0;
-                        for (StudentDisc student : card219.getStudents()){
-                            out.println(i + " " + printStudent(student));
-                            i++;
-                        }
+                do {
+                    error = false;
+                    out.println("Scegli 1 studente:");
+                    int i = 0;
+                    for (StudentDisc student : card219.getStudents()){
+                        out.println(i + " " + printStudent(student));
+                        i++;
+                    }
+                    try{
                         studentPos = Integer.parseInt(readRow());
-                        if(studentPos > i - 1 || studentPos < 0) {
-                            out.println("Numero inserito non valido. Riprovare.");
-                            error = true;
-                        }
-                    } while(error);
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        studentPos = Integer.parseInt(readRow());
+                    }
+                    if(studentPos > i - 1 || studentPos < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while(error);
 
-                    int finalStudent = studentPos;
-                    notifyObserver(obs -> obs.onUpdateUse219(finalStudent));
+                int finalStudent = studentPos;
+                notifyObserver(obs -> obs.onUpdateUse219(finalStudent));
 
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
             default -> throw new IllegalStateException("Unexpected value: " + characterCard.getID());
         }
@@ -569,25 +575,26 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         int choose;
-        try{
-            do {
-                out.println("Scegli tra le seguenti Carte Assistente:");
-                int i = 0;
-                for (AssistantCard assistantCard : assistantCards){
-                    out.println("Carta " + i + " | Valore: " + assistantCard.getValue() + " Numero Passi: " + assistantCard.getMovement());
-                    i++;
-                }
-                out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
+        do {
+            out.println("Scegli tra le seguenti Carte Assistente:");
+            int i = 0;
+            for (AssistantCard assistantCard : assistantCards){
+                out.println("Carta " + i + " | Valore: " + assistantCard.getValue() + " Numero Passi: " + assistantCard.getMovement());
+                i++;
+            }
+            out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
+            try{
                 choose = Integer.parseInt(readRow());
-                if(choose > assistantCards.size()-1 || choose < 0)
-                    out.println("Numero inserito non valido. Riprovare.");
-            } while(choose > assistantCards.size()-1 || choose < 0);
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                choose = Integer.parseInt(readRow());
+            }
+            if(choose > assistantCards.size()-1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare.");
+        } while(choose > assistantCards.size()-1 || choose < 0);
 
-            int finalChoose = choose;
-            notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose))));
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        int finalChoose = choose;
+        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose))));
     }
 
     @Override
@@ -599,65 +606,71 @@ public class CLI extends ViewObservable implements View {
         boolean error;
         StudentDisc studentToReturn = null;
 
-        try{
-            // SCELTA STUDENTE
-            out.println("Scegli uno studente da muovere");
-            do {
-                error = false;
-                int i=0;
+        // SCELTA STUDENTE
+        out.println("Scegli uno studente da muovere");
+        do {
+            error = false;
+            int i = 0;
 
-                for(StudentDisc student : studentDiscs){
-                    out.println(i + " " + printStudent(student));
-                    i++;
-                }
+            for (StudentDisc student : studentDiscs) {
+                out.println(i + " " + printStudent(student));
+                i++;
+            }
+            try{
                 choose = Integer.parseInt(readRow());
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                choose = Integer.parseInt(readRow());
+            }
 
-                if(choose >= studentDiscs.size() || choose < 0){
+            if (choose >= studentDiscs.size() || choose < 0) {
+                out.println("Numero inserito non valido. Riprovare");
+                error = true;
+            }else {
+                studentToReturn = studentDiscs.get(choose);
+                if (studentToReturn == null) {
+                    out.println("Nessuno studente in quella posizione! Riprova!");
+                    error = true;
+                }
+            }
+        } while(error);
+
+        //SCELTA DESTINAZIONE
+        do {
+            error = false;
+            out.println("Dove vuoi spostarlo? (Isola o Sala)");
+
+            dest = readRow();
+
+            if(Objects.equals(dest, "Isola") || Objects.equals(dest, "isola") || Objects.equals(dest, "i"))
+                toIsland = true;
+            if (dest != null && !checkDest(dest)){
+                out.println("Destinazione non corretta. Ricontrollare");
+                error = true;
+            }
+        } while(error);
+
+
+        //SCELTA ISOLA
+        do{
+            error = false;
+
+            if(toIsland) {
+                out.println("Inserisci numero dell'isola");
+
+                try{
+                    islandDest = Integer.parseInt(readRow());
+                }catch (NumberFormatException e) {
+                    out.println("Inserisci un numero!");
+                    islandDest = Integer.parseInt(readRow());
+                }
+
+                if(islandDest < 1 || islandDest > 12){
                     out.println("Numero inserito non valido. Riprovare");
                     error = true;
-                }else {
-                    studentToReturn = studentDiscs.get(choose);
-                    if(studentToReturn == null) {
-                        out.println("Nessuno studente in quella posizione! Riprova!");
-                        error = true;
-                    }
                 }
-            }while(error);
-
-            //SCELTA DESTINAZIONE
-            do {
-                error = false;
-                out.println("Dove vuoi spostarlo? (Isola o Sala)");
-
-                dest = readRow();
-
-                if(Objects.equals(dest, "Isola") || Objects.equals(dest, "isola") || Objects.equals(dest, "i"))
-                    toIsland = true;
-                if (dest != null && !checkDest(dest)){
-                    out.println("Destinazione non corretta. Ricontrollare");
-                    error = true;
-                }
-            } while(error);
-
-            //SCELTA ISOLA
-            do{
-                error = false;
-
-                if(toIsland) {
-                    out.println("Inserisci numero dell'isola");
-
-                    islandDest = Integer.parseInt(readRow());
-
-                    if(islandDest < 1 || islandDest > 12){
-                        out.println("Numero inserito non valido. Riprovare");
-                        error = true;
-                    }
-                }
-            }while (error);
-
-        }catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+            }
+        }while (error);
 
         StudentDisc finalStudentToReturn = studentToReturn;
         int finalIslandDest = islandDest;
@@ -672,24 +685,26 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-        int steps = 0;
+        int steps;
         boolean error;
-        try{
-            do {
-                error = false;
-                if(activeCardID == 212) maxSteps = maxSteps + 2;
-                out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + " passi.");
 
+        do {
+            error = false;
+            if(activeCardID == 212) maxSteps = maxSteps + 2;
+            out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + " passi.");
+
+            try{
                 steps = Integer.parseInt(readRow());
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                steps = Integer.parseInt(readRow());
+            }
 
-                if(steps <= 0 || steps > maxSteps){
-                    out.println("Impossibile muoversi di " + steps + " passi. Riprova!");
-                    error = true;
-                }
-            } while(error);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+            if(steps <= 0 || steps > maxSteps){
+                out.println("Impossibile muoversi di " + steps + " passi. Riprova!");
+                error = true;
+            }
+        } while(error);
 
         int finalSteps = steps;
         notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
@@ -698,29 +713,30 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
-        int choose = -1;
-        try{
-            do {
-                out.println("Scegli tra le seguenti Nuvole:");
-                for (Cloud cloud : cloudList) {
-                    out.println("Nuvola " + cloud.getCloudID());
-                    for(StudentDisc studentDisc : cloud.getCloudStudents()){
-                        out.print(printStudent(studentDisc));
-                    }
-                    out.println();
+        int choose;
+        do {
+            out.println("Scegli tra le seguenti Nuvole:");
+            for (Cloud cloud : cloudList) {
+                out.println("Nuvola " + cloud.getCloudID());
+                for(StudentDisc studentDisc : cloud.getCloudStudents()){
+                    out.print(printStudent(studentDisc));
                 }
+                out.println();
+            }
 
-                out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
+            out.println("Inserisci un numero tra 0 e " + (cloudList.size() - 1) + ":");
 
+            try{
                 choose = Integer.parseInt(readRow());
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                choose = Integer.parseInt(readRow());
+            }
 
-                if(choose > cloudList.size()-1 || choose < 0)
-                    out.println("Numero inserito non valido. Riprovare.");
+            if(choose > cloudList.size() - 1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare.");
 
-            }while(choose > cloudList.size()-1 || choose < 0);
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
+        }while(choose > cloudList.size()-1 || choose < 0);
 
         int finalChoose = choose;
         ArrayList<Cloud> cloud = new ArrayList<>();

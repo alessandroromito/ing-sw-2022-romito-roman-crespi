@@ -175,8 +175,7 @@ public class ScoreboardX3p implements Scoreboard{
 
     @Override
     public Tower removeTower() {
-        towers.remove(towers.size()-1);
-        return towers.get(towers.size()-1);
+        return towers.remove(towers.size()-1);
     }
 
     @Override

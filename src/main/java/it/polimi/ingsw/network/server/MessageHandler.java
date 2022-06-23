@@ -252,4 +252,11 @@ public class MessageHandler {
             }
         }
     }
+
+    /**
+     * Client don't send CharacterCardMessage
+     * @param victoryCheckMessage
+     */
+    public void handleMessage(VictoryCheckMessage victoryCheckMessage) {
+    }
 }

@@ -49,8 +49,12 @@ public class GameController implements Observer {
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
         game.setExpertMode(chosenExpertMode);
 
+        // Adding Observers
+        for(Player player : game.getPlayers())
+            player.addObserver(this);
         for(VirtualView vv : virtualViewMap.values())
             game.addObserver(vv);
+        game.getMap().addObserver(this);
 
         turnController = new TurnController(this, virtualViewMap);
         game.setTurnController(turnController);
@@ -125,7 +129,9 @@ public class GameController implements Observer {
     }
 
     public void win(Player player){
-        showGenericMessageToAll("### PLAYER:" + player.getNickname() + "WIN!!! ###");
+        VirtualView vv = virtualViewMap.get(player.getNickname());
+        vv.showVictoryMessage(player.getNickname());
+
         endGame();
     }
 
@@ -157,6 +163,8 @@ public class GameController implements Observer {
             if(!playersNicknames.contains(nickname))
                 playersNicknames.add(nickname);
 
+            virtualView.showLoginResult(nickname,true, true);
+
             if(chosenPlayerNumber == virtualViewMap.size()){
 
                 //check if there is a saved game
@@ -177,8 +185,6 @@ public class GameController implements Observer {
 
                 startGame();
             }
-
-            virtualView.showLoginResult(nickname,true, true);
 
         } else {
             virtualView.showLoginResult(nickname,true, false);
@@ -426,9 +432,8 @@ public class GameController implements Observer {
      */
     @Override
     public void update(Message message) {
-        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         switch (message.getMessageType()) {
-
+            case WIN_CHECK -> winnerChecker();
             case WINNER_DECLARATION -> win(game.getPlayerByNickname(message.getNickname()));
             case ERROR -> System.out.println(((ErrorMessage) message).getError());
             default -> showGenericMessageToAll("Invalid update!");

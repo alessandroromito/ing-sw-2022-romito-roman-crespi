@@ -1,13 +1,17 @@
 package it.polimi.ingsw.server.model.map;
 
+import it.polimi.ingsw.network.message.VictoryCheckMessage;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class Map {
+public class Map extends Observable {
 
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;
@@ -69,6 +73,22 @@ public class Map {
 
     public int getMotherNaturePosition(){
         return motherNaturePos;
+    }
+
+    public void checkIslandWinner(){
+        for(Island island : islands){
+            if(!island.isDisabled())
+                return;
+        }
+
+        int count = 0;
+        List<GhostIsland> ghostIslandList = Arrays.stream(ghostIslands).toList();
+        for(GhostIsland ghostIsland : ghostIslandList){
+            if(ghostIsland != null)
+                count++;
+        }
+        if (count == 3)
+            notifyObserver(new VictoryCheckMessage());
     }
 
     /*
@@ -252,5 +272,13 @@ public class Map {
             getPrev(islandPrev.getID());
 
         return islandPrev.isDisabled() ? getGhostIsland(islandPrev.getID()) : islandPrev;
+    }
+
+    public int getNextInt(int islandID){
+        return islandID == 11 ? 0 : islandID + 1;
+    }
+
+    public int getPrevInt(int islandID){
+        return islandID == 0 ? 11 : islandID - 1;
     }
 }

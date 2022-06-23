@@ -55,6 +55,7 @@ public class TurnController {
      */
     public void newTurn() {
         turnCount++;
+        System.out.println("Turno: " + turnCount);
         if(turnCount == 10)
             gameController.winnerChecker();
 
