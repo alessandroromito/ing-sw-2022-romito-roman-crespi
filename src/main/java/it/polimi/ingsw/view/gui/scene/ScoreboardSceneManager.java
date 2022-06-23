@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -215,11 +217,36 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     @FXML
     private ImageView yellow9;
 
+    @FXML
+    private Circle tower0;
+
+    @FXML
+    private Circle tower1;
+
+    @FXML
+    private Circle tower2;
+
+    @FXML
+    private Circle tower3;
+
+    @FXML
+    private Circle tower4;
+
+    @FXML
+    private Circle tower5;
+
+    @FXML
+    private Circle tower6;
+
+    @FXML
+    private Circle tower7;
+
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
     private int[] visibleStudents = new int[5];
     private boolean[] entranceFree = new boolean[7];
-
+    private Circle[] towers = new Circle[8];
+    private int towerColor;
 
     public ScoreboardSceneManager() {
         stage = new Stage();
@@ -228,7 +255,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setAlwaysOnTop(true);
     }
-
 
     @FXML
     void click(MouseEvent event) {
@@ -248,6 +274,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         entrance[0] = entrance0; entrance[1] = entrance1; entrance[2] = entrance2; entrance[3] = entrance3; entrance[4] = entrance4; entrance[5] = entrance5; entrance[6] = entrance6; entrance[7] = entrance7; entrance[8] = entrance8;
+        towers[0] = tower0; towers[1] = tower1; towers[2] = tower2; towers[3] = tower3; towers[4] = tower4; towers[5] = tower5; towers[6] = tower6; towers[7] = tower7;
 
         diningRoom[0][0] = green0; diningRoom[0][1] = green1; diningRoom[0][2] = green2; diningRoom[0][3] = green3; diningRoom[0][4] = green4; diningRoom[0][5] = green5; diningRoom[0][6] = green6; diningRoom[0][7] = green7; diningRoom[0][8] = green8; diningRoom[0][9] = green9;
         diningRoom[1][0] = red0; diningRoom[1][1] = red1; diningRoom[1][2] = red2; diningRoom[1][3] = red3; diningRoom[1][4] = red4; diningRoom[1][5] = red5; diningRoom[1][6] = red6; diningRoom[1][7] = red7; diningRoom[1][8] = red8; diningRoom[1][9] = red9;
@@ -263,6 +290,21 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
         for (int i=0;i<7;i++)   entranceFree[i] = false;
+
+        setTowerColor(0);
+    }
+
+    //color: 0=black 1=white 2=grey
+    public void setTowerColor(int color){
+        towerColor = color;
+        for(Circle c: towers){
+            if(color == 0)
+                c.setFill(Color.BLACK);
+            if(color == 1)
+                c.setFill(Color.WHITE);
+            if(color == 2)
+                c.setFill(Color.GREY);
+        }
     }
 
     //color: 1/5
@@ -281,6 +323,14 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 entrance[i].setId(Integer.toString(id));
                 entrance[i].setOnMouseClicked(ck -> openOptionMenu(temp.getId()));
                 return;
+            }
+    }
+
+    public void removeStudentFromEntrance(int id){
+        for(int i=0;i<7;i++)
+            if(entrance[i].getId().equals(Integer.toString(id))){
+                entrance[i].setImage(null);
+                entranceFree[i] = true;
             }
     }
 
