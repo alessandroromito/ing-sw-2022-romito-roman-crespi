@@ -15,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class GraphicController extends ViewObservable implements View {
 
     private static Scene activeScene;
     private static SceneManagerInterface activeManager;
+    private boolean gameScenarioEnabled = false;
+    MapSceneManager mapSceneManager;
 
 
     public static Scene getActiveScene() {
@@ -80,26 +81,33 @@ public class GraphicController extends ViewObservable implements View {
         }
     }
 
-    public static void paneTransitionGameScenario(SceneManagerInterface sceneManager, String fxml) {
-        paneTransitionGameScenario(sceneManager, activeScene, fxml);
-    }
 
-    public static void paneTransitionGameScenario(SceneManagerInterface sceneManager, Scene scene, String fxml) {
-        try{
-            FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/" + fxml));
+    public synchronized MapSceneManager getAndPaneTransitionGameScenario() {
+        if(!gameScenarioEnabled)
+        {
+            System.out.println("Game scenario in creation");
+            MapSceneManager mapSceneManager;// = new MapSceneManager();
+            //mapSceneManager.addAllObservers(observers);
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/mapExpert_scene.fxml"));
+                Parent parent = fxmlLoader.load();
 
-            Parent parent = fxmlLoader.load();
-
-            //System.out.println((String) fxmlLoader.getController());
-            fxmlLoader.setController(sceneManager);
-            activeManager = sceneManager;
-            //Parent parent = fxmlLoader.load();
-            activeScene = scene;
-            activeScene.setRoot(parent);
-        }catch(IOException e) {
-            Logger.getLogger("client").severe(e.getMessage());
-            e.printStackTrace();
+                mapSceneManager = fxmlLoader.getController();
+                mapSceneManager.addAllObservers(observers);
+                //fxmlLoader.setController(mapSceneManager);
+                System.out.println(fxmlLoader.getController().toString());
+                activeManager = mapSceneManager;
+                //Parent parent = fxmlLoader.load();
+                activeScene.setRoot(parent);
+                gameScenarioEnabled = true;
+                return mapSceneManager;
+            }catch(IOException e) {
+                Logger.getLogger("client").severe(e.getMessage());
+                e.printStackTrace();
+            }
         }
+        return mapSceneManager;
+
     }
 
     public static void paneTransitionNoController(SceneManagerInterface sceneManager, String fxml) {
@@ -271,13 +279,12 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
-        MapSceneManager mapSceneManager = getMapSceneManager();
-        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
+        Platform.runLater( () -> getAndPaneTransitionGameScenario().updateValues(gameSerialized) );
     }
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
-        MapSceneManager mapSceneManager = getMapSceneManager();
+        MapSceneManager mapSceneManager = getAndPaneTransitionGameScenario();
         //max 2 alla volta
         Integer minValue = 12;
         for (Integer integer : unifiedIsland)
@@ -297,7 +304,7 @@ public class GraphicController extends ViewObservable implements View {
         }
 
         Platform.runLater( () -> {
-            getMapSceneManager().initializeCharacterCards(finalCharacterNumbers);
+            getAndPaneTransitionGameScenario().initializeCharacterCards(finalCharacterNumbers);
         });
     }
 
@@ -323,7 +330,7 @@ public class GraphicController extends ViewObservable implements View {
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
-            getMapSceneManager().enableAssistant(assistantCards);
+            getAndPaneTransitionGameScenario().enableAssistant(assistantCards);
         });
     }
 
@@ -334,15 +341,15 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-        MapSceneManager mapSceneManager = getMapSceneManager();
+        MapSceneManager mapSceneManager = getAndPaneTransitionGameScenario();
         Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
-            getMapSceneManager().addStudentsToCloud(cloudList.get(0),1);
-            getMapSceneManager().addStudentsToCloud(cloudList.get(1),2);}
+            getAndPaneTransitionGameScenario().addStudentsToCloud(cloudList.get(0),1);
+            getAndPaneTransitionGameScenario().addStudentsToCloud(cloudList.get(1),2);}
         );
     }
 
@@ -359,7 +366,7 @@ public class GraphicController extends ViewObservable implements View {
         });
     }
 
-    private MapSceneManager getMapSceneManager(){
+    /*private MapSceneManager getMapSceneManager(){
         MapSceneManager mapSceneManager;
         try{
             mapSceneManager = (MapSceneManager) getActiveManager();
@@ -368,10 +375,10 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.addAllObservers(observers);
             MapSceneManager finalMapSceneManager = mapSceneManager;
             Platform.runLater( () ->{
-                paneTransitionGameScenario(finalMapSceneManager, "mapExpert_scene.fxml");
+                getAndPaneTransitionGameScenario(finalMapSceneManager, "mapExpert_scene.fxml");
                 //finalMapSceneManager.initialize();
             });
         }
         return mapSceneManager;
-    }
+    }*/
 }
