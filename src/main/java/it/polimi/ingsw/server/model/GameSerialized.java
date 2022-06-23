@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class GameSerialized implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private final Boolean expertMode;
     private final int motherNaturePos;
     private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
@@ -41,6 +42,7 @@ public class GameSerialized implements Serializable {
         }
 
         this.motherNaturePos = game.getMap().getMotherNaturePosition();
+        this.expertMode = game.isExpertMode();
     }
 
     public ArrayList<SerializableIsland> getSerializableIslands() {
@@ -58,5 +60,9 @@ public class GameSerialized implements Serializable {
     @Override
     public String toString() {
         return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
+    }
+
+    public Boolean getExpertMode() {
+        return expertMode;
     }
 }

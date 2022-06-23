@@ -106,8 +106,6 @@ public class CLI extends ViewObservable implements View {
         notifyObserver(obs -> obs.onUpdateServerDetails(server));
     }
 
-
-
     public String readRow() {
         FutureTask<String> futureTask = new FutureTask<>(new ReadTask());
         readThread = new Thread(futureTask);
@@ -164,12 +162,15 @@ public class CLI extends ViewObservable implements View {
             out.println("Scegli la modalità di gioco (Normale o Esperta): ");
             gamemode = readRow();
 
-            if(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta")) out.println("Errore! Scegliere tra Normale ed Esperta");
+            if(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta"))
+                out.println("Errore! Scegliere tra 'Normale' ed 'Esperta'");
+
         }while(!Objects.equals(gamemode, "Normale") && !Objects.equals(gamemode, "Esperta"));
 
         String finalGamemode = gamemode;
+        expertMode = finalGamemode.equals("Esperta");
+
         notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
-        expertMode = !finalGamemode.equals("Normale");
     }
 
     @Override
@@ -262,14 +263,15 @@ public class CLI extends ViewObservable implements View {
             else {
                 out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
             }
-            if(expertMode)
-                out.println("Coin: " + scoreboard.getCoins());
 
+            expertMode = gameSerialized.getExpertMode();
             showScoreboard(scoreboard);
         }
     }
 
     public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
+        if(expertMode)
+            out.println("Coin: " + currentPlayerScoreboard.getCoins());
 
         out.println("Torri:");
         for(int i=0; i< currentPlayerScoreboard.getTowerNumber(); i++){
@@ -540,7 +542,7 @@ public class CLI extends ViewObservable implements View {
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
             case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
             case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
-            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET );
+            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET ); //tested
         }
     }
 

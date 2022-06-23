@@ -141,7 +141,7 @@ public class Game extends Observable {
                     .filter(player -> nickname.equals(player.getNickname()))
                     .findFirst()
                     .orElse(null);
-            if(p == null) throw new MissingPlayerNicknameException("Player " + nickname + "is missing!");
+            if(p == null) throw new MissingPlayerNicknameException(nickname + " is missing!");
             return p;
         }catch (MissingPlayerNicknameException e) {
             throw new RuntimeException(e);
@@ -429,7 +429,7 @@ public class Game extends Observable {
         return getPlayerByNickname(turnController.getActivePlayer());
     }
 
-    private int oppositePosition() {
+    public int oppositePosition() {
         int startingPosition = map.getMotherNaturePosition();
         for(int i=0; i<6; i++){
             startingPosition++;

@@ -103,7 +103,6 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.askCharacterCard(characterCardMessage.getCharacterCards()));
             }
             case CARD209 -> {
-
             }
             case CARD210 -> {
             }

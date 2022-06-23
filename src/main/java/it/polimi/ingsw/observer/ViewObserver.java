@@ -29,7 +29,6 @@ public interface ViewObserver {
 
     void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards);
 
-
     void onUpdateGameMode(String mode);
 
     void onUpdateUseEffect(boolean useEffect);

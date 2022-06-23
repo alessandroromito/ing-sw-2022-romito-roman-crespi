@@ -1,8 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ExpertGameTest {
     ExpertGame expertgame;
@@ -36,8 +34,8 @@ class ExpertGameTest {
 
     @Test
     void useCharacter() {
-        expertgame.useCharacter(1);
-        assertNotEquals(-1, expertgame.getActiveCardID());
+        expertgame.useCharacter(210);
+        assertNotEquals(210, expertgame.getActiveCardID());
     }
 
     @Test

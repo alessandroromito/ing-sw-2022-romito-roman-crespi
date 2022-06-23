@@ -1,17 +1,13 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.exception.FullGroupIDListException;
 import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.MotherNature;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
-import it.polimi.ingsw.server.model.component.Tower;
 import it.polimi.ingsw.server.model.map.Cloud;
-import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
@@ -70,11 +66,6 @@ public class GameTest {
         p = (ProfessorPawn) components.get(5);
         assertEquals(PawnColors.PINK, p.getColor());
 
-        assertNotNull(components.get(7));
-        assertEquals(Tower.class, components.get(7).getClass());
-        Tower t = (Tower) components.get(7);
-        assertEquals(TowerColors.BLACK, t.getColor());
-
     }
 
     @Test
@@ -88,13 +79,8 @@ public class GameTest {
         }
 
         // Opposite island free
-        int oppositeIslandNum;
+        int oppositeIslandNum = map.getIsland(game.oppositePosition()).getID();
 
-        if (map.getMotherNaturePosition() + 6 < 12)
-            oppositeIslandNum = map.getMotherNaturePosition() + 6;
-        else oppositeIslandNum = map.getMotherNaturePosition() +6 -12;
-
-        Island oppositeIsland = map.getIsland(oppositeIslandNum);
         //Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
         for(Integer integer : map.getIsland(oppositeIslandNum).getNumberOfColors())
         {
@@ -105,14 +91,15 @@ public class GameTest {
 
         // Scoreboard entrance is full
         Player p1 = null;
-        p1 = game.getPlayerByNickname("Player1");
+        p1 = game.getPlayerByNickname("player1");
         Scoreboard scoreboard1 = p1.getScoreboard();
 
-        Player p2 = game.getPlayerByNickname("Player2");
+        Player p2 = game.getPlayerByNickname("player2");
         Scoreboard scoreboard2 = p1.getScoreboard();
 
-        assertEquals(7, scoreboard1.getNumStudentsFromEntrance());
-        assertEquals(7, scoreboard2.getNumStudentsFromEntrance());
+        assertEquals(9, scoreboard1.getNumStudentsFromEntrance());
+        assertEquals(9, scoreboard2.getNumStudentsFromEntrance());
+        assertEquals(9, scoreboard1.getNumStudentsFromEntrance());
 
     }
 

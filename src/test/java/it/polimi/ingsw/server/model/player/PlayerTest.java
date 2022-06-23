@@ -50,7 +50,7 @@ public class PlayerTest {
         players.remove(2);
 
         p1.createScoreboard(game.getNumberOfPlayer(), TowerColors.BLACK);
-        assertEquals(ScoreboardX2p.class, p1.getScoreboard().getClass());
+        assertEquals(ScoreboardX3p.class, p1.getScoreboard().getClass());
 
     }
 
