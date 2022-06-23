@@ -329,6 +329,7 @@ public class GraphicController extends ViewObservable implements View {
         System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
             mapSceneManager.enableAssistant(assistantCards);
+            showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
     }
 
