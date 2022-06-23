@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.model.GameSerialized;
-import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -250,7 +250,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     public ScoreboardSceneManager() {
         stage = new Stage();
-        stage.initOwner(SceneManager.getActiveScene().getWindow());
+        stage.initOwner(GraphicController.getActiveScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setAlwaysOnTop(true);
