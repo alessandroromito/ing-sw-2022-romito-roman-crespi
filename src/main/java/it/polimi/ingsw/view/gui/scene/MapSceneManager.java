@@ -734,13 +734,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         darkAll();
     }
 
-    //bottone temporaneo per prove
-    public void build (ActionEvent actionEvent) {
-        //ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
-        //scoreboardSceneManager.updateValues(gameSerialized);
-        enableIslands();
-    }
-
     private int getColorFromId(int id){
         if(id-59>=0 && id-58<=25)
             return 1;
