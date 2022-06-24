@@ -202,4 +202,9 @@ public class ScoreboardX2p implements Scoreboard{
         return professorList;
     }
 
+    @Override
+    public void addTowers(ArrayList<Tower> towers) {
+        this.towers.addAll(towers);
+    }
+
 }

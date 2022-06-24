@@ -36,8 +36,8 @@ public class Map extends Observable {
         }
     }
 
-    public Island getIsland(int islandNumber){
-        return islands.get(islandNumber);
+    public Island getIsland(int islandID){
+        return islands.get(islandID);
     }
 
     public GhostIsland getGhostIsland(int islandNumber){
@@ -281,4 +281,5 @@ public class Map extends Observable {
     public int getPrevInt(int islandID){
         return islandID == 0 ? 11 : islandID - 1;
     }
+
 }

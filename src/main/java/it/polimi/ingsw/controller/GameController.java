@@ -44,7 +44,7 @@ public class GameController implements Observer {
         setGameState(GameState.GAME_ROOM);
     }
 
-    private void startGame() {
+    public void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
         game.setExpertMode(chosenExpertMode);
@@ -379,8 +379,8 @@ public class GameController implements Observer {
                             game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber()-1);
                     }
                     case 210 -> {
-                        if(game.useCharacter(210))
-                            game.use_210();
+                        game.useCharacter(210);
+                        game.use_210();
                     }
                     case 211 -> {
                         Card211Message card211Message = (Card211Message) useEffectMessage;
@@ -393,8 +393,8 @@ public class GameController implements Observer {
                     }
                     case 213 -> {
                         Card213Message card213Message = (Card213Message) useEffectMessage;
-                        if(game.useCharacter(213))
-                            game.use_213(card213Message.getIslandNumber());
+                        game.useCharacter(213);
+                        game.use_213(card213Message.getIslandNumber());
                     }
                     case 214 -> {
                         if(game.useCharacter(214))
@@ -417,8 +417,8 @@ public class GameController implements Observer {
                 }
             }
             else{
-                showMessage(useEffectMessage.getNickname(), "You don't have enough coin!");
-                turnController.nextActionPhase();
+                showMessage(useEffectMessage.getNickname(), "Non hai abbastanza monete per usare questa carta personaggio!");
+                askCharacterCard();
             }
         }
         else{
@@ -480,6 +480,10 @@ public class GameController implements Observer {
         return this.game;
     }
 
+    public void setPlayersNicknames(List<String> playersNicknames) {
+        this.playersNicknames = playersNicknames;
+    }
+
     public List<String> getPlayersNicknames() {
         return playersNicknames;
     }
@@ -492,5 +496,7 @@ public class GameController implements Observer {
         return chosenPlayerNumber;
     }
 
-
+    public void setChosenExpertMode(boolean b) {
+        this.chosenExpertMode = b;
+    }
 }

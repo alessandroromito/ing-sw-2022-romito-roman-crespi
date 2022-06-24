@@ -29,4 +29,5 @@ public interface Scoreboard {
     List<StudentDisc> getEntrance();
     Integer[] getDiningRoom();
     ArrayList<ProfessorPawn> getProfessorList();
+    void addTowers(ArrayList<Tower> towers);
 }

@@ -11,7 +11,8 @@ public class Card_213 extends CharacterCard{
     ArrayList<NoEntryTile> noEntryTiles = new ArrayList<>();
     public Card_213(List<Component> nt) {
         super(213);
-        this.cost = 2;
+        this.cost = 0; //1
+
         for(int i=0;i<4;i++)
             this.noEntryTiles.add((NoEntryTile) nt.get(i));
     }

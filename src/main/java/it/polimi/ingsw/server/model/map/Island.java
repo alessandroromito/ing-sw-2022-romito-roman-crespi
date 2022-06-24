@@ -101,7 +101,7 @@ public class Island {
     }
 
     public int getTowerNumber(){
-        return towers.size();
+        return towers == null ? 0 : towers.size();
     }
 
     public void disable(){
@@ -162,4 +162,7 @@ public class Island {
         return tile;
     }
 
+    public void removeTowers(){
+        towers = null;
+    }
 }

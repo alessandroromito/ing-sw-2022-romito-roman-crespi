@@ -251,13 +251,15 @@ public class Game extends Observable {
                  System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID) ;
              }
              else{
+                 TowerColors oldColor = island.getTowerColor();
                  for(Player p : players){
-                     TowerColors oldColor = island.getTowerColor();
                      if(p.getScoreboard().getTowerColor() == oldColor){
-                         p.getScoreboard().addTower(island.getTowers().get(0)); // Add 1 tower to the old dominant player
+                         p.getScoreboard().addTowers(island.getTowers());
+                         island.removeTowers();
+                         // Add 1 tower to the old dominant player
                          island.addTower(tower); //add tower to island
                          System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID);
-                         System.out.println("Move Tower " + tower.getColor() + " Back To " + p.getNickname());
+                         System.out.println("Move Tower/s " + oldColor + " Back To " + p.getNickname());
                      }
                  }
              }
@@ -298,7 +300,6 @@ public class Game extends Observable {
         Player opponentPlayer = null;
 
         Island island = map.getIsland(islandID);
-
         if(island.isDisabled()){
             island = map.getGhostIsland(islandID);
         }
@@ -341,7 +342,7 @@ public class Game extends Observable {
         }
     }
 
-    private void checkTowerWinner(Player player) {
+    public void checkTowerWinner(Player player) {
         if(player.getScoreboard().getNumTowers() == 0)
             notifyObserver(new VictoryMessage(player.getNickname()));
     }

@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class ExpertGameTest {
     ExpertGame expertgame;
-    private List<String> players = new ArrayList<>();
+
+    private final List<String> playersNicknames = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -21,11 +22,12 @@ class ExpertGameTest {
         String player2 = "Player 2";
         String player3 = "Player 3";
 
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
+        playersNicknames.add(player1);
+        playersNicknames.add(player2);
+        playersNicknames.add(player3);
 
-        expertgame = new ExpertGame(players);
+        expertgame = new ExpertGame(playersNicknames);
+        expertgame.setExpertMode(true);
     }
 
     @AfterEach

@@ -5,11 +5,12 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import java.util.ArrayList;
 
 public class Card_219 extends CharacterCard {
-    private ArrayList<StudentDisc> students;
+    private final ArrayList<StudentDisc> students;
 
     public Card_219(ArrayList<StudentDisc> studentDiscArray){
         super(219);
         this.students = studentDiscArray;
+        this.cost = 0; //1
     }
 
     public StudentDisc getStudent(int i){
