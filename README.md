@@ -16,11 +16,11 @@ Interfacce grafiche implementate: CLI e GUI.
 - Diagramma UML finale dell'applicazione che mostrino com'è progettato il software: [UML finale](link)
 
 ### Documentazione di protocollo di comunicazione tra client e server
-- Protocollo implementato: [Documentazione di protocollo](link)
+- Protocollo implementato: [Documentazione di protocollo](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/ProtocolDocumentation/SequenceDiagram.jpeg)
 
 ### Documenti di peer review
-- [Prima peer review](link)
-- [Seconda peer review](link)
+- [Prima peer review](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/PeerReviews/Peer%20review%20per%20GC18%20UML%20Model.pdf)
+- [Seconda peer review](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/PeerReviews/Peer%20review%20per%20GC18%20Network.pdf)
 
 
 ### JavaDoc
