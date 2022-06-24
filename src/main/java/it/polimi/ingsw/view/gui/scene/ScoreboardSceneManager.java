@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -300,13 +301,16 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     //color: 0=black 1=white 2=grey
     public void setTowerColor(int color){
+        Paint white = Color.WHITE;
+        Paint black = Color.BLACK;
+        Paint grey = Color.GREY;
         for(Circle c: towers){
             if(color == 0)
-                c.setFill(Color.BLACK);
+                c.setFill(black);
             if(color == 1)
-                c.setFill(Color.WHITE);
+                c.setFill(white);
             if(color == 2)
-                c.setFill(Color.GREY);
+                c.setFill(grey);
         }
     }
 
@@ -343,13 +347,13 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void setTowerNumber(int number){
-        while(number<availableTowers){
-            availableTowers++;
-            towers[availableTowers].setVisible(true);
-        }
         while(number>availableTowers){
+            availableTowers++;
+            towers[availableTowers-1].setVisible(true);
+        }
+        while(number<availableTowers){
             availableTowers--;
-            towers[availableTowers].setVisible(false);
+            towers[availableTowers-1].setVisible(false);
         }
     }
 
@@ -401,7 +405,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void updateValues(GameSerialized gameSerialized) {
         SerializableScoreboard scoreboard = null;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
-            if(s.getNickname() == nickname)
+            if(s.getNickname().equals(nickname))
                 scoreboard = s;
 
         if(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
@@ -418,6 +422,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         }
 
         setTowerNumber(scoreboard.getTowerNumber());
+        setTowerColor(scoreboard.getTowerColor().ordinal());
 
         for(int id: scoreboard.getEntranceId()){
             clearEntrance();
