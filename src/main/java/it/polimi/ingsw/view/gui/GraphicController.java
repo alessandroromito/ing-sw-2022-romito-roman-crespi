@@ -285,8 +285,10 @@ public class GraphicController extends ViewObservable implements View {
         getAndPaneTransitionGameScenario();
         Platform.runLater( () -> {
             mapSceneManager.updateValues(gameSerialized);
-            if(scoreboardSceneManager!=null) scoreboardSceneManager.updateValues(gameSerialized);
-            else showScoreboards();
+            if(scoreboardSceneManager==null) {
+                showScoreboards();
+            }
+            scoreboardSceneManager.updateValues(gameSerialized);
         });
     }
 
