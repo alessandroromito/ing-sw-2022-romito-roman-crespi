@@ -766,10 +766,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             for(int k=0;k<10;k++){
                 diningRoom[i][k].setVisible(false);
                 diningRoom[i][k].setDisable(true);
-                diningRoom_1[i][k].setVisible(false);
-                diningRoom_1[i][k].setDisable(true);
-                diningRoom_2[i][k].setVisible(false);
-                diningRoom_2[i][k].setDisable(true);
+                //diningRoom_1[i][k].setVisible(false);
+                //diningRoom_1[i][k].setDisable(true);
+                //diningRoom_2[i][k].setVisible(false);
+                //diningRoom_2[i][k].setDisable(true);
             }
 
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
