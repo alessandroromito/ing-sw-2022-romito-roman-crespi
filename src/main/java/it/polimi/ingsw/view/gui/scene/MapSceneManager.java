@@ -1003,7 +1003,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
-        System.out.println("entra in choosenassistant");
 
         assistantStillInHand[assistantUsed] = false;
         assistantCards[assistantUsed].setMouseTransparent(true);

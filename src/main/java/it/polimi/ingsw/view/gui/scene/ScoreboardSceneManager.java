@@ -909,6 +909,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.setScene(scene);
     }
 
+    @FXML
+    public void closeScoreboard() {
+        stage.close();
+    }
+
     private int getColorFromId(int id){
         if(id-59>=0 && id-58<=25)
             return 1;
