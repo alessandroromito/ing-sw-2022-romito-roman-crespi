@@ -189,7 +189,7 @@ public class GraphicController extends ViewObservable implements View {
 
     public static ScoreboardSceneManager showScoreboards() {
         if (scoreboardSceneManager == null) initializeScoreboard();
-        scoreboardSceneManager.showScoreboards();
+        else scoreboardSceneManager.showScoreboards();
         return scoreboardSceneManager;
     }
 
@@ -283,7 +283,11 @@ public class GraphicController extends ViewObservable implements View {
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
         getAndPaneTransitionGameScenario();
-        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
+        Platform.runLater( () -> {
+            mapSceneManager.updateValues(gameSerialized);
+            if(scoreboardSceneManager!=null) scoreboardSceneManager.updateValues(gameSerialized);
+            else showScoreboards();
+        });
     }
 
     @Override
@@ -334,7 +338,7 @@ public class GraphicController extends ViewObservable implements View {
         System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
             mapSceneManager.enableAssistant(assistantCards);
-            //showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
+            showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
     }
 
