@@ -4,13 +4,16 @@ import it.polimi.ingsw.controller.ClientController;
 import it.polimi.ingsw.view.gui.scene.StartMenuSceneManager;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 public class GUI extends Application {
 
@@ -32,9 +35,17 @@ public class GUI extends Application {
             stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             stage.setTitle("Eriantys Game");
 
-            //GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
 
-            StartMenuSceneManager manager = GraphicController.setLayout(stage.getScene(), "fxml/playQuit_scene.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource("fxml/playQuit_scene.fxml"));
+            Pane pane;
+            try {
+                pane = fxmlLoader.load();
+                stage.getScene().setRoot(pane);
+            } catch (IOException e) {
+                Logger.getLogger("client").severe(e.getMessage());
+                return;
+            }
+            StartMenuSceneManager manager = fxmlLoader.getController();
             if (manager != null) {
                 manager.addObserver(clientController);
             }

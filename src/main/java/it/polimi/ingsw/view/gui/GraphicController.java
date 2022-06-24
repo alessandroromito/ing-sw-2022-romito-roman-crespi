@@ -1,20 +1,20 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.view.gui.scene.GameModeSelectSceneManager;
-import it.polimi.ingsw.view.gui.scene.MapSceneManager;
-import it.polimi.ingsw.view.gui.scene.PlayersNumberSceneManager;
-import it.polimi.ingsw.view.gui.scene.WaitingRoomHostSceneManager;
+import it.polimi.ingsw.view.gui.scene.*;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,18 +23,190 @@ import java.util.logging.Logger;
 
 public class GraphicController extends ViewObservable implements View {
 
-    public static <T> T setLayout(Scene scene, String path) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource(path));
+    private static Scene activeScene;
+    private static SceneManagerInterface activeManager;
+    private boolean gameScenarioEnabled = false;
+    static public String nickname;
+    MapSceneManager mapSceneManager;
+    private static ScoreboardSceneManager scoreboardSceneManager = null;
 
-        Pane pane;
+    public static Scene getActiveScene() {
+        return activeScene;
+    }
+
+    public static SceneManagerInterface getActiveManager() {
+        return activeManager;
+    }
+
+    public static <T> T paneTransition(List<ViewObserver> observerList, String fxml) {
+        return paneTransition(observerList, activeScene, fxml);
+    }
+
+    public static <T> T paneTransition(List<ViewObserver> observerList, Scene scene, String fxml) {
+        T manager = null;
+
         try {
-            pane = fxmlLoader.load();
-            scene.setRoot(pane);
-        } catch (IOException e) {
+            FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/" + fxml));
+            Parent parent = fxmlLoader.load();
+            manager = fxmlLoader.getController();
+            ((ViewObservable) manager).addAllObservers(observerList);
+
+            activeManager = (SceneManagerInterface) manager;
+            activeScene = scene;
+            activeScene.setRoot(parent);
+        } catch(IOException e) {
             Logger.getLogger("client").severe(e.getMessage());
-            return null;
         }
-        return fxmlLoader.getController();
+        return manager;
+    }
+
+    public static void paneTransition(SceneManagerInterface sceneManager, String fxml) {
+        paneTransition(sceneManager, activeScene, fxml);
+    }
+
+    public static void paneTransition(SceneManagerInterface sceneManager, Scene scene, String fxml) {
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/" + fxml));
+
+            //Parent parent = fxmlLoader.load();
+
+            //System.out.println((String) fxmlLoader.getController());
+            fxmlLoader.setController(sceneManager);
+            activeManager = sceneManager;
+            Parent parent = fxmlLoader.load();
+            activeScene = scene;
+            activeScene.setRoot(parent);
+        }catch(IOException e) {
+            Logger.getLogger("client").severe(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    public synchronized void getAndPaneTransitionGameScenario() {
+        if(!gameScenarioEnabled)
+        {
+            System.out.println("Game scenario in creation");
+            MapSceneManager mapSceneManager;// = new MapSceneManager();
+            //mapSceneManager.addAllObservers(observers);
+            try{
+                FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/mapExpert_scene.fxml"));
+                Parent parent = fxmlLoader.load();
+
+                mapSceneManager = fxmlLoader.getController();
+                mapSceneManager.addAllObservers(observers);
+                //fxmlLoader.setController(mapSceneManager);
+                System.out.println(fxmlLoader.getController().toString());
+                activeManager = mapSceneManager;
+                //Parent parent = fxmlLoader.load();
+                activeScene.setRoot(parent);
+                gameScenarioEnabled = true;
+                this.mapSceneManager = mapSceneManager;
+            }catch(IOException e) {
+                Logger.getLogger("client").severe(e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void paneTransitionNoController(SceneManagerInterface sceneManager, String fxml) {
+        paneTransitionNoController(sceneManager, activeScene, fxml);
+    }
+
+    public static void paneTransitionNoController(SceneManagerInterface sceneManager, Scene scene, String fxml) {
+        try{
+            FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/" + fxml));
+            //fxmlLoader.setController(sceneManager);
+
+            activeManager = sceneManager;
+            Parent parent = fxmlLoader.load();
+            activeScene = scene;
+            activeScene.setRoot(parent);
+        }catch(IOException e) {
+            Logger.getLogger("client").severe(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static <T> T paneTransition(List<ViewObserver> observerList, Event event, String fxml){
+        Scene scene = ((Node) event.getSource()).getScene();
+        return paneTransition(observerList, scene, fxml);
+    }
+
+    public static void showErrorMessage(String errorTitle, String errorMessage) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/messageAlert_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        //nel caso in cui non avessimo il controllo da parte di fxml manager
+        //ErrorMessageManager errorMessageManager = fxmlLoader.getController();
+        //altrimenti
+        ErrorMessageSceneManager errorMessageSceneManager = new ErrorMessageSceneManager();
+        Scene errorMessageScene = new Scene(parent);
+        errorMessageSceneManager.setScene(errorMessageScene);
+        errorMessageSceneManager.setErrorTitle(errorTitle);
+        errorMessageSceneManager.setErrorMessage(errorMessage);
+        errorMessageSceneManager.showMessage();
+    }
+
+    public static void showGenericMessage(String genericMessageTitle, String genericMessageText) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/genericMessage_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        //nel caso in cui non avessimo il controllo da parte di fxml manager
+        GenericMessageSceneManager genericMessageSceneManager = fxmlLoader.getController();
+        //altrimenti
+        //GenericMessageSceneManager genericMessageSceneManager = new GenericMessageSceneManager();
+        Scene genericMessageScene = new Scene(parent);
+        genericMessageSceneManager.setScene(genericMessageScene);
+        genericMessageSceneManager.setGenericTitle(genericMessageTitle);
+        genericMessageSceneManager.setGenericMessage(genericMessageText);
+        genericMessageSceneManager.showMessage();
+    }
+
+    public static synchronized void initializeScoreboard(){
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource("fxml/scoreboard_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        scoreboardSceneManager = fxmlLoader.getController();
+        Scene scoreboardScene = new Scene(parent);
+        scoreboardSceneManager.setScene(scoreboardScene);
+    }
+
+    public static ScoreboardSceneManager showScoreboards() {
+        if (scoreboardSceneManager == null) initializeScoreboard();
+        else scoreboardSceneManager.showScoreboards();
+        return scoreboardSceneManager;
+    }
+
+    public static void showWinner(String winner) {
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/victory_scene.fxml"));
+        Parent parent;
+        try {
+            parent = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        VictorySceneManager victorySceneManager = fxmlLoader.getController();
+        Scene victoryScene = new Scene(parent);
+        victorySceneManager.setScene(victoryScene);
+        victorySceneManager.setWinner(winner);
+        victorySceneManager.showVictoryScene();
     }
 
     /*public static <T> T setLayout(Scene scene, String path, ClientController clientController) {
@@ -56,28 +228,28 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askPlayerNickname() {
-        Platform.runLater(() -> SceneManager.paneTransition(observers, "login_scene.fxml"));
+        Platform.runLater(() -> paneTransition(observers, "login_scene.fxml"));
     }
 
     @Override
     public void askPlayersNumber() {
         PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
         playersNumberSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
+        Platform.runLater(() -> paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
     @Override
     public void askGameMode() {
         GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
         gameModeSelectSceneManager.addAllObservers(observers);
-        Platform.runLater(() -> SceneManager.paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
+        Platform.runLater(() -> paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
     @Override
     public void showLobby(List<String> playersNickname, int numPlayers) {
         WaitingRoomHostSceneManager waitingRoomHostSceneManager;
         try{
-            waitingRoomHostSceneManager = (WaitingRoomHostSceneManager) SceneManager.getActiveManager();
+            waitingRoomHostSceneManager = (WaitingRoomHostSceneManager) getActiveManager();
             waitingRoomHostSceneManager.setPlayersNickname(playersNickname);
             waitingRoomHostSceneManager.setNumMaxPlayers(numPlayers);
             Platform.runLater(waitingRoomHostSceneManager::updateValues);
@@ -87,36 +259,42 @@ public class GraphicController extends ViewObservable implements View {
             waitingRoomHostSceneManager.setPlayersNickname(playersNickname);
             waitingRoomHostSceneManager.setNumMaxPlayers(numPlayers);
             WaitingRoomHostSceneManager lobbySceneManagerToExecute = waitingRoomHostSceneManager;
-            Platform.runLater( () -> SceneManager.paneTransitionNoController(lobbySceneManagerToExecute, "waitingRoomHost_scene.fxml"));
+            Platform.runLater( () -> paneTransitionNoController(lobbySceneManagerToExecute, "waitingRoomHost_scene.fxml"));
         }
     }
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
         Platform.runLater( () -> {
-            SceneManager.showGenericMessage("FINE DELLA PARTITA", "Il gicatore " + nicknameDisconnected + " si è disconnesso.");
-            SceneManager.paneTransition(observers, "scene_menu.fxml");
+            showGenericMessage("FINE DELLA PARTITA", "Il gicatore " + nicknameDisconnected + " si è disconnesso.");
+            paneTransition(observers, "scene_menu.fxml");
         });
     }
 
     @Override
     public void showErrorMessage(String errorMessage) {
         Platform.runLater( () -> {
-            SceneManager.showErrorMessage("ERROR", errorMessage);
-            SceneManager.paneTransition(observers, "scene_menu.fxml");
+            showErrorMessage("ERROR", errorMessage);
+            paneTransition(observers, "scene_menu.fxml");
         } );
     }
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
-        MapSceneManager mapSceneManager = getMapSceneManager();
-        Platform.runLater( () -> mapSceneManager.updateValues(gameSerialized) );
+        //getAndPaneTransitionGameScenario();
+        Platform.runLater( () -> {
+            getAndPaneTransitionGameScenario();
+            mapSceneManager.updateValues(gameSerialized);
+            if(scoreboardSceneManager==null) {
+                showScoreboards();
+            }
+            scoreboardSceneManager.updateValues(gameSerialized);
+        });
     }
 
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
-        MapSceneManager mapSceneManager = getMapSceneManager();
         //max 2 alla volta
         Integer minValue = 12;
         for (Integer integer : unifiedIsland)
@@ -136,7 +314,7 @@ public class GraphicController extends ViewObservable implements View {
         }
 
         Platform.runLater( () -> {
-            getMapSceneManager().initializeCharacterCards(finalCharacterNumbers);
+            mapSceneManager.initializeCharacterCards(finalCharacterNumbers);
         });
     }
 
@@ -160,9 +338,9 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
-        System.out.println("entriamo in askassistant");
         Platform.runLater( () -> {
-            getMapSceneManager().enableAssistant(assistantCards);
+            mapSceneManager.enableAssistant(assistantCards);
+            showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
     }
 
@@ -173,16 +351,19 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
-        MapSceneManager mapSceneManager = getMapSceneManager();
-        Platform.runLater( () -> mapSceneManager.moveMotherNature(maxSteps) );
+        Platform.runLater( () -> {
+            mapSceneManager.moveMotherNature(maxSteps);
+            showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
+        } );
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
-            getMapSceneManager().addStudentsToCloud(cloudList.get(0),1);
-            getMapSceneManager().addStudentsToCloud(cloudList.get(1),2);}
-        );
+            mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
+            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+            showGenericMessage("Nuvole", "Scegli l'isola che fa per te!");
+        });
     }
 
     @Override
@@ -193,24 +374,8 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showVictoryMessage(String winner) {
         Platform.runLater( () -> {
-            SceneManager.showWinner(winner);
-            SceneManager.paneTransition(observers, "scene_menu.fxml");
+            showWinner(winner);
+            paneTransition(observers, "scene_menu.fxml");
         });
-    }
-
-    private MapSceneManager getMapSceneManager(){
-        MapSceneManager mapSceneManager;
-        try{
-            mapSceneManager = (MapSceneManager) SceneManager.getActiveManager();
-        } catch(ClassCastException e){
-            mapSceneManager = new MapSceneManager();
-            mapSceneManager.addAllObservers(observers);
-            MapSceneManager finalMapSceneManager = mapSceneManager;
-            Platform.runLater( () ->{
-                SceneManager.paneTransitionGameScenario(finalMapSceneManager, "mapExpert_scene.fxml");
-                //finalMapSceneManager.initializeVariables();
-            });
-        }
-        return mapSceneManager;
     }
 }

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui.scene;
 
-import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,7 +16,7 @@ public class ErrorMessageSceneManager implements SceneManagerInterface {
 
     public ErrorMessageSceneManager() {
         stage = new Stage();
-        stage.initOwner(SceneManager.getActiveScene().getWindow());
+        stage.initOwner(GraphicController.getActiveScene().getWindow());
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setAlwaysOnTop(true);
