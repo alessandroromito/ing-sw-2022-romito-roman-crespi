@@ -906,6 +906,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.setScene(scene);
     }
 
+    @FXML
     public void closeScoreboard() {
         stage.close();
     }
