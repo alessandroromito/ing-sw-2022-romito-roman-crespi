@@ -746,7 +746,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         professors_1[0] = professor_green1; professors_1[1] = professor_red1; professors_1[2] = professor_yellow1; professors_1[3] = professor_purple1; professors_1[4] = professor_blue1;
 
         diningRoom_1[0][0] = green0_1; diningRoom_1[0][1] = green1_1; diningRoom_1[0][2] = green2_1; diningRoom_1[0][3] = green3_1; diningRoom_1[0][4] = green4_1; diningRoom_1[0][5] = green5_1; diningRoom_1[0][6] = green6_1; diningRoom_1[0][7] = green7_1; diningRoom_1[0][8] = green8_1; diningRoom_1[0][9] = green9_1;
-        diningRoom_1[1][0] = red0_1; diningRoom_1[1][1] = red1_1; diningRoom_1[1][2] = red2_1; diningRoom_1[1][3] = red3_1; diningRoom_1[1][4] = red4_1; diningRoom[1][5] = red5_1; diningRoom_1[1][6] = red6_1; diningRoom_1[1][7] = red7_1; diningRoom_1[1][8] = red8_1; diningRoom_1[1][9] = red9_1;
+        diningRoom_1[1][0] = red0_1; diningRoom_1[1][1] = red1_1; diningRoom_1[1][2] = red2_1; diningRoom_1[1][3] = red3_1; diningRoom_1[1][4] = red4_1; diningRoom_1[1][5] = red5_1; diningRoom_1[1][6] = red6_1; diningRoom_1[1][7] = red7_1; diningRoom_1[1][8] = red8_1; diningRoom_1[1][9] = red9_1;
         diningRoom_1[2][0] = yellow0_1; diningRoom_1[2][1] = yellow1_1; diningRoom_1[2][2] = yellow2_1; diningRoom_1[2][3] = yellow3_1; diningRoom_1[2][4] = yellow4_1; diningRoom_1[2][5] = yellow5_1; diningRoom_1[2][6] = yellow6_1; diningRoom_1[2][7] = yellow7_1; diningRoom_1[2][8] = yellow8_1; diningRoom_1[2][9] = yellow9_1;
         diningRoom_1[3][0] = purple0_1; diningRoom_1[3][1] = purple1_1; diningRoom_1[3][2] = purple2_1; diningRoom_1[3][3] = purple3_1; diningRoom_1[3][4] = purple4_1; diningRoom_1[3][5] = purple5_1; diningRoom_1[3][6] = purple6_1; diningRoom_1[3][7] = purple7_1; diningRoom_1[3][8] = purple8_1; diningRoom_1[3][9] = purple9_1;
         diningRoom_1[4][0] = blue0_1; diningRoom_1[4][1] = blue1_1; diningRoom_1[4][2] = blue2_1; diningRoom_1[4][3] = blue3_1; diningRoom_1[4][4] = blue4_1; diningRoom_1[4][5] = blue5_1; diningRoom_1[4][6] = blue6_1; diningRoom_1[4][7] = blue7_1; diningRoom_1[4][8] = blue8_1; diningRoom_1[4][9] = blue9_1;
@@ -757,7 +757,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         professors_2[0] = professor_green2; professors_2[1] = professor_red2; professors_2[2] = professor_yellow2; professors_2[3] = professor_purple2; professors_2[4] = professor_blue2;
 
         diningRoom_2[0][0] = green0_2; diningRoom_2[0][1] = green1_2; diningRoom_2[0][2] = green2_2; diningRoom_2[0][3] = green3_2; diningRoom_2[0][4] = green4_2; diningRoom_2[0][5] = green5_2; diningRoom_2[0][6] = green6_2; diningRoom_2[0][7] = green7_2; diningRoom_2[0][8] = green8_2; diningRoom_2[0][9] = green9_2;
-        diningRoom_2[1][0] = red0_2; diningRoom_2[1][1] = red1_2; diningRoom_2[1][2] = red2_2; diningRoom_2[1][3] = red3_2; diningRoom_2[1][4] = red4_2; diningRoom[1][5] = red5_2; diningRoom_2[1][6] = red6_2; diningRoom_2[1][7] = red7_2; diningRoom_2[1][8] = red8_2; diningRoom_2[1][9] = red9_2;
+        diningRoom_2[1][0] = red0_2; diningRoom_2[1][1] = red1_2; diningRoom_2[1][2] = red2_2; diningRoom_2[1][3] = red3_2; diningRoom_2[1][4] = red4_2; diningRoom_2[1][5] = red5_2; diningRoom_2[1][6] = red6_2; diningRoom_2[1][7] = red7_2; diningRoom_2[1][8] = red8_2; diningRoom_2[1][9] = red9_2;
         diningRoom_2[2][0] = yellow0_2; diningRoom_2[2][1] = yellow1_2; diningRoom_2[2][2] = yellow2_2; diningRoom_2[2][3] = yellow3_2; diningRoom_2[2][4] = yellow4_2; diningRoom_2[2][5] = yellow5_2; diningRoom_2[2][6] = yellow6_2; diningRoom_2[2][7] = yellow7_2; diningRoom_2[2][8] = yellow8_2; diningRoom_2[2][9] = yellow9_2;
         diningRoom_2[3][0] = purple0_2; diningRoom_2[3][1] = purple1_2; diningRoom_2[3][2] = purple2_2; diningRoom_2[3][3] = purple3_2; diningRoom_2[3][4] = purple4_2; diningRoom_2[3][5] = purple5_2; diningRoom_2[3][6] = purple6_2; diningRoom_2[3][7] = purple7_2; diningRoom_2[3][8] = purple8_2; diningRoom_2[3][9] = purple9_2;
         diningRoom_2[4][0] = blue0_2; diningRoom_2[4][1] = blue1_2; diningRoom_2[4][2] = blue2_2; diningRoom_2[4][3] = blue3_2; diningRoom_2[4][4] = blue4_2; diningRoom_2[4][5] = blue5_2; diningRoom_2[4][6] = blue6_2; diningRoom_2[4][7] = blue7_2; diningRoom_2[4][8] = blue8_2; diningRoom_2[4][9] = blue9_2;
@@ -766,10 +766,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             for(int k=0;k<10;k++){
                 diningRoom[i][k].setVisible(false);
                 diningRoom[i][k].setDisable(true);
-                //diningRoom_1[i][k].setVisible(false);
-                //diningRoom_1[i][k].setDisable(true);
-                //diningRoom_2[i][k].setVisible(false);
-                //diningRoom_2[i][k].setDisable(true);
+                diningRoom_1[i][k].setVisible(false);
+                diningRoom_1[i][k].setDisable(true);
+                diningRoom_2[i][k].setVisible(false);
+                diningRoom_2[i][k].setDisable(true);
             }
 
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
