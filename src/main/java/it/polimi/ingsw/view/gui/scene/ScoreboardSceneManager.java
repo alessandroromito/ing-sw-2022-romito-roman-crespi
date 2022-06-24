@@ -764,11 +764,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         for(int i=0;i<5;i++)
             for(int k=0;k<10;k++){
-                diningRoom[i][k].setVisible(false);
                 diningRoom[i][k].setDisable(true);
-                diningRoom_1[i][k].setVisible(false);
                 diningRoom_1[i][k].setDisable(true);
-                diningRoom_2[i][k].setVisible(false);
                 diningRoom_2[i][k].setDisable(true);
             }
 
@@ -825,6 +822,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         visibleStudents[color-1]++;
     }
 
+    public void removeSudentfromDining(int color){
+        diningRoom[color-1][visibleStudents[color-1]].setVisible(false);
+        visibleStudents[color-1]--;
+    }
+
     //da testare se funziona onmouseclicked
     public void addStudentOnEntrance(int color,int id){
         for (int i=0;i<7;i++)
@@ -844,6 +846,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void clearEntranceSecondaryScoreboards(){
+        System.out.println("clearEntranceSecondaryScoreboards");
         for (int i=0;i<8;i++)   entrance_1[i].setImage(null);
         for (int i=0;i<8;i++)   entrance_2[i].setImage(null);
     }
@@ -925,12 +928,18 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 scoreboard = s;
 
         //aggiorna diningRoom
-        if(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
-        if(scoreboard.getDiningRedStudents()>visibleStudents[1])  addStudentOnDining(2);
-        if(scoreboard.getDiningYellowStudents()>visibleStudents[2])  addStudentOnDining(3);
-        if(scoreboard.getDiningPinkStudents()>visibleStudents[3])  addStudentOnDining(4);
-        if(scoreboard.getDiningBlueStudents()>visibleStudents[4])  addStudentOnDining(5);
-
+        while(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
+        while(scoreboard.getDiningRedStudents()>visibleStudents[1])  addStudentOnDining(2);
+        while(scoreboard.getDiningYellowStudents()>visibleStudents[2])  addStudentOnDining(3);
+        while(scoreboard.getDiningPinkStudents()>visibleStudents[3])  addStudentOnDining(4);
+        while(scoreboard.getDiningBlueStudents()>visibleStudents[4])  addStudentOnDining(5);
+/*
+        while(scoreboard.getDiningGreenStudents()<visibleStudents[0])  removeStudentFromDining(1);
+        while(scoreboard.getDiningRedStudents()<visibleStudents[1])  removeStudentFromDining(2);
+        while(scoreboard.getDiningYellowStudents()<visibleStudents[2])  removeStudentFromDining(3);
+        while(scoreboard.getDiningPinkStudents()<visibleStudents[3])  removeStudentFromDining(4);
+        while(scoreboard.getDiningBlueStudents()<visibleStudents[4])  removeStudentFromDining(5);
+*/
         //aggiorna Professori
         for(PawnColors c: PawnColors.values()){
             if (scoreboard.availableProfessors().contains(c))
@@ -943,9 +952,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         setTowerNumber(scoreboard.getTowerNumber());
         setTowerColor(scoreboard.getTowerColor().ordinal());
 
+        clearEntrance();
+
         //aggiorna entrata
         for(int id: scoreboard.getEntranceId()){
-            clearEntrance();
             addStudentOnEntrance(getColorFromId(id),id);
         }
 

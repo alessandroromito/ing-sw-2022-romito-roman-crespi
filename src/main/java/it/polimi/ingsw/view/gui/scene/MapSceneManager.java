@@ -291,6 +291,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         disableClouds();
 
+        for(int k=0;k<10;k++)
+        assistantCards[k].setViewOrder(-1);
+        xButton.setViewOrder(-1);
+
         System.out.println("fine initialize fxml");
     }
 
@@ -776,7 +780,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                             add = false;
 
                     if (add) {
-                        System.out.println("Aggiunta di uno studente alla map");
                         addStudentToIsland(getColorFromId(id), id, i);
                     }
                 }
@@ -956,21 +959,23 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void selectedCloud1(MouseEvent mouseEvent) {
         cloud1.setEffect(null);
         selectCloudObserverNotification(1);
+        disableClouds();
     }
 
     public void selectedCloud2(MouseEvent mouseEvent) {
         cloud1.setEffect(null);
         selectCloudObserverNotification(2);
+        disableClouds();
     }
 
     public void disableClouds(){
-        cloud1.setDisable(false);
-        cloud2.setDisable(false);
+        cloud1.setDisable(true);
+        cloud2.setDisable(true);
     }
 
     public void enableClouds(){
-        cloud1.setDisable(true);
-        cloud2.setDisable(true);
+        cloud1.setDisable(false);
+        cloud2.setDisable(false);
     }
 
     public void selectCloudObserverNotification(int cloudNumber) {
@@ -1039,7 +1044,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         this.assistantCardsList = assistantCards;
 
         for(ImageView i: this.assistantCards){
-            System.out.println("Setto una assCard visible");
             i.setDisable(false);
         }
     }
