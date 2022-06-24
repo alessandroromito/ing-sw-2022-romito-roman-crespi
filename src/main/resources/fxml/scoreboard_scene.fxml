@@ -51,7 +51,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="green4" fitHeight="81.0" fitWidth="82.0" layoutX="724.0" layoutY="352.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="green4" fitHeight="81.0" fitWidth="82.0" layoutX="724.0" layoutY="353.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
@@ -74,7 +74,7 @@
             <Glow level="1.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="red1" fitHeight="81.0" fitWidth="82.0" layoutX="451.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="red1" fitHeight="81.0" fitWidth="82.0" layoutX="450.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
@@ -152,7 +152,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="yellow3" fitHeight="81.0" fitWidth="82.0" layoutX="633.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="yellow3" fitHeight="81.0" fitWidth="82.0" layoutX="633.0" layoutY="626.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
@@ -1090,5 +1090,13 @@
       <ImageView fx:id="entrance6_2" fitHeight="28.35" fitWidth="28.35" layoutX="1310.0" layoutY="165.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance7_2" fitHeight="28.35" fitWidth="28.35" layoutX="1270.0" layoutY="213.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="entrance8_2" fitHeight="28.35" fitWidth="28.35" layoutX="1310.0" layoutY="213.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="237.0" fitWidth="488.0" layoutX="1392.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" visible="false" fx:id="xScoreboard">
+         <image>
+            <Image url="@../Graphical_Assets/Plancia/xScoreboard.png" />
+         </image>
+         <effect>
+            <DropShadow height="50.0" radius="24.5" width="50.0" />
+         </effect>
+      </ImageView>
    </children>
 </AnchorPane>

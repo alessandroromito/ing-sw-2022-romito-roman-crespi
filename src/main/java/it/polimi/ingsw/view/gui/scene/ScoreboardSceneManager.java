@@ -686,6 +686,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     @FXML
     private ImageView yellow9_2;
 
+    @FXML
+    private ImageView xScoreboard;
+
 
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
@@ -921,11 +924,20 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         return 0;
     }
 
+    public void clearScoreboard(){
+        for(int i=0;i<5;i++)
+            for(int k=0;k<10;k++)
+                diningRoom[i][k].setVisible(false);
+        for (int i=0;i<5;i++)   visibleStudents[i] = 0;
+    }
+
     public void updateValues(GameSerialized gameSerialized) {
         SerializableScoreboard scoreboard = null;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(s.getNickname().equals(nickname))
                 scoreboard = s;
+
+        clearScoreboard();
 
         //aggiorna diningRoom
         while(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
@@ -1035,5 +1047,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 }
                 scbNumber++;
             }
+
+        if( scbNumber == 2)
+            xScoreboard.setVisible(true);
     }
 }
