@@ -282,8 +282,9 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
         System.out.println("Starting game scenario");
-        getAndPaneTransitionGameScenario();
+        //getAndPaneTransitionGameScenario();
         Platform.runLater( () -> {
+            getAndPaneTransitionGameScenario();
             mapSceneManager.updateValues(gameSerialized);
             if(scoreboardSceneManager==null) {
                 showScoreboards();
