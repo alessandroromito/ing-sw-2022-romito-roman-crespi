@@ -26,6 +26,7 @@ public class GraphicController extends ViewObservable implements View {
     private static Scene activeScene;
     private static SceneManagerInterface activeManager;
     private boolean gameScenarioEnabled = false;
+    static public String nickname;
     MapSceneManager mapSceneManager;
 
 

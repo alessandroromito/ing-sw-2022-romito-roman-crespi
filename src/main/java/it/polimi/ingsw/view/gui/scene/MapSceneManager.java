@@ -24,6 +24,7 @@ import javafx.util.Duration;
 import java.util.*;
 import java.util.random.RandomGenerator;
 
+import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 import static java.lang.Math.abs;
 
 public class MapSceneManager extends ViewObservable implements SceneManagerInterface {
@@ -250,6 +251,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
     private boolean[] assistantStillInHand = new boolean[10];
+    private boolean switchMotherNature = false;
 
     @FXML
     public void initialize() {
@@ -490,14 +492,65 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         motherNaturePos = island;
     }
 
+    public void enableMotherNature(int maxSteps) {
+        switchMotherNature = true;
+        for (int i = 0; i < maxSteps; i++) {
+            if (i + motherNaturePos > 11)
+                enableSingleIsland(i+motherNaturePos-11);
+            else
+                enableSingleIsland(i+motherNaturePos);
+        }
+    }
+
+    public void enableSingleIsland(int number) {
+        switch (number) {
+            case 0:
+                island1.setDisable(false);
+                break;
+            case 1:
+                island2.setDisable(false);
+                break;
+            case 2:
+                island3.setDisable(false);
+                break;
+            case 3:
+                island4.setDisable(false);
+                break;
+            case 4:
+                island5.setDisable(false);
+                break;
+            case 5:
+                island6.setDisable(false);
+                break;
+            case 6:
+                island7.setDisable(false);
+                break;
+            case 7:
+                island8.setDisable(false);
+                break;
+            case 8:
+                island9.setDisable(false);
+                break;
+            case 9:
+                island10.setDisable(false);
+                break;
+            case 10:
+                island11.setDisable(false);
+                break;
+            case 11:
+                island12.setDisable(false);
+                break;
+        }
+    }
+
     public void moveMotherNature(int pos){
-            if(motherNaturePos+pos<=11){
-                motherNaturePos += pos;
-                setMotherNaturePose(motherNaturePos);
-            }else{
-                motherNaturePos += pos-11;
-                setMotherNaturePose(motherNaturePos);
-            }
+        if(motherNaturePos+pos<=11){
+            motherNaturePos += pos;
+            setMotherNaturePose(motherNaturePos);
+        }else{
+            motherNaturePos += pos-11;
+            setMotherNaturePose(motherNaturePos);
+        }
     }
 
     public void light(MouseEvent mouseEvent) {
@@ -631,7 +684,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void chooseIsland(MouseEvent mouseEvent) {
-        int choosenIsland;
+        int choosenIsland = -99;
 
         switch(mouseEvent.getSource().toString().charAt(19)) {
             case '2':
@@ -674,7 +727,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                         break;
                 }
         }
-        //chosen island isola scelta
+        final int choosen = choosenIsland;
+        if(switchMotherNature)  new Thread( () -> notifyObserver( obs -> obs.onUpdateMotherNaturePosition(choosen-motherNaturePos))).start();
+
         disableIslands();
         darkAll();
     }
@@ -734,6 +789,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 }
             }
         }
+
+        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
+            if(s.getNickname() == nickname)
+                setCoin(s.getCoins());
     }
 
     //passare numero isola precedente in senso orario

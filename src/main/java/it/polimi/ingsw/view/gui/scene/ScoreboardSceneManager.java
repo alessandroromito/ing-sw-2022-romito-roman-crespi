@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.server.enumerations.PawnColors;
+import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.fxml.FXML;
@@ -17,6 +19,8 @@ import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 
 public class ScoreboardSceneManager extends ViewObservable implements SceneManagerInterface, Initializable {
 
@@ -243,10 +247,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
+    private ImageView[] professors = new ImageView[5];
     private int[] visibleStudents = new int[5];
+    private int availableTowers = 0;
     private boolean[] entranceFree = new boolean[7];
     private Circle[] towers = new Circle[8];
-    private int towerColor;
 
     public ScoreboardSceneManager() {
         stage = new Stage();
@@ -275,6 +280,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void initialize(URL url, ResourceBundle resourceBundle) {
         entrance[0] = entrance0; entrance[1] = entrance1; entrance[2] = entrance2; entrance[3] = entrance3; entrance[4] = entrance4; entrance[5] = entrance5; entrance[6] = entrance6; entrance[7] = entrance7; entrance[8] = entrance8;
         towers[0] = tower0; towers[1] = tower1; towers[2] = tower2; towers[3] = tower3; towers[4] = tower4; towers[5] = tower5; towers[6] = tower6; towers[7] = tower7;
+        professors[0] = professor_green; professors[1] = professor_red; professors[2] = professor_yellow; professors[3] = professor_purple; professors[4] = professor_blue;
 
         diningRoom[0][0] = green0; diningRoom[0][1] = green1; diningRoom[0][2] = green2; diningRoom[0][3] = green3; diningRoom[0][4] = green4; diningRoom[0][5] = green5; diningRoom[0][6] = green6; diningRoom[0][7] = green7; diningRoom[0][8] = green8; diningRoom[0][9] = green9;
         diningRoom[1][0] = red0; diningRoom[1][1] = red1; diningRoom[1][2] = red2; diningRoom[1][3] = red3; diningRoom[1][4] = red4; diningRoom[1][5] = red5; diningRoom[1][6] = red6; diningRoom[1][7] = red7; diningRoom[1][8] = red8; diningRoom[1][9] = red9;
@@ -289,14 +295,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             }
 
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
-        for (int i=0;i<7;i++)   entranceFree[i] = false;
-
-        setTowerColor(0);
+        for (int i=0;i<7;i++)   entranceFree[i] = true;
     }
 
     //color: 0=black 1=white 2=grey
     public void setTowerColor(int color){
-        towerColor = color;
         for(Circle c: towers){
             if(color == 0)
                 c.setFill(Color.BLACK);
@@ -326,12 +329,28 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             }
     }
 
+    public void clearEntrance(){
+        for (int i=0;i<7;i++)   entranceFree[i] = true;
+        for (int i=0;i<8;i++)   entrance[i].setImage(null);
+    }
+
     public void removeStudentFromEntrance(int id){
         for(int i=0;i<7;i++)
             if(entrance[i].getId().equals(Integer.toString(id))){
                 entrance[i].setImage(null);
                 entranceFree[i] = true;
             }
+    }
+
+    public void setTowerNumber(int number){
+        while(number<availableTowers){
+            availableTowers++;
+            towers[availableTowers].setVisible(true);
+        }
+        while(number>availableTowers){
+            availableTowers--;
+            towers[availableTowers].setVisible(false);
+        }
     }
 
     public void openOptionMenu(String id){
@@ -364,5 +383,45 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.setScene(scene);
     }
 
-    public void updateValues(GameSerialized gameSerialized) { }
+    private int getColorFromId(int id){
+        if(id-59>=0 && id-58<=25)
+            return 1;
+        if(id-59>=26 && id-58<=51)
+            return 2;
+        if(id-59>=52 && id-58<=77)
+            return 3;
+        if(id-59>=78 && id-58<=103)
+            return 4;
+        if(id-59>=104 && id-58<=129)
+            return 5;
+
+        return 0;
+    }
+
+    public void updateValues(GameSerialized gameSerialized) {
+        SerializableScoreboard scoreboard = null;
+        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
+            if(s.getNickname() == nickname)
+                scoreboard = s;
+
+        if(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
+        if(scoreboard.getDiningRedStudents()>visibleStudents[1])  addStudentOnDining(2);
+        if(scoreboard.getDiningYellowStudents()>visibleStudents[2])  addStudentOnDining(3);
+        if(scoreboard.getDiningPinkStudents()>visibleStudents[3])  addStudentOnDining(4);
+        if(scoreboard.getDiningBlueStudents()>visibleStudents[4])  addStudentOnDining(5);
+
+        for(PawnColors c: PawnColors.values()){
+            if (scoreboard.availableProfessors().contains(c))
+                professors[c.ordinal()].setVisible(true);
+            else
+                professors[c.ordinal()].setVisible(false);
+        }
+
+        setTowerNumber(scoreboard.getTowerNumber());
+
+        for(int id: scoreboard.getEntranceId()){
+            clearEntrance();
+            addStudentOnEntrance(getColorFromId(id),id);
+        }
+    }
 }
