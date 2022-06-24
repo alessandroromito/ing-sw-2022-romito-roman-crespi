@@ -1046,6 +1046,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         for(ImageView i: this.assistantCards){
             i.setDisable(false);
         }
+
+        switchView(null);
     }
 
     public void disableAssistant(){
