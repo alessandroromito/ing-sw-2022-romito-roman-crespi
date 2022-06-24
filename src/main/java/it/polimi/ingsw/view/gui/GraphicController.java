@@ -28,7 +28,7 @@ public class GraphicController extends ViewObservable implements View {
     private boolean gameScenarioEnabled = false;
     static public String nickname;
     MapSceneManager mapSceneManager;
-
+    private static ScoreboardSceneManager scoreboardSceneManager = null;
 
     public static Scene getActiveScene() {
         return activeScene;
@@ -173,18 +173,22 @@ public class GraphicController extends ViewObservable implements View {
         genericMessageSceneManager.showMessage();
     }
 
-    public static ScoreboardSceneManager showScoreboards() {
-        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/scoreboard_scene.fxml"));
+    public static synchronized void initializeScoreboard(){
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource("fxml/scoreboard_scene.fxml"));
         Parent parent;
         try {
             parent = fxmlLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return;
         }
-        ScoreboardSceneManager scoreboardSceneManager = fxmlLoader.getController();
+        scoreboardSceneManager = fxmlLoader.getController();
         Scene scoreboardScene = new Scene(parent);
         scoreboardSceneManager.setScene(scoreboardScene);
+    }
+
+    public static ScoreboardSceneManager showScoreboards() {
+        if (scoreboardSceneManager == null) initializeScoreboard();
         scoreboardSceneManager.showScoreboards();
         return scoreboardSceneManager;
     }
