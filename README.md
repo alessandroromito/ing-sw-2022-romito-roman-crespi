@@ -47,9 +47,20 @@ Coverage dei test effettuati con Junit: [Report](link)
 
 ## Esecuzione tramite files .jar
 ### Server
-Per lanciare il server: .........
+Per lanciare il server utilizzare il comando:
+```
+java -jar GC08-server.jar
+```
 ### Client
-Per lanciare il client: .........
+Per lanciare il client:
+- Per lanciare la cli:
+```
+java -jar GC08-client.jar --cli
+```
+- Per lanciare la gui basta aprire normalmente il file GC08-client.jar oppure utilizzare il comando:
+```
+java -jar GC08-client.jar
+```
 
 ## Componenti del gruppo
 - [Alessandro Romito](https://github.com/alessandroromito)
