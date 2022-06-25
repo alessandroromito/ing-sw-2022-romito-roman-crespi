@@ -8,6 +8,9 @@ import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.effect.BoxBlur;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -689,6 +692,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     @FXML
     private ImageView xScoreboard;
 
+    @FXML
+    private ImageView map;
+
 
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
@@ -702,7 +708,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private int[] visibleStudents = new int[5];
     private int availableTowers = 0;
-    private boolean[] entranceFree = new boolean[7];
+    private boolean[] entranceFree = new boolean[9];
     private Circle[] towers = new Circle[8];
     private Circle[] towers_1 = new Circle[8];
     private Circle[] towers_2 = new Circle[8];
@@ -776,6 +782,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         for (int i=0;i<7;i++)   entranceFree[i] = true;
     }
 
+    public void setMap(Image image){
+        map.setImage(image);
+        System.out.println("setMap");
+    }
+
     //color: 0=black 1=white 2=grey
     public void setTowerColor(int color){
         Paint white = Color.WHITE;
@@ -832,7 +843,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     //da testare se funziona onmouseclicked
     public void addStudentOnEntrance(int color,int id){
-        for (int i=0;i<7;i++)
+        for (int i=0;i<9;i++)
             if(entranceFree[i]){
                 entranceFree[i] = false;
                 ImageView temp = entrance[i];
@@ -844,12 +855,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void clearEntrance(){
-        for (int i=0;i<7;i++)   entranceFree[i] = true;
-        for (int i=0;i<8;i++)   entrance[i].setImage(null);
+        for (int i=0;i<9;i++)   entranceFree[i] = true;
+        for (int i=0;i<9;i++)   entrance[i].setImage(null);
     }
 
     public void clearEntranceSecondaryScoreboards(){
-        System.out.println("clearEntranceSecondaryScoreboards");
         for (int i=0;i<8;i++)   entrance_1[i].setImage(null);
         for (int i=0;i<8;i++)   entrance_2[i].setImage(null);
     }
@@ -891,13 +901,12 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         Image image = null;
 
         switch (color){
-            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/1_Verde.png")); break;
-            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/2_Rosso.png")); break;
-            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/3_Giallo.png")); break;
-            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/4_Viola.png")); break;
-            case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/5_Azzurro.png")); break;
+            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/1_Verde.png")); break;
+            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/2_Rosso.png")); break;
+            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/3_Giallo.png")); break;
+            case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/4_Viola.png")); break;
+            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/2D/5_Azzurro.png")); break;
         }
-
         return image;
     }
 
@@ -915,16 +924,17 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     private int getColorFromId(int id){
-        if(id-59>=0 && id-58<=25)
+        if(id-59>=0 && id-59<=25)
             return 1;
-        if(id-59>=26 && id-58<=51)
+        else if(id-59>=26 && id-59<=51)
             return 2;
-        if(id-59>=52 && id-58<=77)
+        else if(id-59>=52 && id-59<=77)
             return 3;
-        if(id-59>=78 && id-58<=103)
+        else if(id-59>=78 && id-59<=103)
             return 4;
-        if(id-59>=104 && id-58<=129)
+        else if(id-59>=104 && id-59<=129)
             return 5;
+        else System.out.println("id mancante: "+id);
 
         return 0;
     }
@@ -937,6 +947,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void updateValues(GameSerialized gameSerialized) {
+        for(int id=59;id<=188;id++)   getColorFromId(id);
         SerializableScoreboard scoreboard = null;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(s.getNickname().equals(nickname))
@@ -973,6 +984,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         //aggiorna entrata
         for(int id: scoreboard.getEntranceId()){
+            System.out.println(id);
             addStudentOnEntrance(getColorFromId(id),id);
         }
 
@@ -1055,5 +1067,23 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         if( scbNumber == 2)
             xScoreboard.setVisible(true);
+    }
+
+    public void toMap(MouseEvent mouseEvent) {
+        closeScoreboard();
+    }
+
+    public void inMap(MouseEvent mouseEvent) {
+        DropShadow et = new DropShadow();
+        BoxBlur et2 = new BoxBlur();
+        et2.setInput(new Glow(0.3));
+        et.setInput(et2);
+        map.setEffect(et);
+    }
+
+    public void outMap(MouseEvent mouseEvent) {
+        DropShadow et = new DropShadow();
+        et.setInput(new BoxBlur());
+        map.setEffect(et);
     }
 }

@@ -318,7 +318,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="switchHandMap" fitHeight="150.0" fitWidth="200.0" layoutX="663.0" layoutY="634.0" onMouseClicked="#switchView" onMouseEntered="#inEffect" onMouseExited="#outEffect" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="switchHandMap" fitHeight="150.0" fitWidth="200.0" layoutX="663.0" layoutY="631.0" onMouseClicked="#switchView" onMouseEntered="#inEffect" onMouseExited="#outEffect" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/handLogo.png" />
          </image>
@@ -361,7 +361,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="toScoreboard" fitHeight="150.0" fitWidth="200.0" layoutX="893.0" layoutY="641.0" onMouseClicked="#moveToScoreboard" onMouseEntered="#inScrb" onMouseExited="#outScrb" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="toScoreboard" fitHeight="150.0" fitWidth="200.0" layoutX="893.0" layoutY="635.0" onMouseClicked="#moveToScoreboard" onMouseEntered="#inScrb" onMouseExited="#outScrb" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
          </image>
@@ -373,7 +373,7 @@
             </DropShadow>
          </effect>
       </ImageView>
-      <Label fx:id="labelHand" layoutX="709.0" layoutY="686.0" mouseTransparent="true" pickOnBounds="false" text="MANO" textFill="#f4f805">
+      <Label fx:id="labelHand" layoutX="709.0" layoutY="683.0" mouseTransparent="true" pickOnBounds="false" text="MANO" textFill="#f4f805">
          <font>
             <Font size="36.0" />
          </font>
@@ -385,7 +385,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="labelScrbd" layoutX="921.0" layoutY="663.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
+      <Label fx:id="labelScrbd" layoutX="921.0" layoutY="657.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
          <font>
             <Font size="36.0" />
          </font>
@@ -397,7 +397,7 @@
             </Bloom>
          </effect>
       </Label>
-      <ImageView fx:id="coin" fitHeight="75.0" fitWidth="73.0" layoutX="1122.0" layoutY="650.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="coin" fitHeight="75.0" fitWidth="73.0" layoutX="1122.0" layoutY="646.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/motherNature.png" />
          </image>
@@ -405,7 +405,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Label fx:id="labelCoins" layoutX="1171.0" layoutY="694.0" mouseTransparent="true" pickOnBounds="false" text="X 1" textFill="#f4f805">
+      <Label fx:id="labelCoins" layoutX="1171.0" layoutY="690.0" mouseTransparent="true" pickOnBounds="false" text="X 1" textFill="#f4f805">
          <font>
             <Font name="Arial Rounded MT Bold" size="31.0" />
          </font>

@@ -307,6 +307,7 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
+        System.out.println("askCharacterCards");
         int[] finalCharacterNumbers = new int[3];
         for(int i = 0 ; i < characterCards.size(); i++)
         {

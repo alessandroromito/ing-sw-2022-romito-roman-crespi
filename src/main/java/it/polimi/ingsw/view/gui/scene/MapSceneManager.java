@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
@@ -22,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.List;
 import java.util.random.RandomGenerator;
 
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
@@ -300,6 +300,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
 
     public void initializeCharacterCards(int[] number){
+        System.out.println("initialize characters");
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
         card1.setImage(image);
         image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
@@ -1197,7 +1198,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
         ScoreboardSceneManager scoreboardSceneManager = GraphicController.showScoreboards();
-        scoreboardSceneManager.updateValues(gameSerialized);
+        scoreboardSceneManager.setMap(pane.getScene().snapshot(null));
     }
 
     public void inScrb(MouseEvent mouseEvent) {

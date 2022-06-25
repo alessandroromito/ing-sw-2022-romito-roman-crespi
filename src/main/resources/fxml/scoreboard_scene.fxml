@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Glow?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -7,18 +12,33 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.ScoreboardSceneManager">
    <children>
+      <ImageView fx:id="map" fitHeight="249.0" fitWidth="439.0" layoutX="730.0" layoutY="1.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="1.0">
+         <image>
+            <Image url="@../Graphical_Assets/Plancia/map.png" />
+         </image>
+         <effect>
+            <BoxBlur />
+         </effect>
+      </ImageView>
       <ImageView fx:id="scorebrd2" fitHeight="1080.0" fitWidth="1920.0" layoutX="624.0" layoutY="-285.0" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35" AnchorPane.rightAnchor="-624.0">
          <image>
             <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
          </image>
+         <effect>
+            <InnerShadow />
+         </effect>
       </ImageView>
       <ImageView fx:id="scorebrd1" fitHeight="1080.0" fitWidth="1920.0" layoutX="-643.0" layoutY="-289.0" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35" AnchorPane.leftAnchor="-643.0" AnchorPane.topAnchor="-289.0">
          <image>
             <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
          </image>
+         <effect>
+            <InnerShadow />
+         </effect>
       </ImageView>
       <ImageView fx:id="scorebrd" fitHeight="1080.0" fitWidth="1920.0" layoutY="247.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <image>
@@ -1098,5 +1118,26 @@
             <DropShadow height="50.0" radius="24.5" width="50.0" />
          </effect>
       </ImageView>
+      <Label layoutX="850.0" layoutY="84.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="197.0" text="MAPPA" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="58.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <MenuButton layoutX="282.0" layoutY="328.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="197.0" text="ISOLA" textAlignment="CENTER">
+        <items>
+          <MenuItem mnemonicParsing="false" text="Action 1" />
+          <MenuItem mnemonicParsing="false" text="Action 2" />
+        </items>
+         <font>
+            <Font size="20.0" />
+         </font>
+      </MenuButton>
    </children>
 </AnchorPane>
