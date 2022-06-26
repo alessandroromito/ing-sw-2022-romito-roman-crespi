@@ -18,6 +18,7 @@ import static it.polimi.ingsw.server.extra.ANSICostants.ANSI_RESET;
 public class Server {
     private final GameController gameController;
     private final Map<String, ClientHandler> clientHandlerMap;
+
     private final Object lock;
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
@@ -46,17 +47,6 @@ public class Server {
     }
 
     /**
-     * Remove a client associated to a certain nickname.
-     * @param nickname nickname of the client to remove.
-     */
-    public void removeClient(String nickname) {
-        clientHandlerMap.remove(nickname);
-        gameController.removeVirtualView(nickname);
-
-        System.out.println(nickname + "rimosso dalla lista dei client.");
-    }
-
-    /**
      * Synchronized handler of a client disconnection.
      * @param clientHandler clientHandler associated to the client of the disconnection request.
      */
@@ -75,7 +65,6 @@ public class Server {
                         while (System.currentTimeMillis() < end) {
 
                         }
-
                     }
                     else{
                         //continue game
@@ -88,6 +77,14 @@ public class Server {
         }
     }
 
+    /**
+     * Remove a client associated to a certain nickname.
+     * @param nickname nickname of the client to remove.
+     */
+    public void removeClient(String nickname) {
+        clientHandlerMap.remove(nickname);
+        gameController.removeVirtualView(nickname);
+    }
 
     /**
      * @return the game state from GameController.
