@@ -94,19 +94,14 @@
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cloud1" disable="true" fitHeight="199.0" fitWidth="194.0" layoutX="405.0" layoutY="445.0" onMouseClicked="#selectedCloud1" onMouseEntered="#inCloud1" onMouseExited="#outCloud1" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud2" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="1254.0" layoutY="445.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
+            <Image url="@../Graphical_Assets/Reame/cloud.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="cloud2" disable="true" fitHeight="180.0" fitWidth="186.0" layoutX="1285.0" layoutY="445.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Graphical_Assets/Reame/nuvola2p.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="card1" fitHeight="205.0" fitWidth="140.0" layoutX="703.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card2" fitHeight="205.0" fitWidth="140.0" layoutX="876.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="card3" fitHeight="205.0" fitWidth="140.0" layoutX="1052.0" layoutY="412.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card1" fitHeight="205.0" fitWidth="140.0" layoutX="692.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card2" fitHeight="205.0" fitWidth="140.0" layoutX="865.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="card3" fitHeight="205.0" fitWidth="140.0" layoutX="1041.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="bridge_10_11" fitHeight="117.0" fitWidth="190.0" layoutX="1050.0" layoutY="73.0" opacity="0.0" pickOnBounds="true" rotate="-14.9">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
@@ -331,37 +326,22 @@
             <Bloom threshold="0.25" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud2Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1377.0" layoutY="561.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud2Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1321.0" layoutY="587.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud2Student1" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1305.0" layoutY="511.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud2Student1" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1299.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud2Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1379.0" layoutY="476.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud2Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1383.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="501.0" layoutY="568.0" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <DropShadow height="15.0" radius="7.0" width="15.0" />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="cloud1Student1" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="426.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <DropShadow height="15.0" radius="7.0" width="15.0" />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="504.0" layoutY="478.0" pickOnBounds="true" preserveRatio="true">
-         <effect>
-            <DropShadow height="15.0" radius="7.0" width="15.0" />
-         </effect>
-      </ImageView>
-      <ImageView fx:id="toScoreboard" fitHeight="150.0" fitWidth="200.0" layoutX="893.0" layoutY="635.0" onMouseClicked="#moveToScoreboard" onMouseEntered="#inScrb" onMouseExited="#outScrb" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="toScoreboard" fitHeight="150.0" fitWidth="200.0" layoutX="893.0" layoutY="633.0" onMouseClicked="#moveToScoreboard" onMouseEntered="#inScrb" onMouseExited="#outScrb" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
          </image>
@@ -385,7 +365,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="labelScrbd" layoutX="921.0" layoutY="657.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
+      <Label fx:id="labelScrbd" layoutX="921.0" layoutY="655.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
          <font>
             <Font size="36.0" />
          </font>
@@ -417,5 +397,179 @@
             </Bloom>
          </effect>
       </Label>
+      <Label fx:id="lblIsola0" layoutX="1688.0" layoutY="683.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 1" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola1" layoutX="1613.0" layoutY="1003.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 2" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola2" layoutX="1281.0" layoutY="1043.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 3" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola3" layoutX="936.0" layoutY="1052.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 4" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola4" layoutX="562.0" layoutY="1039.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 5" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola5" layoutX="224.0" layoutY="1002.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 6" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola6" layoutX="112.0" layoutY="687.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 7" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola7" layoutX="244.0" layoutY="74.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 8" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola8" layoutX="577.0" layoutY="12.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 9" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola9" layoutX="919.0" layoutY="-2.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 10" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola10" layoutX="1275.0" layoutY="14.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 11" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="lblIsola11" layoutX="1607.0" layoutY="59.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 12" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="19.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <ImageView fx:id="cloud2Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1351.0" layoutY="493.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud21" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="405.0" layoutY="453.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/cloud.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="cloud1Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="472.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud1Student1" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="450.0" layoutY="523.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="532.0" layoutY="551.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud1Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="502.0" layoutY="501.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
    </children>
 </AnchorPane>

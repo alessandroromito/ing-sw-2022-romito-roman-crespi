@@ -758,6 +758,18 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void enableEntrance(){
         for(ImageView i:entrance)
             i.setDisable(false);
+        islandMenu.setDisable(false);
+        diningButton.setDisable(false);
+
+    }
+
+    public void disableEntrance(){
+        for(ImageView i:entrance)
+            i.setDisable(true);
+        islandMenu.setVisible(false);
+        diningButton.setVisible(false);
+        islandMenu.setDisable(true);
+        diningButton.setDisable(true);
     }
 
     @FXML
@@ -766,21 +778,18 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void selectedEntrance(MouseEvent mouseEvent) {
-        System.out.println("click");
         String idString = mouseEvent.getSource().toString().substring(13,16);
         if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
 
         selEntranceStudentId = Integer.valueOf(idString);
         ImageView selEntranceStudent = getEntranceFromId(idString);
 
-        //if(!islandMenu.isDisabled()){
         islandMenu.setLayoutX(selEntranceStudent.getLayoutX()+93);
         islandMenu.setLayoutY(selEntranceStudent.getLayoutY()-34);
         diningButton.setLayoutX(selEntranceStudent.getLayoutX()+93);
         diningButton.setLayoutY(selEntranceStudent.getLayoutY());
         islandMenu.setVisible(true);
         diningButton.setVisible(true);
-        //}
     }
 
     @FXML

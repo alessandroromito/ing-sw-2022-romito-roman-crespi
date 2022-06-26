@@ -210,6 +210,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView cloud1Student2;
 
     @FXML
+    private ImageView cloud1Student3;
+
+    @FXML
     private ImageView cloud2Student0;
 
     @FXML
@@ -217,6 +220,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private ImageView cloud2Student2;
+
+    @FXML
+    private ImageView cloud2Student3;
 
     @FXML
     private ImageView motherNature;
@@ -241,8 +247,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
     ArrayList<Cloud> clouds = new ArrayList<>();
-    ImageView[] cloudStudents1 = new ImageView[3];
-    ImageView[] cloudStudents2 = new ImageView[3];
+    ImageView[] cloudStudents1 = new ImageView[4];
+    ImageView[] cloudStudents2 = new ImageView[4];
     ImageView[] towerBases = new ImageView[12];
     ImageView[] assistantCards = new ImageView[10];
     ArrayList<ImageView>[] students = new ArrayList[12];
@@ -286,8 +292,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
 
-        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
-        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
+        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2; cloudStudents1[3] = cloud1Student3;
+        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2; cloudStudents2[3] = cloud2Student3;
 
         disableClouds();
 
@@ -356,13 +362,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         clouds.add(cloud);
         Image image = null;
 
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<cloud.getCloudStudents().size();i++) {
             StudentDisc s = cloud.getCloudStudents().get(i);
             switch (s.getColorInt()) {
-                case 1:
+                case 2:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
                     break;
-                case 2:
+                case 0:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
                     break;
                 case 3:
@@ -371,7 +377,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 case 4:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
                     break;
-                case 5:
+                case 1:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
                     break;
             }
