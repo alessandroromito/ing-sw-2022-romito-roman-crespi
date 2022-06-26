@@ -311,6 +311,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
 //color: 1/5  isalnd:0/11
     public void addStudentToIsland(int color,int id,int island){
+        System.out.println("Adding "+id+" to island "+island);
         Image image = null;
         ImageView student = new ImageView();
 
@@ -740,23 +741,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     private int getColorFromId(int id){
-        if(id-59>=0 && id-58<=25)
-            return 1;
-        if(id-59>=26 && id-58<=51)
+        if(id-59>=0 && id-59<=25)
             return 2;
-        if(id-59>=52 && id-58<=77)
-            return 3;
-        if(id-59>=78 && id-58<=103)
-            return 4;
-        if(id-59>=104 && id-58<=129)
+        else if(id-59>=26 && id-59<=51)
             return 5;
+        else if(id-59>=52 && id-59<=77)
+            return 1;
+        else if(id-59>=78 && id-59<=103)
+            return 3;
+        else if(id-59>=104 && id-59<=129)
+            return 4;
+        else System.out.println("id mancante: "+id);
 
         return 0;
     }
 
+    private boolean containId(int island,int id){
+        return false;
+    }
+
     public void updateValues(GameSerialized gameSerialized) {
         this.gameSerialized = gameSerialized;
-        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
         setMotherNaturePose(gameSerialized.getMotherNaturePos());

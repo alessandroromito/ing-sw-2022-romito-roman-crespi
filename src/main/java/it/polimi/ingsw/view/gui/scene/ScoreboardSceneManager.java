@@ -4,10 +4,15 @@ import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.view.gui.GraphicController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.effect.Bloom;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
@@ -695,6 +700,12 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     @FXML
     private ImageView map;
 
+    @FXML
+    private MenuButton islandMenu;
+
+    @FXML
+    private Button diningButton;
+
 
     private ImageView[] entrance = new ImageView[9];
     private ImageView[][] diningRoom = new ImageView[5][10];
@@ -713,6 +724,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     private Circle[] towers_1 = new Circle[8];
     private Circle[] towers_2 = new Circle[8];
 
+    private Integer selEntranceStudentId = null;
+
     public ScoreboardSceneManager() {
         stage = new Stage();
         stage.initOwner(GraphicController.getActiveScene().getWindow());
@@ -721,19 +734,67 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.setAlwaysOnTop(true);
     }
 
+    public void setEffect(ImageView i){
+        int id = Integer.parseInt(i.getId());
+        if(id-59>=0 && id-59<=25)
+            i.setEffect(new Glow(1));
+        else if(id-59>=26 && id-59<=51)
+            i.setEffect(new Glow(0.6));
+        else if(id-59>=52 && id-59<=77)
+            i.setEffect(new Glow(0.6));
+        else if(id-59>=78 && id-59<=103)
+            i.setEffect(new Glow(0.8));
+        else if(id-59>=104 && id-59<=129)
+            i.setEffect(new Glow(0.53));
+    }
+
+    public ImageView getEntranceFromId(String id){
+        for(ImageView imageView: entrance)
+            if(imageView.getId().equals(id))
+                return imageView;
+        return null;
+    }
+
+    public void enableEntrance(){
+        for(ImageView i:entrance)
+            i.setDisable(false);
+    }
+
     @FXML
     void click(MouseEvent event) {
 
     }
 
+    public void selectedEntrance(MouseEvent mouseEvent) {
+        System.out.println("click");
+        String idString = mouseEvent.getSource().toString().substring(13,16);
+        if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
+
+        selEntranceStudentId = Integer.valueOf(idString);
+        ImageView selEntranceStudent = getEntranceFromId(idString);
+
+        //if(!islandMenu.isDisabled()){
+        islandMenu.setLayoutX(selEntranceStudent.getLayoutX()+93);
+        islandMenu.setLayoutY(selEntranceStudent.getLayoutY()-34);
+        diningButton.setLayoutX(selEntranceStudent.getLayoutX()+93);
+        diningButton.setLayoutY(selEntranceStudent.getLayoutY());
+        islandMenu.setVisible(true);
+        diningButton.setVisible(true);
+        //}
+    }
+
     @FXML
     void in(MouseEvent event) {
+        String idString = event.getSource().toString().substring(13,16);
+        if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
 
+        setEffect(getEntranceFromId(idString));
     }
 
     @FXML
     void out(MouseEvent event) {
-
+        for(ImageView i: entrance)
+            i.setEffect(null);
     }
 
     @Override
@@ -780,6 +841,15 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
         for (int i=0;i<7;i++)   entranceFree[i] = true;
+
+        for(int j=0;j<12;j++) {
+            int finalJ = j;
+            islandMenu.getItems().get(j).setOnAction(event -> islandMessage(finalJ+1));
+        }
+    }
+
+    public void islandMessage(int number){
+        System.out.println(number);
     }
 
     public void setMap(Image image){
@@ -925,15 +995,15 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private int getColorFromId(int id){
         if(id-59>=0 && id-59<=25)
-            return 1;
-        else if(id-59>=26 && id-59<=51)
             return 2;
-        else if(id-59>=52 && id-59<=77)
-            return 3;
-        else if(id-59>=78 && id-59<=103)
-            return 4;
-        else if(id-59>=104 && id-59<=129)
+        else if(id-59>=26 && id-59<=51)
             return 5;
+        else if(id-59>=52 && id-59<=77)
+            return 1;
+        else if(id-59>=78 && id-59<=103)
+            return 3;
+        else if(id-59>=104 && id-59<=129)
+            return 4;
         else System.out.println("id mancante: "+id);
 
         return 0;
@@ -984,7 +1054,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         //aggiorna entrata
         for(int id: scoreboard.getEntranceId()){
-            System.out.println(id);
             addStudentOnEntrance(getColorFromId(id),id);
         }
 
@@ -1086,4 +1155,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         et.setInput(new BoxBlur());
         map.setEffect(et);
     }
+
+    public void selectedToDining(ActionEvent actionEvent) {
+    }
+
 }
