@@ -364,7 +364,7 @@ public class CLI extends ViewObservable implements View {
                 out.println("Numero inserito non valido. Riprovare.");
             if(characterCards.get(choose).getCost() > coin)
                 out.println("Non hai abbastanza monete per usare questa carta personaggio");
-        } while(choose > characterCards.size() - 1 || choose < 0 || characterCards.get(choose).getCost() > coin);
+        } while(choose > characterCards.size() - 1 || characterCards.get(choose).getCost() > coin);
 
         applyEffect(characterCards.get(choose));
     }

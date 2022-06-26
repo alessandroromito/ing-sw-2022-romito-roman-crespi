@@ -299,7 +299,6 @@ public class GameController implements Observer {
                 }
                 default -> {
                     showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
-                    VirtualView virtualView = virtualViewMap.get(message.getNickname());
                     askToMoveStudent();
                 }
             }
@@ -507,5 +506,16 @@ public class GameController implements Observer {
 
     public void setChosenExpertMode(boolean b) {
         this.chosenExpertMode = b;
+    }
+
+    public void removeVirtualView(String nickname) {
+        VirtualView virtualView = virtualViewMap.remove(nickname);
+        if(getGameState() == GameState.GAME_STARTED)
+            turnController.removeVirtualView(nickname);
+
+        game.removeObserver(virtualView);
+        game.getPlayerByNickname(nickname).removeObserver(virtualView);
+
+        game.getPlayerByNickname(nickname).setConnected(false);
     }
 }

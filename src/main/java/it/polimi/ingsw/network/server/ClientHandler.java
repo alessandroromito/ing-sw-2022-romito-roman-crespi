@@ -18,7 +18,6 @@ public class ClientHandler implements Runnable {
     private final MessageHandler messageHandler;
 
     private boolean connected;
-    private String nickname;
 
     private final Object inputLock;
     private final Object outputLock;
@@ -61,7 +60,6 @@ public class ClientHandler implements Runnable {
                     if (message != null && !message.getClass().equals(PingMessage.class)) {
                         if (message.getClass().equals(LoginRequest.class)) {
                             System.out.println(message);
-                            this.nickname = message.getNickname();
                             socketServer.addClient(message.getNickname(), this);
                         } else {
                             Server.LOGGER.info(() -> "Messaggio ricevuto: " + message);

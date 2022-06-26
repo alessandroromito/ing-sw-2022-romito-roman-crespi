@@ -186,7 +186,7 @@ public class TurnController {
         actionPhase();
     }
 
-    public Map<String, VirtualView> getVirtualViewMap() {
-        return virtualViewMap;
+    public void removeVirtualView(String nickname) {
+        virtualViewMap.remove(nickname);
     }
 }

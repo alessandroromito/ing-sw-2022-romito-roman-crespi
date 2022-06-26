@@ -484,6 +484,15 @@ public class Game extends Observable {
         }
     }
 
+    public ArrayList<Player> getPlayersConnected(){
+        ArrayList<Player> playersConnected = new ArrayList<>();
+        for(Player player : players){
+            if(player.isConnected())
+                playersConnected.add(player);
+        }
+        return playersConnected;
+    }
+
     public boolean isExpertMode() {
         return expertMode;
     }

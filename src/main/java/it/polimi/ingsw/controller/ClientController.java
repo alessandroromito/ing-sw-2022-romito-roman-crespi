@@ -57,8 +57,7 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.showLoginResult(loginReplyMessage.getNickname(), loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful()));
             }
             case MERGE_ISLANDS -> {
-                MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;
-                //
+
             }
             case PLAYER_NUMBER_REQUEST -> queue.execute(view::askPlayersNumber);
             case PLAY_ASSISTANT_CARD -> {
@@ -81,9 +80,7 @@ public class ClientController implements ViewObserver, Observer {
                 GameScenarioMessage gameScenarioMessage = (GameScenarioMessage) message;
                 queue.execute(() -> view.showGameScenario(gameScenarioMessage.getGameSerialized()));
             }
-            case MOVE_MOTHER_NATURE -> {
-                queue.execute(() -> view.askToMoveMotherNature(((MoveMotherNatureMessage) message).getSteps()));
-            }
+            case MOVE_MOTHER_NATURE -> queue.execute(() -> view.askToMoveMotherNature(((MoveMotherNatureMessage) message).getSteps()));
             case MOVE_STUDENT -> {
                 MoveStudentMessage moveStudentMessage = (MoveStudentMessage) message;
                 queue.execute(() -> view.askToMoveAStudent(moveStudentMessage.getStudentDiscs(), moveStudentMessage.getPosition(), moveStudentMessage.getIslandNumber()));
@@ -92,9 +89,7 @@ public class ClientController implements ViewObserver, Observer {
                 CloudMessage cloudMessage = (CloudMessage) message;
                 queue.execute(() -> view.askToChooseACloud(cloudMessage.getCloudList()));
             }
-            case GAME_MODE -> {
-                queue.execute(view::askGameMode);
-            }
+            case GAME_MODE -> queue.execute(view::askGameMode);
             case USE_EFFECT -> {
             }
             case PLAY_CHARACTER_CARD -> {

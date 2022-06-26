@@ -117,4 +117,12 @@ public class Player extends Observable{
     public String toString(){
         return this.nickname;
     }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
 }
