@@ -340,6 +340,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards) {
         Platform.runLater( () -> {
+            mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
@@ -347,14 +348,17 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
-
+        Platform.runLater( () -> {
+            showGenericMessage("Spostamento", "Muovi uno studente dall'entrata");
+            scoreboardSceneManager.enableEntrance();
+        } );
     }
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         Platform.runLater( () -> {
-            mapSceneManager.moveMotherNature(maxSteps);
             showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
+            mapSceneManager.moveMotherNature(maxSteps);
         } );
     }
 

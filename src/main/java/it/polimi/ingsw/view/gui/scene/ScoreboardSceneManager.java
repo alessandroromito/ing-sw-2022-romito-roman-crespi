@@ -758,9 +758,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     public void enableEntrance(){
         for(ImageView i:entrance)
             i.setDisable(false);
-        islandMenu.setDisable(false);
-        diningButton.setDisable(false);
-
     }
 
     public void disableEntrance(){
@@ -790,6 +787,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setLayoutY(selEntranceStudent.getLayoutY());
         islandMenu.setVisible(true);
         diningButton.setVisible(true);
+        islandMenu.setDisable(false);
+        diningButton.setDisable(false);
     }
 
     @FXML
@@ -1166,6 +1165,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void selectedToDining(ActionEvent actionEvent) {
+        System.out.println("sposta studente nella sala");
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
     }
 
 }

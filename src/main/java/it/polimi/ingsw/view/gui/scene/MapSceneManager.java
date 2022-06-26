@@ -256,7 +256,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
-    private boolean[] assistantStillInHand = new boolean[10];
     private boolean switchMotherNature = false;
 
     @FXML
@@ -283,8 +282,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         for(int i=0;i<12;i++)
             islands[i] = new ArrayList<Point>();
         disableIslands();
-
-        for(int i=0;i<10;i++)   assistantStillInHand[i] = true;
 
         assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
@@ -1013,10 +1010,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloud2.setEffect(null);
     }
 
+    public void setAssistants(List<AssistantCard> assistantCards){
+        for(AssistantCard assistantCard: assistantCards){
+            this.assistantCards[assistantCard.getValue()-1].setVisible(true);
+            this.assistantCards[assistantCard.getValue()-1].setDisable(false);
+        }
+
+    }
+
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
 
-        assistantStillInHand[assistantUsed] = false;
         assistantCards[assistantUsed].setMouseTransparent(true);
         //TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[assistantUsed]);
         FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[assistantUsed]);
@@ -1067,8 +1071,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void switchView(MouseEvent mouseEvent) {
-        for(int k=0;k<10;k++)
-            if(assistantStillInHand[k]){
+        for(int k=0;k<10;k++){
+
             assistantCards[k].setMouseTransparent(false);
             TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
             FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);
@@ -1137,8 +1141,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void closeHand(MouseEvent mouseEvent) {
-        for(int k=0;k<10;k++)
-            if(assistantStillInHand[k]){
+        for(int k=0;k<10;k++) {
+
             assistantCards[k].setMouseTransparent(true);
             TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
             FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);

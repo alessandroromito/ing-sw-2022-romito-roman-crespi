@@ -546,7 +546,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud21" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="405.0" layoutY="453.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="405.0" layoutY="453.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/cloud.png" />
          </image>
