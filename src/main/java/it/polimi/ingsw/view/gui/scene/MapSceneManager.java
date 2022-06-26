@@ -258,6 +258,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     int motherNaturePos = -1;
     private boolean switchMotherNature = false;
 
+    public void setGraphicController(GraphicController graphicController) {
+        this.graphicController = graphicController;
+    }
+
+    private GraphicController graphicController = null;
+
     @FXML
     public void initialize() {
         System.out.println("start initialize fxml");
@@ -1212,7 +1218,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
-        ScoreboardSceneManager scoreboardSceneManager = GraphicController.showScoreboards();
+        ScoreboardSceneManager scoreboardSceneManager = graphicController.showScoreboards();
         scoreboardSceneManager.setMap(pane.getScene().snapshot(null));
     }
 

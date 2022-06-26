@@ -793,6 +793,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     @FXML
     void in(MouseEvent event) {
+        System.out.println(event.getSource().toString());
         String idString = event.getSource().toString().substring(13,16);
         if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
 
@@ -854,10 +855,13 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             int finalJ = j;
             islandMenu.getItems().get(j).setOnAction(event -> islandMessage(finalJ+1));
         }
+        
+        disableEntrance();
     }
 
     public void islandMessage(int number){
         System.out.println(number);
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
     }
 
     public void setMap(Image image){
