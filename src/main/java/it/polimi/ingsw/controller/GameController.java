@@ -281,9 +281,7 @@ public class GameController implements Observer {
             Player player = game.getPlayerByNickname(message.getNickname());
 
             switch (message.getPosition()) {
-                case 0 -> {
-                    game.moveStudentToDiningRoom(student);
-                }
+                case 0 -> game.moveStudentToDiningRoom(student);
                 case 1 -> {
                     game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber()-1);
                     game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);
