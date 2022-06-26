@@ -10,7 +10,6 @@ import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
@@ -22,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.util.*;
+import java.util.List;
 import java.util.random.RandomGenerator;
 
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
@@ -210,6 +210,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView cloud1Student2;
 
     @FXML
+    private ImageView cloud1Student3;
+
+    @FXML
     private ImageView cloud2Student0;
 
     @FXML
@@ -217,6 +220,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private ImageView cloud2Student2;
+
+    @FXML
+    private ImageView cloud2Student3;
 
     @FXML
     private ImageView motherNature;
@@ -241,8 +247,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
     ArrayList<Cloud> clouds = new ArrayList<>();
-    ImageView[] cloudStudents1 = new ImageView[3];
-    ImageView[] cloudStudents2 = new ImageView[3];
+    ImageView[] cloudStudents1 = new ImageView[4];
+    ImageView[] cloudStudents2 = new ImageView[4];
     ImageView[] towerBases = new ImageView[12];
     ImageView[] assistantCards = new ImageView[10];
     ArrayList<ImageView>[] students = new ArrayList[12];
@@ -250,8 +256,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
-    private boolean[] assistantStillInHand = new boolean[10];
     private boolean switchMotherNature = false;
+
+    public void setGraphicController(GraphicController graphicController) {
+        this.graphicController = graphicController;
+    }
+
+    private GraphicController graphicController = null;
 
     @FXML
     public void initialize() {
@@ -278,16 +289,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             islands[i] = new ArrayList<Point>();
         disableIslands();
 
-        for(int i=0;i<10;i++)   assistantStillInHand[i] = true;
-
         assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
 
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
 
-        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
-        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
+        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2; cloudStudents1[3] = cloud1Student3;
+        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2; cloudStudents2[3] = cloud2Student3;
 
         disableClouds();
 
@@ -300,6 +309,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
 
     public void initializeCharacterCards(int[] number){
+        System.out.println("initialize characters");
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
         card1.setImage(image);
         image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
@@ -310,6 +320,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
 //color: 1/5  isalnd:0/11
     public void addStudentToIsland(int color,int id,int island){
+        System.out.println("Adding "+id+" to island "+island);
         Image image = null;
         ImageView student = new ImageView();
 
@@ -354,13 +365,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         clouds.add(cloud);
         Image image = null;
 
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<cloud.getCloudStudents().size();i++) {
             StudentDisc s = cloud.getCloudStudents().get(i);
             switch (s.getColorInt()) {
-                case 1:
+                case 2:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
                     break;
-                case 2:
+                case 0:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
                     break;
                 case 3:
@@ -369,7 +380,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 case 4:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
                     break;
-                case 5:
+                case 1:
                     image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
                     break;
             }
@@ -739,23 +750,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     private int getColorFromId(int id){
-        if(id-59>=0 && id-58<=25)
-            return 1;
-        if(id-59>=26 && id-58<=51)
+        if(id-59>=0 && id-59<=25)
             return 2;
-        if(id-59>=52 && id-58<=77)
-            return 3;
-        if(id-59>=78 && id-58<=103)
-            return 4;
-        if(id-59>=104 && id-58<=129)
+        else if(id-59>=26 && id-59<=51)
             return 5;
+        else if(id-59>=52 && id-59<=77)
+            return 1;
+        else if(id-59>=78 && id-59<=103)
+            return 3;
+        else if(id-59>=104 && id-59<=129)
+            return 4;
+        else System.out.println("id mancante: "+id);
 
         return 0;
     }
 
+    private boolean containId(int island,int id){
+        return false;
+    }
+
     public void updateValues(GameSerialized gameSerialized) {
         this.gameSerialized = gameSerialized;
-        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
         setMotherNaturePose(gameSerialized.getMotherNaturePos());
@@ -1001,10 +1016,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloud2.setEffect(null);
     }
 
+    public void setAssistants(List<AssistantCard> assistantCards){
+        for(AssistantCard assistantCard: assistantCards){
+            this.assistantCards[assistantCard.getValue()-1].setVisible(true);
+            this.assistantCards[assistantCard.getValue()-1].setDisable(false);
+        }
+
+    }
+
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
 
-        assistantStillInHand[assistantUsed] = false;
         assistantCards[assistantUsed].setMouseTransparent(true);
         //TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[assistantUsed]);
         FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[assistantUsed]);
@@ -1055,8 +1077,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void switchView(MouseEvent mouseEvent) {
-        for(int k=0;k<10;k++)
-            if(assistantStillInHand[k]){
+        for(int k=0;k<10;k++){
+
             assistantCards[k].setMouseTransparent(false);
             TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
             FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);
@@ -1125,8 +1147,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void closeHand(MouseEvent mouseEvent) {
-        for(int k=0;k<10;k++)
-            if(assistantStillInHand[k]){
+        for(int k=0;k<10;k++) {
+
             assistantCards[k].setMouseTransparent(true);
             TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[k]);
             FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[k]);
@@ -1196,8 +1218,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
-        ScoreboardSceneManager scoreboardSceneManager = GraphicController.showScoreboards();
-        scoreboardSceneManager.updateValues(gameSerialized);
+        ScoreboardSceneManager scoreboardSceneManager = graphicController.showScoreboards();
+        scoreboardSceneManager.setMap(pane.getScene().snapshot(null));
     }
 
     public void inScrb(MouseEvent mouseEvent) {

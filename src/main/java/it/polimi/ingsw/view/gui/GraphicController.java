@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.model.GameSerialized;
@@ -102,6 +103,7 @@ public class GraphicController extends ViewObservable implements View {
                 activeScene.setRoot(parent);
                 gameScenarioEnabled = true;
                 this.mapSceneManager = mapSceneManager;
+                mapSceneManager.setGraphicController(this);
             }catch(IOException e) {
                 Logger.getLogger("client").severe(e.getMessage());
                 e.printStackTrace();
@@ -173,7 +175,7 @@ public class GraphicController extends ViewObservable implements View {
         genericMessageSceneManager.showMessage();
     }
 
-    public static synchronized void initializeScoreboard(){
+    public synchronized void initializeScoreboard(){
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource("fxml/scoreboard_scene.fxml"));
         Parent parent;
         try {
@@ -183,13 +185,14 @@ public class GraphicController extends ViewObservable implements View {
             return;
         }
         scoreboardSceneManager = fxmlLoader.getController();
+        scoreboardSceneManager.addAllObservers(observers);
         Scene scoreboardScene = new Scene(parent);
         scoreboardSceneManager.setScene(scoreboardScene);
     }
 
-    public static ScoreboardSceneManager showScoreboards() {
+    public ScoreboardSceneManager showScoreboards() {
         if (scoreboardSceneManager == null) initializeScoreboard();
-        else scoreboardSceneManager.showScoreboards();
+        else{ scoreboardSceneManager.showScoreboards();}
         return scoreboardSceneManager;
     }
 
@@ -307,6 +310,7 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
+        System.out.println("askCharacterCards");
         int[] finalCharacterNumbers = new int[3];
         for(int i = 0 ; i < characterCards.size(); i++)
         {
@@ -339,6 +343,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
+            mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
@@ -346,14 +351,17 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
-
+        Platform.runLater( () -> {
+            showGenericMessage("Spostamento", "Muovi uno studente dall'entrata");
+            scoreboardSceneManager.enableEntrance();
+        } );
     }
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         Platform.runLater( () -> {
-            mapSceneManager.moveMotherNature(maxSteps);
             showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
+            mapSceneManager.moveMotherNature(maxSteps);
         } );
     }
 

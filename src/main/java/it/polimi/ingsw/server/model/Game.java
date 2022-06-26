@@ -291,6 +291,7 @@ public class Game extends Observable {
         getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
         if(!getActivePlayer().getScoreboard().getProfessor(stud.getColor()))
             checkProfessors(stud.getColor());
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     public void checkInfluence(int islandID) {
