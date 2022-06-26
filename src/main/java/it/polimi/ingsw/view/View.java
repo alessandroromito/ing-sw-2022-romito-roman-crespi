@@ -14,8 +14,6 @@ public interface View {
     /**
      * Asks how many players
      */
-
-    //ask user to choose how many player will play
     void askPlayersNumber();
 
     void askGameMode();
@@ -47,7 +45,7 @@ public interface View {
     void showGenericMessage(String genericMessage);
 
     //ask to choose assistant card
-    void askAssistantCard(List<AssistantCard> assistantCards);
+    void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards);
 
     //ask to move a student
     void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber);

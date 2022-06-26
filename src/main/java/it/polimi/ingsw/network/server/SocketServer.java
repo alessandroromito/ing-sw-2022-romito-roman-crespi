@@ -40,7 +40,7 @@ public class SocketServer implements Runnable{
                 continue;
             }
 
-            ClientHandler clientHandler = null;
+            ClientHandler clientHandler;
             try {
                 clientHandler = new ClientHandler(this, client);
                 Thread thread = new Thread (clientHandler, "serverSocket_handler" + client.getInetAddress());

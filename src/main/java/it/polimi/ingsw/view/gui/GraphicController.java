@@ -337,7 +337,7 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void askAssistantCard(List<AssistantCard> assistantCards) {
+    public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
             mapSceneManager.enableAssistant(assistantCards);
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");

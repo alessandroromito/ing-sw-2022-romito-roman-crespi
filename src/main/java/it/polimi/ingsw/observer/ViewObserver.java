@@ -27,7 +27,7 @@ public interface ViewObserver {
 
     void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
 
-    void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards);
+    void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards);
 
     void onUpdateGameMode(String mode);
 
@@ -36,9 +36,7 @@ public interface ViewObserver {
     void onUpdateUse209(int studentPos, int island);
 
     void onUpdateUse210();
-    
-    void update(Message message);
-    
+
     void onUpdateUse211(int islandNum);
 
     void onUpdateUse212();
@@ -52,4 +50,6 @@ public interface ViewObserver {
     void onUpdateUse217(PawnColors color);
 
     void onUpdateUse219(int finalStudentPos);
+
+    void update(Message message);
 }

@@ -30,7 +30,6 @@ public class CLI extends ViewObservable implements View {
 
     private int activeCardID;
     private int coin;
-    private boolean triedToUseCharacter;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -195,8 +194,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-        out.println("\n" + nicknameDisconnected + text);
-        System.exit(1);
+        out.println("\n" + ANSI_RED + nicknameDisconnected + text + ANSI_RESET);
     }
 
     @Override
@@ -204,6 +202,7 @@ public class CLI extends ViewObservable implements View {
         try{
             readThread.interrupt();
         }catch (NullPointerException ignored){
+
         }
 
         out.println("\nERRORE: " + error);
@@ -337,7 +336,7 @@ public class CLI extends ViewObservable implements View {
     public void askCharacterCard(List<CharacterCard> characterCards) {
         int choose;
         char answer;
-        triedToUseCharacter = false;
+        boolean triedToUseCharacter = false;
 
         do {
             if(!triedToUseCharacter) {
@@ -603,7 +602,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void askAssistantCard(List<AssistantCard> assistantCards) {
+    public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         int choose;
         do {
             out.println("Scegli tra le seguenti Carte Assistente:");
@@ -612,6 +611,12 @@ public class CLI extends ViewObservable implements View {
                 out.println("Carta " + i + " | Valore: " + assistantCard.getValue() + " Numero Passi: " + assistantCard.getMovement());
                 i++;
             }
+
+            out.println("Carte gia scelte dagli altri giocatori: ");
+            for(AssistantCard playedCard : playedAssistantCards){
+                out.println("Carta | Valore: " + playedCard.getValue() + " Numero Passi: " + playedCard.getMovement());
+            }
+
             out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
             try{
                 choose = Integer.parseInt(readRow());
@@ -624,7 +629,8 @@ public class CLI extends ViewObservable implements View {
         } while(choose > assistantCards.size()-1 || choose < 0);
 
         int finalChoose = choose;
-        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose))));
+        playedAssistantCards.add(assistantCards.get(finalChoose));
+        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose)), playedAssistantCards));
     }
 
     @Override
@@ -766,10 +772,10 @@ public class CLI extends ViewObservable implements View {
                 choose = Integer.parseInt(readRow());
             }
 
-            if(choose > cloudList.size() - 1 || choose < 0)
+            if(choose > cloudList.size() - 1 || choose < 0 || cloudList.get(choose).getCloudStudents().isEmpty())
                 out.println("Numero inserito non valido. Riprovare.");
 
-        }while(choose > cloudList.size()-1 || choose < 0);
+        }while(choose > cloudList.size()-1 || choose < 0 || cloudList.get(choose).getCloudStudents().isEmpty());
 
         int finalChoose = choose;
         ArrayList<Cloud> cloud = new ArrayList<>();

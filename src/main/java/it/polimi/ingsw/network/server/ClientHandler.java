@@ -65,9 +65,9 @@ public class ClientHandler implements Runnable {
     }
 
     public void disconnect() {
-        if(connected) {
+        if(isConnected()) {
             try {
-                if (!client.isClosed()) {
+                if(!client.isClosed()) {
                     client.close();
                 }
             } catch (IOException e) {

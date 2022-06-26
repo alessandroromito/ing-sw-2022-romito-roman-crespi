@@ -9,14 +9,20 @@ public class AssistantCardMessage extends  Message{
     private static final long serialVersionUID = 1001L; //da scegliere
 
     private final List<AssistantCard> assistantCards;
+    private final List<AssistantCard> playedAssistantCards;
 
-    public AssistantCardMessage(String nickname, List<AssistantCard> assistantCards){
+    public AssistantCardMessage(String nickname, List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards){
         super(nickname, MessageType.PLAY_ASSISTANT_CARD);
         this.assistantCards = assistantCards;
+        this.playedAssistantCards = playedAssistantCards;
     }
 
     public List<AssistantCard> getAssistantCards(){
         return this.assistantCards;
+    }
+
+    public List<AssistantCard> getPlayedAssistantCards() {
+        return playedAssistantCards;
     }
 
     @Override
@@ -28,4 +34,6 @@ public class AssistantCardMessage extends  Message{
     public String toString() {
         return "PlayAssistantCard[" + "nickname:" + getNickname() + ", assistantCards:" + this.assistantCards + "]";
     }
+
+
 }

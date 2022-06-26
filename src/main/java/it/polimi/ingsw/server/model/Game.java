@@ -459,6 +459,17 @@ public class Game extends Observable {
         return players.size();
     }
 
+    public List<AssistantCard> getPlayedAssistantCards() {
+        List<AssistantCard> playedAssistantCards = new ArrayList<>();
+
+        for(Player player : players){
+            if(player.getCurrentCard() != null)
+                playedAssistantCards.add(player.getCurrentCard());
+        }
+
+        return playedAssistantCards;
+    }
+
     public GameSerialized getGameSerialized() {
         return new GameSerialized(this);
     }
@@ -482,7 +493,7 @@ public class Game extends Observable {
     }
 
     // -----------------------------------------------------------
-    // EXPERT GAME METHODS throw RunTimeException()
+    // EXPERT GAME METHODS throws RunTimeException()
     // -----------------------------------------------------------
 
     public boolean useCharacter(int characterCardID){

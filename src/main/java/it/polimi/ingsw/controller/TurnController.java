@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
+import it.polimi.ingsw.server.extra.ComparatorAssistantCard;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
@@ -29,6 +30,7 @@ public class TurnController {
     private int turnCount = 0;
 
     private final GameController gameController;
+
     private Map<String, VirtualView> virtualViewMap;
 
     /**
@@ -74,8 +76,9 @@ public class TurnController {
     public void askAssistantCard() {
         Player player = game.getPlayerByNickname(getActivePlayer());
         List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
+        List<AssistantCard> playedAssistantCards = new ArrayList<>(game.getPlayedAssistantCards());
         VirtualView virtualView = virtualViewMap.get(getActivePlayer());
-        virtualView.askAssistantCard(assistantCardList);
+        virtualView.askAssistantCard(assistantCardList, playedAssistantCards);
     }
 
     /**
@@ -181,5 +184,9 @@ public class TurnController {
     public void nextActionPhase() {
         actionPhaseState = actionPhaseState.next(getActionPhaseState());
         actionPhase();
+    }
+
+    public Map<String, VirtualView> getVirtualViewMap() {
+        return virtualViewMap;
     }
 }
