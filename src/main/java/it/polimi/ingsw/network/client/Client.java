@@ -14,6 +14,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+/**
+ *  Socket client implementation
+ */
 public class Client extends Observable {
 
     private final Socket socket;
@@ -22,9 +25,8 @@ public class Client extends Observable {
     private final ExecutorService readExecutionQueue;
     private final ScheduledExecutorService pinger;
 
-    //manca il logger
 
-    private static final int SOCKET_TIMEOUT = 1000;
+    private static final int SOCKET_TIMEOUT = 10000;
 
     public Client(String address, int port) throws IOException {
         this.socket = new Socket();
@@ -36,6 +38,9 @@ public class Client extends Observable {
     }
 
 
+    /**
+     *  Reads a message from the server vis socket and notify the ClientController via Observer
+     */
     public void readMessage() {
         readExecutionQueue.execute(() -> {
             while (!readExecutionQueue.isShutdown()) {
@@ -43,8 +48,6 @@ public class Client extends Observable {
                 try {
                     message = (Message) objectInputStream.readObject();
                     notifyObserver(message);
-                } catch (EOFException e){
-
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     message = new ErrorMessage("Connection lost");
@@ -56,17 +59,25 @@ public class Client extends Observable {
         });
     }
 
+    /**
+     * Send a message to the server via socket.
+     * @param message message sent to the server.
+     */
     public void sendMessage(Message message){
         try {
             objectOutputStream.writeObject(message);
             objectOutputStream.reset();
         } catch (IOException e) {
             e.printStackTrace();
-            notifyObserver(new ErrorMessage("Could not send message"));
             disconnect();
+            notifyObserver(new ErrorMessage("Could not send message"));
         }
     }
 
+
+    /**
+     * Disconnect the socket from the server.
+     */
     public void disconnect() {
         try {
             if (!socket.isClosed()) {
@@ -74,7 +85,7 @@ public class Client extends Observable {
                 socket.close();
             }
         } catch (IOException e) {
-            notifyObserver(new ErrorMessage("Could not disconnect"));
+            notifyObserver(new ErrorMessage("Impossible to disconnect. Retry later."));
         }
     }
 }

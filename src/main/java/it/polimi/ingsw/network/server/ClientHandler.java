@@ -9,6 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * Client handler of a client - server connnection.
+ */
 public class ClientHandler implements Runnable {
     private final Socket client;
     private final SocketServer socketServer;
@@ -23,6 +26,13 @@ public class ClientHandler implements Runnable {
     private final ObjectOutputStream out;
     private final ObjectInputStream in;
 
+
+    /**
+     * Default constructor.
+     * @param socketServer socket of the server.
+     * @param client client to handle.
+     * @throws IOException from creating new Object Input or Output Stream
+     */
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
         this.socketServer = socketServer;
         this.client = client;
@@ -37,8 +47,13 @@ public class ClientHandler implements Runnable {
         this.messageHandler = new MessageHandler(socketServer);
     }
 
+    /**
+     * Handles the connection of the client.
+     * Keep listening to the socket.
+     */
     @Override
     public void run() {
+        Server.LOGGER.info(() -> "Client connected from " + client.getInetAddress());
         try {
             while (!Thread.currentThread().isInterrupted()) {
                 synchronized (inputLock) {
@@ -49,7 +64,7 @@ public class ClientHandler implements Runnable {
                             this.nickname = message.getNickname();
                             socketServer.addClient(message.getNickname(), this);
                         } else {
-                            System.out.println(message);
+                            Server.LOGGER.info(() -> "Messaggio ricevuto: " + message);
                             message.handle(messageHandler);
                         }
                     }
@@ -58,12 +73,24 @@ public class ClientHandler implements Runnable {
         } catch (IOException | ClassNotFoundException e) {
             disconnect();
         }
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * @return status of connection
+     */
     public boolean isConnected() {
         return connected;
     }
 
+    /**
+     * Disconnect the socket from the client if connected.
+     */
     public void disconnect() {
         if(isConnected()) {
             try {
@@ -74,11 +101,16 @@ public class ClientHandler implements Runnable {
                 e.printStackTrace();
             }
             connected = false;
-            socketServer.onDisconnect(this);
             Thread.currentThread().interrupt();
+
+            socketServer.onDisconnect(this);
         }
     }
 
+    /**
+     * Sends a message to the client via socket.
+     * @param message message to send to the client.
+     */
     public void sendMessage(Message message) {
         if(!isConnected()) return;
         try {
@@ -87,12 +119,18 @@ public class ClientHandler implements Runnable {
                 out.reset();
                 out.flush();
                 out.reset();
+                Server.LOGGER.info(() -> "Messaggio inviato: " + message);
             }
         } catch (IOException e) {
+            e.printStackTrace();
             disconnect();
         }
     }
 
+    /**
+     * Getter method.
+     * @return nickname saved in ClientHandler class.
+     */
     public String getNickname() {
         return nickname;
     }

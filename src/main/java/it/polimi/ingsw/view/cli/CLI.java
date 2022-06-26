@@ -68,13 +68,9 @@ public class CLI extends ViewObservable implements View {
 
         out.println("Inserisci i seguenti parametri per iniziare a giocare!\n");
         do{
-            //out.println("Server address: ");
+            out.println("Server address: ");
             String address = "127.0.0.1";
-            //try {
-            //    address = readRow();
-            //} catch (ExecutionException | InterruptedException e) {
-            //    e.printStackTrace();
-            //}
+            address = readRow();
             if(Validator.validateIpAddress(address)) {
                 server.put("address", address);
                 validInput = true;
@@ -87,13 +83,9 @@ public class CLI extends ViewObservable implements View {
         }while(!validInput);
 
         do{
-            //out.println("Port address: ");
+            out.println("Port address: ");
             String port = "1511";
-            //try {
-            //    port = readRow();
-            //} catch (ExecutionException | InterruptedException e) {
-            //    e.printStackTrace();
-            //}
+            port = readRow();
             if(Validator.validatePort(port)) {
                 server.put("port", port);
                 validInput = true;
