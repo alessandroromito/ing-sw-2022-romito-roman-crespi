@@ -36,17 +36,12 @@ public class Server {
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView virtualView = new VirtualView(clientHandler);
 
-        try {
-            if(gameController.checkLoginNickname(nickname)){
-                gameController.addPlayer(nickname, virtualView);
-                clientHandlerMap.put(nickname, clientHandler);
-            }
-            else{
-                clientHandler.disconnect();
-            }
-        } catch (MissingPlayersException | MissingPlayerNicknameException | InvalidActionPhaseStateException |
-                 InterruptedException | CloudNotEmptyException e) {
-            throw new RuntimeException(e);
+        if(gameController.checkLoginNickname(nickname)){
+            gameController.addPlayer(nickname, virtualView);
+            clientHandlerMap.put(nickname, clientHandler);
+        }
+        else{
+            clientHandler.disconnect();
         }
     }
 
@@ -56,17 +51,9 @@ public class Server {
      */
     public void removeClient(String nickname) {
         clientHandlerMap.remove(nickname);
-        gameController.getVirtualViewMap().remove(nickname);
-        System.out.println(nickname + "rimosso dalla lista dei client.");
-=======
+        gameController.removeVirtualView(nickname);
 
-        if(gameController.checkLoginNickname(nickname)){
-            gameController.addPlayer(nickname, virtualView);
-            clientHandlerMap.put(nickname, clientHandler);
-        }
-        else{
-            clientHandler.disconnect();
-        }
+        System.out.println(nickname + "rimosso dalla lista dei client.");
     }
 
     /**
@@ -78,12 +65,21 @@ public class Server {
             String nickname = getNicknameFromClientHandler(clientHandler);
 
             System.out.println(ANSI_RED + "removeClient(" + nickname + ')' + ANSI_RESET);
-
             removeClient(nickname);
 
             if(nickname != null) {
                 if (gameController.getGameState() == GameState.GAME_STARTED) {
+                    if(gameController.getGame().getPlayersConnected().size() == 1){
+                        long start = System.currentTimeMillis();
+                        long end = start + 30 * 1000;
+                        while (System.currentTimeMillis() < end) {
 
+                        }
+
+                    }
+                    else{
+                        //continue game
+                    }
                 }
                 else{
                     gameController.showDisconnectionMessage(nickname, " disconnected from the server!");
@@ -96,14 +92,6 @@ public class Server {
     /**
      * @return the game state from GameController.
      */
-    public void removeClient(String nickname) {
-        clientHandlerMap.remove(nickname);
-        gameController.getVirtualViewMap().remove(nickname);
-        if(getGameState() == GameState.GAME_STARTED)
-            gameController.getTurnController().getVirtualViewMap().remove(nickname);
-    }
-
-  
     public GameState getGameState(){
         return gameController.getGameState();
     }
@@ -113,7 +101,11 @@ public class Server {
      * @return nickname of the client associated to clientHandler.
      */
     public String getNicknameFromClientHandler(ClientHandler clientHandler){
-        return clientHandler.getNickname();
+        for(Map.Entry<String, ClientHandler> entry : clientHandlerMap.entrySet()){
+            if(clientHandler == entry.getValue())
+                return entry.getKey();
+        }
+        return null;
     }
 
     /**
