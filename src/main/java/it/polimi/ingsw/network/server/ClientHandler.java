@@ -124,12 +124,4 @@ public class ClientHandler implements Runnable {
             disconnect();
         }
     }
-
-    /**
-     * Getter method.
-     * @return nickname saved in ClientHandler class.
-     */
-    public String getNickname() {
-        return nickname;
-    }
 }
