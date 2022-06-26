@@ -31,11 +31,11 @@ public class SocketServer implements Runnable{
     @Override
     public void run() {
         try {
-            serverSocket = new ServerSocket(port, 0, InetAddress.getByName(DEFAULT_IP)); //magari problema su arg passati?
+            serverSocket = new ServerSocket(port);
             Server.LOGGER.info(() -> "Server avviato su porta " + port + ".");
         } catch (IOException e) {
             Server.LOGGER.severe("Impossibile avviare il server.");
-            e.printStackTrace(); //temporary
+            e.printStackTrace();
             return;
         }
 
