@@ -246,6 +246,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
+
+    public void setPlayedAssistantCardsList(List<AssistantCard> playedAssistantCardsList) {
+        this.playedAssistantCardsList = playedAssistantCardsList;
+    }
+
+    List<AssistantCard> playedAssistantCardsList = new ArrayList<>();
     ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[4];
     ImageView[] cloudStudents2 = new ImageView[4];
@@ -1045,7 +1051,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         for(int i = 0; i < 10 ; i++) {
             if (assistantUsed == i) {
                 AssistantCard finalAssistantCard = assistantCardsList.get(i);
-                new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard)))).start();
+                playedAssistantCardsList.add(finalAssistantCard);
+                new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard), playedAssistantCardsList))).start();
                 return;
             }
         }

@@ -79,7 +79,7 @@ public class GameTest {
         }
 
         // Opposite island free
-        int oppositeIslandNum = map.getIsland(game.oppositePosition()).getID();
+        int oppositeIslandNum = map.getIsland(game.oppositePosition(map.getMotherNaturePosition())).getID();
 
         //Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
         for(Integer integer : map.getIsland(oppositeIslandNum).getNumberOfColors())
