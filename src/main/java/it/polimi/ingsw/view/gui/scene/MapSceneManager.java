@@ -258,11 +258,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     int motherNaturePos = -1;
     private boolean switchMotherNature = false;
 
+    private GraphicController graphicController = null;
+
     public void setGraphicController(GraphicController graphicController) {
         this.graphicController = graphicController;
     }
-
-    private GraphicController graphicController = null;
 
     @FXML
     public void initialize() {
