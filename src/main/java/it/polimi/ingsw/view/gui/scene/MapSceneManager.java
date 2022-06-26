@@ -7,12 +7,11 @@ import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
-import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
@@ -22,13 +21,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.net.URL;
 import java.util.*;
 import java.util.random.RandomGenerator;
 
+import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 import static java.lang.Math.abs;
 
-public class MapSceneManager extends ViewObservable implements SceneManagerInterface,Initializable {
+public class MapSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
     private Rectangle bg;
@@ -252,6 +251,53 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     Point[] motherNaturePoses = new Point[12];
     int motherNaturePos = -1;
     private boolean[] assistantStillInHand = new boolean[10];
+    private boolean switchMotherNature = false;
+
+    @FXML
+    public void initialize() {
+        System.out.println("start initialize fxml");
+
+        for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
+
+        islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
+        islandsPosCentre[1] = new Point(island2.getLayoutX()+island2.getFitWidth()/2,island2.getLayoutY()+island2.getFitHeight()/2);
+        islandsPosCentre[2] = new Point(island3.getLayoutX()+island3.getFitWidth()/2,island3.getLayoutY()+island3.getFitHeight()/2);
+        islandsPosCentre[3] = new Point(island4.getLayoutX()+island4.getFitWidth()/2,island4.getLayoutY()+island4.getFitHeight()/2);
+        islandsPosCentre[4] = new Point(island5.getLayoutX()+island5.getFitWidth()/2,island5.getLayoutY()+island5.getFitHeight()/2);
+        islandsPosCentre[5] = new Point(island6.getLayoutX()+island6.getFitWidth()/2,island6.getLayoutY()+island6.getFitHeight()/2);
+        islandsPosCentre[6] = new Point(island7.getLayoutX()+island7.getFitWidth()/2,island7.getLayoutY()+island7.getFitHeight()/2);
+        islandsPosCentre[7] = new Point(island8.getLayoutX()+island8.getFitWidth()/2,island8.getLayoutY()+island8.getFitHeight()/2);
+        islandsPosCentre[8] = new Point(island9.getLayoutX()+island9.getFitWidth()/2,island9.getLayoutY()+island9.getFitHeight()/2);
+        islandsPosCentre[9] = new Point(island10.getLayoutX()+island10.getFitWidth()/2,island10.getLayoutY()+island10.getFitHeight()/2);
+        islandsPosCentre[10] = new Point(island11.getLayoutX()+island11.getFitWidth()/2,island11.getLayoutY()+island11.getFitHeight()/2);
+        islandsPosCentre[11] = new Point(island12.getLayoutX()+island12.getFitWidth()/2,island12.getLayoutY()+island12.getFitHeight()/2);
+
+        rIsl = (island1.getFitHeight()+17)/2;
+
+        for(int i=0;i<12;i++)
+            islands[i] = new ArrayList<Point>();
+        disableIslands();
+
+        for(int i=0;i<10;i++)   assistantStillInHand[i] = true;
+
+        assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
+
+        towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
+
+        motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
+
+        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2;
+        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
+
+        disableClouds();
+
+        for(int k=0;k<10;k++)
+        assistantCards[k].setViewOrder(-1);
+        xButton.setViewOrder(-1);
+
+        System.out.println("fine initialize fxml");
+    }
+
 
     public void initializeCharacterCards(int[] number){
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
@@ -404,7 +450,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return p;
     }
 
-    @Override
+/*    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
@@ -440,7 +486,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2;
 
         disableClouds();
-    }
+
+    } */
 
     public void setMotherNaturePose(int island){
         motherNature.setLayoutX(motherNaturePoses[island].getX());
@@ -449,14 +496,65 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         motherNaturePos = island;
     }
 
+    public void enableMotherNature(int maxSteps) {
+        switchMotherNature = true;
+        for (int i = 0; i < maxSteps; i++) {
+            if (i + motherNaturePos > 11)
+                enableSingleIsland(i+motherNaturePos-11);
+            else
+                enableSingleIsland(i+motherNaturePos);
+        }
+    }
+
+    public void enableSingleIsland(int number) {
+        switch (number) {
+            case 0:
+                island1.setDisable(false);
+                break;
+            case 1:
+                island2.setDisable(false);
+                break;
+            case 2:
+                island3.setDisable(false);
+                break;
+            case 3:
+                island4.setDisable(false);
+                break;
+            case 4:
+                island5.setDisable(false);
+                break;
+            case 5:
+                island6.setDisable(false);
+                break;
+            case 6:
+                island7.setDisable(false);
+                break;
+            case 7:
+                island8.setDisable(false);
+                break;
+            case 8:
+                island9.setDisable(false);
+                break;
+            case 9:
+                island10.setDisable(false);
+                break;
+            case 10:
+                island11.setDisable(false);
+                break;
+            case 11:
+                island12.setDisable(false);
+                break;
+        }
+    }
+
     public void moveMotherNature(int pos){
-            if(motherNaturePos+pos<=11){
-                motherNaturePos += pos;
-                setMotherNaturePose(motherNaturePos);
-            }else{
-                motherNaturePos += pos-11;
-                setMotherNaturePose(motherNaturePos);
-            }
+        if(motherNaturePos+pos<=11){
+            motherNaturePos += pos;
+            setMotherNaturePose(motherNaturePos);
+        }else{
+            motherNaturePos += pos-11;
+            setMotherNaturePose(motherNaturePos);
+        }
     }
 
     public void light(MouseEvent mouseEvent) {
@@ -590,7 +688,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void chooseIsland(MouseEvent mouseEvent) {
-        int choosenIsland;
+        int choosenIsland = -99;
 
         switch(mouseEvent.getSource().toString().charAt(19)) {
             case '2':
@@ -633,16 +731,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                         break;
                 }
         }
-        //chosen island isola scelta
+        final int choosen = choosenIsland;
+        if(switchMotherNature)  new Thread( () -> notifyObserver( obs -> obs.onUpdateMotherNaturePosition(choosen-motherNaturePos))).start();
+
         disableIslands();
         darkAll();
-    }
-
-    //bottone temporaneo per prove
-    public void build (ActionEvent actionEvent) {
-        //ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
-        //scoreboardSceneManager.updateValues(gameSerialized);
-        enableIslands();
     }
 
     private int getColorFromId(int id){
@@ -687,12 +780,15 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                             add = false;
 
                     if (add) {
-                        System.out.println("Aggiunta di uno studente alla map");
                         addStudentToIsland(getColorFromId(id), id, i);
                     }
                 }
             }
         }
+
+        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
+            if(s.getNickname() == nickname)
+                setCoin(s.getCoins());
     }
 
     //passare numero isola precedente in senso orario
@@ -863,21 +959,23 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void selectedCloud1(MouseEvent mouseEvent) {
         cloud1.setEffect(null);
         selectCloudObserverNotification(1);
+        disableClouds();
     }
 
     public void selectedCloud2(MouseEvent mouseEvent) {
         cloud1.setEffect(null);
         selectCloudObserverNotification(2);
+        disableClouds();
     }
 
     public void disableClouds(){
-        cloud1.setDisable(false);
-        cloud2.setDisable(false);
+        cloud1.setDisable(true);
+        cloud2.setDisable(true);
     }
 
     public void enableClouds(){
-        cloud1.setDisable(true);
-        cloud2.setDisable(true);
+        cloud1.setDisable(false);
+        cloud2.setDisable(false);
     }
 
     public void selectCloudObserverNotification(int cloudNumber) {
@@ -905,7 +1003,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
-        System.out.println("entra in choosenassistant");
 
         assistantStillInHand[assistantUsed] = false;
         assistantCards[assistantUsed].setMouseTransparent(true);
@@ -946,9 +1043,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         this.assistantCardsList = assistantCards;
 
         for(ImageView i: this.assistantCards){
-            System.out.println("Setto una assCard visible");
             i.setDisable(false);
         }
+
+        switchView(null);
     }
 
     public void disableAssistant(){
@@ -1098,7 +1196,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
-        ScoreboardSceneManager scoreboardSceneManager = SceneManager.showScoreboards();
+        ScoreboardSceneManager scoreboardSceneManager = GraphicController.showScoreboards();
         scoreboardSceneManager.updateValues(gameSerialized);
     }
 

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
-import it.polimi.ingsw.view.gui.SceneManager;
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -19,7 +19,7 @@ public class StartMenuSceneManager extends ViewObservable implements SceneManage
 
     @FXML
     private void onPlayButtonClick(Event event) {
-        SceneManager.paneTransition(observers, event, "addressPort_scene.fxml");
+        GraphicController.paneTransition(observers, event, "addressPort_scene.fxml");
     }
 
     @FXML

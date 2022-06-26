@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,9 +28,9 @@ public class LoginSceneManager extends ViewObservable implements SceneManagerInt
 
         nicknameField.pseudoClassStateChanged(PseudoClass.getPseudoClass("error"), !isNicknameValid);
 
-        loading.setVisible(true);
-
         if(isNicknameValid) {
+            loading.setVisible(true);
+            GraphicController.nickname = nickname;
             connectButton.setDisable(true);
             new Thread(() -> notifyObserver(obs -> obs.onUpdateNickname(nickname))).start();
         }

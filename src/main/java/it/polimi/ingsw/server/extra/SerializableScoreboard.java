@@ -15,6 +15,7 @@ public class SerializableScoreboard implements Serializable {
 
     private String nickname;
     private ArrayList<PawnColors> entrance = new ArrayList<>();
+    private ArrayList<Integer> entranceId = new ArrayList<>();
     private int diningRedStudents = 0;
     private int diningGreenStudents = 0;
     private int diningBlueStudents = 0;
@@ -45,6 +46,8 @@ public class SerializableScoreboard implements Serializable {
         for(StudentDisc studentDisc : scoreboard.getEntrance()){
             if(studentDisc != null)
                 entrance.add(studentDisc.getColor());
+            if(studentDisc != null)
+                entranceId.add(studentDisc.getID());
         }
         Integer[] dining = scoreboard.getDiningRoom();
         diningRedStudents = dining[0];
@@ -97,4 +100,6 @@ public class SerializableScoreboard implements Serializable {
     public ArrayList<PawnColors> getEntrance() {
         return entrance;
     }
+
+    public ArrayList<Integer> getEntranceId() { return entranceId; }
 }
