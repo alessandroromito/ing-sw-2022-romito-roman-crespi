@@ -92,9 +92,9 @@ public class ClientHandler implements Runnable {
      * Disconnect the socket from the client if connected.
      */
     public void disconnect() {
-        if(connected) {
+        if(isConnected()) {
             try {
-                if (!client.isClosed()) {
+                if(!client.isClosed()) {
                     client.close();
                 }
             } catch (IOException e) {

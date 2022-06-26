@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 
 public class GameModeSelectSceneManager extends ViewObservable implements SceneManagerInterface {
 
-    private final ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperto");
+    private final ObservableList<String> choices = FXCollections.observableArrayList("Normale","Esperta");
 
     @FXML
     private Button confirmButton;
@@ -24,6 +24,7 @@ public class GameModeSelectSceneManager extends ViewObservable implements SceneM
     private void onButtonClick(Event event) {
         confirmButton.setDisable(true);
         String gameMode = getSelection();
+        System.out.println(gameMode);
         new Thread( () -> notifyObserver( obs -> obs.onUpdateGameMode(gameMode))).start();
         //anche se si sceglie esperto viene inviato messaggio di ritorno con modalità normale
     }

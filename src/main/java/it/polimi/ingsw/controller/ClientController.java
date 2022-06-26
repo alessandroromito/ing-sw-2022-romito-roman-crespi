@@ -63,7 +63,7 @@ public class ClientController implements ViewObserver, Observer {
             case PLAYER_NUMBER_REQUEST -> queue.execute(view::askPlayersNumber);
             case PLAY_ASSISTANT_CARD -> {
                 AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;
-                queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards()));
+                queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards(), assistantCardMessage.getPlayedAssistantCards()));
             }
             case PLAYER_NUMBER_REPLY -> {
 
@@ -96,7 +96,6 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(view::askGameMode);
             }
             case USE_EFFECT -> {
-
             }
             case PLAY_CHARACTER_CARD -> {
                 CharacterCardMessage characterCardMessage = (CharacterCardMessage) message;
@@ -122,7 +121,6 @@ public class ClientController implements ViewObserver, Observer {
             }
         }
     }
-
 
     @Override
     public void onUpdateGameMode(String gameMode) {
@@ -170,8 +168,8 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
-    public void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards){
-        client.sendMessage(new AssistantCardMessage(nickname, assistantCards));
+    public void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards){
+        client.sendMessage(new AssistantCardMessage(nickname, assistantCards, assistantCards));
     }
 
     @Override

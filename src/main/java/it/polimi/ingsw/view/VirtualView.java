@@ -104,8 +104,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void askAssistantCard(List<AssistantCard> assistantCards) {
-        clientHandler.sendMessage(new AssistantCardMessage(Game.SERVER_NAME, assistantCards));
+    public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
+        clientHandler.sendMessage(new AssistantCardMessage(Game.SERVER_NAME, assistantCards, playedAssistantCards));
         System.out.println("Server -> Client: AssistantCardMessage");
     }
 

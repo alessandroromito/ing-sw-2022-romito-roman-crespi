@@ -145,7 +145,15 @@ public class GameController implements Observer {
         System.out.println("Game Finished!");
     }
 
-    public void addPlayer(String nickname, VirtualView virtualView) throws MaxPlayerException, MissingPlayersException, MissingPlayerNicknameException, InvalidActionPhaseStateException, InterruptedException, CloudNotEmptyException {
+    public void addPlayer(String nickname, VirtualView virtualView) {
+        if(playersNicknames.contains(nickname)){
+            virtualViewMap.put(nickname, virtualView);
+
+            virtualView.showLoginResult(nickname,true, true);
+
+            return;
+        }
+
         //First player joining
         if (virtualViewMap.isEmpty()) {
             try{
@@ -245,8 +253,11 @@ public class GameController implements Observer {
     }
 
     public boolean isNicknameTaken(String nickname) {
-        return playersNicknames.stream()
+        if(gameState.equals(GameState.GAME_ROOM))
+            return playersNicknames.stream()
                 .anyMatch(nickname::equals);
+
+        return false;
     }
 
     /**
@@ -281,9 +292,7 @@ public class GameController implements Observer {
             Player player = game.getPlayerByNickname(message.getNickname());
 
             switch (message.getPosition()) {
-                case 0 -> {
-                    game.moveStudentToDiningRoom(student);
-                }
+                case 0 -> game.moveStudentToDiningRoom(student);
                 case 1 -> {
                     game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber()-1);
                     game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);

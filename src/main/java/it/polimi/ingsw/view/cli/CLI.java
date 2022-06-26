@@ -30,7 +30,6 @@ public class CLI extends ViewObservable implements View {
 
     private int activeCardID;
     private int coin;
-    private boolean triedToUseCharacter;
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -187,8 +186,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-        out.println("\n" + nicknameDisconnected + text);
-        System.exit(1);
+        out.println("\n" + ANSI_RED + nicknameDisconnected + text + ANSI_RESET);
     }
 
     @Override
@@ -196,6 +194,7 @@ public class CLI extends ViewObservable implements View {
         try{
             readThread.interrupt();
         }catch (NullPointerException ignored){
+
         }
 
         out.println("\nERRORE: " + error);
@@ -329,7 +328,7 @@ public class CLI extends ViewObservable implements View {
     public void askCharacterCard(List<CharacterCard> characterCards) {
         int choose;
         char answer;
-        triedToUseCharacter = false;
+        boolean triedToUseCharacter = false;
 
         do {
             if(!triedToUseCharacter) {
@@ -557,7 +556,7 @@ public class CLI extends ViewObservable implements View {
             case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET ); //tested
             case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET ); //tested
             case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET ); //tested
-            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
+            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET ); //tested
             case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
             case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET ); //tested
@@ -595,7 +594,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void askAssistantCard(List<AssistantCard> assistantCards) {
+    public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         int choose;
         do {
             out.println("Scegli tra le seguenti Carte Assistente:");
@@ -604,6 +603,12 @@ public class CLI extends ViewObservable implements View {
                 out.println("Carta " + i + " | Valore: " + assistantCard.getValue() + " Numero Passi: " + assistantCard.getMovement());
                 i++;
             }
+
+            out.println("Carte gia scelte dagli altri giocatori: ");
+            for(AssistantCard playedCard : playedAssistantCards){
+                out.println("Carta | Valore: " + playedCard.getValue() + " Numero Passi: " + playedCard.getMovement());
+            }
+
             out.println("Inserisci un numero tra 0 e " + (assistantCards.size() - 1) + ":");
             try{
                 choose = Integer.parseInt(readRow());
@@ -616,7 +621,8 @@ public class CLI extends ViewObservable implements View {
         } while(choose > assistantCards.size()-1 || choose < 0);
 
         int finalChoose = choose;
-        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose))));
+        playedAssistantCards.add(assistantCards.get(finalChoose));
+        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose)), playedAssistantCards));
     }
 
     @Override
@@ -635,7 +641,10 @@ public class CLI extends ViewObservable implements View {
             int i = 0;
 
             for (StudentDisc student : studentDiscs) {
-                out.println(i + " " + printStudent(student));
+                if(student != null)
+                    out.println(i + " " + printStudent(student));
+                else
+                    out.println(i);
                 i++;
             }
             try{
@@ -755,10 +764,10 @@ public class CLI extends ViewObservable implements View {
                 choose = Integer.parseInt(readRow());
             }
 
-            if(choose > cloudList.size() - 1 || choose < 0)
+            if(choose > cloudList.size() - 1 || choose < 0 || cloudList.get(choose).getCloudStudents().isEmpty())
                 out.println("Numero inserito non valido. Riprovare.");
 
-        }while(choose > cloudList.size()-1 || choose < 0);
+        }while(choose > cloudList.size()-1 || choose < 0 || cloudList.get(choose).getCloudStudents().isEmpty());
 
         int finalChoose = choose;
         ArrayList<Cloud> cloud = new ArrayList<>();

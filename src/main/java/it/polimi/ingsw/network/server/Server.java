@@ -2,15 +2,13 @@ package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.server.enumerations.GameState;
-import it.polimi.ingsw.server.exception.CloudNotEmptyException;
-import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
-import it.polimi.ingsw.server.exception.MissingPlayersException;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import static it.polimi.ingsw.server.extra.ANSICostants.ANSI_RED;
+import static it.polimi.ingsw.server.extra.ANSICostants.ANSI_RESET;
 
 /**
  * Main server class.
@@ -37,6 +35,7 @@ public class Server {
      */
     public void addClient(String nickname, ClientHandler clientHandler) {
         VirtualView virtualView = new VirtualView(clientHandler);
+
         try {
             if(gameController.checkLoginNickname(nickname)){
                 gameController.addPlayer(nickname, virtualView);
@@ -59,6 +58,15 @@ public class Server {
         clientHandlerMap.remove(nickname);
         gameController.getVirtualViewMap().remove(nickname);
         System.out.println(nickname + "rimosso dalla lista dei client.");
+=======
+
+        if(gameController.checkLoginNickname(nickname)){
+            gameController.addPlayer(nickname, virtualView);
+            clientHandlerMap.put(nickname, clientHandler);
+        }
+        else{
+            clientHandler.disconnect();
+        }
     }
 
     /**
@@ -69,23 +77,33 @@ public class Server {
         synchronized (lock) {
             String nickname = getNicknameFromClientHandler(clientHandler);
 
+            System.out.println(ANSI_RED + "removeClient(" + nickname + ')' + ANSI_RESET);
+
             removeClient(nickname);
 
             if(nickname != null) {
                 if (gameController.getGameState() == GameState.GAME_STARTED) {
-                    //
+
                 }
                 else{
                     gameController.showDisconnectionMessage(nickname, " disconnected from the server!");
                 }
-
             }
         }
     }
 
+
     /**
      * @return the game state from GameController.
      */
+    public void removeClient(String nickname) {
+        clientHandlerMap.remove(nickname);
+        gameController.getVirtualViewMap().remove(nickname);
+        if(getGameState() == GameState.GAME_STARTED)
+            gameController.getTurnController().getVirtualViewMap().remove(nickname);
+    }
+
+  
     public GameState getGameState(){
         return gameController.getGameState();
     }

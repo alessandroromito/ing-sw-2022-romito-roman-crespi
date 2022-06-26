@@ -89,7 +89,7 @@ public class Game extends Observable {
 
         // Move 1 student to each island
         for(Island island: map.getIslands()) {
-            if(island.getID() != oppositePosition() && island.getID() != map.getMotherNaturePosition()){
+            if(island.getID() != oppositePosition(pos) && island.getID() != map.getMotherNaturePosition()){
                 island.addStudent(bag.pickSorted());
             }
         }
@@ -289,7 +289,7 @@ public class Game extends Observable {
      */
     public void moveStudentToDiningRoom(StudentDisc stud) {
         getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
-        if(!getPlayerByNickname(turnController.getActivePlayer()).getScoreboard().getProfessor(stud.getColor()))
+        if(!getActivePlayer().getScoreboard().getProfessor(stud.getColor()))
             checkProfessors(stud.getColor());
     }
 
@@ -351,11 +351,25 @@ public class Game extends Observable {
     private void checkProfessors(PawnColors color) {
         Player activePlayer = getActivePlayer();
         int numStudent = activePlayer.getScoreboard().getPlayerStudentFromDining(color);
+        boolean addProf = false;
+        Player professorPlayer = null;
 
         for (Player player : players) {
-            if (!player.equals(activePlayer) && numStudent > player.getScoreboard().getPlayerStudentFromDining(color) && player.getScoreboard().getProfessor(color)) {
-                activePlayer.getScoreboard().addProfessor(player.getScoreboard().removeProfessor(color));
-            } else if((!player.equals(activePlayer) && numStudent > player.getScoreboard().getPlayerStudentFromDining(color) && !player.getScoreboard().getProfessor(color)))
+            if (!player.getNickname().equals(activePlayer.getNickname()) && numStudent > player.getScoreboard().getPlayerStudentFromDining(color)) {
+                addProf = true;
+                if(player.getScoreboard().getProfessor(color)){
+                    professorPlayer = player;
+                    break;
+                }
+            } else if (!player.getNickname().equals(activePlayer.getNickname())) {
+                return;
+            }
+        }
+
+        if(addProf) {
+            if (professorPlayer != null)
+                activePlayer.getScoreboard().addProfessor(professorPlayer.getScoreboard().removeProfessor(color));
+            else
                 activePlayer.getScoreboard().addProfessor((ProfessorPawn) components.get(1 + color.ordinal()));
         }
     }
@@ -430,18 +444,30 @@ public class Game extends Observable {
         return getPlayerByNickname(turnController.getActivePlayer());
     }
 
-    public int oppositePosition() {
-        int startingPosition = map.getMotherNaturePosition();
-        for(int i=0; i<6; i++){
-            startingPosition++;
-            if(startingPosition == 11)
-                startingPosition = 0;
+    public int oppositePosition(int pos) {
+        int oppositePos = pos;
+        for(int i=0; i < 6; i++){
+            oppositePos++;
+            if(oppositePos == 12)
+                oppositePos = 0;
         }
-        return startingPosition;
+        return oppositePos;
     }
+
 
     public int getNumberOfPlayer() {
         return players.size();
+    }
+
+    public List<AssistantCard> getPlayedAssistantCards() {
+        List<AssistantCard> playedAssistantCards = new ArrayList<>();
+
+        for(Player player : players){
+            if(player.getCurrentCard() != null)
+                playedAssistantCards.add(player.getCurrentCard());
+        }
+
+        return playedAssistantCards;
     }
 
     public GameSerialized getGameSerialized() {
@@ -467,7 +493,7 @@ public class Game extends Observable {
     }
 
     // -----------------------------------------------------------
-    // EXPERT GAME METHODS throw RunTimeException()
+    // EXPERT GAME METHODS throws RunTimeException()
     // -----------------------------------------------------------
 
     public boolean useCharacter(int characterCardID){
