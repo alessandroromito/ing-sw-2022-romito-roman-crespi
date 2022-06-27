@@ -892,7 +892,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_red1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="39.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -900,7 +900,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_yellow1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="87.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -908,7 +908,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_purple1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="134.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -916,7 +916,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_blue1" fitHeight="81.0" fitWidth="82.0" layoutX="431.0" layoutY="182.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -924,7 +924,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_green2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="-4.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -932,7 +932,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/1_Verde.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_red2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="43.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -940,7 +940,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_yellow2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="91.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -948,7 +948,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_purple2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="138.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -956,7 +956,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="professor_blue2" fitHeight="81.0" fitWidth="82.0" layoutX="1698.0" layoutY="186.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35">
@@ -964,7 +964,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/5_Azzurro.png" />
          </image>
          <effect>
-            <InnerShadow choke="0.45" height="45.0" radius="22.0" width="45.0" />
+            <InnerShadow choke="0.45" height="25.0" radius="12.0" width="25.0" />
          </effect>
       </ImageView>
       <Circle fx:id="tower0_1" fill="#fff1f1" layoutX="545.0" layoutY="55.0" radius="48.0" scaleX="0.35" scaleY="0.35" stroke="BLACK" strokeType="INSIDE">

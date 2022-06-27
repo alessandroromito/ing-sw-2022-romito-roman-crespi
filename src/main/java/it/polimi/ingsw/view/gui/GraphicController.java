@@ -28,6 +28,8 @@ public class GraphicController extends ViewObservable implements View {
     private static SceneManagerInterface activeManager;
     private boolean gameScenarioEnabled = false;
     static public String nickname;
+    static public String nicknameOpponent1 = null;
+    static public String nicknameOpponent2 = null;
     MapSceneManager mapSceneManager;
     private static ScoreboardSceneManager scoreboardSceneManager = null;
 
@@ -348,6 +350,16 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
+            if(playedAssistantCards.size() == 1) {
+                mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
+                mapSceneManager.viewOpCard1();
+            }
+            if(playedAssistantCards.size() == 2) {
+                mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
+                mapSceneManager.setOpponent2Card(playedAssistantCards.get(1).getValue());
+                mapSceneManager.viewOpCard1();
+                mapSceneManager.viewOpCard2();
+            }
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
     }

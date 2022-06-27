@@ -27,7 +27,7 @@
                   </Stop>
                   <Stop offset="1.0">
                      <color>
-                        <Color red="0.036549706012010574" green="0.5275341272354126" blue="0.9868420958518982" />
+                        <Color red="0.03529411926865578" green="0.529411792755127" blue="0.9882352948188782" />
                      </color>
                   </Stop>
                </stops>
@@ -317,6 +317,9 @@
          <image>
             <Image url="@../Graphical_Assets/Reame/handLogo.png" />
          </image>
+         <effect>
+            <DropShadow height="10.0" radius="4.5" width="10.0" />
+         </effect>
       </ImageView>
       <ImageView fitHeight="97.0" fitWidth="100.0" layoutX="1668.0" layoutY="66.0" onMouseClicked="#closeHand" onMouseEntered="#inX" onMouseExited="#outX" opacity="0.0" pickOnBounds="true" preserveRatio="true" fx:id="xButton">
          <image>
@@ -571,5 +574,104 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
+      <Rectangle fx:id="bgOpCard1" arcHeight="5.0" arcWidth="5.0" disable="true" height="335.0" layoutX="65.0" layoutY="375.0" mouseTransparent="true" opacity="0.0" stroke="#14188d" strokeType="INSIDE" width="200.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7525584697723389" green="0.8464120626449585" blue="0.9342105388641357" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.03529411926865578" green="0.529411792755127" blue="0.9882352948188782" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+         <effect>
+            <DropShadow />
+         </effect></Rectangle>
+      <ImageView fx:id="assistentCardOpponent1" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="81.0" layoutY="450.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label fx:id="previous1lbl" alignment="CENTER" layoutX="61.0" layoutY="381.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="205.0" text="CARTA GIOCATA DA" textFill="#f4f805">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="nicknameOp1" alignment="CENTER" layoutX="64.0" layoutY="410.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
+         <font>
+            <Font size="26.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Rectangle fx:id="bgOpCard2" arcHeight="5.0" arcWidth="5.0" disable="true" height="335.0" layoutX="1637.0" layoutY="374.0" mouseTransparent="true" opacity="0.0" stroke="#14188d" strokeType="INSIDE" width="200.0">
+         <fill>
+            <RadialGradient centerX="0.5" centerY="0.5" radius="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7525584697723389" green="0.8464120626449585" blue="0.9342105388641357" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.03529411926865578" green="0.529411792755127" blue="0.9882352948188782" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Rectangle>
+      <ImageView fx:id="assistentCardOpponent2" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="1653.0" layoutY="449.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label fx:id="previous2lbl" alignment="CENTER" layoutX="1633.0" layoutY="380.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="205.0" text="CARTA GIOCATA DA" textFill="#f4f805">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="nicknameOp2" alignment="CENTER" layoutX="1636.0" layoutY="409.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
+         <font>
+            <Font size="26.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
    </children>
 </AnchorPane>

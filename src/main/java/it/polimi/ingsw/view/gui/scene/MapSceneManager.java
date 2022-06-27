@@ -240,6 +240,30 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private Label labelCoins;
 
+    @FXML
+    private Label previous1lbl;
+
+    @FXML
+    private Label nicknameOp1;
+
+    @FXML
+    private Rectangle bgOpCard1;
+
+    @FXML
+    private ImageView assistentCardOpponent1;
+
+    @FXML
+    private Label previous2lbl;
+
+    @FXML
+    private Label nicknameOp2;
+
+    @FXML
+    private Rectangle bgOpCard2;
+
+    @FXML
+    private ImageView assistentCardOpponent2;
+
 
     private double r = 22;
     private double rIsl;
@@ -247,6 +271,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
+    private boolean opCard1 = false;
+    private boolean opCard2 = false;
 
     public void setPlayedAssistantCardsList(List<AssistantCard> playedAssistantCardsList) {
         this.playedAssistantCardsList = playedAssistantCardsList;
@@ -310,6 +336,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         for(int k=0;k<10;k++)
         assistantCards[k].setViewOrder(-1);
         xButton.setViewOrder(-1);
+        
+        assistentCardOpponent1.setViewOrder(-1);    previous1lbl.setViewOrder(-1);  bgOpCard1.setViewOrder(-1); nicknameOp1.setViewOrder(-1);
+        assistentCardOpponent2.setViewOrder(-1);    previous2lbl.setViewOrder(-1);  bgOpCard2.setViewOrder(-1); nicknameOp2.setViewOrder(-1);
 
         System.out.println("fine initialize fxml");
     }
@@ -817,8 +846,30 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
 
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
-            if(s.getNickname() == nickname)
+            if(s.getNickname().equals(nickname))
                 setCoin(s.getCoins());
+
+        int opponentCount = 0;
+        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
+            if(!s.getNickname().equals(nickname)){
+                if(opponentCount == 0)
+                    GraphicController.nicknameOpponent1 = s.getNickname();
+                else
+                    GraphicController.nicknameOpponent2 = s.getNickname();
+
+            opponentCount++;
+            }
+
+        nicknameOp1.setText(GraphicController.nicknameOpponent1.toUpperCase(Locale.ROOT));
+        if(GraphicController.nicknameOpponent2!=null) nicknameOp2.setText(GraphicController.nicknameOpponent2.toUpperCase(Locale.ROOT));
+    }
+
+    public void setOpponent1Card(int number){
+        assistentCardOpponent1.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente("+number+").png")));
+    }
+
+    public void setOpponent2Card(int number){
+        assistentCardOpponent2.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente("+number+").png")));
     }
 
     //passare numero isola precedente in senso orario
@@ -1092,7 +1143,132 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             i.setDisable(true);
     }
 
+    public void disableOpcard1(){
+        opCard1 = false;
+    }
+
+    public void disableOpcard2(){
+        opCard2 = false;
+    }
+
+    public void viewOpCard1(){
+        opCard1 = true;
+
+        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent1);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),bgOpCard1);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),previous1lbl);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),nicknameOp1);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+        
+    }
+
+    public void viewOpCard2(){
+        opCard2 = true;
+
+        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent2);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),bgOpCard2);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),previous2lbl);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),nicknameOp2);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+
+        ft.play();
+
+    }
+
+    public void hideOpCard1(){
+
+        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent1);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),bgOpCard1);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),previous1lbl);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),nicknameOp1);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+    }
+
+    public void hideOpCard2(){
+
+        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent2);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),bgOpCard2);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),previous2lbl);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+        ft = new FadeTransition(Duration.millis(600),nicknameOp2);
+        ft.setFromValue(1);
+        ft.setToValue(0);
+
+        ft.play();
+
+    }
+
     public void switchView(MouseEvent mouseEvent) {
+        if(opCard1) viewOpCard1();
+        if(opCard2) viewOpCard2();
+
         for(int k=0;k<10;k++){
 
             assistantCards[k].setMouseTransparent(false);
@@ -1163,6 +1339,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void closeHand(MouseEvent mouseEvent) {
+        if(opCard1) hideOpCard1();
+        if(opCard2) hideOpCard2();
+
         for(int k=0;k<10;k++) {
 
             assistantCards[k].setMouseTransparent(true);
