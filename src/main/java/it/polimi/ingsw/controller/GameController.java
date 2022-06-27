@@ -156,13 +156,16 @@ public class GameController implements Observer {
 
             resume = true;
 
+            reconnectingPlayersList.remove(nickname);
             game.getPlayerByNickname(nickname).setConnected(true);
 
             virtualViewMap.put(nickname, virtualView);
             inputController.setVirtualViewMap(virtualViewMap);
             turnController.setVirtualViewMap(virtualViewMap);
+            turnController.restartTurn(nickname);
 
             game.getPlayerByNickname(nickname).addObserver(this);
+            game.addObserver(virtualView);
 
             virtualView.showLoginResult(nickname,true, true);
 
@@ -184,7 +187,7 @@ public class GameController implements Observer {
                 e.printStackTrace();
             }
 
-        } else if (virtualViewMap.size() < chosenPlayerNumber + reconnectingPlayersList.size()){
+        } else if (virtualViewMap.size() < chosenPlayerNumber - reconnectingPlayersList.size()){
             virtualViewMap.put(nickname, virtualView);
             if(!playersNicknames.contains(nickname))
                 playersNicknames.add(nickname);
@@ -221,7 +224,8 @@ public class GameController implements Observer {
         virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
 
         for(VirtualView virtualView : virtualViewMap.values()){
-            virtualView.showReconnectedMessage(nickname);
+            if(virtualView != virtualViewMap.get(nickname))
+                virtualView.showReconnectedMessage(nickname);
         }
     }
 
@@ -296,6 +300,10 @@ public class GameController implements Observer {
         return message.getNickname().equals(getTurnController().getActivePlayer());
     }
 
+    /**
+     * Method used to move Mother Nature forward, it calls the game method
+     * @param message
+     */
     public void moveMotherNature(MoveMotherNatureMessage message) {
         int steps = message.getSteps();
         if (turnController.getPhaseState() == PhaseState.ACTION_PHASE && turnController.getActionPhaseState() == ActionPhaseState.MOVE_MOTHER_NATURE) {
@@ -312,6 +320,10 @@ public class GameController implements Observer {
         else System.out.println("Incorrect ActionPhase to move MotherNature!");
     }
 
+    /**
+     * Method used to move a student from the entrance
+     * @param message
+     */
     public void moveStudent(MoveStudentMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT1 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT2 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT3 || turnController.getActionPhaseState() == ActionPhaseState.MOVE_STUDENT4)) {
             StudentDisc student = message.getStudentDiscs().get(0);
@@ -334,6 +346,10 @@ public class GameController implements Observer {
         else showMessage(turnController.getActivePlayer(), "You can't move a student in this phase!");
     }
 
+    /**
+     * Method used to choose a cloud
+     * @param message
+     */
     public void pickCloud(CloudMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
             Cloud chosenCloud = message.getCloudList().get(0);
@@ -356,17 +372,28 @@ public class GameController implements Observer {
         }
     }
 
+    /**
+     * Show a message only to the parameter player
+     * @param nickname nickname of the player to send a message
+     * @param message message to be sent
+     */
     public void showMessage(String nickname, String message){
         VirtualView virtualView = virtualViewMap.get(nickname);
         virtualView.showGenericMessage(message);
     }
 
-    public void showDisconnectionMessage(String nickname, String message) {
+
+    /**
+     * Show a message to notify the disconnection of a player from the game
+     * @param nickname nick of the player disconnected
+     */
+    public void showDisconnectionMessage(String nickname) {
         for(VirtualView vv : virtualViewMap.values())
-            vv.showDisconnectedPlayerMessage(nickname, message);
+            vv.showDisconnectedPlayerMessage(nickname);
     }
 
     public void refillClouds(){
+
         game.refillClouds();
     }
 

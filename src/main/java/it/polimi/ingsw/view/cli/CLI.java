@@ -106,8 +106,7 @@ public class CLI extends ViewObservable implements View {
         readThread.start();
 
         try {
-            if(!inPause)
-                return futureTask.get();
+            return futureTask.get();
         } catch (InterruptedException | ExecutionException e) {
             out.println("Invalid Input! Retry...");
             readRow();
@@ -187,8 +186,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     @Override
-    public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-        out.println("\n" + ANSI_RED + nicknameDisconnected + text + ANSI_RESET);
+    public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
+        out.println("\n" + ANSI_RED + nicknameDisconnected + " si è disconnesso dal gioco" + ANSI_RESET);
     }
 
     @Override
@@ -801,7 +800,7 @@ public class CLI extends ViewObservable implements View {
 
     @Override
     public void showReconnectedMessage(String nicknameReconnecting) {
-        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco! Il gioco riprende" + ANSI_RESET);
+        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
         inPause = false;
     }
 

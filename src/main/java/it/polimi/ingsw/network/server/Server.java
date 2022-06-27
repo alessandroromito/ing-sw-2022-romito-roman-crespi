@@ -60,17 +60,16 @@ public class Server {
             gameController.getReconnectingPlayersList().add(nickname);
 
             System.out.println(ANSI_RED + "removeClient(" + nickname + ')' + ANSI_RESET);
-
             removeClient(nickname);
 
             if(nickname != null) {
-                gameController.showDisconnectionMessage(nickname, " disconnected from the lobby!");
+                gameController.showDisconnectionMessage(nickname);
 
                 if (gameController.getGameState() == GameState.IN_GAME) {
 
                     //Set player as disconnected in Game
                     gameController.getGame().getPlayerByNickname(nickname).setConnected(false);
-                    System.out.println(ANSI_RED + nickname + " setted not connected in game" + ANSI_RESET);
+                    System.out.println(ANSI_RED + nickname + " set not connected in game" + ANSI_RESET);
 
                     System.out.println(ANSI_RED + "Remaining connected players: " + gameController.getGame().getPlayersConnected().size() + ANSI_RESET);
                     switch (gameController.getGame().getPlayersConnected().size()){
@@ -95,6 +94,9 @@ public class Server {
                         }
                         case 2 -> {
                             //continue game
+                            if(gameController.getTurnController().getActivePlayer().equals(nickname)){
+                                gameController.getTurnController().next();
+                            }
                         }
                     }
                 }

@@ -266,7 +266,7 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     @Override
-    public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
+    public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
         Platform.runLater( () -> {
             showGenericMessage("FINE DELLA PARTITA", "Il gicatore " + nicknameDisconnected + " si è disconnesso.");
             paneTransition(observers, "scene_menu.fxml");

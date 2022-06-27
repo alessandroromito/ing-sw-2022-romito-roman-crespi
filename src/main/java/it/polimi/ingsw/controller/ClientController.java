@@ -73,7 +73,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             case DISCONNECTED_PLAYER -> {
                 DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;
-                view.showDisconnectedPlayerMessage(disconnectedPlayerMessage.getNicknameDisconnected(), disconnectedPlayerMessage.getMessageText());
+                view.showDisconnectedPlayerMessage(disconnectedPlayerMessage.getNicknameDisconnected());
             }
             case GAME_SCENARIO -> {
                 GameScenarioMessage gameScenarioMessage = (GameScenarioMessage) message;
