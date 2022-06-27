@@ -136,7 +136,7 @@ public class GraphicController extends ViewObservable implements View {
     }
 
     public static void showErrorMessage(String errorTitle, String errorMessage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/messageAlert_scene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/errorMessage_scene.fxml"));
         Parent parent;
         try {
             parent = fxmlLoader.load();
@@ -145,9 +145,9 @@ public class GraphicController extends ViewObservable implements View {
             return;
         }
         //nel caso in cui non avessimo il controllo da parte di fxml manager
-        //ErrorMessageManager errorMessageManager = fxmlLoader.getController();
+        ErrorMessageSceneManager errorMessageSceneManager = fxmlLoader.getController();
         //altrimenti
-        ErrorMessageSceneManager errorMessageSceneManager = new ErrorMessageSceneManager();
+        //ErrorMessageSceneManager errorMessageSceneManager = new ErrorMessageSceneManager();
         Scene errorMessageScene = new Scene(parent);
         errorMessageSceneManager.setScene(errorMessageScene);
         errorMessageSceneManager.setErrorTitle(errorTitle);
@@ -278,7 +278,7 @@ public class GraphicController extends ViewObservable implements View {
     public void showErrorMessage(String errorMessage) {
         Platform.runLater( () -> {
             showErrorMessage("ERROR", errorMessage);
-            paneTransition(observers, "scene_menu.fxml");
+            //paneTransition(observers, "scene_menu.fxml");
         } );
     }
 
@@ -377,7 +377,20 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful) {
-
+        if (!playerNicknameAccepted || !connectionSuccessful) {
+            if(!playerNicknameAccepted && connectionSuccessful) {
+                Platform.runLater( () -> {
+                    showGenericMessage("Errore", "Nickname già esistente. Prova con un altro.");
+                    paneTransition(observers, "login_scene.fxml");
+                });
+            }
+            else {
+                Platform.runLater( ( ) -> {
+                    showErrorMessage("Errore", "Impossibile contattare il server. Riprova.");
+                    paneTransition(observers, "login_scene.fxml");
+                });
+            }
+        }
     }
 
     @Override
