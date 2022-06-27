@@ -3,6 +3,8 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.network.message.PingMessage;
+import it.polimi.ingsw.server.extra.ANSICostants;
+import it.polimi.ingsw.server.extra.PingSender;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,12 +12,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 /**
- * Client handler of a client - server connnection.
+ * Client handler of a client - server connection.
  */
 public class ClientHandler implements Runnable {
     private final Socket client;
     private final SocketServer socketServer;
     private final MessageHandler messageHandler;
+    private final PingSender pingSender;
 
     private boolean connected;
 
@@ -28,6 +31,7 @@ public class ClientHandler implements Runnable {
 
     /**
      * Default constructor.
+     *
      * @param socketServer socket of the server.
      * @param client client to handle.
      * @throws IOException from creating new Object Input or Output Stream
@@ -35,6 +39,7 @@ public class ClientHandler implements Runnable {
     public ClientHandler(SocketServer socketServer, Socket client) throws IOException {
         this.socketServer = socketServer;
         this.client = client;
+
         this.connected = true;
 
         this.inputLock = new Object();
@@ -44,6 +49,7 @@ public class ClientHandler implements Runnable {
         this.in = new ObjectInputStream(client.getInputStream());
 
         this.messageHandler = new MessageHandler(socketServer);
+        this.pingSender = new PingSender(this);
     }
 
     /**
@@ -62,35 +68,36 @@ public class ClientHandler implements Runnable {
                             System.out.println(message);
                             socketServer.addClient(message.getNickname(), this);
                         } else {
-                            Server.LOGGER.info(() -> "Messaggio ricevuto: " + message);
+                            Server.LOGGER.info(() -> ANSICostants.ANSI_BLUE + "Messaggio ricevuto: " + message + ANSICostants.ANSI_RESET);
                             message.handle(messageHandler);
                         }
                     }
+                    else pingSender.pingReceived();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
-            disconnect();
-        }
+            System.out.println("Found a disconnection");
+            pingSender.setConnected(false);
+            connected = false;
 
-        try {
-            client.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
     /**
-     * @return status of connection
+     * @return status of connected
      */
     public boolean isConnected() {
         return connected;
     }
 
     /**
-     * Disconnect the socket from the client if connected.
+     * Method to handle the disconnection of a client.
      */
     public void disconnect() {
-        if(isConnected()) {
+        if(!isConnected()) {
+            socketServer.onDisconnect(this);
+
             try {
                 if(!client.isClosed()) {
                     client.close();
@@ -98,10 +105,9 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             connected = false;
             Thread.currentThread().interrupt();
-
-            socketServer.onDisconnect(this);
         }
     }
 
@@ -110,18 +116,18 @@ public class ClientHandler implements Runnable {
      * @param message message to send to the client.
      */
     public void sendMessage(Message message) {
-        if(!isConnected()) return;
+        if(!isConnected())
+            return;
         try {
             synchronized (outputLock) {
-                out.writeObject(message);
                 out.reset();
+                out.writeObject(message);
                 out.flush();
                 out.reset();
                 Server.LOGGER.info(() -> "Messaggio inviato: " + message);
             }
         } catch (IOException e) {
             e.printStackTrace();
-            disconnect();
         }
     }
 }

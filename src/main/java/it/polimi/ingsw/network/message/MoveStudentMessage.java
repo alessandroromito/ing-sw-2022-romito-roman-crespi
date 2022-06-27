@@ -12,7 +12,7 @@ public class MoveStudentMessage extends Message{
 
     private final int islandNumber;
     private final List<StudentDisc> studentDiscs;
-    private final int position; // 0 = scoreboard, 1 = islands
+    private final int position; // 0 = scoreboard, 1 = island
 
     public MoveStudentMessage(String nickname, List<StudentDisc> studentDiscs, int position, int islandNumber) {
         super(nickname, MessageType.MOVE_STUDENT);
@@ -40,6 +40,6 @@ public class MoveStudentMessage extends Message{
 
     @Override
     public String toString() {
-        return "MoveStudent[" + "nickname:" + getNickname() + ", studentID:" + studentDiscs.get(0).getID() + ", position:" + position + ", islandNumber:" + this.islandNumber + "]";
+        return "MoveStudent[" + "nickname:" + getNickname() + ", studentID:" + (this.getNickname().equals("GAME_SERVER") ? "List" : studentDiscs.get(0).getID()) + ", position:" + position + ", islandNumber:" + this.islandNumber + "]";
     }
 }

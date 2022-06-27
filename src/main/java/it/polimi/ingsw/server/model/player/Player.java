@@ -22,6 +22,7 @@ public class Player extends Observable{
 
     public Player(String nickname){
         this.nickname = nickname;
+        this.connected = true;
 
         int val = 1;
         int movement = 1;

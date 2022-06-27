@@ -25,7 +25,7 @@ public interface View {
     void showLobby(List<String> playersNickname, int numPlayers);
 
     //show disconnection message
-    void showDisconnectedPlayerMessage(String nicknameDisconnected, String text);
+    void showDisconnectedPlayerMessage(String nicknameDisconnected);
 
     //show error message
     void showErrorMessage(String error);
@@ -62,5 +62,5 @@ public interface View {
     //show victory message
     void showVictoryMessage(String winner);
 
-
+    void showReconnectedMessage(String nicknameReconnecting);
 }

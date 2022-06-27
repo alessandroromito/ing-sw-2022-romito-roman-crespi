@@ -259,4 +259,12 @@ public class MessageHandler {
      */
     public void handleMessage(VictoryCheckMessage victoryCheckMessage) {
     }
+
+    /**
+     * Client don't send CharacterCardMessage
+     * @param reconnectingMessage
+     */
+    public void handleMessage(ReconnectingMessage reconnectingMessage) {
+
+    }
 }

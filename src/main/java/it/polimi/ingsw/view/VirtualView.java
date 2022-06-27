@@ -65,8 +65,8 @@ public class VirtualView implements View, Observer {
     }
 
     @Override
-    public void showDisconnectedPlayerMessage(String nicknameDisconnected, String text) {
-        clientHandler.sendMessage(new DisconnectedPlayerMessage(nicknameDisconnected, text));
+    public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
+        clientHandler.sendMessage(new DisconnectedPlayerMessage(nicknameDisconnected));
     }
 
     @Override
@@ -106,25 +106,21 @@ public class VirtualView implements View, Observer {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         clientHandler.sendMessage(new AssistantCardMessage(Game.SERVER_NAME, assistantCards, playedAssistantCards));
-        System.out.println("Server -> Client: AssistantCardMessage");
     }
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         clientHandler.sendMessage(new MoveStudentMessage(Game.SERVER_NAME, studentDiscs, position, islandNumber));
-        System.out.println("Server -> Client: MoveStudentMessage");
     }
 
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         clientHandler.sendMessage(new MoveMotherNatureMessage(Game.SERVER_NAME, maxSteps));
-        System.out.println("Server -> Client: MoveMotherNature");
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         clientHandler.sendMessage(new CloudMessage(Game.SERVER_NAME, cloudList));
-        System.out.println("Server -> Client: CloudMessage");
     }
 
     @Override
@@ -135,5 +131,10 @@ public class VirtualView implements View, Observer {
     @Override
     public void showVictoryMessage(String winner) {
         clientHandler.sendMessage(new VictoryMessage(winner));
+    }
+
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        clientHandler.sendMessage(new ReconnectingMessage(nicknameReconnecting));
     }
 }

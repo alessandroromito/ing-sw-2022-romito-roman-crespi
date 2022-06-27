@@ -39,8 +39,9 @@ public class SocketServer implements Runnable{
             return;
         }
 
-        System.out.println("Server Socket listening at port: " + port);
+
         System.out.println("Server socket ready on IP: " + serverSocket.getInetAddress().getHostAddress());
+
         try {
             System.out.println("Server socket ready on IP (from arg): " + InetAddress.getByName(DEFAULT_IP));
         } catch (UnknownHostException e) {

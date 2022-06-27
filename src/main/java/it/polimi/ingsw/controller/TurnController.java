@@ -94,6 +94,10 @@ public class TurnController {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
+
+        if(!game.getPlayerByNickname(activePlayer).isConnected())
+            next();
+
         if(phaseState == PLANNING_PHASE)
             askAssistantCard();
         else {
@@ -155,7 +159,8 @@ public class TurnController {
 
         for (String s : playersList) {
             Player p = game.getPlayerByNickname(s);
-            players.add(p);
+            if(p.isConnected())
+                players.add(p);
         }
 
         players.sort(new ComparatorAssistantCard());
@@ -186,7 +191,21 @@ public class TurnController {
         actionPhase();
     }
 
+    public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
+        this.virtualViewMap = virtualViewMap;
+    }
+
     public void removeVirtualView(String nickname) {
         virtualViewMap.remove(nickname);
+    }
+
+    public void restartTurn(String nickname) {
+        if(getActivePlayer().equals(nickname)){
+            if(getPhaseState() == ACTION_PHASE)
+                actionPhase();
+            else if (getPhaseState() == PLANNING_PHASE) {
+                askAssistantCard();
+            }
+        }
     }
 }

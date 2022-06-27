@@ -7,6 +7,7 @@ import it.polimi.ingsw.view.VirtualView;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
 import static it.polimi.ingsw.server.extra.ANSICostants.ANSI_RED;
 import static it.polimi.ingsw.server.extra.ANSICostants.ANSI_RESET;
 
@@ -22,6 +23,8 @@ public class Server {
     private final Object lock;
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
+
+    private boolean resumeGame;
 
     public Server(GameController gameController) {
         this.gameController = gameController;
@@ -42,7 +45,8 @@ public class Server {
             clientHandlerMap.put(nickname, clientHandler);
         }
         else{
-            clientHandler.disconnect();
+            virtualView.showGenericMessage("Nickname non valido!");
+            virtualView.askPlayerNickname();
         }
     }
 
@@ -53,25 +57,48 @@ public class Server {
     public void onDisconnect(ClientHandler clientHandler) {
         synchronized (lock) {
             String nickname = getNicknameFromClientHandler(clientHandler);
+            gameController.getReconnectingPlayersList().add(nickname);
 
             System.out.println(ANSI_RED + "removeClient(" + nickname + ')' + ANSI_RESET);
             removeClient(nickname);
 
             if(nickname != null) {
-                if (gameController.getGameState() == GameState.GAME_STARTED) {
-                    if(gameController.getGame().getPlayersConnected().size() == 1){
-                        long start = System.currentTimeMillis();
-                        long end = start + 30 * 1000;
-                        while (System.currentTimeMillis() < end) {
+                gameController.showDisconnectionMessage(nickname);
+
+                if (gameController.getGameState() == GameState.IN_GAME) {
+
+                    //Set player as disconnected in Game
+                    gameController.getGame().getPlayerByNickname(nickname).setConnected(false);
+                    System.out.println(ANSI_RED + nickname + " set not connected in game" + ANSI_RESET);
+
+                    System.out.println(ANSI_RED + "Remaining connected players: " + gameController.getGame().getPlayersConnected().size() + ANSI_RESET);
+                    switch (gameController.getGame().getPlayersConnected().size()){
+
+                        case 0 -> gameController.endGame();
+                        case 1 -> {
+                            gameController.setResumeGame(false);
+
+                            long start = System.currentTimeMillis();
+                            long end = start + 30 * 1000;
+                            System.out.println("Waiting 30 sec for reconnecting...");
+                            while (System.currentTimeMillis() < end && !gameController.resumeGame()) {
+                                // wait
+                            }
+
+                            if(!gameController.resumeGame()){
+                                if(gameController.getGame().getPlayersConnected().size() == 1) {
+                                    gameController.win(gameController.getGame().getPlayersConnected().get(0));
+                                }
+                            }
 
                         }
+                        case 2 -> {
+                            //continue game
+                            if(gameController.getTurnController().getActivePlayer().equals(nickname)){
+                                gameController.getTurnController().next();
+                            }
+                        }
                     }
-                    else{
-                        //continue game
-                    }
-                }
-                else{
-                    gameController.showDisconnectionMessage(nickname, " disconnected from the server!");
                 }
             }
         }
@@ -84,6 +111,10 @@ public class Server {
     public void removeClient(String nickname) {
         clientHandlerMap.remove(nickname);
         gameController.removeVirtualView(nickname);
+
+        if(getGameState() == GameState.GAME_ROOM){
+            gameController.getPlayersNicknames().remove(nickname);
+        }
     }
 
     /**

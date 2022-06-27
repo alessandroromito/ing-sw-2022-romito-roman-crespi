@@ -18,6 +18,7 @@ import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -184,6 +185,8 @@ public class Game extends Observable {
      * Refill clouds with students from bag
      */
     public void refillClouds() {
+        flushClouds();
+
         for(Cloud cloud: map.getClouds()){
             cloud.addStudent(bag.pickSorted());
             cloud.addStudent(bag.pickSorted());
@@ -194,6 +197,18 @@ public class Game extends Observable {
         }
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
+    }
+
+    /**
+     * Delete all the students from clouds before refill
+     */
+    public void flushClouds() {
+        for(Cloud cloud: map.getClouds()){
+            Iterator<StudentDisc> iterator = cloud.getCloudStudents().iterator();
+            while (iterator.hasNext()) {
+                iterator.remove();
+            }
+        }
     }
 
     /**
