@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.*;
@@ -313,6 +314,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         System.out.println("fine initialize fxml");
     }
 
+    public void fullscreen(){
+        Stage stage = (Stage) pane.getScene().getWindow();
+        stage.setFullScreen(true);
+    }
+
 
     public void initializeCharacterCards(int[] number){
         System.out.println("initialize characters");
@@ -517,9 +523,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         switchMotherNature = true;
         for (int i = 0; i < maxSteps; i++) {
             if (i + motherNaturePos > 11)
-                enableSingleIsland(i+motherNaturePos-11);
+                enableSingleIsland(i+motherNaturePos-11+1);
             else
-                enableSingleIsland(i+motherNaturePos);
+                enableSingleIsland(i+motherNaturePos+1);
         }
     }
 
@@ -708,6 +714,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         int choosenIsland = -99;
 
         switch(mouseEvent.getSource().toString().charAt(19)) {
+            case '0':
+                choosenIsland = 0;
+                break;
             case '2':
                 choosenIsland = 2;
                 break;
@@ -1225,8 +1234,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveToScoreboard(MouseEvent mouseEvent) {
-        ScoreboardSceneManager scoreboardSceneManager = graphicController.showScoreboards();
-        scoreboardSceneManager.setMap(pane.getScene().snapshot(null));
+        ScoreboardSceneManager scoreboardSceneManager = graphicController.showScoreboards(pane.getScene().snapshot(null));
     }
 
     public void inScrb(MouseEvent mouseEvent) {
