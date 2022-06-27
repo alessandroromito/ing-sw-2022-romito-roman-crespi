@@ -100,4 +100,8 @@ public class InputController {
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
         this.virtualViewMap = virtualViewMap;
     }
+
+    public void removeVirtualView(String nickname) {
+        virtualViewMap.remove(nickname);
+    }
 }

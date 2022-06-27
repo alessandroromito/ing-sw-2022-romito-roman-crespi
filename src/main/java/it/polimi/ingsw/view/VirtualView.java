@@ -136,4 +136,9 @@ public class VirtualView implements View, Observer {
     public void showVictoryMessage(String winner) {
         clientHandler.sendMessage(new VictoryMessage(winner));
     }
+
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        clientHandler.sendMessage(new ReconnectingMessage(nicknameReconnecting));
+    }
 }

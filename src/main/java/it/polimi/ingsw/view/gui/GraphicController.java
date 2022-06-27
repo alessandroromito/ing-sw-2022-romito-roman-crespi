@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.model.GameSerialized;
@@ -386,5 +385,10 @@ public class GraphicController extends ViewObservable implements View {
             showWinner(winner);
             paneTransition(observers, "scene_menu.fxml");
         });
+    }
+
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        // da implementare
     }
 }

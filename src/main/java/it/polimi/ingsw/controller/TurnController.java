@@ -94,6 +94,10 @@ public class TurnController {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
+
+        if(!game.getPlayerByNickname(activePlayer).isConnected())
+            next();
+
         if(phaseState == PLANNING_PHASE)
             askAssistantCard();
         else {
@@ -184,6 +188,10 @@ public class TurnController {
     public void nextActionPhase() {
         actionPhaseState = actionPhaseState.next(getActionPhaseState());
         actionPhase();
+    }
+
+    public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
+        this.virtualViewMap = virtualViewMap;
     }
 
     public void removeVirtualView(String nickname) {

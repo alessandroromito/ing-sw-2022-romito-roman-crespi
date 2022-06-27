@@ -62,5 +62,5 @@ public interface View {
     //show victory message
     void showVictoryMessage(String winner);
 
-
+    void showReconnectedMessage(String nicknameReconnecting);
 }

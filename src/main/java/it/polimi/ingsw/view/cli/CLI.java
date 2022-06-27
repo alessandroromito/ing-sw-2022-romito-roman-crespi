@@ -40,6 +40,7 @@ public class CLI extends ViewObservable implements View {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PINK = "\u001b[35;1m";
     public static final String ANSI_WHITE = "\u001b[37;1m";
+    private boolean inPause = false;
 
     public CLI(){
         out = System.out;
@@ -70,7 +71,7 @@ public class CLI extends ViewObservable implements View {
         do{
             out.println("Server address: ");
             String address = "127.0.0.1";
-            address = readRow();
+            //address = readRow();
             if(Validator.validateIpAddress(address)) {
                 server.put("address", address);
                 validInput = true;
@@ -85,7 +86,7 @@ public class CLI extends ViewObservable implements View {
         do{
             out.println("Port address: ");
             String port = "1511";
-            port = readRow();
+            //port = readRow();
             if(Validator.validatePort(port)) {
                 server.put("port", port);
                 validInput = true;
@@ -105,7 +106,8 @@ public class CLI extends ViewObservable implements View {
         readThread.start();
 
         try {
-            return futureTask.get();
+            if(!inPause)
+                return futureTask.get();
         } catch (InterruptedException | ExecutionException e) {
             out.println("Invalid Input! Retry...");
             readRow();
@@ -795,6 +797,12 @@ public class CLI extends ViewObservable implements View {
     public void showVictoryMessage(String winner) {
         out.println("Il gioco è terminato. Il VINCITORE è " + winner + "!");
         System.exit(1);
+    }
+
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco! Il gioco riprende" + ANSI_RESET);
+        inPause = false;
     }
 
     public String printStudent(StudentDisc stud){

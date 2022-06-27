@@ -5,9 +5,10 @@ import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
-import it.polimi.ingsw.server.exception.*;
+import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
+import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.player.Player;
@@ -24,6 +25,8 @@ public class GameController implements Observer {
     private List<String> playersNicknames = new ArrayList<>();
     private Map<String, VirtualView> virtualViewMap;
 
+    private ArrayList<String> reconnectingPlayersList = new ArrayList<>();
+
     private int chosenPlayerNumber = 3;
     private boolean chosenExpertMode = false;
 
@@ -32,7 +35,10 @@ public class GameController implements Observer {
     private InputController inputController;
 
     public static final String SAVED_GAME_FILE = "gameController.saving";
+
     private Game game;
+
+    private boolean resume = false;
 
     public GameController(){
         init();
@@ -146,10 +152,21 @@ public class GameController implements Observer {
     }
 
     public void addPlayer(String nickname, VirtualView virtualView) {
-        if(playersNicknames.contains(nickname)){
+        if(playersNicknames.contains(nickname) && reconnectingPlayersList.contains((nickname))){
+
+            resume = true;
+
+            game.getPlayerByNickname(nickname).setConnected(true);
+
             virtualViewMap.put(nickname, virtualView);
+            inputController.setVirtualViewMap(virtualViewMap);
+            turnController.setVirtualViewMap(virtualViewMap);
+
+            game.getPlayerByNickname(nickname).addObserver(this);
 
             virtualView.showLoginResult(nickname,true, true);
+
+            showReconnectingMessage(nickname);
 
             return;
         }
@@ -166,7 +183,8 @@ public class GameController implements Observer {
             } catch(GameAlreadyStartedException e) {
                 e.printStackTrace();
             }
-        } else if (virtualViewMap.size() < chosenPlayerNumber){
+
+        } else if (virtualViewMap.size() < chosenPlayerNumber + reconnectingPlayersList.size()){
             virtualViewMap.put(nickname, virtualView);
             if(!playersNicknames.contains(nickname))
                 playersNicknames.add(nickname);
@@ -196,6 +214,14 @@ public class GameController implements Observer {
 
         } else {
             virtualView.showLoginResult(nickname,true, false);
+        }
+    }
+
+    private void showReconnectingMessage(String nickname) {
+        virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
+
+        for(VirtualView virtualView : virtualViewMap.values()){
+            virtualView.showReconnectedMessage(nickname);
         }
     }
 
@@ -336,7 +362,6 @@ public class GameController implements Observer {
     }
 
     public void showDisconnectionMessage(String nickname, String message) {
-        System.out.println("ShowDisconnectedMessage " + nickname);
         for(VirtualView vv : virtualViewMap.values())
             vv.showDisconnectedPlayerMessage(nickname, message);
     }
@@ -510,12 +535,27 @@ public class GameController implements Observer {
 
     public void removeVirtualView(String nickname) {
         VirtualView virtualView = virtualViewMap.remove(nickname);
-        if(getGameState() == GameState.GAME_STARTED)
+
+        if(getGameState() == GameState.IN_GAME) {
+            game.removeObserver(virtualView);
+            game.getPlayerByNickname(nickname).removeObserver(virtualView);
+
+            game.getPlayerByNickname(nickname).setConnected(false);
+
             turnController.removeVirtualView(nickname);
+            inputController.removeVirtualView(nickname);
+       }
+    }
 
-        game.removeObserver(virtualView);
-        game.getPlayerByNickname(nickname).removeObserver(virtualView);
+    public boolean resumeGame() {
+        return resume;
+    }
 
-        game.getPlayerByNickname(nickname).setConnected(false);
+    public void setResumeGame(boolean resumeGame) {
+        this.resume = resumeGame;
+    }
+
+    public ArrayList<String> getReconnectingPlayersList() {
+        return reconnectingPlayersList;
     }
 }
