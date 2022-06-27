@@ -20,6 +20,7 @@ import java.util.Objects;
 public class ExpertGame extends Game {
     private int activeCardID = -1;
     private CharacterCard activeCard = null;
+
     private final ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
     /**
@@ -457,6 +458,10 @@ public class ExpertGame extends Game {
         else {
             super.checkInfluence(islandID);
         }
+    }
+
+    public ArrayList<CharacterCard> getPool() {
+        return pool;
     }
 
 }

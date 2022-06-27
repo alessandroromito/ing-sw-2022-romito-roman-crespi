@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.exception.AddingWrongColorTowerToIslandException;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -61,10 +60,10 @@ class IslandTest {
 
     //ci sono altri casi
     @Test
-    void getInfluence() throws AddingWrongColorTowerToIslandException {
-        Player player1 = null;
+    void getInfluence() {
+        Player player1;
         player1 = game.getPlayerByNickname("Player 1");
-        player1.getScoreboard().addProfessor(new ProfessorPawn(2,PawnColors.RED));
+        player1.getScoreboard().addProfessor(new ProfessorPawn(2, PawnColors.RED));
 
         island = game.getMap().getIsland(1);
 

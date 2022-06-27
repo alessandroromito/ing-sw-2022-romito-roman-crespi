@@ -23,6 +23,7 @@ public class TurnController {
 
     private final Game game;
     private final List<String> nicknameQueue;
+
     private String activePlayer;
 
     private PhaseState phaseState;
@@ -207,5 +208,9 @@ public class TurnController {
                 askAssistantCard();
             }
         }
+    }
+
+    public void setActivePlayer(String activePlayer) {
+        this.activePlayer = activePlayer;
     }
 }
