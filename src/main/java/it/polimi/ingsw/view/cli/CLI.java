@@ -412,7 +412,8 @@ public class CLI extends ViewObservable implements View {
                         islandNum = Integer.parseInt(readRow());
                     }
 
-                    if (islandNum > 12 || islandNum < 0) {
+                    if (islandNum > 12 || islandNum < 1) {
+
                         out.println("Numero inserito non valido. Riprovare.");
                         error = true;
                     }
@@ -442,7 +443,9 @@ public class CLI extends ViewObservable implements View {
                         islandNum = Integer.parseInt(readRow());
                     }
 
-                    if(islandNum > 12 || islandNum < 0) {
+                    if(islandNum > 12 || islandNum < 1
+
+                    ) {
                         out.println("Numero inserito non valido. Riprovare.");
                         error = true;
                     }
@@ -471,7 +474,7 @@ public class CLI extends ViewObservable implements View {
                         islandNum = Integer.parseInt(readRow());
                     }
 
-                    if (islandNum > 12 || islandNum < 0) {
+                    if (islandNum > 12 || islandNum < 1) {
                         out.println("Numero inserito non valido. Riprovare.");
                         error = true;
                     }
