@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,32 @@ public class TurnController {
             gameController.winnerChecker();
 
         activePlayer = nicknameQueue.get(0);
+
+        if( turnCount == 1 ){
+
+            try {
+                GameController gameController = this.gameController.getDataSaving().restore();
+                if (nicknameQueue.equals(gameController.getTurnController().getNicknameQueue())) {
+                    System.out.println("Caricamento salvataggio di gioco.");
+                    restartTurn(nicknameQueue.get(0));
+                    return;
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                System.out.println("Nessun salvataggio di gioco presente.");
+            }
+
+        }
+
+
+        //SAVE THE GAME??????????????????????????????????????????????????????????????????????????????
+        if( turnCount > 1 ){
+            try {
+                gameController.getDataSaving().save(gameController);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         gameController.showGenericMessageToAll("Turn of " + activePlayer + "...");
         // 1
         gameController.refillClouds();

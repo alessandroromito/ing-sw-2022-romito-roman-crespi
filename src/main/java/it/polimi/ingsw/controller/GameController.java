@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
+import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameSerialized;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameController implements Observer {
-    public static final String SAVING = "GameController.sav";
+    public static final String SAVING = "GameController.rcr";
 
     private List<String> playersNicknames = new ArrayList<>();
     private Map<String, VirtualView> virtualViewMap;
@@ -33,6 +34,7 @@ public class GameController implements Observer {
     private GameState gameState;
     private TurnController turnController;
     private InputController inputController;
+    private DataSaving dataSaving;
 
     public static final String SAVED_GAME_FILE = "gameController.saving";
 
@@ -48,6 +50,7 @@ public class GameController implements Observer {
         this.inputController = new InputController(this, virtualViewMap);
         this.virtualViewMap = new HashMap<>();
         setGameState(GameState.GAME_ROOM);
+        dataSaving = new DataSaving();
     }
 
     public void startGame() {
@@ -584,5 +587,9 @@ public class GameController implements Observer {
 
     public ArrayList<String> getReconnectingPlayersList() {
         return reconnectingPlayersList;
+    }
+
+    public DataSaving getDataSaving() {
+        return dataSaving;
     }
 }
