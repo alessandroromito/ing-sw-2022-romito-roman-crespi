@@ -26,17 +26,12 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 public class TurnController implements Serializable {
 
     private final Game game;
-
     private final List<String> nicknameQueue;
-
     private String activePlayer;
-
     private PhaseState phaseState;
     private ActionPhaseState actionPhaseState;
     private int turnCount = 0;
-
     private GameController gameController;
-
     private transient Map<String, VirtualView> virtualViewMap;
 
     /**
@@ -79,15 +74,11 @@ public class TurnController implements Serializable {
                 e.printStackTrace();
             }
         }
-
         gameController.showGenericMessageToAll("Turn of " + activePlayer + "...");
-        // 1
         gameController.refillClouds();
         System.out.println("Refill Clouds!");
-        // 2
         gameController.refreshAssistantCard();
         System.out.println("Refresh Assistant Cards!");
-
         gameController.askAssistantCard();
     }
 
@@ -105,7 +96,6 @@ public class TurnController implements Serializable {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
-
         if(!game.getPlayerByNickname(activePlayer).isConnected())
             next();
 
@@ -115,7 +105,6 @@ public class TurnController implements Serializable {
             nextActionPhase();
         }
     }
-
 
     /**
      * Go to the next phase.

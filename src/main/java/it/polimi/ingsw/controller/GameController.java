@@ -202,7 +202,6 @@ public class GameController implements Observer, Serializable {
     public void endGame() {
         game = null;
         playersNicknames = new ArrayList<>();
-
         // Delete storage data
         try {
             DataSaving dataSaving = new DataSaving();
@@ -241,11 +240,8 @@ public class GameController implements Observer, Serializable {
             game.addObserver(virtualView);
 
             virtualView.showLoginResult(nickname,true, true);
-
             showReconnectingMessage(nickname);
-
             turnController.restartTurn();
-
             return;
         }
 
@@ -254,23 +250,18 @@ public class GameController implements Observer, Serializable {
             try{
                 virtualViewMap.put(nickname, virtualView);
                 playersNicknames.add(nickname);
-
                 virtualView.showLoginResult(nickname,true, true);
                 virtualView.askGameMode();
-
             } catch(GameAlreadyStartedException e) {
                 e.printStackTrace();
             }
-
         } else if (virtualViewMap.size() < chosenPlayerNumber - reconnectingPlayersList.size()){
             virtualViewMap.put(nickname, virtualView);
             if(!playersNicknames.contains(nickname))
                 playersNicknames.add(nickname);
-
             virtualView.showLoginResult(nickname,true, true);
 
             if(chosenPlayerNumber == virtualViewMap.size()){
-
                 //check if there is a saved game
                 DataSaving storageData = new DataSaving();
                 GameController restoredGameController = null;
@@ -293,7 +284,6 @@ public class GameController implements Observer, Serializable {
                     startGame();
                 }
             }
-
         } else {
             virtualView.showLoginResult(nickname,true, false);
         }
@@ -325,11 +315,9 @@ public class GameController implements Observer, Serializable {
             this.game = new Game(stringListOfRestoredPlayers);
             this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, false, 0, null, null);
         }
-
         this.turnController = restoredGameController.turnController;
         turnController.setGameController(this);
         this.gameState = restoredGameController.gameState;
-
         // Adding Observers
         for(Player player : game.getPlayers())
             player.addObserver(this);
@@ -350,8 +338,6 @@ public class GameController implements Observer, Serializable {
         for (VirtualView virtualView : virtualViewMap.values() ) {
             virtualView.showGameScenario(game.getGameSerialized());
         }
-
-        //update of match info
     }
 
     /**
@@ -376,9 +362,8 @@ public class GameController implements Observer, Serializable {
 
     /**
      * Verifies the nickname through the InputController.
-     *
      * @param nickname the nickname to be checked.
-     * @return see {@link InputController#checkLoginNickname(String)}
+     * @return {code @true} if it is ok, {code @false} otherwise.
      */
     public boolean checkLoginNickname(String nickname) {
         return inputController.checkLoginNickname(nickname);
@@ -474,7 +459,6 @@ public class GameController implements Observer, Serializable {
                     askToMoveStudent();
                 }
             }
-
             turnController.nextActionPhase();
         }
         else showMessage(turnController.getActivePlayer(), "You can't move a student in this phase!");
@@ -487,11 +471,8 @@ public class GameController implements Observer, Serializable {
     public void pickCloud(CloudMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
             Cloud chosenCloud = message.getCloudList().get(0);
-
             game.pickAndPlaceFromCloud(chosenCloud.getCloudID());
-
             showMessage(message.getNickname(), "Attesa che gli altri giocatori finiscano il turno...");
-
             turnController.next();
         }
     }
@@ -549,7 +530,6 @@ public class GameController implements Observer, Serializable {
                 showMessage(assistantCardMessage.getNickname(), "Qualcuno ha gia scelto questa carta! Scegline un'altra perfavore");
                 askAssistantCard();
             }
-
         }
         else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");
     }
