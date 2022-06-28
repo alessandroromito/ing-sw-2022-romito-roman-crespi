@@ -35,8 +35,6 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void update(Message message) {
         switch(message.getMessageType()){
-            case PING -> {
-            }
             case ERROR -> {
                 ErrorMessage errorMessage = (ErrorMessage) message;
                 view.showErrorMessage(errorMessage.getError());
@@ -48,9 +46,6 @@ public class ClientController implements ViewObserver, Observer {
             case LOBBY -> {
                 LobbyMessage lobbyMessage = (LobbyMessage) message;
                 view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers());
-            }
-            case LOGIN_REQUEST -> {
-
             }
             case LOGIN_REPLY -> {
                 LoginReply loginReplyMessage = (LoginReply) message;
@@ -64,9 +59,6 @@ public class ClientController implements ViewObserver, Observer {
             case PLAY_ASSISTANT_CARD -> {
                 AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;
                 queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards(), assistantCardMessage.getPlayedAssistantCards()));
-            }
-            case PLAYER_NUMBER_REPLY -> {
-
             }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
@@ -90,29 +82,9 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.askToChooseACloud(cloudMessage.getCloudList()));
             }
             case GAME_MODE -> queue.execute(view::askGameMode);
-            case USE_EFFECT -> {
-            }
             case PLAY_CHARACTER_CARD -> {
                 CharacterCardMessage characterCardMessage = (CharacterCardMessage) message;
                 queue.execute(() -> view.askCharacterCard(characterCardMessage.getCharacterCards()));
-            }
-            case CARD209 -> {
-            }
-            case CARD210 -> {
-            }
-            case CARD211 -> {
-            }
-            case CARD212 -> {
-            }
-            case CARD213 -> {
-            }
-            case CARD214 -> {
-            }
-            case CARD216 -> {
-            }
-            case CARD217 -> {
-            }
-            case CARD219 -> {
             }
             case RECONNECTING_MESSAGE -> {
                 ReconnectingMessage reconnectingMessage = (ReconnectingMessage) message;

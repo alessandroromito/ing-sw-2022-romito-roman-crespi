@@ -637,10 +637,6 @@ public class GameController implements Observer, Serializable {
         return this.game;
     }
 
-    public void setPlayersNicknames(List<String> playersNicknames) {
-        this.playersNicknames = playersNicknames;
-    }
-
     public List<String> getPlayersNicknames() {
         return playersNicknames;
     }
