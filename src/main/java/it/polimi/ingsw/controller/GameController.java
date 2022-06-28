@@ -206,7 +206,6 @@ public class GameController implements Observer, Serializable {
 
                 //check if there is a saved game
                 DataSaving storageData = new DataSaving();
-
                 GameController restoredGameController = null;
                 try {
                     restoredGameController = storageData.restore();
@@ -215,8 +214,7 @@ public class GameController implements Observer, Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                if (restoredGameController != null &&
-                        game.getPlayersNicknames().containsAll( restoredGameController.getTurnController().getNicknameQueue() )) {
+                if (restoredGameController != null && playersNicknames.containsAll( restoredGameController.getTurnController().getNicknameQueue() )) {
                     initControllersFromRestoreGameSaved( restoredGameController );
                     updateGraphicInterfaces();
                     Server.LOGGER.info("Game saved found. Restoring...");
@@ -238,18 +236,23 @@ public class GameController implements Observer, Serializable {
         Bag restoredBag = restoredGameController.game.getBag();
         ArrayList<Component> restoredComponents = restoredGameController.game.getComponents();
         List<Player> restoredPlayers = restoredGameController.game.getPlayers();
+
+        List<String> stringListOfRestoredPlayers = new ArrayList<>();
+        for(Player p : restoredPlayers) stringListOfRestoredPlayers.add(p.getNickname());
+
         boolean restoredExpertMode = restoredGameController.game.isExpertMode();
         if(restoredExpertMode) {
             ExpertGame restoredExpertGame = (ExpertGame) restoredGameController.getGame();
             int restoredActiveCardID = restoredGameController.game.getActiveCardID();
             CharacterCard restoreActiveCard = restoredExpertGame.getActiveCard();
             ArrayList<CharacterCard> restorePool = restoredExpertGame.getPool();
-            List<String> stringListOfRestoredPlayers = new ArrayList<>();
-            for(Player p : restoredPlayers) stringListOfRestoredPlayers.add(p.getNickname());
             this.game = new ExpertGame(stringListOfRestoredPlayers);
             this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, restoredActiveCardID, restoreActiveCard, restorePool);
         }
-        else this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
+        else {
+            this.game = new Game(stringListOfRestoredPlayers);
+            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
+        }
 
         this.turnController = restoredGameController.turnController;
         //game.setTurnController(turnController);
@@ -267,7 +270,7 @@ public class GameController implements Observer, Serializable {
         //inputController.setVirtualViewMap(virtualViewMap);
         turnController.setVirtualViewMap(this.virtualViewMap);
 
-        showGenericMessageToAll("GAME STARTED!");
+        showGenericMessageToAll("Rigenerazione partita da crash del server avvenuto con successo!");
     }
 
     public void updateGraphicInterfaces() {
