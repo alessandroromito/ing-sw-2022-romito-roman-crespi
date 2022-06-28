@@ -40,12 +40,14 @@ public class CLI extends ViewObservable implements View {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PINK = "\u001b[35;1m";
     public static final String ANSI_WHITE = "\u001b[37;1m";
-    private boolean inPause = false;
 
     public CLI(){
         out = System.out;
     }
 
+    /**
+     * Initialization of the cli view
+     */
     public void initialization() {
         out.println(
                 """
@@ -63,6 +65,9 @@ public class CLI extends ViewObservable implements View {
         askServerParametersConfiguration();
     }
 
+    /**
+     *
+     */
     public void askServerParametersConfiguration() {
         HashMap<String, String> server = new HashMap<>();
         boolean validInput;
@@ -77,7 +82,6 @@ public class CLI extends ViewObservable implements View {
                 validInput = true;
             }
             else {
-                clearCli();
                 out.println("Indirizzo vuoto o non valido! Riprova!");
                 validInput = false;
             }
@@ -92,7 +96,6 @@ public class CLI extends ViewObservable implements View {
                 validInput = true;
             }
             else {
-                clearCli();
                 out.println("Porta vuota o non valida! Riprova!");
                 validInput = false;
             }
@@ -114,24 +117,6 @@ public class CLI extends ViewObservable implements View {
         return null;
     }
 
-
-    public void clearCli() {
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                    Runtime.getRuntime().exec("cls");
-            }
-            else {
-                Runtime.getRuntime().exec("clear");
-            }
-        }
-        catch (Exception e) {
-            //  Handle any exceptions.
-        }
-
-        out.flush();
-    }
-
     @Override
     public void askPlayersNumber() {
         int playersNumber;
@@ -145,6 +130,7 @@ public class CLI extends ViewObservable implements View {
             }
             if(playersNumber>=4 || playersNumber<=1) out.println("Errore! Scegli tra 2 e 3");
         }while(playersNumber>=4 || playersNumber<=1);
+
         int finalPlayersNumber = playersNumber;
         notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayersNumber));
     }
@@ -188,6 +174,13 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
         out.println("\n" + ANSI_RED + nicknameDisconnected + " si è disconnesso dal gioco" + ANSI_RESET);
+    }
+
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        out.flush();
+        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
+        out.println();
     }
 
     @Override
@@ -778,8 +771,6 @@ public class CLI extends ViewObservable implements View {
         cloud.add(cloudList.get(finalChoose));
 
         notifyObserver(obs -> obs.onUpdatePickCloud(cloud));
-
-        clearCli();
     }
 
     @Override
@@ -799,12 +790,6 @@ public class CLI extends ViewObservable implements View {
     public void showVictoryMessage(String winner) {
         out.println("Il gioco è terminato. Il VINCITORE è " + winner + "!");
         System.exit(1);
-    }
-
-    @Override
-    public void showReconnectedMessage(String nicknameReconnecting) {
-        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
-        inPause = false;
     }
 
     public String printStudent(StudentDisc stud){

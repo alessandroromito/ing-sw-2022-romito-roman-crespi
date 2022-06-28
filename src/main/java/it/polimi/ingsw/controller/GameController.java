@@ -9,6 +9,7 @@ import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.player.Player;
@@ -22,10 +23,10 @@ import java.util.Map;
 public class GameController implements Observer {
     public static final String SAVING = "GameController.sav";
 
-    private List<String> playersNicknames = new ArrayList<>();
+    private List<String> playersNicknames;
     private Map<String, VirtualView> virtualViewMap;
 
-    private ArrayList<String> reconnectingPlayersList = new ArrayList<>();
+    private ArrayList<String> reconnectingPlayersList;
 
     private int chosenPlayerNumber = 3;
     private boolean chosenExpertMode = false;
@@ -39,6 +40,7 @@ public class GameController implements Observer {
     private Game game;
 
     private boolean resume = false;
+    private boolean inPause;
 
     public GameController(){
         init();
@@ -46,7 +48,16 @@ public class GameController implements Observer {
 
     public void init(){
         this.inputController = new InputController(this, virtualViewMap);
+
         this.virtualViewMap = new HashMap<>();
+        this.playersNicknames = new ArrayList<>();
+        this.reconnectingPlayersList = new ArrayList<>();
+
+        chosenExpertMode = false;
+        chosenPlayerNumber = 3;
+
+        inPause = false;
+
         setGameState(GameState.GAME_ROOM);
     }
 
@@ -70,6 +81,17 @@ public class GameController implements Observer {
 
         showGenericMessageToAll("GAME STARTED!");
         turnController.newTurn();
+    }
+
+    /**
+     * Method to ask an assistant card to the active player
+     */
+    public void askAssistantCard() {
+        Player player = game.getPlayerByNickname(turnController.getActivePlayer());
+        List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
+        List<AssistantCard> playedAssistantCards = new ArrayList<>(game.getPlayedAssistantCards());
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askAssistantCard(assistantCardList, playedAssistantCards);
     }
 
     public void askToMoveStudent() {
@@ -144,17 +166,28 @@ public class GameController implements Observer {
 
     public void endGame() {
         game = null;
+        playersNicknames = new ArrayList<>();
 
         // Delete storage data
 
         init();
         System.out.println("Game Finished!");
+        System.out.println("\n \n \n \n \n \n");
+        System.out.println("Server ready for a new game!");
     }
 
+    /**
+     * Method that handle the login of a player.
+     * Check if it's the first or if is a reconnecting player.
+     *
+     * @param nickname nickname of the player
+     * @param virtualView virtualView associated
+     */
     public void addPlayer(String nickname, VirtualView virtualView) {
         if(playersNicknames.contains(nickname) && reconnectingPlayersList.contains((nickname))){
 
             resume = true;
+            inPause = false;
 
             reconnectingPlayersList.remove(nickname);
             game.getPlayerByNickname(nickname).setConnected(true);
@@ -162,7 +195,6 @@ public class GameController implements Observer {
             virtualViewMap.put(nickname, virtualView);
             inputController.setVirtualViewMap(virtualViewMap);
             turnController.setVirtualViewMap(virtualViewMap);
-            turnController.restartTurn(nickname);
 
             game.getPlayerByNickname(nickname).addObserver(this);
             game.addObserver(virtualView);
@@ -170,6 +202,8 @@ public class GameController implements Observer {
             virtualView.showLoginResult(nickname,true, true);
 
             showReconnectingMessage(nickname);
+
+            turnController.restartTurn(nickname);
 
             return;
         }
@@ -221,12 +255,19 @@ public class GameController implements Observer {
     }
 
     private void showReconnectingMessage(String nickname) {
-        virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
-
         for(VirtualView virtualView : virtualViewMap.values()){
             if(virtualView != virtualViewMap.get(nickname))
                 virtualView.showReconnectedMessage(nickname);
         }
+
+        long start = System.currentTimeMillis();
+        long end = start + 1000;
+        System.out.println("Waiting 30 sec for reconnecting...");
+        while (System.currentTimeMillis() < end) {
+            // wait
+        }
+        virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
+
     }
 
     /*
@@ -407,7 +448,7 @@ public class GameController implements Observer {
             }
             else{
                 showMessage(assistantCardMessage.getNickname(), "Qualcuno ha gia scelto questa carta! Scegline un'altra perfavore");
-                turnController.askAssistantCard();
+                askAssistantCard();
             }
 
         }
@@ -580,6 +621,14 @@ public class GameController implements Observer {
 
     public void setResumeGame(boolean resumeGame) {
         this.resume = resumeGame;
+    }
+
+    public void setInPause(boolean inPause) {
+        this.inPause = inPause;
+    }
+
+    public boolean isInPause() {
+        return inPause;
     }
 
     public ArrayList<String> getReconnectingPlayersList() {
