@@ -188,6 +188,12 @@ public class GameController implements Observer, Serializable {
         playersNicknames = new ArrayList<>();
 
         // Delete storage data
+        try {
+            DataSaving dataSaving = new DataSaving();
+            dataSaving.remove();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         init();
         System.out.println("Game Finished!");
@@ -635,10 +641,6 @@ public class GameController implements Observer, Serializable {
 
     public Game getGame() {
         return this.game;
-    }
-
-    public void setPlayersNicknames(List<String> playersNicknames) {
-        this.playersNicknames = playersNicknames;
     }
 
     public List<String> getPlayersNicknames() {

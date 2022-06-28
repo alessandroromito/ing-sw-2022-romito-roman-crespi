@@ -232,7 +232,6 @@ public class Game extends Observable implements Serializable {
      *
      * @param tower
      * @param islandID
-     * @throws DisabledIslandException
      */
     public void moveTowerToIsland(Tower tower, int islandID) {
 
@@ -575,11 +574,7 @@ public class Game extends Observable implements Serializable {
     }
 
     public void disableCardEffects (){
-        try{
-            throw new RuntimeException();
-        }catch (RuntimeException e){
-
-        }
+        throw new RuntimeException();
     }
 
     public List<CharacterCard> getCharacterCards() {
@@ -591,12 +586,7 @@ public class Game extends Observable implements Serializable {
     }
 
     public void deleteActiveCard(){
-        //ExpertGame method
-        try{
-            throw new RuntimeException();
-        }catch (RuntimeException e){
-
-        }
+        throw new RuntimeException();
     }
 
     public int getActiveCardID() {
