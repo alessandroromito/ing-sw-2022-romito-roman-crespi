@@ -1,10 +1,12 @@
 package it.polimi.ingsw.server.model.component;
 import it.polimi.ingsw.server.enumerations.TowerColors;
 
+import java.io.Serializable;
+
 /**
  * This class identifies a component of the game map.
  */
-public class Tower extends Component {
+public class Tower extends Component implements Serializable {
     private TowerColors color;
 
     /**

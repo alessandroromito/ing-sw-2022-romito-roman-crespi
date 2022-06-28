@@ -2,11 +2,13 @@ package it.polimi.ingsw.server.model.component;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 
+import java.io.Serializable;
+
 /**
  * This class identifies a component of the game map.
  * Sub-type of Pawn.
  */
-public class ProfessorPawn extends Pawn{
+public class ProfessorPawn extends Pawn implements Serializable {
 
     /**
      * Default constructor.

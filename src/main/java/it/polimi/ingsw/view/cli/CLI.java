@@ -20,6 +20,9 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+/**
+ * Class that visualize the game trough the terminal
+ */
 public class CLI extends ViewObservable implements View {
 
     private final PrintStream out;
@@ -41,6 +44,9 @@ public class CLI extends ViewObservable implements View {
     public static final String ANSI_PINK = "\u001b[35;1m";
     public static final String ANSI_WHITE = "\u001b[37;1m";
 
+    /**
+     * Default constructor
+     */
     public CLI(){
         out = System.out;
     }

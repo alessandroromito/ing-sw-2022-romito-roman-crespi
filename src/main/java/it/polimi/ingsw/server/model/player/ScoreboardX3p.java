@@ -9,10 +9,11 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardX3p implements Scoreboard{
+public class ScoreboardX3p implements Scoreboard, Serializable {
 
     private Player player;
     private boolean avaibleCoin[][] = new boolean[5][3];
@@ -87,7 +88,7 @@ public class ScoreboardX3p implements Scoreboard{
     public StudentDisc removeStudent(StudentDisc student){
         int studentID = student.getID();
         for(int i = 0; i < 9; i++){
-            if(entrance[i].getID() == studentID)
+            if(entrance[i] != null && entrance[i].getID() == studentID)
                 entrance[i] = null;
         }
         return null;

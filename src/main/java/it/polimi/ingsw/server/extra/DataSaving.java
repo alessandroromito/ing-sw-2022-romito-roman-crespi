@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.extra;
 
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.network.server.Server;
 
 import java.io.*;
 import java.nio.file.*;
@@ -22,6 +23,7 @@ public class DataSaving {
         FileOutputStream fileOutputStream = new FileOutputStream(new File(GameController.SAVING));
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(persistenceGameController);
+        Server.LOGGER.info("Game data saved.");
     }
 
     /**
@@ -33,6 +35,7 @@ public class DataSaving {
     public GameController restore() throws IOException, ClassNotFoundException {
         PersistenceGameController persistenceGameController;
         FileInputStream fileInputStream = new FileInputStream(new File(GameController.SAVING));
+        System.out.println("Lettura avvenuta con successo.");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         persistenceGameController = (PersistenceGameController) objectInputStream.readObject();
         return persistenceGameController.getGameController();

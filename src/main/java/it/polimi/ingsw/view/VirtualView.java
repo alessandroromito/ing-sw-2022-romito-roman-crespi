@@ -10,6 +10,7 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

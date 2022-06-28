@@ -18,12 +18,13 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Observable {
+public class Game extends Observable implements Serializable {
 
     protected List<Player> players = new ArrayList<>();
     protected ArrayList<Component> components = new ArrayList<>();
@@ -602,4 +603,12 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+
+    public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
+        this.map = restoredMap;
+        this.bag = restoredBag;
+        this.components = restoredComponents;
+        this.players = restoredPlayers;
+        this.expertMode = restoredExpertMode;
+    }
 }
