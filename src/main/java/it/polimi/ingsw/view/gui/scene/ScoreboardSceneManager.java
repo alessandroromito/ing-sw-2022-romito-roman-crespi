@@ -718,7 +718,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     private ImageView[] professors_2 = new ImageView[5];
 
     private int[] visibleStudents = new int[5];
-    private int availableTowers = 0;
     private boolean[] entranceFree = new boolean[9];
     private Circle[] towers = new Circle[8];
     private Circle[] towers_1 = new Circle[8];
@@ -756,8 +755,12 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void enableEntrance(){
-        for(ImageView i:entrance)
-            i.setDisable(false);
+        for(int i=0;i<9;i++) {
+            if (!entranceFree[i])
+                entrance[i].setDisable(false);
+            else
+                entrance[i].setDisable(true);
+        }
     }
 
     public void disableEntrance(){
@@ -793,7 +796,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     @FXML
     void in(MouseEvent event) {
-        System.out.println(event.getSource().toString());
         String idString = event.getSource().toString().substring(13,16);
         if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
 
@@ -811,7 +813,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         //collegamento main scoreboard
         entrance[0] = entrance0; entrance[1] = entrance1; entrance[2] = entrance2; entrance[3] = entrance3; entrance[4] = entrance4; entrance[5] = entrance5; entrance[6] = entrance6; entrance[7] = entrance7; entrance[8] = entrance8;
         towers[0] = tower0; towers[1] = tower1; towers[2] = tower2; towers[3] = tower3; towers[4] = tower4; towers[5] = tower5; towers[6] = tower6; towers[7] = tower7;
-        professors[0] = professor_green; professors[1] = professor_red; professors[2] = professor_yellow; professors[3] = professor_purple; professors[4] = professor_blue;
+        professors[0] = professor_red; professors[1] = professor_blue; professors[2] = professor_green; professors[3] = professor_yellow; professors[4] = professor_purple;
 
         diningRoom[0][0] = green0; diningRoom[0][1] = green1; diningRoom[0][2] = green2; diningRoom[0][3] = green3; diningRoom[0][4] = green4; diningRoom[0][5] = green5; diningRoom[0][6] = green6; diningRoom[0][7] = green7; diningRoom[0][8] = green8; diningRoom[0][9] = green9;
         diningRoom[1][0] = red0; diningRoom[1][1] = red1; diningRoom[1][2] = red2; diningRoom[1][3] = red3; diningRoom[1][4] = red4; diningRoom[1][5] = red5; diningRoom[1][6] = red6; diningRoom[1][7] = red7; diningRoom[1][8] = red8; diningRoom[1][9] = red9;
@@ -822,7 +824,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         //collegamento scoreboard 1
         entrance_1[0] = entrance0_1; entrance_1[1] = entrance1_1; entrance_1[2] = entrance2_1; entrance_1[3] = entrance3_1; entrance_1[4] = entrance4_1; entrance_1[5] = entrance5_1; entrance_1[6] = entrance6_1; entrance_1[7] = entrance7_1; entrance_1[8] = entrance8_1;
         towers_1[0] = tower0_1; towers_1[1] = tower1_1; towers_1[2] = tower2_1; towers_1[3] = tower3_1; towers_1[4] = tower4_1; towers_1[5] = tower5_1; towers_1[6] = tower6_1; towers_1[7] = tower7_1;
-        professors_1[0] = professor_green1; professors_1[1] = professor_red1; professors_1[2] = professor_yellow1; professors_1[3] = professor_purple1; professors_1[4] = professor_blue1;
+        professors_1[0] = professor_red1; professors_1[1] = professor_blue1; professors_1[2] = professor_green1; professors_1[3] = professor_yellow1; professors_1[4] = professor_purple1;
 
         diningRoom_1[0][0] = green0_1; diningRoom_1[0][1] = green1_1; diningRoom_1[0][2] = green2_1; diningRoom_1[0][3] = green3_1; diningRoom_1[0][4] = green4_1; diningRoom_1[0][5] = green5_1; diningRoom_1[0][6] = green6_1; diningRoom_1[0][7] = green7_1; diningRoom_1[0][8] = green8_1; diningRoom_1[0][9] = green9_1;
         diningRoom_1[1][0] = red0_1; diningRoom_1[1][1] = red1_1; diningRoom_1[1][2] = red2_1; diningRoom_1[1][3] = red3_1; diningRoom_1[1][4] = red4_1; diningRoom_1[1][5] = red5_1; diningRoom_1[1][6] = red6_1; diningRoom_1[1][7] = red7_1; diningRoom_1[1][8] = red8_1; diningRoom_1[1][9] = red9_1;
@@ -833,7 +835,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         //collegamento scoreboard 2
         entrance_2[0] = entrance0_2; entrance_2[1] = entrance1_2; entrance_2[2] = entrance2_2; entrance_2[3] = entrance3_2; entrance_2[4] = entrance4_2; entrance_2[5] = entrance5_2; entrance_2[6] = entrance6_2; entrance_2[7] = entrance7_2; entrance_2[8] = entrance8_2;
         towers_2[0] = tower0_2; towers_2[1] = tower1_2; towers_2[2] = tower2_2; towers_2[3] = tower3_2; towers_2[4] = tower4_2; towers_2[5] = tower5_2; towers_2[6] = tower6_2; towers_2[7] = tower7_2;
-        professors_2[0] = professor_green2; professors_2[1] = professor_red2; professors_2[2] = professor_yellow2; professors_2[3] = professor_purple2; professors_2[4] = professor_blue2;
+        professors_2[0] = professor_red2; professors_2[1] = professor_blue2; professors_2[2] = professor_green2; professors_2[3] = professor_yellow2; professors_2[4] = professor_purple2;
 
         diningRoom_2[0][0] = green0_2; diningRoom_2[0][1] = green1_2; diningRoom_2[0][2] = green2_2; diningRoom_2[0][3] = green3_2; diningRoom_2[0][4] = green4_2; diningRoom_2[0][5] = green5_2; diningRoom_2[0][6] = green6_2; diningRoom_2[0][7] = green7_2; diningRoom_2[0][8] = green8_2; diningRoom_2[0][9] = green9_2;
         diningRoom_2[1][0] = red0_2; diningRoom_2[1][1] = red1_2; diningRoom_2[1][2] = red2_2; diningRoom_2[1][3] = red3_2; diningRoom_2[1][4] = red4_2; diningRoom_2[1][5] = red5_2; diningRoom_2[1][6] = red6_2; diningRoom_2[1][7] = red7_2; diningRoom_2[1][8] = red8_2; diningRoom_2[1][9] = red9_2;
@@ -855,18 +857,22 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             int finalJ = j;
             islandMenu.getItems().get(j).setOnAction(event -> islandMessage(finalJ+1));
         }
-        
+
         disableEntrance();
     }
 
     public void islandMessage(int number){
-        System.out.println(number);
+        islandMenu.setDisable(true);
+        diningButton.setDisable(true);
+        islandMenu.setVisible(false);
+        diningButton.setVisible(false);
+        for(ImageView i:entrance)
+            i.setDisable(true);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
     }
 
     public void setMap(Image image){
         map.setImage(image);
-        System.out.println("setMap");
     }
 
     //color: 0=black 1=white 2=grey
@@ -931,7 +937,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 ImageView temp = entrance[i];
                 entrance[i].setImage(createImage(color));
                 entrance[i].setId(Integer.toString(id));
-                entrance[i].setOnMouseClicked(ck -> openOptionMenu(temp.getId()));
                 return;
             }
     }
@@ -965,18 +970,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void setTowerNumber(int number){
-        while(number>availableTowers){
-            availableTowers++;
-            towers[availableTowers-1].setVisible(true);
-        }
-        while(number<availableTowers){
-            availableTowers--;
-            towers[availableTowers-1].setVisible(false);
-        }
-    }
-
-    public void openOptionMenu(String id){
-
+        for(int k=0;k<8;k++)
+            towers[k].setVisible(false);
+        for(int k=0;k<number;k++)
+            towers_1[k].setVisible(true);
     }
 
     public Image createImage(int color){
@@ -1007,18 +1004,32 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private int getColorFromId(int id){
         if(id-59>=0 && id-59<=25)
-            return 2;
-        else if(id-59>=26 && id-59<=51)
-            return 5;
-        else if(id-59>=52 && id-59<=77)
             return 1;
-        else if(id-59>=78 && id-59<=103)
+        else if(id-59>=26 && id-59<=51)
+            return 2;
+        else if(id-59>=52 && id-59<=77)
             return 3;
-        else if(id-59>=104 && id-59<=129)
+        else if(id-59>=78 && id-59<=103)
             return 4;
+        else if(id-59>=104 && id-59<=129)
+            return 5;
         else System.out.println("id mancante: "+id);
 
         return 0;
+    }
+
+    public int transformOrdinal(int ordinal){
+        if(ordinal == 0)
+            return 1;
+        if(ordinal == 1)
+            return 4;
+        if(ordinal == 2)
+            return 0;
+        if(ordinal == 3)
+            return 2;
+        if(ordinal == 4)
+            return 3;
+        return -1;
     }
 
     public void clearScoreboard(){
@@ -1047,15 +1058,14 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         while(scoreboard.getDiningGreenStudents()<visibleStudents[0])  removeStudentFromDining(1);
         while(scoreboard.getDiningRedStudents()<visibleStudents[1])  removeStudentFromDining(2);
         while(scoreboard.getDiningYellowStudents()<visibleStudents[2])  removeStudentFromDining(3);
-        while(scoreboard.getDiningPinkStudents()<visibleStudents[3])  removeStudentFromDining(4);
+        while(scoreboard.getDiningpurpleStudents()<visibleStudents[3])  removeStudentFromDining(4);
         while(scoreboard.getDiningBlueStudents()<visibleStudents[4])  removeStudentFromDining(5);
 */
         //aggiorna Professori
-        for(PawnColors c: PawnColors.values()){
-            if (scoreboard.availableProfessors().contains(c))
-                professors[c.ordinal()].setVisible(true);
-            else
-                professors[c.ordinal()].setVisible(false);
+        for(int i=0;i<5;i++)
+            professors[i].setVisible(false);
+        for(PawnColors c: scoreboard.availableProfessors()){
+            professors[c.ordinal()].setVisible(true);
         }
 
         //aggiorna Torri
@@ -1135,13 +1145,15 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(!s.getNickname().equals(nickname)){
                 if(scbNumber == 1){
-                    for(PawnColors c: PawnColors.values())
-                        if (s.availableProfessors().contains(c))
-                            professors_1[c.ordinal()].setVisible(true);
+                    for(PawnColors c: s.availableProfessors()){
+                        professors_1[c.ordinal()].setVisible(true);
+                    }
+
                 }if(scbNumber == 2){
-                    for(PawnColors c: PawnColors.values())
-                        if (s.availableProfessors().contains(c))
-                            professors_2[c.ordinal()].setVisible(true);
+                    for(PawnColors c: s.availableProfessors()){
+                        professors_2[c.ordinal()].setVisible(true);
+                    }
+
                 }
                 scbNumber++;
             }
@@ -1169,7 +1181,12 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void selectedToDining(ActionEvent actionEvent) {
-        System.out.println("sposta studente nella sala");
+        islandMenu.setDisable(true);
+        diningButton.setDisable(true);
+        islandMenu.setVisible(false);
+        diningButton.setVisible(false);
+        for(ImageView i:entrance)
+            i.setDisable(true);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
     }
 

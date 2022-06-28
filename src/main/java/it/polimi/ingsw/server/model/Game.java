@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.LobbyMessage;
+import it.polimi.ingsw.network.message.MergeIslandMessage;
 import it.polimi.ingsw.network.message.VictoryMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
@@ -226,24 +227,6 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    /**
-     *
-     * @param islandID index of the destination island
-     * @param student the student
-     */
-    public void moveStudentToIsland(StudentDisc student, int islandID) {
-        if(map.getIsland(islandID).isDisabled()) {
-            GhostIsland ghostIsland = map.getGhostIsland(islandID);
-            ghostIsland.addStudent(student);
-        }
-        else {
-            Island island = map.getIsland(islandID);
-            island.addStudent(student);
-        }
-        //checkInfluence(islandID);
-
-        notifyObserver(new GameScenarioMessage(getGameSerialized()));
-    }
 
     /**
      *
@@ -297,6 +280,27 @@ public class Game extends Observable implements Serializable {
                 player.getScoreboard().addProfessor(p.getScoreboard().removeProfessor(color));
             }
         }
+    }
+
+    /**
+     * Move @param student from the active player scoreboard to the chosen island
+     * @param islandID index of the destination island
+     * @param student the student
+     */
+    public void moveStudentToIsland(StudentDisc student, int islandID) {
+        getActivePlayer().getScoreboard().removeStudent(student);
+
+        if(map.getIsland(islandID).isDisabled()) {
+            GhostIsland ghostIsland = map.getGhostIsland(islandID);
+            ghostIsland.addStudent(student);
+        }
+        else {
+            Island island = map.getIsland(islandID);
+            island.addStudent(student);
+        }
+        //checkInfluence(islandID);
+
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**
@@ -399,11 +403,15 @@ public class Game extends Observable implements Serializable {
         if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty()) {
             System.out.println("Merge with Next (" + islandSucc.getID() + ")");
             map.merge(islandID, getNextInt(islandID));
+
+            notifyObserver(new MergeIslandMessage(Game.SERVER_NAME, List.of(islandID, getNextInt(islandID))));
         }
 
         if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty()){
             System.out.println("Merge with Previous(" + islandPrev.getID() + ")");
             map.merge(islandID, getPrevInt(islandID));
+
+            notifyObserver(new MergeIslandMessage(Game.SERVER_NAME, List.of(islandID, getPrevInt(islandID))));
         }
     }
 

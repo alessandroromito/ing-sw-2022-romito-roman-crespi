@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class GraphicController extends ViewObservable implements View {
     private static SceneManagerInterface activeManager;
     private boolean gameScenarioEnabled = false;
     static public String nickname;
+    static public String nicknameOpponent1 = null;
+    static public String nicknameOpponent2 = null;
     MapSceneManager mapSceneManager;
     private static ScoreboardSceneManager scoreboardSceneManager = null;
 
@@ -103,6 +106,7 @@ public class GraphicController extends ViewObservable implements View {
                 gameScenarioEnabled = true;
                 this.mapSceneManager = mapSceneManager;
                 mapSceneManager.setGraphicController(this);
+                mapSceneManager.fullscreen();
             }catch(IOException e) {
                 Logger.getLogger("client").severe(e.getMessage());
                 e.printStackTrace();
@@ -189,9 +193,10 @@ public class GraphicController extends ViewObservable implements View {
         scoreboardSceneManager.setScene(scoreboardScene);
     }
 
-    public ScoreboardSceneManager showScoreboards() {
+    public ScoreboardSceneManager showScoreboards(Image snapshot) {
         if (scoreboardSceneManager == null) initializeScoreboard();
-        else{ scoreboardSceneManager.showScoreboards();}
+        else{ scoreboardSceneManager.showScoreboards();
+        scoreboardSceneManager.setMap(snapshot);}
         return scoreboardSceneManager;
     }
 
@@ -289,7 +294,7 @@ public class GraphicController extends ViewObservable implements View {
             getAndPaneTransitionGameScenario();
             mapSceneManager.updateValues(gameSerialized);
             if(scoreboardSceneManager==null) {
-                showScoreboards();
+                showScoreboards(null);
             }
             scoreboardSceneManager.updateValues(gameSerialized);
         });
@@ -345,6 +350,24 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
+            if(playedAssistantCards.size() == 0) {
+                mapSceneManager.hideOpCard1();
+                mapSceneManager.hideOpCard2();
+                mapSceneManager.disableOpcard1();
+                mapSceneManager.disableOpcard2();
+            }
+            if(playedAssistantCards.size() == 1) {
+                mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
+                mapSceneManager.viewOpCard1();
+                mapSceneManager.hideOpCard2();
+                mapSceneManager.disableOpcard2();
+            }
+            if(playedAssistantCards.size() == 2) {
+                mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
+                mapSceneManager.setOpponent2Card(playedAssistantCards.get(1).getValue());
+                mapSceneManager.viewOpCard1();
+                mapSceneManager.viewOpCard2();
+            }
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
     }
@@ -361,16 +384,21 @@ public class GraphicController extends ViewObservable implements View {
     public void askToMoveMotherNature(int maxSteps) {
         Platform.runLater( () -> {
             showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
-            mapSceneManager.moveMotherNature(maxSteps);
+            mapSceneManager.enableMotherNature(maxSteps);
         } );
     }
 
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
-            mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
-            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
-            showGenericMessage("Nuvole", "Scegli l'isola che fa per te!");
+            if(cloudList.size() == 2){
+                mapSceneManager.clearCloud1();
+                mapSceneManager.clearCloud2();
+                mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
+                mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+                mapSceneManager.enableClouds();}
+
+            showGenericMessage("Nuvole", "Scegli la nuvola che fa per te!");
         });
     }
 

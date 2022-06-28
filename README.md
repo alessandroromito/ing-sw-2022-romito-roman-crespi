@@ -40,10 +40,10 @@ Coverage dei test effettuati con Junit: [Report](link)
 - CLI
 - GUI
 - Socket
-- x Funzionalità aggiuntive
-  - __la prima__
-  - __la seconda__
-  - __la terza__
+- 3 funzionalità aggiuntive
+  - __12 character card__
+  - __Persistenza__
+  - __Resilienza alle disconnessioni__
 
 ## Esecuzione tramite files .jar
 ### Server

@@ -142,12 +142,14 @@ public class MessageHandler {
     }
 
     public void handleMessage(AssistantCardMessage assistantCardMessage) {
-        if(gameController.getGameState() == GameState.IN_GAME){
+        if(gameController.getGameState() == GameState.IN_GAME && !gameController.isInPause()){
             if(gameController.checkUser(assistantCardMessage)){
                 System.out.println("Handling AssistantCardMessage");
                 gameController.setAssistantCard(assistantCardMessage);
             }
         }
+        else System.out.println("SCARTATO " + assistantCardMessage);
+
     }
 
     /**

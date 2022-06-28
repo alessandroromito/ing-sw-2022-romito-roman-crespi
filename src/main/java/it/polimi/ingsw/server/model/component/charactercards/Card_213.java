@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Card_213 extends CharacterCard{
     ArrayList<NoEntryTile> noEntryTiles = new ArrayList<>();
+
     public Card_213(List<Component> nt) {
         super(213);
         this.cost = 0; //1

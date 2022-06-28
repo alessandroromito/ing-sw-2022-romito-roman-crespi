@@ -39,7 +39,6 @@ public class SocketServer implements Runnable{
             return;
         }
 
-
         System.out.println("Server socket ready on IP: " + serverSocket.getInetAddress().getHostAddress());
 
         try {
@@ -49,7 +48,7 @@ public class SocketServer implements Runnable{
         }
 
         while(!Thread.currentThread().isInterrupted()) {
-            Socket client = null;
+            Socket client;
             try {
                 client = serverSocket.accept();
                 System.out.println("Received client connection");

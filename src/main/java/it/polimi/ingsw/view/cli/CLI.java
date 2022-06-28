@@ -43,7 +43,6 @@ public class CLI extends ViewObservable implements View {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PINK = "\u001b[35;1m";
     public static final String ANSI_WHITE = "\u001b[37;1m";
-    private boolean inPause = false;
 
     /**
      * Default constructor
@@ -52,6 +51,9 @@ public class CLI extends ViewObservable implements View {
         out = System.out;
     }
 
+    /**
+     * Initialization of the cli view
+     */
     public void initialization() {
         out.println(
                 """
@@ -69,6 +71,9 @@ public class CLI extends ViewObservable implements View {
         askServerParametersConfiguration();
     }
 
+    /**
+     *
+     */
     public void askServerParametersConfiguration() {
         HashMap<String, String> server = new HashMap<>();
         boolean validInput;
@@ -83,7 +88,6 @@ public class CLI extends ViewObservable implements View {
                 validInput = true;
             }
             else {
-                clearCli();
                 out.println("Indirizzo vuoto o non valido! Riprova!");
                 validInput = false;
             }
@@ -98,7 +102,6 @@ public class CLI extends ViewObservable implements View {
                 validInput = true;
             }
             else {
-                clearCli();
                 out.println("Porta vuota o non valida! Riprova!");
                 validInput = false;
             }
@@ -106,6 +109,10 @@ public class CLI extends ViewObservable implements View {
         notifyObserver(obs -> obs.onUpdateServerDetails(server));
     }
 
+    /**
+     * Read the input
+     * @return the input
+     */
     public String readRow() {
         FutureTask<String> futureTask = new FutureTask<>(new ReadTask());
         readThread = new Thread(futureTask);
@@ -120,24 +127,21 @@ public class CLI extends ViewObservable implements View {
         return null;
     }
 
+    /**
+     * Ask the nickname to the player
+     */
+    @Override
+    public void askPlayerNickname() {
+        out.println("Inserisci il tuo nickname: ");
+        String nickname = readRow();
+        this.nickname = nickname;
 
-    public void clearCli() {
-        try {
-            final String os = System.getProperty("os.name");
-            if (os.contains("Windows")) {
-                    Runtime.getRuntime().exec("cls");
-            }
-            else {
-                Runtime.getRuntime().exec("clear");
-            }
-        }
-        catch (Exception e) {
-            //  Handle any exceptions.
-        }
-
-        out.flush();
+        notifyObserver(obs -> obs.onUpdateNickname(nickname));
     }
 
+    /**
+     * Ask how many players want to play the game
+     */
     @Override
     public void askPlayersNumber() {
         int playersNumber;
@@ -151,10 +155,14 @@ public class CLI extends ViewObservable implements View {
             }
             if(playersNumber>=4 || playersNumber<=1) out.println("Errore! Scegli tra 2 e 3");
         }while(playersNumber>=4 || playersNumber<=1);
+
         int finalPlayersNumber = playersNumber;
         notifyObserver(obs -> obs.onUpdatePlayersNumber(finalPlayersNumber));
     }
 
+    /**
+     * Ask the gameMode
+     */
     @Override
     public void askGameMode() {
         String gamemode;
@@ -173,433 +181,11 @@ public class CLI extends ViewObservable implements View {
         notifyObserver(obs -> obs.onUpdateGameMode(finalGamemode));
     }
 
-    @Override
-    public void askPlayerNickname() {
-        out.println("Inserisci il tuo nickname: ");
-        String nickname = readRow();
-        this.nickname = nickname;
-
-        notifyObserver(obs -> obs.onUpdateNickname(nickname));
-    }
-
-    @Override
-    public void showLobby(List<String> playersNickname, int numPlayers) {
-        out.println("Giocatori presenti nella lobby:");
-        for(String nickname : playersNickname) {
-            out.println(nickname);
-        }
-        out.println("Stato della lobby: " + playersNickname.size() + " / " + numPlayers);
-    }
-
-    @Override
-    public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
-        out.println("\n" + ANSI_RED + nicknameDisconnected + " si è disconnesso dal gioco" + ANSI_RESET);
-    }
-
-    @Override
-    public void showErrorMessage(String error) {
-        try{
-            readThread.interrupt();
-        }catch (NullPointerException ignored){
-
-        }
-
-        out.println("\nERRORE: " + error);
-        System.exit(1);
-    }
-
-    @Override
-    public void showGameScenario(GameSerialized gameSerialized) {
-        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
-        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
-        out.println("------------------------------");
-
-        //islands
-        for(SerializableIsland island : islands)
-        {
-            if(island.isGhost()){
-                Iterator<Integer> i = island.getReferencedIslands().iterator();
-                out.print("ISOLA ");
-                out.print(i.next());
-                while(i.hasNext()) {
-                    out.print(", ");
-                    out.print(i.next());
-                }
-                out.println(":");
-            }else {
-                out.println("ISOLA " + (island.getId() + 1) + ":");
-            }
-
-            if(gameSerialized.getMotherNaturePos() == island.getId() || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
-                out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
-
-            if(island.getTowerNumber() != 0){
-                for(int i=0; i < island.getTowerNumber(); i++)
-                    out.print(printTower(island.getTowerColor()));
-                out.println();
-            }
-
-            for(int i=0; i < island.getRedStudents(); i++)
-                out.print(ANSI_RED + "o" + ANSI_RESET);
-            for(int i=0; i < island.getBlueStudents(); i++)
-                out.print(ANSI_BLUE + "o" + ANSI_RESET);
-            for(int i=0; i < island.getYellowStudents(); i++)
-                out.print(ANSI_YELLOW + "o" + ANSI_RESET);
-            for(int i=0; i < island.getGreenStudents(); i++)
-                out.print(ANSI_GREEN + "o" + ANSI_RESET);
-            for(int i=0; i < island.getPinkStudents(); i++)
-                out.print(ANSI_PINK + "o" + ANSI_RESET);
-
-            out.println();
-        }
-
-        out.println("------------------------------");
-
-        //scoreboard
-        for(SerializableScoreboard scoreboard : scoreboards){
-            if(scoreboard.getNickname().equals(nickname)){
-                out.println("LA TUA SCOREBOARD:");
-                coin = scoreboard.getCoins();
-            }
-            else {
-                out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
-            }
-
-            expertMode = gameSerialized.getExpertMode();
-            showScoreboard(scoreboard);
-        }
-    }
-
-    public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
-        if(expertMode){
-            out.println("Coin: " + currentPlayerScoreboard.getCoins());
-        }
-
-        out.println("Torri:");
-        for(int i=0; i< currentPlayerScoreboard.getTowerNumber(); i++){
-            out.print(printTower(currentPlayerScoreboard.getTowerColor()));
-        }
-        out.println();
-
-        out.println("Dining Room:");
-        for(int i = 0; i < currentPlayerScoreboard.getDiningRedStudents(); i++)
-            out.print(ANSI_RED + "o" + ANSI_RESET);
-        out.println();
-        for(int i = 0; i < currentPlayerScoreboard.getDiningBlueStudents(); i++)
-            out.print(ANSI_BLUE + "o" + ANSI_RESET);
-        out.println();
-        for(int i = 0; i < currentPlayerScoreboard.getDiningYellowStudents(); i++)
-            out.print(ANSI_YELLOW + "o" + ANSI_RESET);
-        out.println();
-        for(int i = 0; i < currentPlayerScoreboard.getDiningGreenStudents(); i++)
-            out.print(ANSI_GREEN + "o" + ANSI_RESET);
-        out.println();
-        for(int i = 0; i < currentPlayerScoreboard.getDiningPinkStudents(); i++)
-            out.print(ANSI_PINK + "o" + ANSI_RESET);
-
-        out.println();
-        out.println("Entrata:");
-        for(PawnColors color : currentPlayerScoreboard.getEntrance()) {
-            switch (color){
-                case RED -> out.print(ANSI_RED + "o" + ANSI_RESET);
-                case BLUE -> out.print(ANSI_BLUE + "o" + ANSI_RESET);
-                case YELLOW -> out.print(ANSI_YELLOW + "o" + ANSI_RESET);
-                case PINK -> out.print(ANSI_PINK + "o" + ANSI_RESET);
-                case GREEN -> out.print(ANSI_GREEN + "o" + ANSI_RESET);
-            }
-        }
-        out.println();
-
-        out.println("Professori:");
-        for(PawnColors color : currentPlayerScoreboard.availableProfessors()) {
-            switch (color) {
-                case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
-                case BLUE -> out.println(ANSI_BLUE + "PROFESSOR BLUE" + ANSI_RESET);
-                case YELLOW -> out.println(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
-                case PINK -> out.println(ANSI_PINK + "PROFESSOR PINK" + ANSI_RESET);
-                case GREEN -> out.println(ANSI_GREEN + "PROFESSOR GREEN" + ANSI_RESET);
-            }
-        }
-        out.println();
-    }
-
-    @Override
-    public void showMergeIslandMessage(List<Integer> unifiedIsland){
-        out.println("Isole unite:");
-        for(Integer i : unifiedIsland){
-            out.print( i + ", ");
-        }
-    }
-
-    @Override
-    public void askCharacterCard(List<CharacterCard> characterCards) {
-        int choose;
-        char answer;
-        boolean triedToUseCharacter = false;
-
-        do {
-            if(!triedToUseCharacter) {
-                out.println("E' il tuo turno...");
-                out.println("Vuoi usare una carta personaggio? Y/N");
-            }else
-                out.println("Vuoi usare un'altra carta personaggio? Y/N");
-
-            answer = readRow().charAt(0);
-            if(answer != 'Y' && answer != 'y'){
-                notifyObserver(obs -> obs.onUpdateUseEffect(false));
-                return;
-            }
-
-            triedToUseCharacter = true;
-            out.println("Scegli tra le seguenti Carte Personaggio:");
-            int i = 0;
-            for (CharacterCard characterCard : characterCards){
-                out.println("Carta " + i + " - Costo " + characterCard.getCost());
-                printEffect(characterCard.getID());
-                i++;
-            }
-            out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
-
-            try{
-                choose = Integer.parseInt(readRow());
-            }catch (NumberFormatException e) {
-                out.println("Inserisci un numero!");
-                choose = Integer.parseInt(readRow());
-            }
-
-            if(choose > characterCards.size() - 1 || choose < 0)
-                out.println("Numero inserito non valido. Riprovare.");
-            if(characterCards.get(choose).getCost() > coin)
-                out.println("Non hai abbastanza monete per usare questa carta personaggio");
-        } while(choose > characterCards.size() - 1 || characterCards.get(choose).getCost() > coin);
-
-        applyEffect(characterCards.get(choose));
-    }
-
-    private void applyEffect(CharacterCard characterCard) {
-        boolean error;
-
-        switch (characterCard.getID()){
-            case 209 -> {
-                Card_209 card209 = (Card_209) characterCard;
-                int studentPos;
-                int islandNum;
-
-                do {
-                    error = false;
-                    out.println("Scegli 1 studente:");
-                    int i = 0;
-                    for (StudentDisc student : card209.getStudents()) {
-                        out.println(i + " " + printStudent(student));
-                        i++;
-                    }
-
-                    try{
-                        studentPos = Integer.parseInt(readRow());
-                    }catch (NumberFormatException e) {
-                        out.println("Inserisci un numero!");
-                        studentPos = Integer.parseInt(readRow());
-                    }
-
-                    if (studentPos > i - 1 || studentPos < 0) {
-                        out.println("Numero inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while (error);
-
-                do {
-                    error = false;
-                    out.println("Scegli 1 isola:");
-
-                    try{
-                        islandNum = Integer.parseInt(readRow());
-                    }catch (NumberFormatException e) {
-                        out.println("Inserisci un numero!");
-                        islandNum = Integer.parseInt(readRow());
-                    }
-
-                    if (islandNum > 12 || islandNum < 0) {
-                        out.println("Numero inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while (error);
-
-                int finalStudentPos = studentPos;
-                int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
-                notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
-
-            }
-            case 210 -> {
-                out.println("Effetto abilitato!");
-                notifyObserver(ViewObserver::onUpdateUse210);
-            }
-            case 211 -> {
-                int islandNum;
-
-                do {
-                    error = false;
-                    out.println("Scegli 1 isola:");
-
-                    try{
-                        islandNum = Integer.parseInt(readRow());
-                    }catch (NumberFormatException e) {
-                        out.println("Inserisci un numero!");
-                        islandNum = Integer.parseInt(readRow());
-                    }
-
-                    if(islandNum > 12 || islandNum < 0) {
-                        out.println("Numero inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while(error);
-
-                int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
-                notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
-            }
-            case 212 -> {
-                activeCardID = 212;
-                out.println("Effetto abilitato!");
-                notifyObserver(ViewObserver::onUpdateUse212);
-            }
-            case 213 -> {
-                int islandNum;
-
-                do {
-                    error = false;
-                    out.println("Scegli 1 isola:");
-
-                    try{
-                        islandNum = Integer.parseInt(readRow());
-                    }catch (NumberFormatException e) {
-                        out.println("Inserisci un numero!");
-                        islandNum = Integer.parseInt(readRow());
-                    }
-
-                    if (islandNum > 12 || islandNum < 0) {
-                        out.println("Numero inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while (error);
-
-                int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
-                notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
-
-            }
-            case 214 -> {
-                out.println("Effetto abilitato!");
-                notifyObserver(ViewObserver::onUpdateUse214);
-            }
-            case 216 -> {
-                out.println("Effetto abilitato!");
-                notifyObserver(ViewObserver::onUpdateUse216);
-            }
-            case 217 -> {
-                String color;
-
-                do {
-                    error = false;
-                    out.println("Scegli un colore:");
-                    out.print((ANSI_RED + "rosso, " + ANSI_RESET));
-                    out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
-                    out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
-                    out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
-                    out.println((ANSI_PINK + "rosa" + ANSI_RESET));
-
-                    color = readRow();
-                    if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
-                        out.println("Colore inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while(error);
-
-                out.println("Effetto abilitato!");
-                switch (color){
-                    case "rosso" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.RED));
-                    case "giallo" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.YELLOW));
-                    case "verde" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.GREEN));
-                    case "blu" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.BLUE));
-                    case "rosa" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.PINK));
-                }
-
-            }
-            case 219 -> {
-                Card_219 card219 = (Card_219) characterCard;
-                int studentPos;
-
-                do {
-                    error = false;
-                    out.println("Scegli 1 studente:");
-                    int i = 0;
-                    for (StudentDisc student : card219.getStudents()){
-                        out.println(i + " " + printStudent(student));
-                        i++;
-                    }
-                    try{
-                        studentPos = Integer.parseInt(readRow());
-                    }catch (NumberFormatException e) {
-                        out.println("Inserisci un numero!");
-                        studentPos = Integer.parseInt(readRow());
-                    }
-                    if(studentPos > i - 1 || studentPos < 0) {
-                        out.println("Numero inserito non valido. Riprovare.");
-                        error = true;
-                    }
-                } while(error);
-
-                int finalStudent = studentPos;
-                out.println("Effetto abilitato!");
-                notifyObserver(obs -> obs.onUpdateUse219(finalStudent));
-
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + characterCard.getID());
-        }
-    }
-
-    private void printEffect(int ID) {
-        switch(ID){
-            case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET ); //tested
-            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET ); //tested
-            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET ); //tested
-            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET ); //tested
-            case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
-            case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
-            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET ); //tested
-            case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
-            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET ); //tested
-        }
-    }
-
-    @Override
-    public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
-        out.println("Informazioni chiave:");
-        out.println("Giocatori in partita: ");
-        for(String nickname : playersNicknames) {
-            out.println(nickname);
-        }
-        out.println("Numero di isole unificate: " + unifiedIslandsNumber);
-        out.println("Studenti rimanenti nella bag: " + remainingBagStudents);
-        out.println("Player che sta giocando: " + activePlayer);
-        //da implementare se serve le charactercards
-    }
-
-    @Override
-    public void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer) {
-        out.println("Informazioni chiave:");
-        out.println("Giocatori in partita: ");
-        for(String nickname : playersNicknames) {
-            out.println(nickname);
-        }
-        out.println("Player che sta giocando: " + activePlayer);
-    }
-
-    @Override
-    public void showGenericMessage(String genericMessage) {
-        out.println(genericMessage);
-    }
-
+    /**
+     * Ask to chose an assistant card
+     * @param assistantCards assistantCards in hand
+     * @param playedAssistantCards cards already played in this turn by the other players
+     */
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         int choose;
@@ -631,6 +217,8 @@ public class CLI extends ViewObservable implements View {
         playedAssistantCards.add(assistantCards.get(finalChoose));
         notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(assistantCards.get(finalChoose)), playedAssistantCards));
     }
+
+
 
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
@@ -721,6 +309,10 @@ public class CLI extends ViewObservable implements View {
         return dest.equals("isola") || dest.equals("sala") || dest.equals("Isola") || dest.equals("Sala");
     }
 
+    /**
+     * Ask how many steps move motherNature forward
+     * @param maxSteps max step the player can do
+     */
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         int steps;
@@ -749,6 +341,10 @@ public class CLI extends ViewObservable implements View {
         activeCardID = -1;
     }
 
+    /**
+     * Ask to choose a cloud to pick the students
+     * @param cloudList list of available clouds
+     */
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         int choose;
@@ -781,10 +377,505 @@ public class CLI extends ViewObservable implements View {
         cloud.add(cloudList.get(finalChoose));
 
         notifyObserver(obs -> obs.onUpdatePickCloud(cloud));
-
-        clearCli();
     }
 
+    /**
+     * Method to ask a if the player want to use a character card
+     * @param characterCards list of available character cards
+     */
+    @Override
+    public void askCharacterCard(List<CharacterCard> characterCards) {
+        int choose;
+        char answer;
+        boolean triedToUseCharacter = false;
+
+        do {
+            if(!triedToUseCharacter) {
+                out.println("E' il tuo turno...");
+                out.println("Vuoi usare una carta personaggio? Y/N");
+            }else
+                out.println("Vuoi usare un'altra carta personaggio? Y/N");
+
+            answer = readRow().charAt(0);
+            if(answer != 'Y' && answer != 'y'){
+                notifyObserver(obs -> obs.onUpdateUseEffect(false));
+                return;
+            }
+
+            triedToUseCharacter = true;
+            out.println("Scegli tra le seguenti Carte Personaggio:");
+            int i = 0;
+            for (CharacterCard characterCard : characterCards){
+                out.println("Carta " + i + " - Costo " + characterCard.getCost());
+                printEffect(characterCard.getID());
+                i++;
+            }
+            out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
+
+            try{
+                choose = Integer.parseInt(readRow());
+            }catch (NumberFormatException e) {
+                out.println("Inserisci un numero!");
+                choose = Integer.parseInt(readRow());
+            }
+
+            if(choose > characterCards.size() - 1 || choose < 0)
+                out.println("Numero inserito non valido. Riprovare.");
+            if(characterCards.get(choose).getCost() > coin)
+                out.println("Non hai abbastanza monete per usare questa carta personaggio");
+        } while(choose > characterCards.size() - 1 || characterCards.get(choose).getCost() > coin);
+
+        applyEffect(characterCards.get(choose));
+    }
+
+    /**
+     * Ask the card paramenter to the player and then send a Card### message to the server
+     * @param characterCard chosen characterCard
+     */
+    private void applyEffect(CharacterCard characterCard) {
+        boolean error;
+
+        switch (characterCard.getID()){
+            case 209 -> {
+                Card_209 card209 = (Card_209) characterCard;
+                int studentPos;
+                int islandNum;
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 studente:");
+                    int i = 0;
+                    for (StudentDisc student : card209.getStudents()) {
+                        out.println(i + " " + printStudent(student));
+                        i++;
+                    }
+
+                    try{
+                        studentPos = Integer.parseInt(readRow());
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        studentPos = Integer.parseInt(readRow());
+                    }
+
+                    if (studentPos > i - 1 || studentPos < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
+                        islandNum = Integer.parseInt(readRow());
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
+
+                    if (islandNum > 12 || islandNum < 1) {
+
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
+
+                int finalStudentPos = studentPos;
+                int finalIslandNum = islandNum;
+                out.println("Effetto abilitato!");
+                notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
+
+            }
+            case 210 -> {
+                out.println("Effetto abilitato!");
+                notifyObserver(ViewObserver::onUpdateUse210);
+            }
+            case 211 -> {
+                int islandNum;
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
+                        islandNum = Integer.parseInt(readRow());
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
+
+                    if(islandNum > 12 || islandNum < 1
+
+                    ) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while(error);
+
+                int finalIslandNum = islandNum;
+                out.println("Effetto abilitato!");
+                notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
+            }
+            case 212 -> {
+                activeCardID = 212;
+                out.println("Effetto abilitato!");
+                notifyObserver(ViewObserver::onUpdateUse212);
+            }
+            case 213 -> {
+                int islandNum;
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 isola:");
+
+                    try{
+                        islandNum = Integer.parseInt(readRow());
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        islandNum = Integer.parseInt(readRow());
+                    }
+
+                    if (islandNum > 12 || islandNum < 1) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while (error);
+
+                int finalIslandNum = islandNum;
+                out.println("Effetto abilitato!");
+                notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
+
+            }
+            case 214 -> {
+                out.println("Effetto abilitato!");
+                notifyObserver(ViewObserver::onUpdateUse214);
+            }
+            case 216 -> {
+                out.println("Effetto abilitato!");
+                notifyObserver(ViewObserver::onUpdateUse216);
+            }
+            case 217 -> {
+                String color;
+
+                do {
+                    error = false;
+                    out.println("Scegli un colore:");
+                    out.print((ANSI_RED + "rosso, " + ANSI_RESET));
+                    out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
+                    out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
+                    out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
+                    out.println((ANSI_PINK + "rosa" + ANSI_RESET));
+
+                    color = readRow();
+                    if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
+                        out.println("Colore inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while(error);
+
+                out.println("Effetto abilitato!");
+                switch (color){
+                    case "rosso" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.RED));
+                    case "giallo" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.YELLOW));
+                    case "verde" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.GREEN));
+                    case "blu" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.BLUE));
+                    case "rosa" -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.PINK));
+                }
+
+            }
+            case 219 -> {
+                Card_219 card219 = (Card_219) characterCard;
+                int studentPos;
+
+                do {
+                    error = false;
+                    out.println("Scegli 1 studente:");
+                    int i = 0;
+                    for (StudentDisc student : card219.getStudents()){
+                        out.println(i + " " + printStudent(student));
+                        i++;
+                    }
+                    try{
+                        studentPos = Integer.parseInt(readRow());
+                    }catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        studentPos = Integer.parseInt(readRow());
+                    }
+                    if(studentPos > i - 1 || studentPos < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+                } while(error);
+
+                int finalStudent = studentPos;
+                out.println("Effetto abilitato!");
+                notifyObserver(obs -> obs.onUpdateUse219(finalStudent));
+
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + characterCard.getID());
+        }
+    }
+
+    /**
+     * Print the effect of a card
+     * @param ID id of the card to print the effect
+     */
+    private void printEffect(int ID) {
+        switch(ID){
+            case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET ); //tested
+            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET ); //tested
+            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET ); //tested
+            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET ); //tested
+            case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
+            case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
+            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET ); //tested
+            case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
+            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET ); //tested
+        }
+    }
+
+
+    /**
+     * Method use to show the players in the lobby
+     * @param playersNickname
+     * @param numPlayers
+     */
+    @Override
+    public void showLobby(List<String> playersNickname, int numPlayers) {
+        out.println("Giocatori presenti nella lobby:");
+        for(String nickname : playersNickname) {
+            out.println(nickname);
+        }
+        out.println("Stato della lobby: " + playersNickname.size() + " / " + numPlayers);
+    }
+
+    /**
+     * Method used to notify all the players that someone has disconnected
+     * @param nicknameDisconnected nick of the player that has disconnected
+     */
+    @Override
+    public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
+        out.println("\n" + ANSI_RED + nicknameDisconnected + " si è disconnesso dal gioco" + ANSI_RESET);
+    }
+
+    /**
+     * Method used to notify all the players that someone has reconnected
+     * @param nicknameReconnecting nick of the player that has reconnected
+     */
+    @Override
+    public void showReconnectedMessage(String nicknameReconnecting) {
+        out.flush();
+        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
+        out.println();
+    }
+
+    /**
+     * Method used to show an error message
+     * @param error text to show
+     */
+    @Override
+    public void showErrorMessage(String error) {
+        try{
+            readThread.interrupt();
+        }catch (NullPointerException ignored){
+
+        }
+
+        out.println("\nERRORE: " + error);
+        System.exit(1);
+    }
+
+    /**
+     * Method used to print the state of the game
+     * It shows alle the island and all the scoreboard
+     *
+     * @param gameSerialized reduced version of the game
+     */
+    @Override
+    public void showGameScenario(GameSerialized gameSerialized) {
+        ArrayList<SerializableScoreboard> scoreboards = gameSerialized.getSerializableScoreboard();
+        ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
+        out.println("------------------------------");
+
+        //islands
+        for(SerializableIsland island : islands)
+        {
+            if(island.isGhost()){
+                Iterator<Integer> i = island.getReferencedIslands().iterator();
+                out.print("ISOLA ");
+                out.print(i.next());
+                while(i.hasNext()) {
+                    out.print(", ");
+                    out.print(i.next());
+                }
+                out.println(":");
+            }else {
+                out.println("ISOLA " + (island.getId() + 1) + ":");
+            }
+
+            if(gameSerialized.getMotherNaturePos() == island.getId() || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
+                out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
+
+            if(island.getTowerNumber() != 0){
+                for(int i=0; i < island.getTowerNumber(); i++)
+                    out.print(printTower(island.getTowerColor()));
+                out.println();
+            }
+
+            for(int i=0; i < island.getRedStudents(); i++)
+                out.print(ANSI_RED + "o" + ANSI_RESET);
+            for(int i=0; i < island.getBlueStudents(); i++)
+                out.print(ANSI_BLUE + "o" + ANSI_RESET);
+            for(int i=0; i < island.getYellowStudents(); i++)
+                out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+            for(int i=0; i < island.getGreenStudents(); i++)
+                out.print(ANSI_GREEN + "o" + ANSI_RESET);
+            for(int i=0; i < island.getPinkStudents(); i++)
+                out.print(ANSI_PINK + "o" + ANSI_RESET);
+
+            out.println();
+        }
+
+        out.println("------------------------------");
+
+        //scoreboard
+        for(SerializableScoreboard scoreboard : scoreboards){
+            if(scoreboard.getNickname().equals(nickname)){
+                out.println("LA TUA SCOREBOARD:");
+                coin = scoreboard.getCoins();
+            }
+            else {
+                out.println("SCOREBOARD DI " + scoreboard.getNickname() + ":");
+            }
+
+            expertMode = gameSerialized.getExpertMode();
+            showScoreboard(scoreboard);
+        }
+    }
+
+    /**
+     * Method that print a scoreboard
+     * @param currentPlayerScoreboard scoreboard to print
+     */
+    public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
+        if(expertMode){
+            out.println("Coin: " + currentPlayerScoreboard.getCoins());
+        }
+
+        out.println("Torri:");
+        for(int i=0; i< currentPlayerScoreboard.getTowerNumber(); i++){
+            out.print(printTower(currentPlayerScoreboard.getTowerColor()));
+        }
+        out.println();
+
+        out.println("Dining Room:");
+        for(int i = 0; i < currentPlayerScoreboard.getDiningRedStudents(); i++)
+            out.print(ANSI_RED + "o" + ANSI_RESET);
+        out.println();
+        for(int i = 0; i < currentPlayerScoreboard.getDiningBlueStudents(); i++)
+            out.print(ANSI_BLUE + "o" + ANSI_RESET);
+        out.println();
+        for(int i = 0; i < currentPlayerScoreboard.getDiningYellowStudents(); i++)
+            out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+        out.println();
+        for(int i = 0; i < currentPlayerScoreboard.getDiningGreenStudents(); i++)
+            out.print(ANSI_GREEN + "o" + ANSI_RESET);
+        out.println();
+        for(int i = 0; i < currentPlayerScoreboard.getDiningPinkStudents(); i++)
+            out.print(ANSI_PINK + "o" + ANSI_RESET);
+
+        out.println();
+        out.println("Entrata:");
+        for(PawnColors color : currentPlayerScoreboard.getEntrance()) {
+            switch (color){
+                case RED -> out.print(ANSI_RED + "o" + ANSI_RESET);
+                case BLUE -> out.print(ANSI_BLUE + "o" + ANSI_RESET);
+                case YELLOW -> out.print(ANSI_YELLOW + "o" + ANSI_RESET);
+                case PINK -> out.print(ANSI_PINK + "o" + ANSI_RESET);
+                case GREEN -> out.print(ANSI_GREEN + "o" + ANSI_RESET);
+            }
+        }
+        out.println();
+
+        out.println("Professori:");
+        for(PawnColors color : currentPlayerScoreboard.availableProfessors()) {
+            switch (color) {
+                case RED -> out.println(ANSI_RED + "PROFESSOR RED" + ANSI_RESET);
+                case BLUE -> out.println(ANSI_BLUE + "PROFESSOR BLUE" + ANSI_RESET);
+                case YELLOW -> out.println(ANSI_YELLOW + "PROFESSOR YELLOW" + ANSI_RESET);
+                case PINK -> out.println(ANSI_PINK + "PROFESSOR PINK" + ANSI_RESET);
+                case GREEN -> out.println(ANSI_GREEN + "PROFESSOR GREEN" + ANSI_RESET);
+            }
+        }
+        out.println();
+    }
+
+    /**
+     *
+     * @param unifiedIsland
+     */
+    @Override
+    public void showMergeIslandMessage(List<Integer> unifiedIsland){
+        out.println("Isole unite:");
+        for(Integer i : unifiedIsland){
+            out.print( i + ", ");
+        }
+    }
+
+    /**
+     * Method used to show the info of the game
+     * @param playersNicknames nicknames of the players in game
+     * @param unifiedIslandsNumber number of unified islands
+     * @param remainingBagStudents bag students remaining
+     * @param activePlayer player in turn
+     * @param characterCards avaiable character cards
+     */
+    @Override
+    public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
+        out.println("Informazioni chiave:");
+        out.println("Giocatori in partita: ");
+        for(String nickname : playersNicknames) {
+            out.println(nickname);
+        }
+        out.println("Numero di isole unificate: " + unifiedIslandsNumber);
+        out.println("Studenti rimanenti nella bag: " + remainingBagStudents);
+        out.println("Player che sta giocando: " + activePlayer);
+        //da implementare se serve le charactercards
+    }
+
+    /**
+     * Method used to show the info of the game
+     * @param playersNicknames nicknames of the players in game
+     * @param length
+     * @param size
+     * @param activePlayer player in turn
+     */
+    @Override
+    public void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer) {
+        out.println("Informazioni chiave:");
+        out.println("Giocatori in partita: ");
+        for(String nickname : playersNicknames) {
+            out.println(nickname);
+        }
+        out.println("Player che sta giocando: " + activePlayer);
+    }
+
+    /**
+     * Print a generic message sent by the server
+     * @param genericMessage message to print
+     */
+    @Override
+    public void showGenericMessage(String genericMessage) {
+        out.println(genericMessage);
+    }
+
+    /**
+     * Show the result of the loginRequest
+     * @param nickname nickname
+     * @param playerNicknameAccepted bool true if accepted
+     * @param connectionSuccessful bool true if connected
+     */
     @Override
     public void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful) {
         if(playerNicknameAccepted && connectionSuccessful) {
@@ -798,18 +889,20 @@ public class CLI extends ViewObservable implements View {
             showErrorMessage("Impossibile contattare il server. Riprova più tardi.");
     }
 
+    /**
+     * Print a victory message to notify the end of the game
+     * @param winner nick of the player that has won
+     */
     @Override
     public void showVictoryMessage(String winner) {
         out.println("Il gioco è terminato. Il VINCITORE è " + winner + "!");
         System.exit(1);
     }
 
-    @Override
-    public void showReconnectedMessage(String nicknameReconnecting) {
-        out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
-        inPause = false;
-    }
-
+    /**
+     * Print a student
+     * @param stud student to print
+     */
     public String printStudent(StudentDisc stud){
         if(stud != null){
             switch (stud.getColor()){
@@ -833,6 +926,11 @@ public class CLI extends ViewObservable implements View {
         return null;
     }
 
+    /**
+     * Print a tower
+     * @param color color of the tower
+     * @return
+     */
     public String printTower(TowerColors color) {
         switch (color) {
             case BLACK -> {

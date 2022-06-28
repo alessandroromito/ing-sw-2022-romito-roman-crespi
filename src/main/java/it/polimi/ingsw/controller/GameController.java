@@ -13,6 +13,7 @@ import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.Component;
+import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
@@ -33,7 +34,8 @@ public class GameController implements Observer, Serializable {
     private List<String> playersNicknames = new ArrayList<>();
     private transient Map<String, VirtualView> virtualViewMap;
 
-    private ArrayList<String> reconnectingPlayersList = new ArrayList<>();
+
+    private ArrayList<String> reconnectingPlayersList;
 
     private int chosenPlayerNumber = 3;
     private boolean chosenExpertMode = false;
@@ -47,6 +49,7 @@ public class GameController implements Observer, Serializable {
     private Game game;
 
     private boolean resume = false;
+    private boolean inPause;
 
     public GameController(){
         init();
@@ -54,7 +57,16 @@ public class GameController implements Observer, Serializable {
 
     public void init(){
         this.inputController = new InputController(this, virtualViewMap);
+
         this.virtualViewMap = new HashMap<>();
+        this.playersNicknames = new ArrayList<>();
+        this.reconnectingPlayersList = new ArrayList<>();
+
+        chosenExpertMode = false;
+        chosenPlayerNumber = 3;
+
+        inPause = false;
+
         setGameState(GameState.GAME_ROOM);
     }
 
@@ -80,6 +92,19 @@ public class GameController implements Observer, Serializable {
         turnController.newTurn();
     }
 
+    /**
+     * Method to ask an assistant card to the active player
+     */
+    public void askAssistantCard() {
+        Player player = game.getPlayerByNickname(turnController.getActivePlayer());
+        List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
+        List<AssistantCard> playedAssistantCards = new ArrayList<>(game.getPlayedAssistantCards());
+        VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
+        virtualView.askAssistantCard(assistantCardList, playedAssistantCards);
+    }
+    /**
+     * Method to ask to move a student to the active player
+     */
     public void askToMoveStudent() {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
         List<StudentDisc> studentDiscList = player.getScoreboard().getEntrance();
@@ -88,6 +113,9 @@ public class GameController implements Observer, Serializable {
         virtualView.askToMoveAStudent(studentDiscList, 0, 0 );
     }
 
+    /**
+     * Method to ask to move motherNature to the active player
+     */
     public void askToMoveMotherNature() {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
 
@@ -95,12 +123,17 @@ public class GameController implements Observer, Serializable {
         virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement());
     }
 
+    /**
+     * Method to ask to choose a cloud to the active player
+     */
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askToChooseACloud(game.getMap().getClouds());
     }
 
-
+    /**
+     * Method to ask to choose a character card to the active player
+     */
     public void askCharacterCard() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askCharacterCard(game.getCharacterCards());
@@ -142,6 +175,9 @@ public class GameController implements Observer, Serializable {
         }
     }
 
+    /**
+     * Called when a player has won the match, it notifies all the player who has won
+     */
     public void win(Player player){
         VirtualView vv = virtualViewMap.get(player.getNickname());
         vv.showVictoryMessage(player.getNickname());
@@ -150,19 +186,33 @@ public class GameController implements Observer, Serializable {
     }
 
 
+    /**
+     * Re-initialise the controller and prepare for a new game
+     */
     public void endGame() {
         game = null;
+        playersNicknames = new ArrayList<>();
 
         // Delete storage data
 
         init();
         System.out.println("Game Finished!");
+        System.out.println("\n \n \n \n \n \n");
+        System.out.println("Server ready for a new game!");
     }
 
+    /**
+     * Method that handle the login of a player.
+     * Check if it's the first or if is a reconnecting player.
+     *
+     * @param nickname nickname of the player
+     * @param virtualView virtualView associated
+     */
     public void addPlayer(String nickname, VirtualView virtualView) {
         if(playersNicknames.contains(nickname) && reconnectingPlayersList.contains((nickname))){
 
             resume = true;
+            inPause = false;
 
             reconnectingPlayersList.remove(nickname);
             game.getPlayerByNickname(nickname).setConnected(true);
@@ -170,7 +220,6 @@ public class GameController implements Observer, Serializable {
             virtualViewMap.put(nickname, virtualView);
             inputController.setVirtualViewMap(virtualViewMap);
             turnController.setVirtualViewMap(virtualViewMap);
-            turnController.restartTurn(nickname);
 
             game.getPlayerByNickname(nickname).addObserver(this);
             game.addObserver(virtualView);
@@ -178,6 +227,8 @@ public class GameController implements Observer, Serializable {
             virtualView.showLoginResult(nickname,true, true);
 
             showReconnectingMessage(nickname);
+
+            turnController.restartTurn(nickname);
 
             return;
         }
@@ -280,13 +331,24 @@ public class GameController implements Observer, Serializable {
         //update delle match info
     }
 
+    /**
+     * Shows a message to all player that someone has reconnected
+     * @param nickname nickname of the reconnected player
+     */
     private void showReconnectingMessage(String nickname) {
-        virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
-
         for(VirtualView virtualView : virtualViewMap.values()){
             if(virtualView != virtualViewMap.get(nickname))
                 virtualView.showReconnectedMessage(nickname);
         }
+
+        long start = System.currentTimeMillis();
+        long end = start + 1000;
+        System.out.println("Waiting 30 sec for reconnecting...");
+        while (System.currentTimeMillis() < end) {
+            // wait
+        }
+        virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
+
     }
 
     /*
@@ -320,6 +382,10 @@ public class GameController implements Observer, Serializable {
         return inputController.checkLoginNickname(nickname);
     }
 
+    /**
+     * Set the number of player chosen by the host
+     * @param message
+     */
     public void setChosenPlayerNumber(PlayerNumberReply message) {
         if(inputController.playerNumberReplyCheck(message.getPlayerNumber())) {
             chosenPlayerNumber = message.getPlayerNumber();
@@ -334,6 +400,10 @@ public class GameController implements Observer, Serializable {
         }
     }
 
+    /**
+     * Set the game mode selected by the host
+     * @param message
+     */
     public void setChosenExpertMode(GameModeReplyMessage message) {
         this.chosenExpertMode = message.getExpertMode();
         showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "Esperta" : "Normale"));
@@ -342,6 +412,11 @@ public class GameController implements Observer, Serializable {
         virtualView.askPlayersNumber();
     }
 
+    /**
+     * Check if the nickname chosen is valid or not
+     * @param nickname nickname chosen
+     * @return true if it's ok, false otherwise
+     */
     public boolean isNicknameTaken(String nickname) {
         if(gameState.equals(GameState.GAME_ROOM))
             return playersNicknames.stream()
@@ -353,8 +428,8 @@ public class GameController implements Observer, Serializable {
     /**
      * Check if the message is sent by the active player, if true he could take actions
      *
-     * @param message
-     * @return
+     * @param message Message sent by the client
+     * @return true if it's ok
      */
     public boolean checkUser(Message message) {
         return message.getNickname().equals(getTurnController().getActivePlayer());
@@ -391,10 +466,7 @@ public class GameController implements Observer, Serializable {
 
             switch (message.getPosition()) {
                 case 0 -> game.moveStudentToDiningRoom(student);
-                case 1 -> {
-                    game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber()-1);
-                    game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);
-                }
+                case 1 -> game.moveStudentToIsland(student, message.getIslandNumber()-1);
                 default -> {
                     showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
                     askToMoveStudent();
@@ -407,8 +479,8 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
-     * Method used to choose a cloud
-     * @param message
+     * Method used to choose a cloud and pick his students
+     * @param message message received by client
      */
     public void pickCloud(CloudMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
@@ -467,7 +539,7 @@ public class GameController implements Observer, Serializable {
             }
             else{
                 showMessage(assistantCardMessage.getNickname(), "Qualcuno ha gia scelto questa carta! Scegline un'altra perfavore");
-                turnController.askAssistantCard();
+                askAssistantCard();
             }
 
         }
@@ -640,6 +712,14 @@ public class GameController implements Observer, Serializable {
 
     public void setResumeGame(boolean resumeGame) {
         this.resume = resumeGame;
+    }
+
+    public void setInPause(boolean inPause) {
+        this.inPause = inPause;
+    }
+
+    public boolean isInPause() {
+        return inPause;
     }
 
     public ArrayList<String> getReconnectingPlayersList() {

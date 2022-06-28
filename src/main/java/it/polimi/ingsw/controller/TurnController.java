@@ -6,7 +6,6 @@ import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.extra.ComparatorAssistantCard;
 import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.Game;
-import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -21,11 +20,13 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 
 /**
  * This Class contains all the methods used to manage every single turn of the match.
+ * It controls the flow of the match.
  */
 public class TurnController implements Serializable {
 
     private final Game game;
     private final List<String> nicknameQueue;
+
     private String activePlayer;
 
     private PhaseState phaseState;
@@ -60,7 +61,7 @@ public class TurnController implements Serializable {
      */
     public void newTurn() {
         turnCount++;
-        System.out.println("Turno: " + turnCount);
+        System.out.println("Turn: " + turnCount);
         if(turnCount == 10)
             gameController.winnerChecker();
 
@@ -105,19 +106,11 @@ public class TurnController implements Serializable {
         gameController.refreshAssistantCard();
         System.out.println("Refresh Assistant Cards!");
 
-        askAssistantCard();
-    }
-
-    public void askAssistantCard() {
-        Player player = game.getPlayerByNickname(getActivePlayer());
-        List<AssistantCard> assistantCardList = new ArrayList<>(player.getHand());
-        List<AssistantCard> playedAssistantCards = new ArrayList<>(game.getPlayedAssistantCards());
-        VirtualView virtualView = virtualViewMap.get(getActivePlayer());
-        virtualView.askAssistantCard(assistantCardList, playedAssistantCards);
+        gameController.askAssistantCard();
     }
 
     /**
-     * Set the next activePlayer.
+     * Set the next activePlayer, check if the turn has ended.
      */
     public void next() {
         int currentActive = nicknameQueue.indexOf(activePlayer);
@@ -134,7 +127,7 @@ public class TurnController implements Serializable {
             next();
 
         if(phaseState == PLANNING_PHASE)
-            askAssistantCard();
+            gameController.askAssistantCard();
         else {
             nextActionPhase();
         }
@@ -161,6 +154,10 @@ public class TurnController implements Serializable {
         }
     }
 
+    /**
+     * Method use to perform the one of the action phase actions
+     * through a switch case used to save the state
+     */
     public void actionPhase() {
         try {
             switch (actionPhaseState) {
@@ -188,6 +185,12 @@ public class TurnController implements Serializable {
         }
     }
 
+    /**
+     * Method used to build the action phase order based on the assistant card
+     * chosen by the players
+     *
+     * @param playersList list of the online players
+     */
     private void buildQueue(List<String> playersList) {
 
         List<Player> players = new ArrayList<>();
@@ -209,38 +212,52 @@ public class TurnController implements Serializable {
         activePlayer = nicknameQueue.get(0);
     }
 
+    /**
+     * @return the phase state (PLANNING or ACTION)
+     */
     public PhaseState getPhaseState(){
         return phaseState;
     }
 
+    /**
+     * @return the actionPhase state (USE_EFFECT, MOVE_STUDENT#, MOVE_MOTHER_NATURE, PICK_CLOUD)
+     */
     public ActionPhaseState getActionPhaseState(){
         return actionPhaseState;
     }
 
-    public List<String> getNicknameQueue() {
-        return this.nicknameQueue;
-    }
-
+    /**
+     * Used to go to the next actionPhase's state
+     */
     public void nextActionPhase() {
         actionPhaseState = actionPhaseState.next(getActionPhaseState());
         actionPhase();
     }
 
+    /**
+     * Setter of the virtualViewMap
+     */
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
         this.virtualViewMap = virtualViewMap;
     }
 
+    /**
+     * Remove a virtualView associated with the @param nickname
+     * @param nickname nick of the player
+     */
     public void removeVirtualView(String nickname) {
         virtualViewMap.remove(nickname);
     }
 
+    /**
+     * Method used to restart the turn based on the actionPhase it was
+     * @param nickname active player nickname
+     */
     public void restartTurn(String nickname) {
-        if(getActivePlayer().equals(nickname)){
-            if(getPhaseState() == ACTION_PHASE)
-                actionPhase();
-            else if (getPhaseState() == PLANNING_PHASE) {
-                askAssistantCard();
-            }
+        if(getPhaseState() == ACTION_PHASE)
+            actionPhase();
+        else{
+            gameController.askAssistantCard();
         }
     }
 
@@ -250,5 +267,12 @@ public class TurnController implements Serializable {
 
     public void resettingTurnCount() {
         turnCount--;
+    }
+
+    /**
+     * Setter for the activePlayer
+     */
+    public void setActivePlayer(String activePlayer) {
+        this.activePlayer = activePlayer;
     }
 }

@@ -25,6 +25,7 @@ public class ExpertGame extends Game {
     private CharacterCard activeCard = null;
     private ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
+
     /**
      * Default constructor
      *
@@ -65,9 +66,7 @@ public class ExpertGame extends Game {
                 }
                 case 2 -> pool.add(new Card_211());
                 case 3 -> pool.add(new Card_212());
-                case 4 -> {
-                    pool.add(new Card_213(List.of(getComponent(221),getComponent(222),getComponent(223),getComponent(224))));
-                }
+                case 4 -> pool.add(new Card_213(List.of(getComponent(221),getComponent(222),getComponent(223),getComponent(224))));
                 case 5 -> pool.add(new Card_214());
                 case 6 -> pool.add(new Card_216());
                 case 7 -> pool.add(new Card_217());
@@ -230,7 +229,6 @@ public class ExpertGame extends Game {
         try{
             if(activeCardID != 213)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-
         } catch (ActiveCardAlreadyExistingException  e) {
             e.printStackTrace();
         }
@@ -268,18 +266,12 @@ public class ExpertGame extends Game {
 
     /**
      * Disable the effect of the card 216
-     *
-     * @param p
      */
     public void endTurn_216(Player p){
         p.setAdditionalPoints(false);
     }
 
 
-    /**
-     *
-     * @param p
-     */
     public void use_217(PawnColors p){
         try{
             if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -338,15 +330,17 @@ public class ExpertGame extends Game {
     public void checkInfluence(int islandID) {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
 
+        Island island = map.getIsland(islandID);
+        if(island.isDisabled()) {
+            island = map.getGhostIsland(islandID);
+        }
+        if(island.checkNoEntryTile())
+            return;
+
         if(activeCardID == 214) {
             int bestInfluence = 0;
             Player dominantPlayer = null;
             Player opponentPlayer = null;
-
-            Island island = map.getIsland(islandID);
-            if(island.isDisabled()) {
-                island = map.getGhostIsland(islandID);
-            }
 
             if(island.checkNoEntryTile()) {
                 Card_213 temp = null;
@@ -404,11 +398,6 @@ public class ExpertGame extends Game {
             int bestInfluence = 0;
             Player dominantPlayer = null;
             Player opponentPlayer = null;
-
-            Island island = map.getIsland(islandID);
-            if(island.isDisabled()){
-                island = map.getGhostIsland(islandID);
-            }
 
             if (island.checkNoEntryTile()) {
                 Card_213 temp = null;
@@ -472,7 +461,6 @@ public class ExpertGame extends Game {
         this.activeCard = restoreActiveCard;
         this.pool = restorePool;
         super.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
-
     }
 
 }
