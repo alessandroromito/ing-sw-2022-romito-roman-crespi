@@ -350,9 +350,17 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
+            if(playedAssistantCards.size() == 0) {
+                mapSceneManager.hideOpCard1();
+                mapSceneManager.hideOpCard2();
+                mapSceneManager.disableOpcard1();
+                mapSceneManager.disableOpcard2();
+            }
             if(playedAssistantCards.size() == 1) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
                 mapSceneManager.viewOpCard1();
+                mapSceneManager.hideOpCard2();
+                mapSceneManager.disableOpcard2();
             }
             if(playedAssistantCards.size() == 2) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
@@ -383,9 +391,11 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
-            mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
-            mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
-            mapSceneManager.enableClouds();
+            if(cloudList.size() == 2){
+                mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
+                mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+                mapSceneManager.enableClouds();}
+
             showGenericMessage("Nuvole", "Scegli la nuvola che fa per te!");
         });
     }

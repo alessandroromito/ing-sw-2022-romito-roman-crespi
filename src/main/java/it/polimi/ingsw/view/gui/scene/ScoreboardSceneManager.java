@@ -756,8 +756,12 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void enableEntrance(){
-        for(ImageView i:entrance)
-            i.setDisable(false);
+        for(int i=0;i<9;i++) {
+            if (!entranceFree[i])
+                entrance[i].setDisable(false);
+            else
+                entrance[i].setDisable(true);
+        }
     }
 
     public void disableEntrance(){
@@ -863,6 +867,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setDisable(true);
         islandMenu.setVisible(false);
         diningButton.setVisible(false);
+        for(ImageView i:entrance)
+            i.setDisable(false);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
     }
 
@@ -973,10 +979,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             availableTowers--;
             towers[availableTowers-1].setVisible(false);
         }
-    }
-
-    public void openOptionMenu(String id){
-
     }
 
     public Image createImage(int color){
@@ -1188,6 +1190,8 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setDisable(true);
         islandMenu.setVisible(false);
         diningButton.setVisible(false);
+        for(ImageView i:entrance)
+            i.setDisable(false);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
     }
 
