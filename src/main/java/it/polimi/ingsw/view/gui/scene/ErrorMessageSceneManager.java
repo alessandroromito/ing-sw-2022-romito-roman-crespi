@@ -1,7 +1,11 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.view.gui.GraphicController;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -10,9 +14,14 @@ public class ErrorMessageSceneManager implements SceneManagerInterface {
 
     private final Stage stage;
 
-    //cose di fxml
+    @FXML
+    private Label titleText;
 
-    //metodi aggiunte fxml
+    @FXML
+    private Button okButton;
+
+    @FXML
+    private Label messageText;
 
     public ErrorMessageSceneManager() {
         stage = new Stage();
@@ -23,11 +32,11 @@ public class ErrorMessageSceneManager implements SceneManagerInterface {
     }
 
     public void setErrorTitle(String title) {
-        //setText sul titolo
+        titleText.setText(title);
     }
 
     public void setErrorMessage(String message) {
-        //setText sul message
+        messageText.setText(message);
     }
 
     public void showMessage() {
@@ -36,5 +45,10 @@ public class ErrorMessageSceneManager implements SceneManagerInterface {
 
     public void setScene(Scene scene) {
         stage.setScene(scene);
+    }
+
+    @FXML
+    void onOkButtonClick(ActionEvent event) {
+        stage.close();
     }
 }
