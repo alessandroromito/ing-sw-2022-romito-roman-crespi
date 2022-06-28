@@ -55,7 +55,7 @@ public class Server {
      * @param clientHandler clientHandler associated to the client of the disconnection request.
      */
     public void onDisconnect(ClientHandler clientHandler) {
-        if(gameController.getGame().getPlayersConnected().size() == 1) {
+        if(gameController.getGame() != null && gameController.getGame().getPlayersConnected().size() == 1) {
             gameController.endGame();
             return;
         }
