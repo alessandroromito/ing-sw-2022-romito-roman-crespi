@@ -342,6 +342,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         assistentCardOpponent1.setViewOrder(-1);    previous1lbl.setViewOrder(-1);  bgOpCard1.setViewOrder(-1); nicknameOp1.setViewOrder(-1);
         assistentCardOpponent2.setViewOrder(-1);    previous2lbl.setViewOrder(-1);  bgOpCard2.setViewOrder(-1); nicknameOp2.setViewOrder(-1);
 
+        for(int i=0;i<10;i++)   assistantCards[i].setVisible(true);
+
         System.out.println("fine initialize fxml");
     }
 
@@ -387,7 +389,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
         }
 
-        student.setEffect(dr);
+        student.setEffect(null);
         student.setId(Integer.toString(id));
         students[island].add(student);
 
@@ -685,7 +687,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         imageView.setFitHeight(101);
         imageView.setLayoutY(towerBases[island].getLayoutY()-49);
         imageView.setLayoutX(towerBases[island].getLayoutX()+12);
-        imageView.setEffect(new InnerShadow());
+        imageView.setEffect(new Shadow());
+        imageView.setEffect(new DropShadow());
         imageView.setOpacity(1);
 
         pane.getChildren().addAll(imageView);
