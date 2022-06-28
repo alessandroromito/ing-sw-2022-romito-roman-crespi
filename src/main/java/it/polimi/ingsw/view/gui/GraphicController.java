@@ -288,7 +288,6 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
-        System.out.println("Starting game scenario");
         //getAndPaneTransitionGameScenario();
         Platform.runLater( () -> {
             getAndPaneTransitionGameScenario();
@@ -303,6 +302,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
         //max 2 alla volta
+        System.out.println("ISLAND MERGE");
         Integer minValue = 12;
         for (Integer integer : unifiedIsland)
             if (integer < minValue) minValue = integer;

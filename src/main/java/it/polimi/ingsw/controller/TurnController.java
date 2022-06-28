@@ -68,28 +68,7 @@ public class TurnController implements Serializable {
 
         activePlayer = nicknameQueue.get(0);
 
-       /* if( turnCount == 1 ){
-            try {
-                DataSaving dataSaving = new DataSaving();
-                GameController gameController = dataSaving.restore();
-                if(gameController != null)
-                    if (nicknameQueue.equals(gameController.getTurnController().getNicknameQueue())) {
-                        System.out.println("Checking for data saving.");
-                        //initializeFromSavings(nicknameQueue);
-                        restartTurn(nicknameQueue.get(0));
-                        return;
-                    }
-            } catch (IOException e) {
-                System.out.println("No game saved.");
-            } catch (ClassNotFoundException e) {
-                System.out.println("Problems restoring the old saving.");
-            }
-
-        }*/
-
-
-        //SAVE THE GAME??????????????????????????????????????????????????????????????????????????????
-        if( turnCount > 1 ){
+        if(turnCount > 1 ){
             try {
                 DataSaving dataSaving = new DataSaving();
                 System.out.println("Salvataggio partita in corso...");

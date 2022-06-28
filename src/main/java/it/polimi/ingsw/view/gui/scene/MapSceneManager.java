@@ -355,15 +355,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         System.out.println("initialize characters");
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
         card1.setImage(image);
+        card1.setId(Integer.toString(number[0]));
         image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
         card2.setImage(image);
+        card2.setId(Integer.toString(number[1]));
         image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[2]+".jpg"));
         card3.setImage(image);
+        card3.setId(Integer.toString(number[2]));
     }
 
 //color: 1/5  isalnd:0/11
     public void addStudentToIsland(int color,int id,int island){
-        System.out.println("Adding "+id+" to island "+island);
         Image image = null;
         ImageView student = new ImageView();
 
@@ -793,32 +795,36 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         this.gameSerialized = gameSerialized;
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
-        setMotherNaturePose(gameSerialized.getMotherNaturePos());
-        for(SerializableIsland island : islands){
+        if(islands.size() == 12) {
+            setMotherNaturePose(gameSerialized.getMotherNaturePos());
+            for (SerializableIsland island : islands) {
 
-            if(island.getTowerNumber() != 0){
-                for(int i=0; i < island.getTowerNumber(); i++)
-                    switch (island.getTowerColor()){
-                        case BLACK -> setTower(islands.indexOf(island),0);
-                        case GREY -> setTower(islands.indexOf(island),2);
-                        case WHITE -> setTower(islands.indexOf(island),1);
+                if (island.getTowerNumber() != 0) {
+                    for (int i = 0; i < island.getTowerNumber(); i++)
+                        switch (island.getTowerColor()) {
+                            case BLACK -> setTower(islands.indexOf(island), 0);
+                            case GREY -> setTower(islands.indexOf(island), 2);
+                            case WHITE -> setTower(islands.indexOf(island), 1);
+                        }
+                }
+
+                for (int i = 0; i < 12; i++) {
+                    ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsID();
+
+                    for (Integer id : islandPawnsId) {
+                        boolean add = true;
+                        for (int j = 0; j < students[i].size(); j++) {
+                            if (students[i].get(j).getId().equals(Integer.toString(id)))
+                                add = false;
+                        }
+                        if (add)
+                            addStudentToIsland(getColorFromId(id), id, i);
                     }
-            }
-
-            for(int i=0;i<12;i++) {
-                ArrayList<Integer> islandPawnsId = gameSerialized.getSerializableIslands().get(i).getIslandsPawnsID();
-
-                for (Integer id : islandPawnsId) {
-                    boolean add = true;
-                    for (int j = 0; j < students[i].size(); j++) {
-                        if (students[i].get(j).getId().equals(Integer.toString(id)))
-                            add = false;
-                    }
-                    if (add)
-                        addStudentToIsland(getColorFromId(id), id, i);
                 }
             }
         }
+
+
 
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(s.getNickname().equals(nickname))

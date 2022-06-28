@@ -51,6 +51,11 @@ Per lanciare il server utilizzare il comando:
 ```
 java -jar GC08-server.jar
 ```
+Per lanciare il server con una porta diversa da "1511" utilizzare il comando:
+```
+java -jar GC08-server.jar --port <PORT>
+```
+
 ### Client
 Per lanciare il client:
 - Per lanciare la cli:
