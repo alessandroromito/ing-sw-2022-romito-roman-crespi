@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 /**
  * This Class contains all the methods used to manage every single turn of the match.
  */
-public class TurnController {
+public class TurnController implements Serializable {
 
     private final Game game;
     private final List<String> nicknameQueue;
@@ -33,7 +34,7 @@ public class TurnController {
 
     private final GameController gameController;
 
-    private Map<String, VirtualView> virtualViewMap;
+    private transient Map<String, VirtualView> virtualViewMap;
 
     /**
      * Default Constructor of the TurnController

@@ -8,9 +8,10 @@ import it.polimi.ingsw.server.model.component.Tower;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Island {
+public class Island implements Serializable {
 
     protected final int ID;
     protected Integer[] numberOfColors = {0,0,0,0,0};

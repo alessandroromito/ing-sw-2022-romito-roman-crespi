@@ -7,11 +7,12 @@ import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Map extends Observable {
+public class Map extends Observable implements Serializable {
 
     private ArrayList<Island> islands;
     private ArrayList<Cloud> clouds;

@@ -9,10 +9,11 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardX2p implements Scoreboard{
+public class ScoreboardX2p implements Scoreboard, Serializable {
 
     private Player player;
     private boolean avaibleCoin[][] = new boolean[5][3];

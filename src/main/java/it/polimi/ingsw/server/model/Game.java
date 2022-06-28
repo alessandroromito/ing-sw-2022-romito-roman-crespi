@@ -17,12 +17,13 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends Observable {
+public class Game extends Observable implements Serializable {
 
     protected List<Player> players = new ArrayList<>();
     protected ArrayList<Component> components = new ArrayList<>();

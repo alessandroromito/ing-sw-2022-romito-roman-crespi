@@ -21,16 +21,17 @@ import it.polimi.ingsw.view.VirtualView;
 
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameController implements Observer {
-    public static final String SAVING = "GameController.rcr";
+public class GameController implements Observer, Serializable {
+    public static final String SAVING = "dataSaving.rcr";
 
     private List<String> playersNicknames = new ArrayList<>();
-    private Map<String, VirtualView> virtualViewMap;
+    private transient Map<String, VirtualView> virtualViewMap;
 
     private ArrayList<String> reconnectingPlayersList = new ArrayList<>();
 

@@ -5,10 +5,11 @@ import it.polimi.ingsw.server.enumerations.TowerColors;
 import it.polimi.ingsw.server.exception.MissingAssistantCardException;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player extends Observable{
+public class Player extends Observable implements Serializable {
 
     private AssistantCard currentAssistantCard;
     private List<AssistantCard> hand = new ArrayList<>();
