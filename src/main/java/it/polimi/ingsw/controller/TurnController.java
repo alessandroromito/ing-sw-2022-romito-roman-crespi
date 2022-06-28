@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
 import it.polimi.ingsw.server.extra.ComparatorAssistantCard;
+import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
@@ -64,27 +65,32 @@ public class TurnController {
 
         activePlayer = nicknameQueue.get(0);
 
-        if( turnCount == 1 ){
-
+       /* if( turnCount == 1 ){
             try {
-                GameController gameController = this.gameController.getDataSaving().restore();
-                if (nicknameQueue.equals(gameController.getTurnController().getNicknameQueue())) {
-                    System.out.println("Caricamento salvataggio di gioco.");
-                    restartTurn(nicknameQueue.get(0));
-                    return;
-                }
-            } catch (IOException | ClassNotFoundException e) {
-                System.out.println("Nessun salvataggio di gioco presente.");
+                DataSaving dataSaving = new DataSaving();
+                GameController gameController = dataSaving.restore();
+                if(gameController != null)
+                    if (nicknameQueue.equals(gameController.getTurnController().getNicknameQueue())) {
+                        System.out.println("Checking for data saving.");
+                        //initializeFromSavings(nicknameQueue);
+                        restartTurn(nicknameQueue.get(0));
+                        return;
+                    }
+            } catch (IOException e) {
+                System.out.println("No game saved.");
+            } catch (ClassNotFoundException e) {
+                System.out.println("Problems restoring the old saving.");
             }
 
-        }
+        }*/
 
 
         //SAVE THE GAME??????????????????????????????????????????????????????????????????????????????
         if( turnCount > 1 ){
             try {
+                DataSaving dataSaving = new DataSaving();
                 System.out.println("Salvataggio partita in corso...");
-                gameController.getDataSaving().save(gameController);
+                dataSaving.save(gameController);
             } catch (IOException e) {
                 e.printStackTrace();
             }

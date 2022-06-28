@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.network.message.*;
+import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
@@ -10,11 +11,16 @@ import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameSerialized;
+import it.polimi.ingsw.server.model.bag.Bag;
+import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
+import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +40,6 @@ public class GameController implements Observer {
     private GameState gameState;
     private TurnController turnController;
     private InputController inputController;
-    private DataSaving dataSaving;
 
     public static final String SAVED_GAME_FILE = "gameController.saving";
 
@@ -50,7 +55,6 @@ public class GameController implements Observer {
         this.inputController = new InputController(this, virtualViewMap);
         this.virtualViewMap = new HashMap<>();
         setGameState(GameState.GAME_ROOM);
-        dataSaving = new DataSaving();
     }
 
     public void startGame() {
@@ -200,27 +204,77 @@ public class GameController implements Observer {
             if(chosenPlayerNumber == virtualViewMap.size()){
 
                 //check if there is a saved game
-                /*
-                StorageData storageData = new StorageData();
+                DataSaving storageData = new DataSaving();
 
-                GameController savedGameController = storageData.restore();
-                if (savedGameController != null &&
-                        game.getPlayersNicknames().containsAll(savedGameController.getTurnController().getNicknameQueue())) {
-                    restoreControllers(savedGameController);
-                    broadcastRestoreMessages();
-                    Server.LOGGER.info("Saved Match restored.");
+                GameController restoredGameController = null;
+                try {
+                    restoredGameController = storageData.restore();
+                } catch (IOException e) {
+                    System.out.println("No game data file.");
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (restoredGameController != null &&
+                        game.getPlayersNicknames().containsAll( restoredGameController.getTurnController().getNicknameQueue() )) {
+                    initControllersFromRestoreGameSaved( restoredGameController );
+                    updateGraphicInterfaces();
+                    Server.LOGGER.info("Game saved found. Restoring...");
                     turnController.newTurn();
                 } else {
                     startGame();
                 }
-                 */
 
-                startGame();
+                //startGame();
             }
 
         } else {
             virtualView.showLoginResult(nickname,true, false);
         }
+    }
+
+    public void initControllersFromRestoreGameSaved(GameController restoredGameController) {
+        it.polimi.ingsw.server.model.map.Map restoredMap = restoredGameController.game.getMap();
+        Bag restoredBag = restoredGameController.game.getBag();
+        ArrayList<Component> restoredComponents = restoredGameController.game.getComponents();
+        List<Player> restoredPlayers = restoredGameController.game.getPlayers();
+        boolean restoredExpertMode = restoredGameController.game.isExpertMode();
+        if(restoredExpertMode) {
+            ExpertGame restoredExpertGame = (ExpertGame) restoredGameController.getGame();
+            int restoredActiveCardID = restoredGameController.game.getActiveCardID();
+            CharacterCard restoreActiveCard = restoredExpertGame.getActiveCard();
+            ArrayList<CharacterCard> restorePool = restoredExpertGame.getPool();
+            List<String> stringListOfRestoredPlayers = new ArrayList<>();
+            for(Player p : restoredPlayers) stringListOfRestoredPlayers.add(p.getNickname());
+            this.game = new ExpertGame(stringListOfRestoredPlayers);
+            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, restoredActiveCardID, restoreActiveCard, restorePool);
+        }
+        else this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
+
+        this.turnController = restoredGameController.turnController;
+        //game.setTurnController(turnController);
+        this.gameState = restoredGameController.gameState;
+
+        // Adding Observers
+        for(Player player : game.getPlayers())
+            player.addObserver(this);
+        for(VirtualView vv : virtualViewMap.values())
+            game.addObserver(vv);
+        game.getMap().addObserver(this);
+
+        inputController = new InputController(this, this.virtualViewMap);
+        //inputController.setGame(game);
+        //inputController.setVirtualViewMap(virtualViewMap);
+        turnController.setVirtualViewMap(this.virtualViewMap);
+
+        showGenericMessageToAll("GAME STARTED!");
+    }
+
+    public void updateGraphicInterfaces() {
+        for ( VirtualView virtualView : virtualViewMap.values() ) {
+            virtualView.showGameScenario(game.getGameSerialized());
+        }
+
+        //update delle match info
     }
 
     private void showReconnectingMessage(String nickname) {
@@ -587,9 +641,5 @@ public class GameController implements Observer {
 
     public ArrayList<String> getReconnectingPlayersList() {
         return reconnectingPlayersList;
-    }
-
-    public DataSaving getDataSaving() {
-        return dataSaving;
     }
 }

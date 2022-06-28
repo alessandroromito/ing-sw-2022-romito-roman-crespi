@@ -594,4 +594,12 @@ public class Game extends Observable {
         throw new RuntimeException();
     }
 
+
+    public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
+        this.map = restoredMap;
+        this.bag = restoredBag;
+        this.components = restoredComponents;
+        this.players = restoredPlayers;
+        this.expertMode = restoredExpertMode;
+    }
 }

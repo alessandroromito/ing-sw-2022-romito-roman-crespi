@@ -11,7 +11,7 @@ public class PersistenceGameController implements Serializable {
 
     private static final long serialVersionUID = 382104422531955291L; //because of serialization
 
-    private transient final GameController gameController;
+    private final GameController gameController;
 
     /**
      * Default constructor.

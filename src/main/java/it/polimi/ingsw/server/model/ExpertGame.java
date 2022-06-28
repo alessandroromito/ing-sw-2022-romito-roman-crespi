@@ -4,11 +4,14 @@ import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.GenericMessage;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
+import it.polimi.ingsw.server.model.bag.Bag;
 import it.polimi.ingsw.server.model.component.Coin;
+import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.*;
 import it.polimi.ingsw.server.model.map.Island;
+import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
@@ -20,7 +23,7 @@ import java.util.Objects;
 public class ExpertGame extends Game {
     private int activeCardID = -1;
     private CharacterCard activeCard = null;
-    private final ArrayList<CharacterCard> pool = new ArrayList<>(3);
+    private ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
     /**
      * Default constructor
@@ -121,6 +124,10 @@ public class ExpertGame extends Game {
 
     public int getActiveCardID() {
         return activeCardID;
+    }
+
+    public ArrayList<CharacterCard> getPool() {
+        return pool;
     }
 
     public CharacterCard getActiveCard() {
@@ -457,6 +464,15 @@ public class ExpertGame extends Game {
         else {
             super.checkInfluence(islandID);
         }
+    }
+
+    @Override
+    public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
+        this.activeCardID = restoredActiveCardID;
+        this.activeCard = restoreActiveCard;
+        this.pool = restorePool;
+        super.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
+
     }
 
 }
