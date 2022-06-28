@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model.bag;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * This class represents the bag of the game. 130 student pawn of initial capacity.
  */
-public class Bag {
+public class Bag implements Serializable {
     private List<StudentDisc> bagStudents = new ArrayList<>(130);
 
     /**

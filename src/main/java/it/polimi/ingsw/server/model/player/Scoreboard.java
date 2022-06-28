@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

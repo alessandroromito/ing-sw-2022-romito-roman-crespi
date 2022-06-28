@@ -3,10 +3,11 @@ package it.polimi.ingsw.server.model.map;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class GhostIsland extends Island{
+public class GhostIsland extends Island implements Serializable {
 
     /**
      * Default constructor.

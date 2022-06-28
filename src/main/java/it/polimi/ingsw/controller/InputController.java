@@ -7,13 +7,14 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class InputController {
+public class InputController implements Serializable {
 
     private Game game;
     private final GameController gameController;
-    private Map<String, VirtualView> virtualViewMap;
+    private transient Map<String, VirtualView> virtualViewMap;
 
     public InputController(GameController gameController, Map<String, VirtualView> virtualViewMap) {
         this.gameController = gameController;
