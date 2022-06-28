@@ -55,12 +55,16 @@ public class Server {
      * @param clientHandler clientHandler associated to the client of the disconnection request.
      */
     public void onDisconnect(ClientHandler clientHandler) {
+        if(gameController.getGame().getPlayersConnected().size() == 1) {
+            gameController.endGame();
+            return;
+        }
         synchronized (lock) {
             String nickname = getNicknameFromClientHandler(clientHandler);
             gameController.getReconnectingPlayersList().add(nickname);
 
-            System.out.println(ANSI_RED + "removeClient(" + nickname + ')' + ANSI_RESET);
             removeClient(nickname);
+            System.out.println("removeClient(" + nickname + ')');
 
             if(nickname != null) {
                 gameController.showDisconnectionMessage(nickname);
@@ -76,6 +80,7 @@ public class Server {
 
                         case 0 -> gameController.endGame();
                         case 1 -> {
+                            gameController.setInPause(true);
                             gameController.setResumeGame(false);
 
                             long start = System.currentTimeMillis();
@@ -86,7 +91,7 @@ public class Server {
                             }
 
                             if(!gameController.resumeGame()){
-                                if(gameController.getGame().getPlayersConnected().size() == 1) {
+                                if(gameController.getGame() != null && gameController.getGame().getPlayersConnected().size() == 1) {
                                     gameController.win(gameController.getGame().getPlayersConnected().get(0));
                                 }
                             }

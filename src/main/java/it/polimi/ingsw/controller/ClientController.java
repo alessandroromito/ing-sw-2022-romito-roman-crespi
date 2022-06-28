@@ -47,7 +47,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             case LOBBY -> {
                 LobbyMessage lobbyMessage = (LobbyMessage) message;
-                queue.execute(() -> view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers()));
+                view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers());
             }
             case LOGIN_REQUEST -> {
 
@@ -69,7 +69,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
-                queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
+                view.showGenericMessage(genericMessage.getMessage());
             }
             case DISCONNECTED_PLAYER -> {
                 DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;
