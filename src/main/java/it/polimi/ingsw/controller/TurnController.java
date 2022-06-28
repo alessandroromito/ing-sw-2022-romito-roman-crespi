@@ -21,6 +21,7 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 /**
  * This Class contains all the methods used to manage every single turn of the match.
  * It controls the flow of the match.
+ * It is also able to save and restore the game.
  */
 public class TurnController implements Serializable {
 
@@ -39,7 +40,7 @@ public class TurnController implements Serializable {
     private transient Map<String, VirtualView> virtualViewMap;
 
     /**
-     * Default Constructor of the TurnController
+     * Default Constructor of the TurnController.
      */
     public TurnController(GameController gameController, Map<String, VirtualView> virtualViewMap) {
         this.game = gameController.getGame();
@@ -51,6 +52,7 @@ public class TurnController implements Serializable {
     }
 
     /**
+     * Getter method.
      * @return the nickname of the active player.
      */
     public String getActivePlayer() {
@@ -90,7 +92,8 @@ public class TurnController implements Serializable {
     }
 
     /**
-     * Set the next activePlayer, check if the turn has ended.
+     * Set the next activePlayer.
+     * Able to understand if the turn of a player is finished.
      */
     public void next() {
         int currentActive = nicknameQueue.indexOf(activePlayer);
@@ -135,8 +138,7 @@ public class TurnController implements Serializable {
     }
 
     /**
-     * Method use to perform the one of the action phase actions
-     * through a switch case used to save the state
+     * Method that manage what to do during the action phase.
      */
     public void actionPhase() {
         try {
@@ -166,10 +168,8 @@ public class TurnController implements Serializable {
     }
 
     /**
-     * Method used to build the action phase order based on the assistant card
-     * chosen by the players
-     *
-     * @param playersList list of the online players
+     * Method used to build the action phase order based on the assistant card chosen by the players.
+     * @param playersList list of the online players.
      */
     private void buildQueue(List<String> playersList) {
 
@@ -193,44 +193,46 @@ public class TurnController implements Serializable {
     }
 
     /**
-     * @return the phase state (PLANNING or ACTION)
+     * @return the phase state (PLANNING or ACTION).
      */
     public PhaseState getPhaseState(){
         return phaseState;
     }
 
     /**
-     * @return the actionPhase state (USE_EFFECT, MOVE_STUDENT#, MOVE_MOTHER_NATURE, PICK_CLOUD)
+     * @return the actionPhase state (USE_EFFECT, MOVE_STUDENT#, MOVE_MOTHER_NATURE, PICK_CLOUD).
      */
     public ActionPhaseState getActionPhaseState(){
         return actionPhaseState;
     }
 
     /**
-     * Used to go to the next actionPhase's state
+     * Used to go to the next actionPhase's state.
      */
     public void nextActionPhase() {
         actionPhaseState = actionPhaseState.next(getActionPhaseState());
         actionPhase();
     }
 
+
     /**
-     * Setter of the virtualViewMap
+     * Setter method of the VirtualViewMap.
+     * @param virtualViewMap parameter to be assigned to this.virtualViewMap.
      */
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
         this.virtualViewMap = virtualViewMap;
     }
 
     /**
-     * Remove a virtualView associated with the @param nickname
-     * @param nickname nick of the player
+     * Remove a virtualView associated with the @param nickname.
+     * @param nickname nick of the player.
      */
     public void removeVirtualView(String nickname) {
         virtualViewMap.remove(nickname);
     }
 
     /**
-     * Method used to restart the turn based on the actionPhase it was
+     * Method used to restart the turn based on the actionPhase it was.
      */
     public void restartTurn() {
         if(getPhaseState() == ACTION_PHASE)
@@ -240,20 +242,31 @@ public class TurnController implements Serializable {
         }
     }
 
+    /**
+     * This method set gameController.
+     * @param gameController value to be assigned to this.gameController.
+     */
     public void setGameController (GameController gameController) {
         this.gameController = gameController;
     }
 
+    /**
+     *  Method that fix the count of the turns after restoring game data from a saved file.
+     */
     public void resettingTurnCount() {
         turnCount--;
     }
 
+    /**
+     * @return the order of the players playing.
+     */
     public List<String> getNicknameQueue() {
         return nicknameQueue;
     }
 
     /**
      * Setter for the activePlayer
+     * @param activePlayer value to be assigned to this.activePlayer.
      */
     public void setActivePlayer(String activePlayer) {
         this.activePlayer = activePlayer;
