@@ -350,7 +350,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         stage.setFullScreen(true);
     }
 
-
     public void initializeCharacterCards(int[] number){
         System.out.println("initialize characters");
         Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
@@ -797,15 +796,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         if(islands.size() == 12) {
             setMotherNaturePose(gameSerialized.getMotherNaturePos());
-            for (SerializableIsland island : islands) {
-
-                if (island.getTowerNumber() != 0) {
-                    for (int i = 0; i < island.getTowerNumber(); i++)
-                        switch (island.getTowerColor()) {
-                            case BLACK -> setTower(islands.indexOf(island), 0);
-                            case GREY -> setTower(islands.indexOf(island), 2);
-                            case WHITE -> setTower(islands.indexOf(island), 1);
-                        }
+            for(int k=0;k<12;k++){
+                if (islands.get(k).getTowerNumber() != 0) {
+                    switch (islands.get(k).getTowerColor()) {
+                        case BLACK -> setTower(k, 0);
+                        case GREY -> setTower(k, 2);
+                        case WHITE -> setTower(k, 1);
+                    }
                 }
 
                 for (int i = 0; i < 12; i++) {
@@ -822,9 +819,33 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     }
                 }
             }
+        }else{
+            int islandMarker = 0;
+            setMotherNaturePose(gameSerialized.getMotherNaturePos());
+/*
+            //aggiorna torri
+            for (SerializableIsland island : islands) {
+                if (!island.isGhost())
+                    if (island.getTowerNumber() != 0) {
+                        for (int i = 0; i < island.getTowerNumber(); i++)
+                            switch (island.getTowerColor()) {
+                                case BLACK -> setTower(i, 0);
+                                case GREY -> setTower(i, 2);
+                                case WHITE -> setTower(i, 1);
+                            }
+                    }
+                if (island.isGhost())
+                    for (int islnb : island.getReferencedIslands())
+                        if (island.getTowerNumber() != 0) {
+                            for (int i = 0; i < island.getTowerNumber(); i++)
+                                switch (island.getTowerColor()) {
+                                    case BLACK -> setTower(islands.indexOf(island), 0);
+                                    case GREY -> setTower(islands.indexOf(island), 2);
+                                    case WHITE -> setTower(islands.indexOf(island), 1);
+                                }
+                        }
+            }*/
         }
-
-
 
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(s.getNickname().equals(nickname))

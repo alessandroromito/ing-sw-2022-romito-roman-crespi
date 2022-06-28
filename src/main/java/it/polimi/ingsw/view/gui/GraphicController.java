@@ -305,9 +305,9 @@ public class GraphicController extends ViewObservable implements View {
         System.out.println("ISLAND MERGE");
         Integer minValue = 12;
         for (Integer integer : unifiedIsland)
-            if (integer < minValue) minValue = integer;
+            if (integer< minValue) minValue = integer+1;
         if(minValue == 1 && (unifiedIsland.get(0) == 11 || unifiedIsland.get(1) == 11))
-            minValue = 11;
+            minValue = 12;
         Integer finalMinValue = minValue;
         Platform.runLater( () -> mapSceneManager.build(finalMinValue) );
     }
