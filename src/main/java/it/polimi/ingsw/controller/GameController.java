@@ -219,13 +219,12 @@ public class GameController implements Observer, Serializable {
                             chosenExpertMode == restoredGameController.chosenExpertMode) {
                     initControllersFromRestoreGameSaved( restoredGameController );
                     updateGraphicInterfaces();
+                    turnController.resettingTurnCount();
                     Server.LOGGER.info("Game saved found. Restoring...");
                     turnController.newTurn();
                 } else {
                     startGame();
                 }
-
-                //startGame();
             }
 
         } else {
@@ -258,7 +257,6 @@ public class GameController implements Observer, Serializable {
 
         this.turnController = restoredGameController.turnController;
         turnController.setGameController(this);
-        //game.setTurnController(turnController);
         this.gameState = restoredGameController.gameState;
 
         // Adding Observers
@@ -269,8 +267,6 @@ public class GameController implements Observer, Serializable {
         game.getMap().addObserver(this);
 
         inputController = new InputController(this, this.virtualViewMap);
-        //inputController.setGame(game);
-        //inputController.setVirtualViewMap(virtualViewMap);
         turnController.setVirtualViewMap(this.virtualViewMap);
 
         showGenericMessageToAll("Rigenerazione partita da crash del server avvenuto con successo!");

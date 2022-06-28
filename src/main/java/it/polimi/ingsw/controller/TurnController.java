@@ -247,4 +247,8 @@ public class TurnController implements Serializable {
     public void setGameController (GameController gameController) {
         this.gameController = gameController;
     }
+
+    public void resettingTurnCount() {
+        turnCount--;
+    }
 }
