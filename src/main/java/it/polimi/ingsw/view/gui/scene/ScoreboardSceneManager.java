@@ -973,7 +973,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         for(int k=0;k<8;k++)
             towers[k].setVisible(false);
         for(int k=0;k<number;k++)
-            towers_1[k].setVisible(true);
+            towers[k].setVisible(true);
     }
 
     public Image createImage(int color){

@@ -134,12 +134,12 @@
             <Image url="@../Graphical_Assets/Reame/bridge.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bridge_3_4" fitHeight="130.0" fitWidth="187.0" layoutX="1033.0" layoutY="839.0" opacity="0.0" pickOnBounds="true" rotate="24.2">
+      <ImageView fx:id="bridge_3_4" fitHeight="130.0" fitWidth="187.0" layoutX="1043.0" layoutY="839.0" opacity="0.0" pickOnBounds="true" rotate="24.2">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bridge_9_10" fitHeight="117.0" fitWidth="187.0" layoutX="694.0" layoutY="75.0" opacity="0.0" pickOnBounds="true" rotate="15.9">
+      <ImageView fx:id="bridge_9_10" fitHeight="117.0" fitWidth="187.0" layoutX="686.0" layoutY="75.0" opacity="0.0" pickOnBounds="true" rotate="15.9">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge.png" />
          </image>
@@ -184,7 +184,7 @@
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="towerBase3" fitHeight="68.0" fitWidth="73.0" layoutX="762.0" layoutY="979.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="towerBase3" fitHeight="68.0" fitWidth="73.0" layoutX="760.0" layoutY="999.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
@@ -407,7 +407,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="lblIsola0" layoutX="1688.0" layoutY="683.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 1" textFill="#f4f805">
+      <Label fx:id="lblIsola0" layoutX="1800.0" layoutY="668.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 1" textFill="#f4f805">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
@@ -479,7 +479,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="lblIsola6" layoutX="112.0" layoutY="687.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 7" textFill="#f4f805">
+      <Label fx:id="lblIsola6" layoutX="15.0" layoutY="677.0" mouseTransparent="true" pickOnBounds="false" prefHeight="31.0" prefWidth="92.0" text="ISOLA 7" textFill="#f4f805">
          <font>
             <Font name="Arial Rounded MT Bold" size="19.0" />
          </font>
@@ -564,7 +564,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="472.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="478.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
@@ -574,7 +574,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="540.0" layoutY="563.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="540.0" layoutY="551.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
