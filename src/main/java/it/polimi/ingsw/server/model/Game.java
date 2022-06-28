@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.LobbyMessage;
+import it.polimi.ingsw.network.message.MergeIslandMessage;
 import it.polimi.ingsw.network.message.VictoryMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.PawnColors;
@@ -401,11 +402,15 @@ public class Game extends Observable {
         if(island.getTowerColor() == islandSucc.getTowerColor() && !islandSucc.getTowers().isEmpty()) {
             System.out.println("Merge with Next (" + islandSucc.getID() + ")");
             map.merge(islandID, getNextInt(islandID));
+
+            notifyObserver(new MergeIslandMessage(Game.SERVER_NAME, List.of(islandID, getNextInt(islandID))));
         }
 
         if(island.getTowerColor() == islandPrev.getTowerColor() && !islandPrev.getTowers().isEmpty()){
             System.out.println("Merge with Previous(" + islandPrev.getID() + ")");
             map.merge(islandID, getPrevInt(islandID));
+
+            notifyObserver(new MergeIslandMessage(Game.SERVER_NAME, List.of(islandID, getPrevInt(islandID))));
         }
     }
 
