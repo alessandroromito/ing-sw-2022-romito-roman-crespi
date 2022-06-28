@@ -193,6 +193,12 @@ public class GameController implements Observer, Serializable {
         playersNicknames = new ArrayList<>();
 
         // Delete storage data
+        try {
+            DataSaving dataSaving = new DataSaving();
+            dataSaving.remove();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         init();
         System.out.println("Game Finished!");
