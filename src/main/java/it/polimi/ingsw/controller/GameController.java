@@ -22,10 +22,7 @@ import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameController implements Observer, Serializable {
     public static final String SAVING = "dataSaving.rcr";
@@ -42,8 +39,6 @@ public class GameController implements Observer, Serializable {
     private GameState gameState;
     private TurnController turnController;
     private InputController inputController;
-
-    public static final String SAVED_GAME_FILE = "gameController.saving";
 
     private Game game;
 
@@ -264,7 +259,7 @@ public class GameController implements Observer, Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                if (restoredGameController != null && playersNicknames.containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
+                if (restoredGameController != null && new HashSet<>(playersNicknames).containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
                         getChosenPlayerNumber() == restoredGameController.getChosenPlayerNumber() &&
                             chosenExpertMode == restoredGameController.chosenExpertMode) {
                     initControllersFromRestoreGameSaved( restoredGameController );
@@ -298,11 +293,11 @@ public class GameController implements Observer, Serializable {
             CharacterCard restoreActiveCard = restoredExpertGame.getActiveCard();
             ArrayList<CharacterCard> restorePool = restoredExpertGame.getPool();
             this.game = new ExpertGame(stringListOfRestoredPlayers);
-            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, restoredActiveCardID, restoreActiveCard, restorePool);
+            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, true, restoredActiveCardID, restoreActiveCard, restorePool);
         }
         else {
             this.game = new Game(stringListOfRestoredPlayers);
-            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, restoredExpertMode, 0, null, null);
+            this.game.restoreGame(restoredMap, restoredBag, restoredComponents, restoredPlayers, false, 0, null, null);
         }
 
         this.turnController = restoredGameController.turnController;
@@ -323,7 +318,7 @@ public class GameController implements Observer, Serializable {
     }
 
     public void updateGraphicInterfaces() {
-        for ( VirtualView virtualView : virtualViewMap.values() ) {
+        for (VirtualView virtualView : virtualViewMap.values() ) {
             virtualView.showGameScenario(game.getGameSerialized());
         }
 
@@ -349,27 +344,6 @@ public class GameController implements Observer, Serializable {
         virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
 
     }
-
-    /*
-
-                // check saved matches.
-                StorageData storageData = new StorageData();
-                GameController savedGameController = storageData.restore();
-                if (savedGameController != null &&
-                        game.getPlayersNicknames().containsAll(savedGameController.getTurnController().getNicknameQueue())) {
-                    restoreControllers(savedGameController);
-                    broadcastRestoreMessages();
-                    Server.LOGGER.info("Saved Match restored.");
-                    turnController.newTurn();
-                } else {
-                    startGame();
-                }
-            }
-        } else {
-            virtualView.showLoginResult(true, false, Game.SERVER_NICKNAME);
-        }
-    }
-    */
 
     /**
      * Verifies the nickname through the InputController.
@@ -649,14 +623,6 @@ public class GameController implements Observer, Serializable {
         return turnController;
     }
 
-    /**
-     * Return Input Controller of the Game.
-     *
-     * @return inputController of the Game.
-     */
-    public InputController getInputController() {
-        return inputController;
-    }
 
     /**
      * Return the gameState of the game
@@ -687,9 +653,6 @@ public class GameController implements Observer, Serializable {
         return chosenPlayerNumber;
     }
 
-    public void setChosenExpertMode(boolean b) {
-        this.chosenExpertMode = b;
-    }
 
     public void removeVirtualView(String nickname) {
         VirtualView virtualView = virtualViewMap.remove(nickname);
