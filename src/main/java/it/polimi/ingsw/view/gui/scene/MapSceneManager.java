@@ -1036,15 +1036,25 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         if(cloud2Student0.getImage()!=null) cloud2.setDisable(false);
     }
 
-    public void enableCloud1(){
-        cloud1.setDisable(false);
-    }
-
     public void selectCloudObserverNotification(int cloudNumber) {
         ArrayList<Cloud> finalCloud = new ArrayList<>();
         finalCloud.add(clouds.get(cloudNumber-1));
         new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
         clouds.clear();
+        if(cloudNumber == 1)
+            clearCloud1();
+        if(cloudNumber == 2)
+            clearCloud2();
+    }
+
+    public void clearCloud1(){
+        for(int i=0;i<4;i++)
+            cloudStudents1[i].setImage(null);
+    }
+
+    public void clearCloud2(){
+        for(int i=0;i<4;i++)
+            cloudStudents2[i].setImage(null);
     }
 
     public void inCloud1(MouseEvent mouseEvent) {
@@ -1089,17 +1099,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         closeHand(null);
         disableAssistant();
 
-        for(int i = 0; i < 10 ; i++) {
-            if (assistantUsed == i) {
-                AssistantCard finalAssistantCard = assistantCardsList.get(i);
-                playedAssistantCardsList.add(finalAssistantCard);
-                new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard), playedAssistantCardsList))).start();
-                for(AssistantCard a: assistantCardsList)
-                    if(a.getValue() == assistantUsed)
-                        assistantCardsList.remove(a);
-                return;
-            }
-        }
+        AssistantCard finalAssistantCard = null;
+        for(AssistantCard a: assistantCardsList)
+            if(a.getValue() == assistantUsed+1)
+                finalAssistantCard = a;
+
+        playedAssistantCardsList.add(finalAssistantCard);
+        AssistantCard finalAssistantCard1 = finalAssistantCard;
+        new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList))).start();
+
+        assistantCardsList.remove(finalAssistantCard);
+        return;
+
     }
 
     public void outAssistant(MouseEvent mouseEvent) {

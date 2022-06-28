@@ -718,7 +718,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     private ImageView[] professors_2 = new ImageView[5];
 
     private int[] visibleStudents = new int[5];
-    private int availableTowers = 0;
     private boolean[] entranceFree = new boolean[9];
     private Circle[] towers = new Circle[8];
     private Circle[] towers_1 = new Circle[8];
@@ -868,7 +867,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         islandMenu.setVisible(false);
         diningButton.setVisible(false);
         for(ImageView i:entrance)
-            i.setDisable(false);
+            i.setDisable(true);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
     }
 
@@ -971,14 +970,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void setTowerNumber(int number){
-        while(number>availableTowers){
-            availableTowers++;
-            towers[availableTowers-1].setVisible(true);
-        }
-        while(number<availableTowers){
-            availableTowers--;
-            towers[availableTowers-1].setVisible(false);
-        }
+        for(int k=0;k<8;k++)
+            towers[k].setVisible(false);
+        for(int k=0;k<number;k++)
+            towers_1[k].setVisible(true);
     }
 
     public Image createImage(int color){
@@ -1191,7 +1186,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         islandMenu.setVisible(false);
         diningButton.setVisible(false);
         for(ImageView i:entrance)
-            i.setDisable(false);
+            i.setDisable(true);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
     }
 

@@ -392,6 +392,8 @@ public class GraphicController extends ViewObservable implements View {
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
             if(cloudList.size() == 2){
+                mapSceneManager.clearCloud1();
+                mapSceneManager.clearCloud2();
                 mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
                 mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
                 mapSceneManager.enableClouds();}
