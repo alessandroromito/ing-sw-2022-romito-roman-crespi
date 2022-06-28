@@ -32,7 +32,7 @@ public class TurnController implements Serializable {
     private ActionPhaseState actionPhaseState;
     private int turnCount = 0;
 
-    private final GameController gameController;
+    private GameController gameController;
 
     private transient Map<String, VirtualView> virtualViewMap;
 
@@ -242,5 +242,9 @@ public class TurnController implements Serializable {
                 askAssistantCard();
             }
         }
+    }
+
+    public void setGameController (GameController gameController) {
+        this.gameController = gameController;
     }
 }

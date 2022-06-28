@@ -214,7 +214,9 @@ public class GameController implements Observer, Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                if (restoredGameController != null && playersNicknames.containsAll( restoredGameController.getTurnController().getNicknameQueue() )) {
+                if (restoredGameController != null && playersNicknames.containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
+                        getChosenPlayerNumber() == restoredGameController.getChosenPlayerNumber() &&
+                            chosenExpertMode == restoredGameController.chosenExpertMode) {
                     initControllersFromRestoreGameSaved( restoredGameController );
                     updateGraphicInterfaces();
                     Server.LOGGER.info("Game saved found. Restoring...");
@@ -255,6 +257,7 @@ public class GameController implements Observer, Serializable {
         }
 
         this.turnController = restoredGameController.turnController;
+        turnController.setGameController(this);
         //game.setTurnController(turnController);
         this.gameState = restoredGameController.gameState;
 
