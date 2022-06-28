@@ -88,7 +88,7 @@ public class ScoreboardX3p implements Scoreboard, Serializable {
     public StudentDisc removeStudent(StudentDisc student){
         int studentID = student.getID();
         for(int i = 0; i < 9; i++){
-            if(entrance[i].getID() == studentID)
+            if(entrance[i] != null && entrance[i].getID() == studentID)
                 entrance[i] = null;
         }
         return null;
