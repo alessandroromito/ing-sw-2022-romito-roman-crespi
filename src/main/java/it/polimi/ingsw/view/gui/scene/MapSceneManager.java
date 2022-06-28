@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -787,7 +788,19 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 }
         }
         final int choosen = choosenIsland;
-        if(switchMotherNature)  new Thread( () -> notifyObserver( obs -> obs.onUpdateMotherNaturePosition(choosen-motherNaturePos))).start();
+        if(switchMotherNature){
+            switchMotherNature = false;
+            int steps = 0;
+
+            if(choosen-motherNaturePos>0)
+                steps = choosen-motherNaturePos-1;
+            else
+                steps =  choosen-motherNaturePos+11;
+
+            System.out.println("passi da fare: "+steps);
+            int finalSteps = steps;
+            new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
+        }
 
         disableIslands();
         darkAll();
@@ -1061,7 +1074,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void selectCloudObserverNotification(int cloudNumber) {
         ArrayList<Cloud> finalCloud = new ArrayList<>();
-        finalCloud.add(clouds.get(cloudNumber));
+        finalCloud.add(clouds.get(cloudNumber-1));
         new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
         clouds.clear();
     }

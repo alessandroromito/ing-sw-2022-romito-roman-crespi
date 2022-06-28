@@ -549,7 +549,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="405.0" layoutY="453.0" onMouseClicked="#selectedCloud2" onMouseEntered="#inCloud2" onMouseExited="#outCloud2" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="405.0" layoutY="453.0" onMouseClicked="#selectedCloud1" onMouseEntered="#inCloud1" onMouseExited="#outCloud1" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/cloud.png" />
          </image>
@@ -564,12 +564,12 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="532.0" layoutY="551.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="532.0" layoutY="551.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="502.0" layoutY="501.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="502.0" layoutY="501.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
@@ -594,7 +594,7 @@
          <effect>
             <DropShadow />
          </effect></Rectangle>
-      <ImageView fx:id="assistentCardOpponent1" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="81.0" layoutY="450.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCardOpponent1" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="80.0" layoutY="450.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow />
          </effect>
@@ -611,7 +611,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="nicknameOp1" alignment="CENTER" layoutX="64.0" layoutY="410.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
+      <Label fx:id="nicknameOp1" alignment="CENTER" layoutX="64.0" layoutY="408.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
          <font>
             <Font size="26.0" />
          </font>
@@ -644,7 +644,7 @@
             <DropShadow />
          </effect>
       </Rectangle>
-      <ImageView fx:id="assistentCardOpponent2" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="1653.0" layoutY="449.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="assistentCardOpponent2" disable="true" fitHeight="250.0" fitWidth="174.0" layoutX="1652.0" layoutY="449.0" mouseTransparent="true" opacity="0.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow />
          </effect>
@@ -661,7 +661,7 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="nicknameOp2" alignment="CENTER" layoutX="1636.0" layoutY="409.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
+      <Label fx:id="nicknameOp2" alignment="CENTER" layoutX="1636.0" layoutY="407.0" mouseTransparent="true" opacity="0.0" pickOnBounds="false" prefHeight="32.0" prefWidth="197.0" textFill="#f4f805">
          <font>
             <Font size="26.0" />
          </font>

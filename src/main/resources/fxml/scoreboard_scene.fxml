@@ -16,12 +16,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.ScoreboardSceneManager">
    <children>
-      <ImageView fx:id="map" fitHeight="247.0" fitWidth="440.0" layoutX="730.0" layoutY="1.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" pickOnBounds="true" AnchorPane.topAnchor="1.0">
+      <ImageView fx:id="map" fitHeight="247.0" fitWidth="440.0" layoutX="730.0" layoutY="1.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="1.0">
          <image>
             <Image url="@../Graphical_Assets/Plancia/map.png" />
          </image>
          <effect>
-            <BoxBlur />
+            <BoxBlur height="3.0" width="3.0" />
          </effect>
       </ImageView>
       <ImageView fx:id="scorebrd2" fitHeight="1080.0" fitWidth="1920.0" layoutX="624.0" layoutY="-285.0" pickOnBounds="true" preserveRatio="true" scaleX="0.35" scaleY="0.35" AnchorPane.rightAnchor="-624.0">

@@ -385,7 +385,8 @@ public class GraphicController extends ViewObservable implements View {
         Platform.runLater( () -> {
             mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
             mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
-            showGenericMessage("Nuvole", "Scegli l'isola che fa per te!");
+            mapSceneManager.enableClouds();
+            showGenericMessage("Nuvole", "Scegli la nuvola che fa per te!");
         });
     }
 

@@ -1069,7 +1069,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             professors[i].setVisible(false);
         for(PawnColors c: scoreboard.availableProfessors()){
             professors[c.ordinal()].setVisible(true);
-            System.out.println("set professore "+c);
         }
 
         //aggiorna Torri
@@ -1185,12 +1184,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void selectedToDining(ActionEvent actionEvent) {
-        System.out.println("sposta studente nella sala");
         islandMenu.setDisable(true);
         diningButton.setDisable(true);
         islandMenu.setVisible(false);
         diningButton.setVisible(false);
-        System.out.println("mandando studente "+PawnColors.values()[getColorFromId(selEntranceStudentId)-1]);
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
     }
 
