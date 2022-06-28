@@ -25,6 +25,7 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
 public class TurnController implements Serializable {
 
     private final Game game;
+
     private final List<String> nicknameQueue;
 
     private String activePlayer;
@@ -251,9 +252,8 @@ public class TurnController implements Serializable {
 
     /**
      * Method used to restart the turn based on the actionPhase it was
-     * @param nickname active player nickname
      */
-    public void restartTurn(String nickname) {
+    public void restartTurn() {
         if(getPhaseState() == ACTION_PHASE)
             actionPhase();
         else{
@@ -267,6 +267,10 @@ public class TurnController implements Serializable {
 
     public void resettingTurnCount() {
         turnCount--;
+    }
+
+    public List<String> getNicknameQueue() {
+        return nicknameQueue;
     }
 
     /**

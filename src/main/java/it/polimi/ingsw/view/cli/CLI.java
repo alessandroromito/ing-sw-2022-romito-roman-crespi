@@ -812,8 +812,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     *
-     * @param unifiedIsland
+     * Show which island are merged
+     * @param unifiedIsland two id of the islands
      */
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland){

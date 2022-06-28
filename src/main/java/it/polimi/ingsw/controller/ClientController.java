@@ -57,7 +57,8 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.showLoginResult(loginReplyMessage.getNickname(), loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful()));
             }
             case MERGE_ISLANDS -> {
-
+                MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;
+                view.showMergeIslandMessage(mergeIslandMessage.getUnifiedIslands());
             }
             case PLAYER_NUMBER_REQUEST -> queue.execute(view::askPlayersNumber);
             case PLAY_ASSISTANT_CARD -> {
@@ -204,7 +205,6 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateUse214() {
         client.sendMessage(new Card214Message(this.nickname));
-
     }
 
     @Override

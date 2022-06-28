@@ -12,15 +12,14 @@ import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.bag.Bag;
-import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.AssistantCard;
+import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -228,7 +227,7 @@ public class GameController implements Observer, Serializable {
 
             showReconnectingMessage(nickname);
 
-            turnController.restartTurn(nickname);
+            turnController.restartTurn();
 
             return;
         }
