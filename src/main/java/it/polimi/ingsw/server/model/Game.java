@@ -225,24 +225,6 @@ public class Game extends Observable {
         }
     }
 
-    /**
-     *
-     * @param islandID index of the destination island
-     * @param student the student
-     */
-    public void moveStudentToIsland(StudentDisc student, int islandID) {
-        if(map.getIsland(islandID).isDisabled()) {
-            GhostIsland ghostIsland = map.getGhostIsland(islandID);
-            ghostIsland.addStudent(student);
-        }
-        else {
-            Island island = map.getIsland(islandID);
-            island.addStudent(student);
-        }
-        //checkInfluence(islandID);
-
-        notifyObserver(new GameScenarioMessage(getGameSerialized()));
-    }
 
     /**
      *
@@ -296,6 +278,27 @@ public class Game extends Observable {
                 player.getScoreboard().addProfessor(p.getScoreboard().removeProfessor(color));
             }
         }
+    }
+
+    /**
+     * Move @param student from the active player scoreboard to the chosen island
+     * @param islandID index of the destination island
+     * @param student the student
+     */
+    public void moveStudentToIsland(StudentDisc student, int islandID) {
+        getActivePlayer().getScoreboard().removeStudent(student);
+
+        if(map.getIsland(islandID).isDisabled()) {
+            GhostIsland ghostIsland = map.getGhostIsland(islandID);
+            ghostIsland.addStudent(student);
+        }
+        else {
+            Island island = map.getIsland(islandID);
+            island.addStudent(student);
+        }
+        //checkInfluence(islandID);
+
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     /**

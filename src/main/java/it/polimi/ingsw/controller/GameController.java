@@ -93,7 +93,9 @@ public class GameController implements Observer {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askAssistantCard(assistantCardList, playedAssistantCards);
     }
-
+    /**
+     * Method to ask to move a student to the active player
+     */
     public void askToMoveStudent() {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
         List<StudentDisc> studentDiscList = player.getScoreboard().getEntrance();
@@ -102,6 +104,9 @@ public class GameController implements Observer {
         virtualView.askToMoveAStudent(studentDiscList, 0, 0 );
     }
 
+    /**
+     * Method to ask to move motherNature to the active player
+     */
     public void askToMoveMotherNature() {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
 
@@ -109,12 +114,17 @@ public class GameController implements Observer {
         virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement());
     }
 
+    /**
+     * Method to ask to choose a cloud to the active player
+     */
     public void askToChooseACloud() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askToChooseACloud(game.getMap().getClouds());
     }
 
-
+    /**
+     * Method to ask to choose a character card to the active player
+     */
     public void askCharacterCard() {
         VirtualView virtualView = virtualViewMap.get(turnController.getActivePlayer());
         virtualView.askCharacterCard(game.getCharacterCards());
@@ -156,6 +166,9 @@ public class GameController implements Observer {
         }
     }
 
+    /**
+     * Called when a player has won the match, it notifies all the player who has won
+     */
     public void win(Player player){
         VirtualView vv = virtualViewMap.get(player.getNickname());
         vv.showVictoryMessage(player.getNickname());
@@ -164,6 +177,9 @@ public class GameController implements Observer {
     }
 
 
+    /**
+     * Re-initialise the controller and prepare for a new game
+     */
     public void endGame() {
         game = null;
         playersNicknames = new ArrayList<>();
@@ -254,6 +270,10 @@ public class GameController implements Observer {
         }
     }
 
+    /**
+     * Shows a message to all player that someone has reconnected
+     * @param nickname nickname of the reconnected player
+     */
     private void showReconnectingMessage(String nickname) {
         for(VirtualView virtualView : virtualViewMap.values()){
             if(virtualView != virtualViewMap.get(nickname))
@@ -301,6 +321,10 @@ public class GameController implements Observer {
         return inputController.checkLoginNickname(nickname);
     }
 
+    /**
+     * Set the number of player chosen by the host
+     * @param message
+     */
     public void setChosenPlayerNumber(PlayerNumberReply message) {
         if(inputController.playerNumberReplyCheck(message.getPlayerNumber())) {
             chosenPlayerNumber = message.getPlayerNumber();
@@ -315,6 +339,10 @@ public class GameController implements Observer {
         }
     }
 
+    /**
+     * Set the game mode selected by the host
+     * @param message
+     */
     public void setChosenExpertMode(GameModeReplyMessage message) {
         this.chosenExpertMode = message.getExpertMode();
         showGenericMessageToAll("GameMode set to: " + (chosenExpertMode ? "Esperta" : "Normale"));
@@ -323,6 +351,11 @@ public class GameController implements Observer {
         virtualView.askPlayersNumber();
     }
 
+    /**
+     * Check if the nickname chosen is valid or not
+     * @param nickname nickname chosen
+     * @return true if it's ok, false otherwise
+     */
     public boolean isNicknameTaken(String nickname) {
         if(gameState.equals(GameState.GAME_ROOM))
             return playersNicknames.stream()
@@ -334,8 +367,8 @@ public class GameController implements Observer {
     /**
      * Check if the message is sent by the active player, if true he could take actions
      *
-     * @param message
-     * @return
+     * @param message Message sent by the client
+     * @return true if it's ok
      */
     public boolean checkUser(Message message) {
         return message.getNickname().equals(getTurnController().getActivePlayer());
@@ -372,10 +405,7 @@ public class GameController implements Observer {
 
             switch (message.getPosition()) {
                 case 0 -> game.moveStudentToDiningRoom(student);
-                case 1 -> {
-                    game.moveStudentToIsland(message.getStudentDiscs().get(0), message.getIslandNumber()-1);
-                    game.getPlayerByNickname(message.getNickname()).getScoreboard().removeStudent(student);
-                }
+                case 1 -> game.moveStudentToIsland(student, message.getIslandNumber()-1);
                 default -> {
                     showMessage(player.getNickname(), "Invalid MoveStudentMessage!");
                     askToMoveStudent();
@@ -388,8 +418,8 @@ public class GameController implements Observer {
     }
 
     /**
-     * Method used to choose a cloud
-     * @param message
+     * Method used to choose a cloud and pick his students
+     * @param message message received by client
      */
     public void pickCloud(CloudMessage message) {
         if((turnController.getPhaseState() == PhaseState.ACTION_PHASE) && (turnController.getActionPhaseState() == ActionPhaseState.PICK_CLOUD)) {
