@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
+import it.polimi.ingsw.server.extra.ANSICostants;
 import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
@@ -297,7 +298,6 @@ public class GameController implements Observer, Serializable {
             }
         } else
             virtualView.showLoginResult(nickname,true, false);
-        }
     }
 
     /**
