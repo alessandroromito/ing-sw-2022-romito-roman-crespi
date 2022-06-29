@@ -631,6 +631,14 @@ public class GameController implements Observer, Serializable {
                             game.use_214();
                         else System.out.println("Error while using 214");
                     }
+                    case 215 -> {
+                        System.out.println("Using 215");
+                        Card215Message card215Message = (Card215Message) useEffectMessage;
+                        if(game.useCharacter(215))
+                            game.use_215(card215Message.getEntranceStudents(), card215Message.getCardStudents());
+                        else System.out.println("Error while using 215");
+
+                    }
                     case 216 -> {
                         System.out.println("Using 216");
                         if(game.useCharacter(216))
@@ -645,12 +653,26 @@ public class GameController implements Observer, Serializable {
                             game.use_217(card217Message.getColor());
                         else System.out.println("Error while using 217");
                     }
+                    case 218 -> {
+                        System.out.println("Using 218");
+                        Card218Message card218Message = (Card218Message) useEffectMessage;
+                        if(game.useCharacter(218))
+                            game.use_218(card218Message.getEntranceList(), card218Message.getDiningList());
+                        else System.out.println("Error while using 218");
+                    }
                     case 219 -> {
                         System.out.println("Using 219");
                         Card219Message card219Message = (Card219Message) useEffectMessage;
                         if(game.useCharacter(219))
                             game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
                         else System.out.println("Error while using 219");
+                    }
+                    case 220 -> {
+                        System.out.println("Using 220");
+                        Card220Message card220Message = (Card220Message) useEffectMessage;
+                        if(game.useCharacter(220))
+                            game.use_220(card220Message.getColor());
+                        else System.out.println("Error while using 220");
                     }
                 }
             }

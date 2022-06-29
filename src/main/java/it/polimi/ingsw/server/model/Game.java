@@ -583,6 +583,10 @@ public class Game extends Observable implements Serializable {
         throw new RuntimeException();
     }
 
+    public void use_215(ArrayList<Integer> entranceStudents, ArrayList<Integer> cardStudents) {
+        throw new RuntimeException();
+    }
+
     public void use_216(Player playerByNickname) {
         throw new RuntimeException();
     }
@@ -591,7 +595,15 @@ public class Game extends Observable implements Serializable {
         throw new RuntimeException();
     }
 
+    public void use_218(List<Integer> entranceStudents, List<PawnColors> cardStudents) {
+        throw new RuntimeException();
+    }
+
     public void use_219(Player player, int number) {
+        throw new RuntimeException();
+    }
+
+    public void use_220(PawnColors color) {
         throw new RuntimeException();
     }
 
