@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
+import it.polimi.ingsw.server.extra.ANSICostants;
 import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
@@ -49,6 +50,9 @@ public class GameController implements Observer, Serializable {
         init();
     }
 
+    /**
+     * Initialize the gameController
+     */
     public void init(){
         this.inputController = new InputController(this, virtualViewMap);
 
@@ -64,6 +68,10 @@ public class GameController implements Observer, Serializable {
         setGameState(GameState.GAME_ROOM);
     }
 
+    /**
+     * Start a new game, initialize the TurnController, add the observers
+     * Called when all the players are connected
+     */
     public void startGame() {
         setGameState(GameState.IN_GAME);
         this.game = chosenExpertMode ? new ExpertGame(playersNicknames) : new Game(playersNicknames);
@@ -186,6 +194,7 @@ public class GameController implements Observer, Serializable {
     public void endGame() {
         game = null;
         playersNicknames = new ArrayList<>();
+        reconnectingPlayersList = new ArrayList<>();
 
         // Delete storage data
         try {
@@ -265,7 +274,7 @@ public class GameController implements Observer, Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                if (restoredGameController != null && new HashSet<>(playersNicknames).containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
+                if(restoredGameController != null && new HashSet<>(playersNicknames).containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
                         getChosenPlayerNumber() == restoredGameController.getChosenPlayerNumber() &&
                             chosenExpertMode == restoredGameController.chosenExpertMode) {
                     initControllersFromRestoreGameSaved( restoredGameController );
@@ -273,14 +282,12 @@ public class GameController implements Observer, Serializable {
                     turnController.resettingTurnCount();
                     Server.LOGGER.info("Game saved found. Restoring...");
                     turnController.newTurn();
-                } else {
+                } else
                     startGame();
-                }
             }
 
-        } else {
+        } else
             virtualView.showLoginResult(nickname,true, false);
-        }
     }
 
     public void initControllersFromRestoreGameSaved(GameController restoredGameController) {
@@ -320,7 +327,7 @@ public class GameController implements Observer, Serializable {
         inputController = new InputController(this, this.virtualViewMap);
         turnController.setVirtualViewMap(this.virtualViewMap);
 
-        showGenericMessageToAll("Rigenerazione partita da crash del server avvenuto con successo!");
+        showGenericMessageToAll(ANSICostants.ANSI_GREEN + "Rigenerazione partita avvenuta con successo!" + ANSICostants.ANSI_RESET);
     }
 
     public void updateGraphicInterfaces() {
@@ -621,6 +628,26 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
+     * Method used to remove the VirtualView of a player from the game and
+     * setting him as not connected
+     *
+     * @param nickname nickname of the player to remove the virtualView
+     */
+    public void removeVirtualView(String nickname) {
+        VirtualView virtualView = virtualViewMap.remove(nickname);
+
+        if(getGameState() == GameState.IN_GAME) {
+            game.removeObserver(virtualView);
+            game.getPlayerByNickname(nickname).removeObserver(virtualView);
+
+            game.getPlayerByNickname(nickname).setConnected(false);
+
+            turnController.removeVirtualView(nickname);
+            inputController.removeVirtualView(nickname);
+        }
+    }
+
+    /**
      * Return Turn Controller of the Game.
      *
      * @return turnController of the Game.
@@ -655,21 +682,9 @@ public class GameController implements Observer, Serializable {
         return chosenPlayerNumber;
     }
 
-
-    public void removeVirtualView(String nickname) {
-        VirtualView virtualView = virtualViewMap.remove(nickname);
-
-        if(getGameState() == GameState.IN_GAME) {
-            game.removeObserver(virtualView);
-            game.getPlayerByNickname(nickname).removeObserver(virtualView);
-
-            game.getPlayerByNickname(nickname).setConnected(false);
-
-            turnController.removeVirtualView(nickname);
-            inputController.removeVirtualView(nickname);
-       }
-    }
-
+    /**
+     * @return true if the game could be resumed, false otherwise
+     */
     public boolean resumeGame() {
         return resume;
     }
