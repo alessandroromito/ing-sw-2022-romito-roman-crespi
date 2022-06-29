@@ -45,11 +45,16 @@ public interface ViewObserver {
 
     void onUpdateUse214();
 
+    void onUpdateUse215(ArrayList<Integer> entranceStud, ArrayList<Integer> cardStudents);
+
     void onUpdateUse216();
 
     void onUpdateUse217(PawnColors color);
 
     void onUpdateUse219(int finalStudentPos);
 
+    void onUpdateUse220(PawnColors red);
+
     void update(Message message);
+
 }

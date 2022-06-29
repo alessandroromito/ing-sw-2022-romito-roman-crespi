@@ -282,6 +282,19 @@ public class MessageHandler {
     }
 
     /**
+     * Handle a Card215Message sent by the client
+     * @param message
+     */
+    public void handleMessage(Card215Message message) {
+        if(gameController.getGameState() == GameState.IN_GAME && !gameController.isInPause()){
+            if(gameController.checkUser(message)){
+                gameController.applyEffect(message);
+            }
+        }
+        else System.out.println("SCARTATO " + message);
+    }
+
+    /**
      * Handle a Card216Message sent by the client
      * @param message
      */
@@ -308,10 +321,36 @@ public class MessageHandler {
     }
 
     /**
+     * Handle a Card218Message sent by the client
+     * @param message
+     */
+    public void handleMessage(Card218Message message) {
+        if(gameController.getGameState() == GameState.IN_GAME && !gameController.isInPause()){
+            if(gameController.checkUser(message)){
+                gameController.applyEffect(message);
+            }
+        }
+        else System.out.println("SCARTATO " + message);
+    }
+
+    /**
      * Handle a Card219Message sent by the client
      * @param message
      */
     public void handleMessage(Card219Message message) {
+        if(gameController.getGameState() == GameState.IN_GAME && !gameController.isInPause()){
+            if(gameController.checkUser(message)){
+                gameController.applyEffect(message);
+            }
+        }
+        else System.out.println("SCARTATO " + message);
+    }
+
+    /**
+     * Handle a Card220Message sent by the client
+     * @param message
+     */
+    public void handleMessage(Card220Message message) {
         if(gameController.getGameState() == GameState.IN_GAME && !gameController.isInPause()){
             if(gameController.checkUser(message)){
                 gameController.applyEffect(message);
@@ -362,4 +401,5 @@ public class MessageHandler {
     public void handleMessage(ReconnectingMessage message) {
 
     }
+
 }

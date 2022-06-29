@@ -22,6 +22,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
     private final StudentDisc[] entrance = new StudentDisc[7];
 
     private final Integer[] diningRoom;
+    private final ArrayList<StudentDisc> diningRoomList = new ArrayList<>();
     private final boolean[] professorTable;
 
     private final ArrayList<ProfessorPawn> professorList = new ArrayList<>();
@@ -138,6 +139,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     @Override
     public void addStudentOnDining(StudentDisc student) {
+        diningRoomList.add(student);
         diningRoom[student.getColorInt()]++;
         for(int i = 0; i < 7; i++){
             if(entrance[i].equals(student))
@@ -151,6 +153,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
             for (int i = 0; i < 7; i++)
                 if (entrance[i] != null && entrance[i].getID() == student.getID()) {
                     diningRoom[entrance[i].getColorInt()]++;
+                    diningRoomList.add(student);
 
                     if(diningRoom[entrance[i].getColorInt()] %3 == 0)
                         if(availableCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ]){
@@ -193,6 +196,20 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
     }
 
     @Override
+    public ArrayList<StudentDisc> getDiningRoomList() {
+        return diningRoomList;
+    }
+
+    @Override
+    public StudentDisc getStudentFromDining(PawnColors color){
+        for(StudentDisc studentDisc : diningRoomList){
+            if(studentDisc.getColor() == color)
+                return studentDisc;
+        }
+        return null;
+    }
+
+    @Override
     public ArrayList<ProfessorPawn> getProfessorList() {
         return professorList;
     }
@@ -200,6 +217,12 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
     @Override
     public void addTowers(ArrayList<Tower> towers) {
         this.towers.addAll(towers);
+    }
+
+    @Override
+    public void removeStudentFromDining(StudentDisc studentDisc) {
+        diningRoom[studentDisc.getColor().ordinal()]--;
+        diningRoomList.removeIf(student -> student.getColor() == studentDisc.getColor());
     }
 
 }

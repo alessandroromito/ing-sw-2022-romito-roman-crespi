@@ -227,6 +227,11 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
+    public void onUpdateUse215(ArrayList<Integer> entranceStud, ArrayList<Integer> cardStudents) {
+        client.sendMessage(new Card215Message(this.nickname, entranceStud, cardStudents));
+    }
+
+    @Override
     public void onUpdateUse216() {
         client.sendMessage(new Card216Message(this.nickname));
     }
@@ -239,5 +244,10 @@ public class ClientController implements ViewObserver, Observer {
     @Override
     public void onUpdateUse219(int studentNum) {
         client.sendMessage(new Card219Message(this.nickname, studentNum));
+    }
+
+    @Override
+    public void onUpdateUse220(PawnColors color) {
+        client.sendMessage(new Card220Message(this.nickname, color));
     }
 }

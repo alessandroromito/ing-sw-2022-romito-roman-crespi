@@ -46,7 +46,7 @@ public class ExpertGame extends Game {
 
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
-        for(int i=0;i<9;i++){
+        for(int i=0;i<12;i++){
             vector12.add(i);
         }
         Collections.shuffle(vector12);
@@ -79,6 +79,14 @@ public class ExpertGame extends Game {
                         s.add(bag.pickSorted());
                     pool.add(new Card_219(s));
                 }
+                case 9 -> {
+                    ArrayList<StudentDisc> s = new ArrayList<>();
+                    for (int k = 0; k < 6; k++)
+                        s.add(bag.pickSorted());
+                    pool.add(new Card_215(s));
+                }
+                case 10 -> pool.add(new Card_218());
+                case 11 -> pool.add(new Card_220());
             }
         }
     }
@@ -313,18 +321,56 @@ public class ExpertGame extends Game {
     }
 
     /**
-     * EFFECT: During the turn you get +2 additional point while calculating influence
-     *
-     * @param p player that use the effect
+     * Used to activate the effect of the card215
+     * @param entrance
+     * @param card
      */
-    public void use_216(Player p){
-        p.setAdditionalPoints(true);
+    public void use_215(ArrayList<Integer> entrance, ArrayList<Integer> card){
+        try {
+            if(activeCardID != 215)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+
+        activeCardID = 215;
+
+        Card_215 card_215 = (Card_215) activeCard;
+        Player player = getActivePlayer();
+
+        if(entrance.size() == card.size()){
+            for(int i : entrance){
+                StudentDisc student = player.getScoreboard().getEntrance().get(i);
+                player.getScoreboard().removeStudent(student);
+
+                card_215.addStudent(student);
+            }
+
+            for(int i : card){
+                StudentDisc student = card_215.getStudents().remove(i);
+                player.getScoreboard().addStudentOnEntrance(student);
+            }
+        }
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
 
     }
+
+    /**
+     * EFFECT: During the turn you get +2 additional point while calculating influence
+     *
+     * @param p player that use the effect
+     */
+     public void use_216(Player p){
+        p.setAdditionalPoints(true);
+
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
+     }
 
     /**
      * Disable the effect of the card 216
@@ -340,12 +386,14 @@ public class ExpertGame extends Game {
      */
     public void use_217(PawnColors p){
         try{
-            if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-            Card_217 card = (Card_217) activeCard;
-            card.setDisColor(p);
+            if(activeCardID != 217)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
         } catch (ActiveCardAlreadyExistingException e) {
             e.printStackTrace();
         }
+
+        Card_217 card = (Card_217) activeCard;
+        card.setDisColor(p);
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -354,19 +402,74 @@ public class ExpertGame extends Game {
     }
 
     /**
+     * Used to activate the effect of the card218
+     */
+    public void use_218(List<Integer> entrance, List<PawnColors> dining) {
+        try{
+            if(activeCardID != 218)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+
+        Player player = getActivePlayer();
+
+        for(int i : entrance){
+            StudentDisc student = player.getScoreboard().getEntrance().get(i);
+            player.getScoreboard().removeStudent(student);
+            player.getScoreboard().addStudentOnDining(student);
+
+            player.getScoreboard().addStudentOnEntrance(player.getScoreboard().getStudentFromDining(dining.get(i)));
+            player.getScoreboard().removeStudentFromDining(player.getScoreboard().getStudentFromDining(dining.get(i)));
+        }
+
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
+    }
+
+
+    /**
      * EFFECT: Take 1 student from this card and place it on your dining room,
      *         then take 1 student from the bag and place it on this card
      *
      * @param player player that use the effect
      * @param number from 0 to 3 which is the number of the 4 student to take
      */
-    public void use_219(Player player, int number) {
+     public void use_219(Player player, int number) {
         Scoreboard scoreboard = player.getScoreboard();
         Card_219 card = (Card_219) activeCard;
         scoreboard.addStudentOnDining(card.getStudent(number));
         ((Card_219) activeCard).addStudent(bag.pickSorted());
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
+
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
+    }
+
+    /**
+     * Used to activate the effect of the card220
+     */
+    public void use_220(PawnColors color) {
+        try{
+            if(activeCardID != 220)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
+        }
+
+        for(Player player : players){
+            for(int i = 0; i < 3; i++){
+                if(player.getScoreboard().getPlayerStudentFromDining(color) > 0){
+                    player.getScoreboard().removeStudentFromDining(player.getScoreboard().getStudentFromDining(color));
+                }
+                else break;
+            }
+        }
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
