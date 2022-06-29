@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -314,16 +315,7 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
-        System.out.println("askCharacterCards");
-        int[] finalCharacterNumbers = new int[3];
-        for(int i = 0 ; i < characterCards.size(); i++)
-        {
-            finalCharacterNumbers[i] = characterCards.get(i).getID() - 213;
-        }
-
-        Platform.runLater( () -> {
-            mapSceneManager.initializeCharacterCards(finalCharacterNumbers);
-        });
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateUseEffect(false))).start();
     }
 
     @Override
