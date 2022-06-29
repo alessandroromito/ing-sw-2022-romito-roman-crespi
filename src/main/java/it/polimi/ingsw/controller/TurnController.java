@@ -150,7 +150,9 @@ public class TurnController implements Serializable {
                 case MOVE_MOTHER_NATURE -> gameController.askToMoveMotherNature();
                 case PICK_CLOUD -> {
                     gameController.askToChooseACloud();
-                    game.disableCardEffects();
+                    if(game.isExpertMode()){
+                        game.disableCardEffects();
+                    }
                 }
                 default -> throw new InvalidActionPhaseStateException();
             }
