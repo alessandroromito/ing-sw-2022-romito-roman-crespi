@@ -5,11 +5,13 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.server.model.map.Island;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SerializableIsland implements Serializable {
-    private static final long serialVersionUID = 102L;
+    @Serial
+    private static final long serialVersionUID = -6510869516084911664L;
 
     private int id;
     private final boolean isGhost;

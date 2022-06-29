@@ -3,8 +3,11 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.Serial;
+
 public class CharacterCardReplyMessage extends  Message{
-    private static final long serialVersionUID = 100L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = 3988216677158483297L;
 
     boolean useEffect;
 

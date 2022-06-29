@@ -4,10 +4,12 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 
+import java.io.Serial;
 import java.util.List;
 
 public class CharacterCardMessage extends  Message{
-    private static final long serialVersionUID = 100L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -3824254042157563369L; //da scegliere
 
     private final List<CharacterCard> characterCards;
 

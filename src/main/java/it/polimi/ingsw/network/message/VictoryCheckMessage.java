@@ -4,8 +4,11 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
+import java.io.Serial;
+
 public class VictoryCheckMessage extends Message {
-    private static final long serialVersionUID = 2456845241456325457L;
+    @Serial
+    private static final long serialVersionUID = -8102891754062178924L;
 
     public VictoryCheckMessage() {
         super(Game.SERVER_NAME, MessageType.WIN_CHECK);

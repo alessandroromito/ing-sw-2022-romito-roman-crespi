@@ -2,8 +2,12 @@ package it.polimi.ingsw.network.message;
 
 import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.Serial;
+
 public abstract class UseEffectMessage extends Message {
-    private static final long serialVersionUID = 1L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -8420794614118094720L;
+
     private final int cardID;
 
     public UseEffectMessage(String nickname, int cardID) {

@@ -4,11 +4,13 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
+import java.io.Serial;
 import java.util.List;
 
 public class MoveStudentMessage extends Message{
 
-    private static final long serialVersionUID = -1L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -1L;
 
     private final int islandNumber;
     private final List<StudentDisc> studentDiscs;

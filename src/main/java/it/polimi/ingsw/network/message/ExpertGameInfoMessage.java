@@ -4,10 +4,13 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 
+import java.io.Serial;
 import java.util.List;
 
 public class ExpertGameInfoMessage extends Message {
-    private static final long serialVersionUID = 1002L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -715355820777094900L;
+
     private final int unifiedIslandsNumber;
     private final int remainingBagStudents;
     private final List<String>  playersNickname;

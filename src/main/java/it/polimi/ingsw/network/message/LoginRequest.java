@@ -3,8 +3,11 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.Serial;
+
 public class LoginRequest extends Message {
-    private static final long serialVersionUID = -1L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -5524844073567304815L;
 
     public LoginRequest(String nickname) {
         super(nickname, MessageType.LOGIN_REQUEST);

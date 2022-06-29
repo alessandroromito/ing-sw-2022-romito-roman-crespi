@@ -7,7 +7,7 @@ import java.io.Serial;
 
 public class MoveMotherNatureMessage extends Message {
     @Serial
-    private static final long serialVersionUID = -539625891352821L;
+    private static final long serialVersionUID = 7105477244414011103L;
 
     private final int steps;
 

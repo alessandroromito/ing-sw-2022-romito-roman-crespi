@@ -3,10 +3,13 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.Serial;
 import java.util.List;
 
 public class GameInfoMessage extends Message {
-    private static final long serialVersionUID = 1002L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -930182368790454493L;
+
     private final int unifiedIslandsNumber;
     private final int remainingBagStudents;
     private final List<String>  playersNickname;
