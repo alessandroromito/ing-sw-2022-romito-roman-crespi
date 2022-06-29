@@ -342,6 +342,7 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
+            mapSceneManager.closeHand(null);
             if(playedAssistantCards.size() == 0) {
                 mapSceneManager.hideOpCard1();
                 mapSceneManager.hideOpCard2();
@@ -350,15 +351,15 @@ public class GraphicController extends ViewObservable implements View {
             }
             if(playedAssistantCards.size() == 1) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
-                mapSceneManager.viewOpCard1();
+                mapSceneManager.enableOpcard1();
                 mapSceneManager.hideOpCard2();
                 mapSceneManager.disableOpcard2();
             }
             if(playedAssistantCards.size() == 2) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
                 mapSceneManager.setOpponent2Card(playedAssistantCards.get(1).getValue());
-                mapSceneManager.viewOpCard1();
-                mapSceneManager.viewOpCard2();
+                mapSceneManager.enableOpcard1();
+                mapSceneManager.enableOpcard2();
             }
             showGenericMessage("Scelta della carta", "Scegli la carta assistente!");
         });
