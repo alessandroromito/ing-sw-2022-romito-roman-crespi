@@ -15,10 +15,11 @@ import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.view.View;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 
 /**
  * Class that visualize the game trough the terminal
@@ -114,13 +115,11 @@ public class CLI extends ViewObservable implements View {
      * @return the input
      */
     public String readRow() {
-        FutureTask<String> futureTask = new FutureTask<>(new ReadTask());
-        readThread = new Thread(futureTask);
-        readThread.start();
-
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(System.in));
         try {
-            return futureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
+            return reader.readLine();
+        } catch (IOException e) {
             out.println("Invalid Input! Retry...");
             readRow();
         }
@@ -393,6 +392,7 @@ public class CLI extends ViewObservable implements View {
             if(!triedToUseCharacter) {
                 out.println();
                 out.println("E' il tuo turno...");
+                out.println();
 
                 int i = 0;
                 for (CharacterCard characterCard : characterCards){
@@ -717,7 +717,7 @@ public class CLI extends ViewObservable implements View {
                 out.println("ISOLA " + (island.getId() + 1) + ":");
             }
 
-            if(gameSerialized.getMotherNaturePos() == island.getId() || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
+            if((gameSerialized.getMotherNaturePos() == island.getId() && !island.isGhost()) || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
 
             if(island.getTowerNumber() != 0){

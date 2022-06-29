@@ -370,6 +370,7 @@ public class Game extends Observable implements Serializable {
 
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
             }
+            else notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
     }
 
@@ -455,9 +456,11 @@ public class Game extends Observable implements Serializable {
                 do{
                     motherNaturePos++;
                     if((motherNaturePos) == 12) motherNaturePos = 0;
-                } while (map.getIsland(motherNaturePos).getGroupID() == groupID);
+                } while (map.getIsland(motherNaturePos+1).getGroupID() == groupID);
             }
         }
+        System.out.println("Move MotherNature to island " + (motherNaturePos + 1));
+
         // Set the position
         map.setMotherNaturePos(motherNaturePos);
 
