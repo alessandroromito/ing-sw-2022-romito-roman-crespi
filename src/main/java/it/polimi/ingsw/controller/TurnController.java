@@ -90,7 +90,10 @@ public class TurnController implements Serializable {
         int currentActive = nicknameQueue.indexOf(activePlayer);
         if (currentActive + 1 < nicknameQueue.size()) {
             currentActive = currentActive + 1;
-            game.deleteActiveCard();
+            try{
+                game.deleteActiveCard();
+            }catch (RuntimeException ignored){
+            }
         } else {
             nextPhase();
             return;

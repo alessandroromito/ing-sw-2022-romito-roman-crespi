@@ -65,7 +65,7 @@ class IslandTest {
         player1 = game.getPlayerByNickname("Player 1");
         player1.getScoreboard().addProfessor(new ProfessorPawn(2, PawnColors.RED));
 
-        island = game.getMap().getIsland(1);
+        island = game.getMap().getIsland(game.getMap().getMotherNaturePosition());
 
         island.addTower(player1.getScoreboard().removeTower());
         island.addStudent(new StudentDisc(100,PawnColors.RED));
