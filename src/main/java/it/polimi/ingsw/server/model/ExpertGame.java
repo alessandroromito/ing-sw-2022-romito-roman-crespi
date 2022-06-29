@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.network.message.GameScenarioMessage;
 import it.polimi.ingsw.network.message.GenericMessage;
+import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.model.bag.Bag;
@@ -28,7 +29,6 @@ public class ExpertGame extends Game {
 
     /**
      * Default constructor
-     *
      * @param playersNicknames List of players nicknames
      */
     public ExpertGame(List<String> playersNicknames) {
@@ -36,11 +36,15 @@ public class ExpertGame extends Game {
         ExpertGameInitialization();
     }
 
+    /**
+     * Initialize the expert version of the game
+     */
     public void ExpertGameInitialization() {
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();
         }
+
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
         for(int i=0;i<9;i++){
@@ -100,6 +104,11 @@ public class ExpertGame extends Game {
 
     }
 
+    /**
+     * Set the active character card and remove the coin to the player
+     * @param characterCardID ID of the card you want to use
+     * @return true if the card is set with success, false otherwise
+     */
     public boolean useCharacter(int characterCardID){
         for(CharacterCard characterCard : pool)
             if(characterCard.getID() == characterCardID){
@@ -111,20 +120,28 @@ public class ExpertGame extends Game {
 
                 return true;
             }
-
         return false;
     }
 
+    /**
+     * Delete the actual active card
+     */
     @Override
     public void deleteActiveCard(){
         activeCard = null;
         activeCardID = -1;
     }
 
+    /**
+     * @return the ID of the active card
+     */
     public int getActiveCardID() {
         return activeCardID;
     }
 
+    /**
+     * @return the arraylist of the three active card used in this game
+     */
     public ArrayList<CharacterCard> getPool() {
         return pool;
     }
@@ -133,6 +150,9 @@ public class ExpertGame extends Game {
         return activeCard;
     }
 
+    /**
+     * Method used for testing
+     */
     public void setCard_210_ForTest(){
         Player[] t = new Player [5];
         for(Player p: players)
@@ -142,6 +162,11 @@ public class ExpertGame extends Game {
         pool.add(new Card_210(t));
     }
 
+    /**
+     * Used to activate the effect of the card209
+     * @param studentPos
+     * @param islandID
+     */
     public void use_209 (int studentPos, int islandID) {
         try {
             if(activeCardID != 209)
@@ -157,10 +182,16 @@ public class ExpertGame extends Game {
         deleteActiveCard();
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
-        turnController.nextActionPhase();
+
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
-    //tener conto di quali prof sono stati spostati e farli tornare nella loro posizione a fine turno
+    /**
+     * Used to activate the effect of the card210
+     */
     public void use_210 () {
         try{
             if(activeCardID != 210)
@@ -189,9 +220,17 @@ public class ExpertGame extends Game {
                         }
 
         notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
-        turnController.nextActionPhase();
+
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
+    /**
+     * Called and the ond of the turn when the active card is the card210
+     * It reset the professor used to their original position
+     */
     public void endTurn_210() {
         Card_210 temp = (Card_210) activeCard;
         for(int i=0; i<5; i++){
@@ -199,6 +238,10 @@ public class ExpertGame extends Game {
         }
     }
 
+    /**
+     * Used to activate the effect of the card211
+     * @param islandNumber
+     */
     public void use_211(int islandNumber) {
         try{
             if(activeCardID != 211)
@@ -208,10 +251,14 @@ public class ExpertGame extends Game {
         }
         checkInfluence(islandNumber - 1);
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
     }
 
-    //Sposta mother nature fino a 2 pos in più
+    /**
+     * Used to activate the effect of the card212
+     */
     public void use_212() {
         try {
             if(activeCardID != 212)
@@ -221,10 +268,16 @@ public class ExpertGame extends Game {
         }
         activeCardID = 212;
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
 
     }
 
+    /**
+     * Used to activate the effect of the card213
+     * @param islandNumber
+     */
     public void use_213(int islandNumber) {
         try{
             if(activeCardID != 213)
@@ -236,9 +289,14 @@ public class ExpertGame extends Game {
         Card_213 temp = (Card_213) activeCard;
         map.getIsland(islandNumber - 1).addNoEntryTile(temp.use());
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
     }
 
+    /**
+     * Used to activate the effect of the card214
+     */
     public void use_214() {
         try {
             if(activeCardID != 214)
@@ -249,7 +307,10 @@ public class ExpertGame extends Game {
 
         activeCardID = 214;
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -261,7 +322,10 @@ public class ExpertGame extends Game {
         p.setAdditionalPoints(true);
         notifyObserver(new GenericMessage("CharacterCard Impostata!"));
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -272,6 +336,10 @@ public class ExpertGame extends Game {
     }
 
 
+    /**
+     * Used to activate the effect of the card217
+     * @param p
+     */
     public void use_217(PawnColors p){
         try{
             if(activeCardID != 217) throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -281,7 +349,10 @@ public class ExpertGame extends Game {
             e.printStackTrace();
         }
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -297,7 +368,10 @@ public class ExpertGame extends Game {
         scoreboard.addStudentOnDining(card.getStudent(number));
         ((Card_219) activeCard).addStudent(bag.pickSorted());
 
-        turnController.nextActionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -317,6 +391,11 @@ public class ExpertGame extends Game {
         return pool;
     }
 
+    /**
+     * Return the character card by passing his id
+     * @param ID ID of the character card you want to return
+     * @return the character card
+     */
     public CharacterCard getCharacterCardByID(int ID) {
         for(CharacterCard characterCard : pool){
             if(characterCard.getID() == ID)
@@ -326,6 +405,10 @@ public class ExpertGame extends Game {
         return null;
     }
 
+    /**
+     * Check the influence of the active player on the island passed
+     * @param islandID if of the island you want to calculate the influence
+     */
     @Override
     public void checkInfluence(int islandID) {
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
@@ -455,6 +538,17 @@ public class ExpertGame extends Game {
         }
     }
 
+    /**
+     * Restore the game from a previous game saved
+     * @param restoredMap
+     * @param restoredBag
+     * @param restoredComponents
+     * @param restoredPlayers
+     * @param restoredExpertMode
+     * @param restoredActiveCardID
+     * @param restoreActiveCard
+     * @param restorePool
+     */
     @Override
     public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
         this.activeCardID = restoredActiveCardID;
