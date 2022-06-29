@@ -2,12 +2,14 @@ package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
+import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.Card_209;
+import it.polimi.ingsw.server.model.component.charactercards.Card_219;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.GhostIsland;
@@ -273,9 +275,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private MenuButton islandMenu;
 
+    @FXML
+    private MenuButton colorMenu;
+
 
     private double r = 22;
     private double rIsl;
+    private boolean active = false;
 
     private List<List<Integer>> posWithGhost;
 
@@ -309,6 +315,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private List<CharacterCard> characterCards;
     private ImageView[] cCards = new ImageView[3];
     private ImageView[] card209 = new ImageView[4];
+    private ImageView[] card219 = new ImageView[4];
 
     private GraphicController graphicController = null;
 
@@ -378,53 +385,115 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void initializeCharacterCards(){
-        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
-        int[] finalCharacterNumbers = new int[3];
-        for(int i = 0 ; i < characterCards.size(); i++)
-        {
-            finalCharacterNumbers[i] = characterCards.get(i).getID() - 209;
+        if(characterCards!=null && !characterCards.isEmpty()) {
+            card1.setDisable(true);
+            card2.setDisable(true);
+            card3.setDisable(true);
+            int[] finalCharacterNumbers = new int[3];
+            for (int i = 0; i < characterCards.size(); i++) {
+                finalCharacterNumbers[i] = characterCards.get(i).getID() - 209;
+            }
+
+            Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front" + finalCharacterNumbers[0] + ".jpg"));
+            card1.setImage(image);
+            card1.setId(Integer.toString(characterCards.get(0).getID()));
+            image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front" + finalCharacterNumbers[1] + ".jpg"));
+            card2.setImage(image);
+            card2.setId(Integer.toString(characterCards.get(1).getID()));
+            image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front" + finalCharacterNumbers[2] + ".jpg"));
+            card3.setImage(image);
+            card3.setId(Integer.toString(characterCards.get(2).getID()));
+
+            if (gameSerialized.getActiveCardID() != -1) {
+                card1.setMouseTransparent(true);
+                card2.setMouseTransparent(true);
+                card3.setMouseTransparent(true);
+                Glow ef = new Glow(0.45);
+                ef.setInput(new DropShadow());
+                getCharacterById(gameSerialized.getActiveCardID()).setEffect(ef);
+            } else
+                for (int i = 0; i < 3; i++)
+                    cCards[i].setMouseTransparent(false);
+
+            for (int i = 0; i < 3; i++)
+                if (characterCards.get(i).getCost() <= coins)
+                    cCards[i].setDisable(false);
+
+            for (int i = 0; i < 3; i++)
+                switch (characterCards.get(i).getID()) {
+                    case 209 -> {
+                        pane.getChildren().removeAll(card209);
+                        card209[0] = new ImageView();
+                        card209[1] = new ImageView();
+                        card209[2] = new ImageView();
+                        card209[3] = new ImageView();
+                        Card_209 temp = (Card_209) characterCards.get(i);
+                        card209[0].setImage(createImage(temp.getStudents().get(0).getColorInt()));
+                        card209[1].setImage(createImage(temp.getStudents().get(1).getColorInt()));
+                        card209[2].setImage(createImage(temp.getStudents().get(2).getColorInt()));
+                        card209[3].setImage(createImage(temp.getStudents().get(3).getColorInt()));
+
+                        card209[0].setFitWidth(r * 2);
+                        card209[0].setFitHeight(r * 2);
+                        card209[0].setDisable(true);
+                        card209[1].setFitWidth(r * 2);
+                        card209[1].setFitHeight(r * 2);
+                        card209[1].setDisable(true);
+                        card209[2].setFitWidth(r * 2);
+                        card209[2].setFitHeight(r * 2);
+                        card209[2].setDisable(true);
+                        card209[3].setFitWidth(r * 2);
+                        card209[3].setFitHeight(r * 2);
+                        card209[3].setDisable(true);
+
+                        card209[0].setLayoutX(getCharacterById(209).getLayoutX() + 20);
+                        card209[0].setLayoutY(getCharacterById(209).getLayoutY() + 150);
+                        card209[1].setLayoutX(getCharacterById(209).getLayoutX() + 70);
+                        card209[1].setLayoutY(getCharacterById(209).getLayoutY() + 150);
+                        card209[2].setLayoutX(getCharacterById(209).getLayoutX() + 20);
+                        card209[2].setLayoutY(getCharacterById(209).getLayoutY() + 100);
+                        card209[3].setLayoutX(getCharacterById(209).getLayoutX() + 70);
+                        card209[3].setLayoutY(getCharacterById(209).getLayoutY() + 100);
+                        pane.getChildren().addAll(card209);
+                    }
+
+                    case 219 -> {
+                        pane.getChildren().removeAll(card219);
+                        card219[0] = new ImageView();
+                        card219[1] = new ImageView();
+                        card219[2] = new ImageView();
+                        card219[3] = new ImageView();
+                        Card_219 temp = (Card_219) characterCards.get(i);
+                        card219[0].setImage(createImage(temp.getStudents().get(0).getColorInt()));
+                        card219[1].setImage(createImage(temp.getStudents().get(1).getColorInt()));
+                        card219[2].setImage(createImage(temp.getStudents().get(2).getColorInt()));
+                        card219[3].setImage(createImage(temp.getStudents().get(3).getColorInt()));
+
+                        card219[0].setFitWidth(r * 2);
+                        card219[0].setFitHeight(r * 2);
+                        card219[0].setDisable(true);
+                        card219[1].setFitWidth(r * 2);
+                        card219[1].setFitHeight(r * 2);
+                        card219[1].setDisable(true);
+                        card219[2].setFitWidth(r * 2);
+                        card219[2].setFitHeight(r * 2);
+                        card219[2].setDisable(true);
+                        card219[3].setFitWidth(r * 2);
+                        card219[3].setFitHeight(r * 2);
+                        card219[3].setDisable(true);
+
+                        card219[0].setLayoutX(getCharacterById(219).getLayoutX() + 20);
+                        card219[0].setLayoutY(getCharacterById(219).getLayoutY() + 150);
+                        card219[1].setLayoutX(getCharacterById(219).getLayoutX() + 70);
+                        card219[1].setLayoutY(getCharacterById(219).getLayoutY() + 150);
+                        card219[2].setLayoutX(getCharacterById(219).getLayoutX() + 20);
+                        card219[2].setLayoutY(getCharacterById(219).getLayoutY() + 100);
+                        card219[3].setLayoutX(getCharacterById(219).getLayoutX() + 70);
+                        card219[3].setLayoutY(getCharacterById(219).getLayoutY() + 100);
+                        pane.getChildren().addAll(card219);
+                    }
+                }
         }
-
-        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[0]+".jpg"));
-        card1.setImage(image);
-        card1.setId(Integer.toString(characterCards.get(0).getID()));
-        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[1]+".jpg"));
-        card2.setImage(image);
-        card2.setId(Integer.toString(characterCards.get(1).getID()));
-        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[2]+".jpg"));
-        card3.setImage(image);
-        card3.setId(Integer.toString(characterCards.get(2).getID()));
-
-        if(gameSerialized.getActiveCardID()!=-1){
-            card1.setMouseTransparent(true); card2.setMouseTransparent(true); card3.setMouseTransparent(true);
-            Glow ef = new Glow(0.45);   ef.setInput(new DropShadow());
-            getCharacterById(gameSerialized.getActiveCardID()).setEffect(ef);
-        }else
-            for(int i=0;i<3;i++)
-                cCards[i].setMouseTransparent(false);
-
-        for(int i=0;i<3;i++)
-            if(characterCards.get(i).getCost()<=coins)
-                cCards[i].setDisable(false);
-
-        for(int i=0;i<3;i++)
-            switch(characterCards.get(i).getID()){
-            case 209 -> {
-                Card_209 temp = (Card_209) characterCards.get(i);
-                card209[0].setImage(createImage(temp.getStudents().get(0).getColorInt()));
-                card209[1].setImage(createImage(temp.getStudents().get(1).getColorInt()));
-                card209[2].setImage(createImage(temp.getStudents().get(2).getColorInt()));
-                card209[3].setImage(createImage(temp.getStudents().get(3).getColorInt()));
-
-                card209[0].setX(getCharacterById(209).getX()); card209[0].setY(getCharacterById(209).getY());
-                card209[1].setX(getCharacterById(209).getX()); card209[1].setY(getCharacterById(209).getY());
-                card209[2].setX(getCharacterById(209).getX()); card209[2].setY(getCharacterById(209).getY());
-                card209[3].setX(getCharacterById(209).getX()); card209[3].setY(getCharacterById(209).getY());
-                pane.getChildren().addAll(card209);
-            }
-            }
-
-        new Thread( () -> notifyObserver(obs -> obs.onUpdateUseEffect(false))).start();
     }
 
     public Image createImage(int color){
@@ -524,10 +593,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 cloudStudents2[i].setId(Integer.toString(s.getID()));
             }
         }
-    }
-
-    public void chooseCharacterCard() {
-        //da inserire la notify e da implementare
     }
 
     public void removeStudent(int id){
@@ -922,6 +987,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void updateValues(GameSerialized gameSerialized) {
+        disableMenu();
         characterCards = gameSerialized.getCharacterCards();
         for(int i=0;i<3;i++)
             cCards[i].setDisable(true);
@@ -1041,7 +1107,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         if(scoreboardSceneManager!=null)    scoreboardSceneManager.updateValues(gameSerialized);
 
-        if(characterCards!=null){
+        if(characterCards!=null&&!characterCards.isEmpty()){
             initializeCharacterCards();
         }
     }
@@ -1694,10 +1760,35 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     private void cardSelected(int choice){
         int idCard = Integer.parseInt(cCards[choice].getId());
+        for(ImageView im:cCards)
+            im.setDisable(true);
 
-        if(idCard==209){
+        if(idCard==209)
+            for(int i=0;i<4;i++){
+                card209[i].setDisable(false);
+                int finalI = i;
+                card209[i].setOnMousePressed(ev -> {finalStudentPos = finalI; menuCard209();});
+                card209[i].setOnMouseEntered(ev -> card209[finalI].setEffect(new Glow()));
+                card209[i].setOnMouseExited(ev -> card209[finalI].setEffect(null));
+            }
 
-        }
+        if(idCard==219)
+            for(int i=0;i<4;i++){
+                card219[i].setDisable(false);
+                int finalI = i;
+                card219[i].setOnMousePressed(ev -> {disableMenu(); disable219(); new Thread( () ->  notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();});
+                card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow()));
+                card219[i].setOnMouseExited(ev -> card219[finalI].setEffect(null));
+            }
+
+        if(idCard==211)
+            menuCard211();
+
+        if(idCard==213)
+            menuCard213();
+
+        if(idCard==217)
+            menuCard217();
 
         switch(idCard){
             case 210 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse210)).start();
@@ -1707,16 +1798,77 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    private void disableMenu(){
+        islandMenu.setDisable(true);
+        islandMenu.setVisible(false);
+        colorMenu.setDisable(true);
+        colorMenu.setVisible(false);
+    }
+
+    private void disable209(){
+        for(ImageView student: card209)
+            student.setDisable(true);
+    }
+
+    private void disable219(){
+        for(ImageView student: card219)
+            student.setDisable(true);
+    }
+
     private void menuCard209() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
+        islandMenu.setLayoutX(getCharacterById(209).getLayoutX()-17);
+        islandMenu.setLayoutY(getCharacterById(209).getLayoutY()+10);
+
         for (int j = 0; j < 12; j++) {
             int finalJ = j;
-            islandMenu.getItems().get(j).setOnAction(event -> card209(finalJ + 1));
+            islandMenu.getItems().get(j).setOnAction(event -> {System.out.println("carta 209 usata"); useCard209(finalJ + 1);});
         }
     }
 
-    private void card209(int islandSelected){
-        notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected));
+    private void useCard209(int islandSelected){
+        disableMenu();
+        disable209();
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
+    }
+
+    private void menuCard211() {
+        islandMenu.setVisible(true);
+        islandMenu.setDisable(false);
+        islandMenu.setLayoutX(getCharacterById(211).getLayoutX()-17);
+        islandMenu.setLayoutY(getCharacterById(211).getLayoutY()+10);
+
+        for (int j = 0; j < 12; j++) {
+            int finalJ = j;
+            islandMenu.getItems().get(j).setOnAction(event -> {disableMenu(); new Thread( () ->  notifyObserver(obs -> obs.onUpdateUse211(finalJ+1))).start();});
+        }
+    }
+
+    private void menuCard213() {
+        islandMenu.setVisible(true);
+        islandMenu.setDisable(false);
+        islandMenu.setLayoutX(getCharacterById(213).getLayoutX()-17);
+        islandMenu.setLayoutY(getCharacterById(213).getLayoutY()+10);
+
+        for (int j = 0; j < 12; j++) {
+            int finalJ = j;
+            islandMenu.getItems().get(j).setOnAction(event -> {disableMenu(); new Thread( () -> notifyObserver(obs -> obs.onUpdateUse213(finalJ+1))).start();});
+        }
+    }
+
+    private void menuCard217(){
+        colorMenu.setVisible(true);
+        colorMenu.setDisable(false);
+        colorMenu.setLayoutX(getCharacterById(217).getLayoutX()-17);
+        colorMenu.setLayoutY(getCharacterById(217).getLayoutY()+10);
+        for(int i=0;i<5;i++) {
+            int finalI = i;
+            colorMenu.getItems().get(i).setOnAction(event -> {disableMenu(); disable219(); new Thread( () -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]))).start();});
+        }
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
