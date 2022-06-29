@@ -4,8 +4,12 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
+import java.io.Serial;
+
 public class VictoryMessage extends Message {
-    private static final long serialVersionUID = 2456845241456325457L;
+    @Serial
+    private static final long serialVersionUID = -2456845241456325457L;
+
     private final String winnerNickname;
 
     public VictoryMessage(String winnerNickname) {

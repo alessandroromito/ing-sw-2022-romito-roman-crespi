@@ -26,14 +26,13 @@ class GameControllerSetupTest {
     private Game game;
 
     private GameState gameState;
-    private TurnController turnController;
     private InputController inputController;
     private GameController gameController;
 
     @BeforeEach
     void setUp() {
 
-        this.players = new ArrayList<String>();
+        this.players = new ArrayList<>();
         this.gameController = new GameController();
         this.virtualViewMap = new HashMap<>();
         this.inputController = new InputController(gameController, virtualViewMap);

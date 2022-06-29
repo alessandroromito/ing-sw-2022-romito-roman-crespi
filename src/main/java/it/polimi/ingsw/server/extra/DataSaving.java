@@ -16,11 +16,10 @@ public class DataSaving {
      * @param gameController gameController to be saved
      * @throws IOException due to working on files.
      */
-    // -> ATTENZIONE!! Il game controller deve essere collegato a game/model <-
     public void save (GameController gameController) throws IOException {
         PersistenceGameController persistenceGameController = new PersistenceGameController(gameController);
 
-        FileOutputStream fileOutputStream = new FileOutputStream(new File(GameController.SAVING));
+        FileOutputStream fileOutputStream = new FileOutputStream(GameController.SAVING);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(persistenceGameController);
         Server.LOGGER.info("Game data saved.");
@@ -34,7 +33,7 @@ public class DataSaving {
      */
     public GameController restore() throws IOException, ClassNotFoundException {
         PersistenceGameController persistenceGameController;
-        FileInputStream fileInputStream = new FileInputStream(new File(GameController.SAVING));
+        FileInputStream fileInputStream = new FileInputStream(GameController.SAVING);
         System.out.println("Lettura avvenuta con successo.");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         persistenceGameController = (PersistenceGameController) objectInputStream.readObject();

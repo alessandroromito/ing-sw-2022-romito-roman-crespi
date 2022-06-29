@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.network.message.PingMessage;
-import it.polimi.ingsw.server.extra.ANSICostants;
 import it.polimi.ingsw.server.extra.PingSender;
 
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class ClientHandler implements Runnable {
                             System.out.println(message);
                             socketServer.addClient(message.getNickname(), this);
                         } else {
-                            Server.LOGGER.info(() -> ANSICostants.ANSI_BLUE + "Messaggio ricevuto: " + message + ANSICostants.ANSI_RESET);
+                            Server.LOGGER.info(() -> "MESSAGE RECEIVED: " + message);
                             message.handle(messageHandler);
                         }
                     }
@@ -124,7 +123,7 @@ public class ClientHandler implements Runnable {
                 out.writeObject(message);
                 out.flush();
                 out.reset();
-                Server.LOGGER.info(() -> "Messaggio inviato: " + message);
+                //Server.LOGGER.info(() -> "Messaggio inviato: " + message);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Class client side.
+ * The client notify changes on the graphic interface only with the methods of this class.
+ * The server notify changes to the client only with "update" method of this class.
+ */
 public class ClientController implements ViewObserver, Observer {
     private final View view;
     private String nickname;
@@ -24,19 +29,21 @@ public class ClientController implements ViewObserver, Observer {
     private Client client;
 
     /**
-     * Default Constructor
-     * @param view view
+     * Default Constructor.
+     * @param view view (interface implemented)
      */
     public ClientController(View view) {
         this.view = view;
         queue = Executors.newSingleThreadExecutor();
     }
 
+    /**
+     * Server updates the client using this method.
+     * @param message information to be analyzed to manage the update to supply to the client.
+     */
     @Override
     public void update(Message message) {
         switch(message.getMessageType()){
-            case PING -> {
-            }
             case ERROR -> {
                 ErrorMessage errorMessage = (ErrorMessage) message;
                 view.showErrorMessage(errorMessage.getError());
@@ -48,9 +55,6 @@ public class ClientController implements ViewObserver, Observer {
             case LOBBY -> {
                 LobbyMessage lobbyMessage = (LobbyMessage) message;
                 view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers());
-            }
-            case LOGIN_REQUEST -> {
-
             }
             case LOGIN_REPLY -> {
                 LoginReply loginReplyMessage = (LoginReply) message;
@@ -65,12 +69,9 @@ public class ClientController implements ViewObserver, Observer {
                 AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;
                 queue.execute(() -> view.askAssistantCard(assistantCardMessage.getAssistantCards(), assistantCardMessage.getPlayedAssistantCards()));
             }
-            case PLAYER_NUMBER_REPLY -> {
-
-            }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
-                view.showGenericMessage(genericMessage.getMessage());
+                queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
             }
             case DISCONNECTED_PLAYER -> {
                 DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;
@@ -90,29 +91,9 @@ public class ClientController implements ViewObserver, Observer {
                 queue.execute(() -> view.askToChooseACloud(cloudMessage.getCloudList()));
             }
             case GAME_MODE -> queue.execute(view::askGameMode);
-            case USE_EFFECT -> {
-            }
             case PLAY_CHARACTER_CARD -> {
                 CharacterCardMessage characterCardMessage = (CharacterCardMessage) message;
                 queue.execute(() -> view.askCharacterCard(characterCardMessage.getCharacterCards()));
-            }
-            case CARD209 -> {
-            }
-            case CARD210 -> {
-            }
-            case CARD211 -> {
-            }
-            case CARD212 -> {
-            }
-            case CARD213 -> {
-            }
-            case CARD214 -> {
-            }
-            case CARD216 -> {
-            }
-            case CARD217 -> {
-            }
-            case CARD219 -> {
             }
             case RECONNECTING_MESSAGE -> {
                 ReconnectingMessage reconnectingMessage = (ReconnectingMessage) message;
@@ -121,23 +102,34 @@ public class ClientController implements ViewObserver, Observer {
         }
     }
 
+    /**
+     * Client updates the server about GameMode.
+     * @param gameMode information sent by the client.
+     */
     @Override
     public void onUpdateGameMode(String gameMode) {
         client.sendMessage(new GameModeReplyMessage(this.nickname, gameMode.equals("Esperta")));
     }
 
+    /**
+     * Client updates the server about the effect to use.
+     * @param useEffect effect to use.
+     */
     @Override
     public void onUpdateUseEffect(boolean useEffect) {
         client.sendMessage(new CharacterCardReplyMessage(this.nickname, false));
     }
 
+    /**
+     * Client updates the server about the address and the port to be connected on.
+     * @param server contains address and port.
+     */
     @Override
     public void onUpdateServerDetails(HashMap<String, String> server){
         try{
             client = new Client(server.get("address"), Integer.parseInt(server.get("port")));
             client.addObserver(this);
             client.readMessage();
-            //client.enablePinger(true);
             queue.execute(view::askPlayerNickname);
         }
         catch(IOException e){
@@ -145,32 +137,59 @@ public class ClientController implements ViewObserver, Observer {
         }
     }
 
+    /**
+     * Client updates the server about nickname of the user connected.
+     * @param nickname nickname.
+     */
     @Override
     public void onUpdateNickname(String nickname) {
         this.nickname = nickname;
         client.sendMessage(new LoginRequest(this.nickname));
     }
 
+    /**
+     * Client updates the server about player number of the match.
+     * @param playersNumber number of player playing the match.
+     */
     @Override
     public void onUpdatePlayersNumber(int playersNumber) {
         client.sendMessage(new PlayerNumberReply(this.nickname, playersNumber));
     }
 
+    /**
+     * Client updates the server about the movement of mother nature.
+     * @param steps movement of mother nature.
+     */
     @Override
     public void onUpdateMotherNaturePosition(int steps) {
         client.sendMessage(new MoveMotherNatureMessage(this.nickname, steps));
     }
 
+    /**
+     * Client updates the server about picking a cloud.
+     * @param clouds cloud picked.
+     */
     @Override
     public void onUpdatePickCloud(ArrayList<Cloud> clouds) {
         client.sendMessage(new CloudMessage(this.nickname, clouds));
     }
 
+    /**
+     * Client updates the server about playing assistant card.
+     * @param assistantCards assistant card chosen by the user.
+     * @param playedAssistantCards assistant card played yet.
+     */
     @Override
     public void onUpdatePlayAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards){
         client.sendMessage(new AssistantCardMessage(nickname, assistantCards, assistantCards));
     }
 
+    /**
+     * Client updates the server about moving a student.
+     * @param student student to be moved.
+     * @param position dining room (0) or island (1)
+     * @param islandNumber island chosen.
+     */
     @Override
     public void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber) {
         client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));

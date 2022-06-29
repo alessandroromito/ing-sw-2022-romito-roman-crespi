@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.extra;
 
 import it.polimi.ingsw.controller.GameController;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -9,7 +10,8 @@ import java.io.Serializable;
  */
 public class PersistenceGameController implements Serializable {
 
-    private static final long serialVersionUID = 382104422531955291L; //because of serialization
+    @Serial
+    private static final long serialVersionUID = 382104422531955291L;
 
     private final GameController gameController;
 

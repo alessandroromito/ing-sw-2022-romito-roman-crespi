@@ -7,7 +7,7 @@ public class NoEntryTile extends Component {
 
     /**
      * Default constructor.
-     * Sub-type of Component.
+     * Subtype of Component.
      * @param id int variable.
      */
     public NoEntryTile(int id){

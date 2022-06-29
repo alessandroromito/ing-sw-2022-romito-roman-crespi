@@ -3,8 +3,12 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 
+import java.io.Serial;
+
 public class Card217Message extends UseEffectMessage{
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 2424014591728955869L;
+
     PawnColors color;
 
     public Card217Message(String nickname, PawnColors color) {

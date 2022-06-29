@@ -229,10 +229,9 @@ public class Game extends Observable implements Serializable {
 
 
     /**
-     *
+     * Move a tower to an island and notify the observer
      * @param tower
      * @param islandID
-     * @throws DisabledIslandException
      */
     public void moveTowerToIsland(Tower tower, int islandID) {
 
@@ -255,7 +254,7 @@ public class Game extends Observable implements Serializable {
                      if(p.getScoreboard().getTowerColor() == oldColor){
                          p.getScoreboard().addTowers(island.getTowers());
                          island.removeTowers();
-                         // Add 1 tower to the old dominant player
+
                          island.addTower(tower); //add tower to island
                          System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID);
                          System.out.println("Move Tower/s " + oldColor + " Back To " + p.getNickname());
@@ -318,7 +317,6 @@ public class Game extends Observable implements Serializable {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
-        Player opponentPlayer = null;
 
         Island island = map.getIsland(islandID);
         if(island.isDisabled()){
@@ -327,6 +325,8 @@ public class Game extends Observable implements Serializable {
 
         // CASE no tower on island
         if(island.getTowerNumber() == 0){
+            System.out.println("No tower on Island " + (islandID+1) + " CheckInfluence NO Tower");
+
             for(Player p : players){
                 int playerInfluence = island.getInfluence(p);
                 if(playerInfluence > bestInfluence){
@@ -343,24 +343,42 @@ public class Game extends Observable implements Serializable {
                 checkMerge(islandID);
 
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
-                return;
+            }
+        } else {
+            // CASE there is already a tower
+            System.out.println("Already a tower on Island " + (islandID+1) + " CheckInfluence");
+
+            Player activePlayer = getPlayerByColor(island.getTowerColor());
+            bestInfluence = island.getInfluence(activePlayer);
+            int activePlayerInfluence = island.getInfluence(activePlayer);
+            System.out.println("Active player influence: " + activePlayerInfluence);
+
+            for(Player p : players){
+                int playerInfluence = island.getInfluence(p);
+                if(!p.getNickname().equals(activePlayer.getNickname()) &&  playerInfluence > activePlayerInfluence && playerInfluence > bestInfluence){
+                    bestInfluence = island.getInfluence(p);
+                    dominantPlayer = p;
+                }
+            }
+
+            if(dominantPlayer != null){
+                System.out.println("Dominant player influence: " + island.getInfluence(dominantPlayer));
+
+                moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
+                checkTowerWinner(currentPlayer);
+                checkMerge(islandID);
+
+                notifyObserver(new GameScenarioMessage(getGameSerialized()));
             }
         }
+    }
 
-        // CASE there is already a tower
-        int currentPlayerInfluence = island.getInfluence(currentPlayer);
-        for(Player p : players){
-            if(p.getScoreboard().getTowerColor() == island.getTowerColor() && p.getScoreboard().getTowerColor() != currentPlayer.getScoreboard().getTowerColor()){
-                opponentPlayer = p;
-                break;
-            }
+    private Player getPlayerByColor(TowerColors color) {
+        for(Player player : players){
+            if(player.getScoreboard().getTowerColor() == color)
+                return player;
         }
-        if(opponentPlayer != null && currentPlayerInfluence > island.getInfluence(opponentPlayer)){
-            moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
-            checkMerge(islandID);
-
-            notifyObserver(new GameScenarioMessage(getGameSerialized()));
-        }
+        return null;
     }
 
     public void checkTowerWinner(Player player) {
@@ -575,11 +593,7 @@ public class Game extends Observable implements Serializable {
     }
 
     public void disableCardEffects (){
-        try{
-            throw new RuntimeException();
-        }catch (RuntimeException e){
-
-        }
+        throw new RuntimeException();
     }
 
     public List<CharacterCard> getCharacterCards() {
@@ -591,12 +605,7 @@ public class Game extends Observable implements Serializable {
     }
 
     public void deleteActiveCard(){
-        //ExpertGame method
-        try{
-            throw new RuntimeException();
-        }catch (RuntimeException e){
-
-        }
+        throw new RuntimeException();
     }
 
     public int getActiveCardID() {

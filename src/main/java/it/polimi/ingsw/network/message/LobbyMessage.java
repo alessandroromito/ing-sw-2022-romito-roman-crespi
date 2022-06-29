@@ -4,10 +4,13 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
+import java.io.Serial;
 import java.util.List;
 
 public class LobbyMessage extends Message {
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = -156805307373219139L;
+
     private final List<String> playersNickname;
     private final int numMaxPlayers;
 

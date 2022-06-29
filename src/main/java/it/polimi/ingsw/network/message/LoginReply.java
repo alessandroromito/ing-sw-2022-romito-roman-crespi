@@ -3,8 +3,12 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.Serial;
+
 public class LoginReply extends Message {
-    private static final long serialVersionUID = -1L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -4856859526126957938L;
+
     private final boolean nicknameAccepted;
     private final boolean connectionSuccessful;
 

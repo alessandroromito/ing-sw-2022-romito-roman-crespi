@@ -2,14 +2,16 @@ package it.polimi.ingsw.server.model.map;
 
 import it.polimi.ingsw.server.model.component.StudentDisc;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Cloud implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 1274892365976434L;
 
-    private ArrayList<StudentDisc> cloudStudents;
-    private int cloudID;
+    private final ArrayList<StudentDisc> cloudStudents;
+    private final int cloudID;
 
     /**
      * Default constructor.

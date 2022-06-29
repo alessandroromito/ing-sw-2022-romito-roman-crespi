@@ -1,25 +1,21 @@
 package it.polimi.ingsw.server.model.map;
 
-import it.polimi.ingsw.network.message.VictoryCheckMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.exception.CloudNotFoundException;
-import it.polimi.ingsw.server.exception.DifferentColorTowerException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Map extends Observable implements Serializable {
 
-    private ArrayList<Island> islands;
-    private ArrayList<Cloud> clouds;
+    private final ArrayList<Island> islands;
+    private final ArrayList<Cloud> clouds;
 
     private int motherNaturePos;
 
-    private GhostIsland[] ghostIslands = {null, null, null, null, null, null};
+    private final GhostIsland[] ghostIslands = {null, null, null, null, null, null};
 
     /**
      * Default constructor.
@@ -75,53 +71,6 @@ public class Map extends Observable implements Serializable {
     public int getMotherNaturePosition(){
         return motherNaturePos;
     }
-
-    public void checkIslandWinner(){
-        for(Island island : islands){
-            if(!island.isDisabled())
-                return;
-        }
-
-        int count = 0;
-        List<GhostIsland> ghostIslandList = Arrays.stream(ghostIslands).toList();
-        for(GhostIsland ghostIsland : ghostIslandList){
-            if(ghostIsland != null)
-                count++;
-        }
-        if (count == 3)
-            notifyObserver(new VictoryCheckMessage());
-    }
-
-    /*
-    public void merge(int IDIsland1, int IDIsland2) {
-        int groupID = 0;
-        ArrayList<StudentDisc> students = islands.get(IDIsland1).getStudents();
-        ArrayList<Tower> towers = islands.get(IDIsland1).getTowers();
-
-        students.addAll(islands.get(IDIsland2).getStudents());
-        towers.addAll(islands.get(IDIsland2).getTowers());
-
-        try{
-            for(int i = 0; i < ghostIslands.length; i++){
-                if (ghostIslands[i] == null) {
-                    if(islands.get(IDIsland1).getTowerColor() == islands.get(IDIsland2).getTowerColor()){
-                        ghostIslands[i] = new GhostIsland(i, students , towers );
-                        break;
-                    }
-                    else throw new DifferentColorTowerException("Different tower. Impossible merging.");
-                }
-            }
-            islands.get(IDIsland1).disable();
-            islands.get(IDIsland1).setGroupID(groupID);
-            islands.get(IDIsland2).disable();
-            islands.get(IDIsland2).setGroupID(groupID);
-
-        } catch (DifferentColorTowerException e) {
-            e.printStackTrace();
-        }
-    }
-
-     */
 
     public void merge(int IDIsland1, int IDIsland2) {
         int groupID = 0;
@@ -193,51 +142,6 @@ public class Map extends Observable implements Serializable {
         }
     }
 
-    public void mergeHybridGhostFeature(int IDGhostIsland, int IDIsland) throws DifferentColorTowerException {
-        //da implementare
-        /*
-        Integer[] noc, nocIsland;
-        noc = groupIDsGhostIsland[IDGhostIsland].getNumberOfColors();
-        nocIsland = islands.get(IDIsland).getNumberOfColors();
-        //noc parameter initialization
-        for(int i = 0; i < PawnColors.values().length - 1; i++) noc[i] += nocIsland[i];
-         */
-
-        if (islands.get(IDIsland).getTowerColor() == ghostIslands[IDGhostIsland].getTowerColor()) {
-            ghostIslands[IDGhostIsland].getStudents().addAll(islands.get(IDIsland).getStudents());
-            ghostIslands[IDGhostIsland].getTowers().addAll(islands.get(IDIsland).getTowers());
-        } else throw new DifferentColorTowerException("Different tower color. Impossible merging");
-
-        islands.get(IDIsland).disable();
-        islands.get(IDIsland).setGroupID(IDGhostIsland);
-    }
-
-    public void mergeGhost(int IDGhostIsland1, int IDGhostIsland2) throws DifferentColorTowerException {
-        /*
-        Integer[] noc1, noc2;
-        noc1 = groupIDsGhostIsland[IDGhostIsland1].getNumberOfColors();
-        noc2 = groupIDsGhostIsland[IDGhostIsland2].getNumberOfColors();
-
-        //merge dei noc
-        for(int i = 0; i < PawnColors.values().length - 1; i++) noc1[i] += noc2[i];
-        */
-
-        //merge towers
-        if (ghostIslands[IDGhostIsland1].getTowerColor() == ghostIslands[IDGhostIsland2].getTowerColor()) {
-            ghostIslands[IDGhostIsland1].getStudents().addAll(ghostIslands[IDGhostIsland2].getStudents());
-            ghostIslands[IDGhostIsland1].getTowers().addAll(ghostIslands[IDGhostIsland2].getTowers());
-        } else throw new DifferentColorTowerException("Different tower. Impossible merging");
-
-        //set isole seconda con groupID prima
-        for( Island island : islands) {
-            if( island.getGroupID() == ghostIslands[IDGhostIsland2].getID() )
-                island.setGroupID(ghostIslands[IDGhostIsland1].getID());
-        }
-
-        //eliminare la seconda
-        ghostIslands[IDGhostIsland2] = null;
-    }
-
     public int getNumberOfGhostIsland() {
         int c=0;
         while(ghostIslands[c]!=null)
@@ -274,13 +178,4 @@ public class Map extends Observable implements Serializable {
 
         return islandPrev.isDisabled() ? getGhostIsland(islandPrev.getID()) : islandPrev;
     }
-
-    public int getNextInt(int islandID){
-        return islandID == 11 ? 0 : islandID + 1;
-    }
-
-    public int getPrevInt(int islandID){
-        return islandID == 0 ? 11 : islandID - 1;
-    }
-
 }

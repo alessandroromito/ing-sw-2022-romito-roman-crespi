@@ -4,7 +4,6 @@ import it.polimi.ingsw.network.message.ErrorMessage;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.observer.Observable;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -15,7 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
- *  Socket client implementation
+ *  Socket client implementation.
  */
 public class Client extends Observable {
 
@@ -45,7 +44,7 @@ public class Client extends Observable {
 
 
     /**
-     *  Reads a message from the server vis socket and notify the ClientController via Observer
+     *  Reads a message from the server vis socket and notify the ClientController via Observer.
      */
     public void readMessage() {
         readExecutionQueue.execute(() -> {

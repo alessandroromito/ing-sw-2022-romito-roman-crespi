@@ -4,8 +4,11 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
+import java.io.Serial;
+
 public class ReconnectingMessage extends Message {
-    private static final long serialVersionUID = 112456L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = 8577406039152802393L;
 
     private final String nicknameReconnecting;
 

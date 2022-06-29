@@ -2,8 +2,12 @@ package it.polimi.ingsw.network.message;
 
 import it.polimi.ingsw.network.server.MessageHandler;
 
+import java.io.Serial;
+
 public class Card209Message extends UseEffectMessage{
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = -8849298157951805972L;
+
     int studentPos;
     int islandNumber;
 

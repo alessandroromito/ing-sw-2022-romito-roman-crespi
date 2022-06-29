@@ -2,17 +2,19 @@ package it.polimi.ingsw.server.model.component;
 
 import it.polimi.ingsw.server.enumerations.Animals;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * This class identifies a complex component of the game map.
  */
 public class AssistantCard extends Component implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 6062936035595096057L;
 
     private Animals animal;
-    private int value;
-    private int movement;
+    private final int value;
+    private final int movement;
 
     /**
      * Default constructor.

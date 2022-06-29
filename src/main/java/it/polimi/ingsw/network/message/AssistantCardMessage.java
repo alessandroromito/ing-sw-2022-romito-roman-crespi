@@ -3,10 +3,14 @@ package it.polimi.ingsw.network.message;
 import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.component.AssistantCard;
+
+import java.io.Serial;
 import java.util.List;
 
 public class AssistantCardMessage extends  Message{
-    private static final long serialVersionUID = 1001L; //da scegliere
+
+    @Serial
+    private static final long serialVersionUID = 17189246329856329L;
 
     private final List<AssistantCard> assistantCards;
     private final List<AssistantCard> playedAssistantCards;

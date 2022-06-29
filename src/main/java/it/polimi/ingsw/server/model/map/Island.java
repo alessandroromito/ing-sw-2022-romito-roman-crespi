@@ -49,7 +49,9 @@ public class Island implements Serializable {
         return towers;
     }
 
-    public void setGroupID(int groupID){this.groupID = groupID;}
+    public void setGroupID(int groupID){
+        this.groupID = groupID;
+    }
 
     public int getInfluence(Player p){
         int influence = 0;
@@ -102,7 +104,7 @@ public class Island implements Serializable {
     }
 
     public int getTowerNumber(){
-        return towers == null ? 0 : towers.size();
+        return towers.size();
     }
 
     public void disable(){
@@ -129,24 +131,11 @@ public class Island implements Serializable {
     public void addTower(Tower tower) {
         if(getTowerNumber() == 0) {
             towers.add(tower);
-        }
-        else System.out.println("There is already a tower in this island!");
+        } else System.out.println("There is already a tower in this island!");
     }
 
     public TowerColors getTowerColor(){
         return towers.isEmpty() ? null : towers.get(0).getColor();
-    }
-
-    public ArrayList<Tower> switchTowerColor(ArrayList<Tower> towers){
-        ArrayList<Tower> temp;
-        temp = this.towers;
-        this.towers = towers;
-        return temp;
-    }
-
-    public void deleteComponents(){
-        towers = null;
-        students = null;
     }
 
     public void addNoEntryTile (NoEntryTile t){
@@ -164,6 +153,6 @@ public class Island implements Serializable {
     }
 
     public void removeTowers(){
-        towers = null;
+        towers = new ArrayList<>();
     }
 }

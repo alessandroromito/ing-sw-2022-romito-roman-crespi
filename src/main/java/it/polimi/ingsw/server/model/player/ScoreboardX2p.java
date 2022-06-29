@@ -11,27 +11,28 @@ import it.polimi.ingsw.server.model.component.Tower;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ScoreboardX2p implements Scoreboard, Serializable {
 
-    private Player player;
-    private boolean avaibleCoin[][] = new boolean[5][3];
+    private final Player player;
+    private final boolean[][] availableCoin = new boolean[5][3];
 
     private final StudentDisc[] entrance = new StudentDisc[7];
 
     private final Integer[] diningRoom;
     private final boolean[] professorTable;
 
-    private ArrayList<ProfessorPawn> professorList = new ArrayList<>();
-    private ArrayList<Tower> towers = new ArrayList<>(8);
+    private final ArrayList<ProfessorPawn> professorList = new ArrayList<>();
+    private final ArrayList<Tower> towers = new ArrayList<>(8);
     private TowerColors towerColor;
 
     public ScoreboardX2p(TowerColors towerColor,Player p){
         this.player = p;
         for(int i=0;i<5;i++)
             for(int k=0;k<3;k++)
-                avaibleCoin[i][k] = true;
+                availableCoin[i][k] = true;
 
         for(int i=0; i<7; i++) entrance[i] = null;
 
@@ -72,9 +73,8 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
             professorTable[color.ordinal()] = false;
             for(ProfessorPawn professor : professorList){
                 if(professor.getColor() == color) {
-                    ProfessorPawn temp = professor;
                     professorList.remove(professor);
-                    return temp;
+                    return professor;
                 }
             }
             throw new MissingProfessorException("Unable to remove professor");
@@ -96,7 +96,6 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     @Override
     public boolean getProfessor(PawnColors color) {
-        //return this.professorTable[color.ordinal()];
         for(ProfessorPawn professor : professorList){
             if(professor.getColor() == color)
                 return true;
@@ -126,8 +125,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
     @Override
     public void addStudentOnEntrance(StudentDisc student) {
         try{
-            int k = 0;
-            for(k=0;k<=6;k++)
+            for(int k=0;k<=6;k++)
                 if(entrance[k] == null){
                     entrance[k] = student;
                     return;
@@ -155,8 +153,8 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
                     diningRoom[entrance[i].getColorInt()]++;
 
                     if(diningRoom[entrance[i].getColorInt()] %3 == 0)
-                        if(avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ]){
-                            avaibleCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ] = false;
+                        if(availableCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ]){
+                            availableCoin[ entrance[i].getColorInt() ][ diningRoom[entrance[i].getColorInt()] /3 ] = false;
                             player.addCoin();
                         }
 
@@ -186,11 +184,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     @Override
     public List<StudentDisc> getEntrance() {
-        List<StudentDisc> tempList = new ArrayList<>();
-        for(int i=0; i<7; i++){
-            tempList.add(entrance[i]);
-        }
-        return tempList;
+        return new ArrayList<>(Arrays.asList(entrance).subList(0, 7));
     }
 
     @Override

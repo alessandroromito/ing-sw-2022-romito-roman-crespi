@@ -10,6 +10,9 @@ import it.polimi.ingsw.view.VirtualView;
 import java.io.Serializable;
 import java.util.Map;
 
+/**
+ * Class that contains methods about check and validation of the messages sent by client side.
+ */
 public class InputController implements Serializable {
 
     private Game game;
@@ -24,7 +27,6 @@ public class InputController implements Serializable {
 
     /**
      * Check if a nickname is free or not.
-     *
      * @param nickname new client's nickname.
      * @return {code @true} if it's a valid nickname {code @false} otherwise.
      */
@@ -34,19 +36,19 @@ public class InputController implements Serializable {
         } else return !gameController.isNicknameTaken(nickname);
     }
 
+    /**
+     * Check if the player number is valid or not.
+     * @param chosenPlayerNumber player number chosen by the client.
+     * @return {code @true} if it is ok, {code @false} otherwise.
+     */
     public boolean playerNumberReplyCheck(int chosenPlayerNumber) {
-        if (chosenPlayerNumber < 4 && chosenPlayerNumber> 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return chosenPlayerNumber < 4 && chosenPlayerNumber > 1;
     }
 
     /**
-     * Check that the player could move motherNature forward the requested steps
-     *
-     * @param message received from the client
-     * @return {code @true} if he could move {code @false} if not
+     * Check that the player could move motherNature forward the requested steps.
+     * @param message received from the client.
+     * @return {code @true} if he could move {code @false} otherwise.
      */
     public boolean moveCheck(MoveMotherNatureMessage message) {
         int steps = message.getSteps();
@@ -60,15 +62,15 @@ public class InputController implements Serializable {
         }
         else{
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
-            virtualView.showMessage(message.getNickname(), "You can't move Mother Nature so far!");
+            virtualView.showMessage("Non puoi spostare madre nature così lontano!");
             return false;
         }
     }
 
     /**
-     *
-     * @param card the player's card he wants to choose
-     * @return true if it's valid or false if it's not
+     * Check if the assistant card chosen by the client can be used or not.
+     * @param card the player's card he wants to choose.
+     * @return {code @true} if it's valid or {code @false} otherwise.
      */
     public boolean validateCard(AssistantCard card) {
         for(Player player: game.getPlayers()){
@@ -82,10 +84,9 @@ public class InputController implements Serializable {
     }
 
     /**
-     * Check that the player have enough coin
-     *
-     * @param message
-     * @return
+     * Check that the player have enough coin to use effects.
+     * @param message type of effect to use.
+     * @return {code @true} if it is ok, {code @false} otherwise.
      */
     public boolean checkCoin(UseEffectMessage message) {
         int cost = game.getCharacterCardByID(message.getCardID()).getCost();
@@ -94,14 +95,26 @@ public class InputController implements Serializable {
         return player.getCoin() >= cost;
     }
 
+    /**
+     * Set Game.
+     * @param game parameter to set this.game.
+     */
     public void setGame(Game game) {
         this.game = game;
     }
 
+    /**
+     * Set virtualViewMap.
+     * @param virtualViewMap parameter to set this.virtualViewMap.
+     */
     public void setVirtualViewMap(Map<String, VirtualView> virtualViewMap) {
         this.virtualViewMap = virtualViewMap;
     }
 
+    /**
+     * Remove the virtualView from a client.
+     * @param nickname nickname of the client.
+     */
     public void removeVirtualView(String nickname) {
         virtualViewMap.remove(nickname);
     }

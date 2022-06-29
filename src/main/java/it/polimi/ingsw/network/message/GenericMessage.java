@@ -4,8 +4,11 @@ import it.polimi.ingsw.network.server.MessageHandler;
 import it.polimi.ingsw.server.enumerations.MessageType;
 import it.polimi.ingsw.server.model.Game;
 
+import java.io.Serial;
+
 public class GenericMessage extends Message {
-    private static final long serialVersionUID = 1L; //da scegliere
+    @Serial
+    private static final long serialVersionUID = -8549635370892576323L;
 
     private final String message;
 
