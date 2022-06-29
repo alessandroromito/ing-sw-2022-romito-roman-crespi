@@ -29,7 +29,6 @@ public class ExpertGame extends Game {
 
     /**
      * Default constructor
-     *
      * @param playersNicknames List of players nicknames
      */
     public ExpertGame(List<String> playersNicknames) {
@@ -37,11 +36,15 @@ public class ExpertGame extends Game {
         ExpertGameInitialization();
     }
 
+    /**
+     * Initialize the expert version of the game
+     */
     public void ExpertGameInitialization() {
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();
         }
+
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
         for(int i=0;i<9;i++){

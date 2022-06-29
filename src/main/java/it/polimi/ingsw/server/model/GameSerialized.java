@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.player.Player;
@@ -10,17 +11,30 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Reduced version of the whole game class, used to refresh the map with the changes during the game
+ * Reduced as possible to be able to sent it through the network easily
+ */
 public class GameSerialized implements Serializable {
     @Serial
     private static final long serialVersionUID = -7030282992609372936L;
 
     private final Boolean expertMode;
     private final int motherNaturePos;
+
+    private final ArrayList<CharacterCard> characterCards = new ArrayList<>();
     private final ArrayList<Cloud> clouds = new ArrayList<>();
     private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
 
+    /**
+     * Default constructor
+     * @param game game to be reduced
+     */
     public GameSerialized(Game game){
+        this.motherNaturePos = game.getMap().getMotherNaturePosition();
+        this.expertMode = game.isExpertMode();
+
         ArrayList<Integer> groupIDs = new ArrayList<>();
 
         for(Island island : game.getMap().getIslands()){
@@ -47,33 +61,56 @@ public class GameSerialized implements Serializable {
 
         clouds.addAll(game.getMap().getClouds());
 
-        this.motherNaturePos = game.getMap().getMotherNaturePosition();
-        this.expertMode = game.isExpertMode();
+        if(expertMode)
+            characterCards.addAll(game.getCharacterCards());
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<SerializableIsland> getSerializableIslands() {
         return serializableIslands;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<SerializableScoreboard> getSerializableScoreboard() {
         return serializableScoreboard;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<Cloud> getClouds() {
         return clouds;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getMotherNaturePos() {
         return motherNaturePos;
+    }
+
+    /**
+     * Getter method
+     * @return
+     */
+    public Boolean getExpertMode() {
+        return expertMode;
+    }
+
+    public ArrayList<CharacterCard> getCharacterCards() {
+        return characterCards;
     }
 
     @Override
     public String toString() {
         return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
     }
-
-    public Boolean getExpertMode() {
-        return expertMode;
-    }
-
 }
