@@ -51,10 +51,11 @@ public interface ViewObserver {
 
     void onUpdateUse217(PawnColors color);
 
+    void onUpdateUse218(List<Integer> entranceStud, List<PawnColors> diningStud);
+
     void onUpdateUse219(int finalStudentPos);
 
     void onUpdateUse220(PawnColors red);
 
     void update(Message message);
-
 }

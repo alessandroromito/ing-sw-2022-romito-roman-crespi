@@ -654,7 +654,65 @@ public class CLI extends ViewObservable implements View {
 
             }
             case 2018 ->{
+                int count = 0;
+                String color;
+                List<Integer> entranceStud = new ArrayList<>();
+                List<PawnColors> diningStud = new ArrayList<>();
 
+                do {
+                    error = false;
+                    out.println("Scegli 1 studente da cambiare dal tuo ingresso: (inserisci la posizione)");
+
+                    int studentPos;
+                    try {
+                        studentPos = Integer.parseInt(readRow());
+                    } catch (NumberFormatException e) {
+                        out.println("Inserisci un numero!");
+                        studentPos = Integer.parseInt(readRow());
+                    }
+
+                    if (studentPos > 9 || studentPos < 0) {
+                        out.println("Numero inserito non valido. Riprovare.");
+                        error = true;
+                    }
+
+                    if(!error){
+                        entranceStud.add(studentPos);
+                        count++;
+                        out.println("Vuoi scambiarne ancora? ");
+                        char answer = readRow().charAt(0);
+                        if(answer != 'Y' && answer != 'y'){
+                            break;
+                        }
+                    }
+                } while (error || count < 2);
+
+                for(int i = 0; i < count; i++) {
+                    do {
+                        error = false;
+                        out.println("Scegli il colore dello studente della sala con cui scambiarlo:");
+                        out.print((ANSI_RED + "rosso, " + ANSI_RESET));
+                        out.print((ANSI_YELLOW + "giallo, " + ANSI_RESET));
+                        out.print((ANSI_GREEN + "verde, " + ANSI_RESET));
+                        out.print((ANSI_BLUE + "blu, " + ANSI_RESET));
+                        out.println((ANSI_PINK + "rosa" + ANSI_RESET));
+
+                        color = readRow();
+                        if(!color.equals("rosso") && !color.equals("verde") && !color.equals("giallo") && !color.equals("rosa") && !color.equals("blu")) {
+                            out.println("Colore inserito non valido. Riprovare.");
+                            error = true;
+                        }
+                        switch (color){
+                            case "rosso" -> diningStud.add(PawnColors.RED);
+                            case "giallo" -> diningStud.add(PawnColors.YELLOW);
+                            case "verde" -> diningStud.add(PawnColors.GREEN);
+                            case "blu" -> diningStud.add(PawnColors.BLUE);
+                            case "rosa" -> diningStud.add(PawnColors.PINK);
+                        }
+                    } while (error);
+                }
+
+                notifyObserver(obs -> obs.onUpdateUse218(entranceStud, diningStud));
             }
             case 219 -> {
                 Card_219 card219 = (Card_219) characterCard;

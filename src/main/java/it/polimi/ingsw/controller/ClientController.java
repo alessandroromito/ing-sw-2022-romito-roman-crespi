@@ -242,6 +242,11 @@ public class ClientController implements ViewObserver, Observer {
     }
 
     @Override
+    public void onUpdateUse218(List<Integer> entranceStud, List<PawnColors> diningStud) {
+        client.sendMessage(new Card218Message(this.nickname, entranceStud, diningStud));
+    }
+
+    @Override
     public void onUpdateUse219(int studentNum) {
         client.sendMessage(new Card219Message(this.nickname, studentNum));
     }
