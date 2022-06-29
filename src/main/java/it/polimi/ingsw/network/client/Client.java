@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
- *  Socket client implementation
+ *  Socket client implementation.
  */
 public class Client extends Observable {
 
@@ -45,7 +45,7 @@ public class Client extends Observable {
 
 
     /**
-     *  Reads a message from the server vis socket and notify the ClientController via Observer
+     *  Reads a message from the server vis socket and notify the ClientController via Observer.
      */
     public void readMessage() {
         readExecutionQueue.execute(() -> {

@@ -7,7 +7,6 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.GameState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.GameAlreadyStartedException;
-import it.polimi.ingsw.server.extra.ANSICostants;
 import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.ExpertGame;
 import it.polimi.ingsw.server.model.Game;
@@ -25,6 +24,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This class represent the controller of the game.
+ * Show messages, check win conditions, add players to the game.
+ */
 public class GameController implements Observer, Serializable {
     public static final String SAVING = "dataSaving.rcr";
 
@@ -46,6 +49,9 @@ public class GameController implements Observer, Serializable {
     private boolean resume = false;
     private boolean inPause;
 
+    /**
+     * Default constructor.
+     */
     public GameController(){
         init();
     }
@@ -150,6 +156,9 @@ public class GameController implements Observer, Serializable {
         this.gameState = gameState;
     }
 
+    /**
+     * Check if there is a winner.
+     */
     public void winnerChecker(){
         List<Player> possibleWinners = new ArrayList<>();
         int minTower = 8, maxProfessor = 0;
@@ -214,8 +223,8 @@ public class GameController implements Observer, Serializable {
      * Method that handle the login of a player.
      * Check if it's the first or if is a reconnecting player.
      *
-     * @param nickname nickname of the player
-     * @param virtualView virtualView associated
+     * @param nickname nickname of the player.
+     * @param virtualView virtualView associated.
      */
     public void addPlayer(String nickname, VirtualView virtualView) {
         if(playersNicknames.contains(nickname) && reconnectingPlayersList.contains((nickname))){
@@ -274,7 +283,7 @@ public class GameController implements Observer, Serializable {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                if(restoredGameController != null && new HashSet<>(playersNicknames).containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
+                if (restoredGameController != null && new HashSet<>(playersNicknames).containsAll( restoredGameController.getTurnController().getNicknameQueue() ) &&
                         getChosenPlayerNumber() == restoredGameController.getChosenPlayerNumber() &&
                             chosenExpertMode == restoredGameController.chosenExpertMode) {
                     initControllersFromRestoreGameSaved( restoredGameController );
@@ -282,14 +291,19 @@ public class GameController implements Observer, Serializable {
                     turnController.resettingTurnCount();
                     Server.LOGGER.info("Game saved found. Restoring...");
                     turnController.newTurn();
-                } else
+                } else {
                     startGame();
+                }
             }
-
         } else
             virtualView.showLoginResult(nickname,true, false);
+        }
     }
 
+    /**
+     * Method that initialize a new game from data saved and restored.
+     * @param restoredGameController gameController restored from "dataSaving.rcr" thanks to DataSaving class.
+     */
     public void initControllersFromRestoreGameSaved(GameController restoredGameController) {
         it.polimi.ingsw.server.model.map.Map restoredMap = restoredGameController.game.getMap();
         Bag restoredBag = restoredGameController.game.getBag();
@@ -330,6 +344,9 @@ public class GameController implements Observer, Serializable {
         showGenericMessageToAll(ANSICostants.ANSI_GREEN + "Rigenerazione partita avvenuta con successo!" + ANSICostants.ANSI_RESET);
     }
 
+    /**
+     * Update graphic interfaces after a restoring of gameController from a file.
+     */
     public void updateGraphicInterfaces() {
         for (VirtualView virtualView : virtualViewMap.values() ) {
             virtualView.showGameScenario(game.getGameSerialized());
@@ -339,8 +356,8 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
-     * Shows a message to all player that someone has reconnected
-     * @param nickname nickname of the reconnected player
+     * Shows a message to all player that someone has reconnected.
+     * @param nickname nickname of the reconnected player.
      */
     private void showReconnectingMessage(String nickname) {
         for(VirtualView virtualView : virtualViewMap.values()){
@@ -387,7 +404,7 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
-     * Set the game mode selected by the host
+     * Set the game mode selected by the host.
      * @param message
      */
     public void setChosenExpertMode(GameModeReplyMessage message) {
@@ -399,9 +416,9 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
-     * Check if the nickname chosen is valid or not
-     * @param nickname nickname chosen
-     * @return true if it's ok, false otherwise
+     * Check if the nickname chosen is valid or not.
+     * @param nickname nickname chosen.
+     * @return true if it's ok, false otherwise.
      */
     public boolean isNicknameTaken(String nickname) {
         if(gameState.equals(GameState.GAME_ROOM))
@@ -510,11 +527,18 @@ public class GameController implements Observer, Serializable {
             vv.showDisconnectedPlayerMessage(nickname);
     }
 
+    /**
+     * Call a game method that refill the clouds with students.
+     */
     public void refillClouds(){
 
         game.refillClouds();
     }
 
+    /**
+     * Set the assistant card.
+     * @param assistantCardMessage assistantCard chosen.
+     */
     public void setAssistantCard(AssistantCardMessage assistantCardMessage) {
         if(turnController.getPhaseState() == PhaseState.PLANNING_PHASE){
             if(inputController.validateCard(assistantCardMessage.getAssistantCards().get(0))) {
@@ -532,21 +556,36 @@ public class GameController implements Observer, Serializable {
         else showMessage(assistantCardMessage.getNickname(), "You can't set the assistant card in this phase!");
     }
 
+    /**
+     * Send info method for gamemode normal.
+     * @param gameInfoMessage message that contains all the parameters required.
+     */
     public void sendInfo(GameInfoMessage gameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(gameInfoMessage.getNickname());
         virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer());
     }
 
+    /**
+     * Send info method for gamemode expert.
+     * @param expertGameInfoMessage message that contains all the parameters required.
+     */
     public void sendInfo(ExpertGameInfoMessage expertGameInfoMessage) {
         VirtualView virtualView = virtualViewMap.get(expertGameInfoMessage.getNickname());
         virtualView.showGameInfo(game.getPlayersNicknames(), game.getMap().getNumberOfGhostIsland(), game.getBag().getBagStudents().size(), turnController.getActivePlayer(), game.getCharacterCards());
     }
 
+    /**
+     * Manage the user choose of not to use the effect of the characterCard.
+     */
     public void noApplyEffect() {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE && turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
     }
 
+    /**
+     * Manage the user choose to use the effect of the characterCard.
+     * @param useEffectMessage specify the effect to be used.
+     */
     public void applyEffect(UseEffectMessage useEffectMessage) {
         if(turnController.getPhaseState() == PhaseState.ACTION_PHASE){
             if(inputController.checkCoin(useEffectMessage)){
@@ -658,26 +697,41 @@ public class GameController implements Observer, Serializable {
 
 
     /**
-     * Return the gameState of the game
-     *
+     * Return the gameState of the game.
      * @return gameState enum
      */
     public GameState getGameState() {
         return gameState;
     }
 
+    /**
+     * Getter method.
+     * @return game.
+     */
     public Game getGame() {
         return this.game;
     }
 
+    /**
+     * Getter method.
+     * @return a list of String containing the nickname of all the players.
+     */
     public List<String> getPlayersNicknames() {
         return playersNicknames;
     }
 
+    /**
+     * Getter method.
+     * @return the virtualViewMap.
+     */
     public Map<String, VirtualView> getVirtualViewMap() {
         return virtualViewMap;
     }
 
+    /**
+     * Getter method.
+     * @return the player number chosen by the user at the start of the game (2 or 3).
+     */
     public int getChosenPlayerNumber() {
         return chosenPlayerNumber;
     }
@@ -689,18 +743,34 @@ public class GameController implements Observer, Serializable {
         return resume;
     }
 
+    /**
+     * Set the resumeGame parameter.
+     * @param resumeGame boolean value to be assigned to this.resume.
+     */
     public void setResumeGame(boolean resumeGame) {
         this.resume = resumeGame;
     }
 
+    /**
+     * Set the inPause parameter.
+     * @param inPause boolean value to be assigned to this.inPause.
+     */
     public void setInPause(boolean inPause) {
         this.inPause = inPause;
     }
 
+    /**
+     * Getter method.
+     * @return true if game is in pause, false if it is not.
+     */
     public boolean isInPause() {
         return inPause;
     }
 
+    /**
+     * Getter method.
+     * @return the reconnectingPlayerList.
+     */
     public ArrayList<String> getReconnectingPlayersList() {
         return reconnectingPlayersList;
     }
