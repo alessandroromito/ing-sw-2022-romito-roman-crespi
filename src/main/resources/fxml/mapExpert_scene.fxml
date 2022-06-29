@@ -694,7 +694,7 @@
             </Bloom>
          </effect>
       </Label>
-      <MenuButton fx:id="islandMenu" alignment="CENTER" disable="true" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" opacity="0.85" popupSide="RIGHT" prefHeight="34.0" prefWidth="174.0" text="SPOSTA SU ISOLA" textAlignment="CENTER" visible="false">
+      <MenuButton fx:id="islandMenu" alignment="CENTER" disable="true" layoutX="50.0" layoutY="50.0" mnemonicParsing="false" opacity="0.85" popupSide="TOP" prefHeight="34.0" prefWidth="174.0" text="SELEZIONA ISOLA" textAlignment="CENTER" visible="false">
          <items>
             <MenuItem mnemonicParsing="false" text="ISOLA 1" />
             <MenuItem mnemonicParsing="false" text="ISOLA 2" />
@@ -708,6 +708,18 @@
             <MenuItem mnemonicParsing="false" text="ISOLA 10" />
             <MenuItem mnemonicParsing="false" text="ISOLA 11" />
             <MenuItem mnemonicParsing="false" text="ISOLA 12" />
+         </items>
+         <font>
+            <Font name="Berlin Sans FB" size="16.0" />
+         </font>
+      </MenuButton>
+      <MenuButton fx:id="colorMenu" alignment="CENTER" disable="true" layoutX="60.0" layoutY="60.0" mnemonicParsing="false" opacity="0.85" popupSide="TOP" prefHeight="34.0" prefWidth="174.0" text="SELEZIONA COLORE" textAlignment="CENTER" visible="false">
+         <items>
+            <MenuItem mnemonicParsing="false" text="Rosso" />
+            <MenuItem mnemonicParsing="false" text="Blu" />
+            <MenuItem mnemonicParsing="false" text="Verde" />
+            <MenuItem mnemonicParsing="false" text="Giallo" />
+            <MenuItem mnemonicParsing="false" text="Viola" />
          </items>
          <font>
             <Font name="Berlin Sans FB" size="16.0" />

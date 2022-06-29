@@ -320,7 +320,11 @@ public class GraphicController extends ViewObservable implements View {
 
     @Override
     public void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
-
+        System.out.println("Nickname: "+nickname+" , giocatore attivo: "+activePlayer);
+        if(activePlayer.equals(nickname))
+            mapSceneManager.setActive(true);
+        else
+            mapSceneManager.setActive(false);
     }
 
     @Override
