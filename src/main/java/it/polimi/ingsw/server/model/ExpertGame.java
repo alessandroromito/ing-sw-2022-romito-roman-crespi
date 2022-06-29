@@ -185,6 +185,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -221,6 +223,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -249,6 +253,7 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
     }
 
     /**
@@ -265,6 +270,7 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
 
     }
 
@@ -285,6 +291,7 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
     }
 
     /**
@@ -302,6 +309,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -315,6 +324,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -340,6 +351,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
@@ -357,6 +370,8 @@ public class ExpertGame extends Game {
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
+        else turnController.actionPhase();
+
     }
 
     /**
