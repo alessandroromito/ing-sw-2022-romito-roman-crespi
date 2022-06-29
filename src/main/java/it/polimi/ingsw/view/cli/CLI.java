@@ -562,7 +562,7 @@ public class CLI extends ViewObservable implements View {
 
                 do {
                     error = false;
-                    out.println("Scegli 1 studente da cambiare dal tuo ingresso: (inserisci la posizione)");
+                    out.println("Scegli 1 studente da cambiare dalla tua entrata: (inserisci la posizione partendo da 0)");
 
                     int studentPos;
                     try {
@@ -572,7 +572,7 @@ public class CLI extends ViewObservable implements View {
                         studentPos = Integer.parseInt(readRow());
                     }
 
-                    if (studentPos > 9 || studentPos < 0) {
+                    if (studentPos > 9 || studentPos < 0 || entranceStud.contains(studentPos)) {
                         out.println("Numero inserito non valido. Riprovare.");
                         error = true;
                     }
@@ -580,7 +580,7 @@ public class CLI extends ViewObservable implements View {
                     if(!error){
                         entranceStud.add(studentPos);
                         count++;
-                        out.println("Vuoi scambiarne ancora? ");
+                        out.println("Vuoi scambiarne ancora? (Y/N)");
                         char answer = readRow().charAt(0);
                         if(answer != 'Y' && answer != 'y'){
                             break;
@@ -607,13 +607,14 @@ public class CLI extends ViewObservable implements View {
                             studentPos = Integer.parseInt(readRow());
                         }
 
-                        if (studentPos > card_215.getStudents().size() - 1 || studentPos < 0) {
+                        if(studentPos > card_215.getStudents().size() - 1 || studentPos < 0) {
                             out.println("Numero inserito non valido. Riprovare.");
                             error = true;
                         }
 
-                        if (!error) {
+                        if(!error) {
                             cardStudents.add(studentPos);
+                            card_215.getStudents().remove(studentPos);
                         }
                     } while (error);
                 }
@@ -653,7 +654,7 @@ public class CLI extends ViewObservable implements View {
                 }
 
             }
-            case 2018 ->{
+            case 218 ->{
                 int count = 0;
                 String color;
                 List<Integer> entranceStud = new ArrayList<>();
@@ -661,7 +662,7 @@ public class CLI extends ViewObservable implements View {
 
                 do {
                     error = false;
-                    out.println("Scegli 1 studente da cambiare dal tuo ingresso: (inserisci la posizione)");
+                    out.println("Scegli 1 studente da cambiare dalla tua entrata: (inserisci la posizione)");
 
                     int studentPos;
                     try {
@@ -671,7 +672,7 @@ public class CLI extends ViewObservable implements View {
                         studentPos = Integer.parseInt(readRow());
                     }
 
-                    if (studentPos > 9 || studentPos < 0) {
+                    if (studentPos > 9 || studentPos < 0 || entranceStud.contains(studentPos)) {
                         out.println("Numero inserito non valido. Riprovare.");
                         error = true;
                     }
@@ -679,7 +680,7 @@ public class CLI extends ViewObservable implements View {
                     if(!error){
                         entranceStud.add(studentPos);
                         count++;
-                        out.println("Vuoi scambiarne ancora? ");
+                        out.println("Vuoi scambiarne ancora? (Y/N)");
                         char answer = readRow().charAt(0);
                         if(answer != 'Y' && answer != 'y'){
                             break;
