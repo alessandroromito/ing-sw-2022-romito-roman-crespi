@@ -220,4 +220,10 @@ public class ScoreboardX3p implements Scoreboard, Serializable {
     public void addTowers(ArrayList<Tower> towers) {
         this.towers.addAll(towers);
     }
+
+    @Override
+    public void removeStudentFromDining(StudentDisc studentDisc) {
+        diningRoom[studentDisc.getColor().ordinal()]--;
+        diningRoomList.removeIf(student -> student.getColor() == studentDisc.getColor());
+    }
 }
