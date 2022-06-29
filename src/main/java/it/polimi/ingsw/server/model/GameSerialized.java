@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
+import it.polimi.ingsw.server.model.map.Cloud;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.player.Player;
 
@@ -13,6 +14,7 @@ public class GameSerialized implements Serializable {
 
     private final Boolean expertMode;
     private final int motherNaturePos;
+    private final ArrayList<Cloud> clouds = new ArrayList<>();
     private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
 
@@ -41,6 +43,8 @@ public class GameSerialized implements Serializable {
             serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player));
         }
 
+        clouds.addAll(game.getMap().getClouds());
+
         this.motherNaturePos = game.getMap().getMotherNaturePosition();
         this.expertMode = game.isExpertMode();
     }
@@ -51,6 +55,10 @@ public class GameSerialized implements Serializable {
 
     public ArrayList<SerializableScoreboard> getSerializableScoreboard() {
         return serializableScoreboard;
+    }
+
+    public ArrayList<Cloud> getClouds() {
+        return clouds;
     }
 
     public int getMotherNaturePos() {
@@ -65,4 +73,5 @@ public class GameSerialized implements Serializable {
     public Boolean getExpertMode() {
         return expertMode;
     }
+
 }

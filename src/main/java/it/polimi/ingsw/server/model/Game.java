@@ -254,7 +254,7 @@ public class Game extends Observable implements Serializable {
                      if(p.getScoreboard().getTowerColor() == oldColor){
                          p.getScoreboard().addTowers(island.getTowers());
                          island.removeTowers();
-                         // Add 1 tower to the old dominant player
+
                          island.addTower(tower); //add tower to island
                          System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID);
                          System.out.println("Move Tower/s " + oldColor + " Back To " + p.getNickname());
@@ -326,6 +326,8 @@ public class Game extends Observable implements Serializable {
 
         // CASE no tower on island
         if(island.getTowerNumber() == 0){
+            System.out.println("No tower on Island " + (islandID+1) + " CheckInfluence NO Tower");
+
             for(Player p : players){
                 int playerInfluence = island.getInfluence(p);
                 if(playerInfluence > bestInfluence){
@@ -342,23 +344,26 @@ public class Game extends Observable implements Serializable {
                 checkMerge(islandID);
 
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
-                return;
             }
-        }
-
-        // CASE there is already a tower
-        int currentPlayerInfluence = island.getInfluence(currentPlayer);
-        for(Player p : players){
-            if(p.getScoreboard().getTowerColor() == island.getTowerColor() && p.getScoreboard().getTowerColor() != currentPlayer.getScoreboard().getTowerColor()){
-                opponentPlayer = p;
-                break;
+        } else {
+            // CASE there is already a tower
+            System.out.println("Already a tower on Island " + (islandID+1) + " CheckInfluence");
+            int currentPlayerInfluence = island.getInfluence(currentPlayer);
+            System.out.println("current player influence: " + currentPlayerInfluence);
+            for(Player p : players){
+                if(p.getScoreboard().getTowerColor() == island.getTowerColor() && p.getScoreboard().getTowerColor() != currentPlayer.getScoreboard().getTowerColor()){
+                    opponentPlayer = p;
+                    break;
+                }
             }
-        }
-        if(opponentPlayer != null && currentPlayerInfluence > island.getInfluence(opponentPlayer)){
-            moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
-            checkMerge(islandID);
+            System.out.println("opponent player influence: " + island.getInfluence(opponentPlayer));
+            if(opponentPlayer != null && currentPlayerInfluence > island.getInfluence(opponentPlayer)){
+                moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
+                checkTowerWinner(currentPlayer);
+                checkMerge(islandID);
 
-            notifyObserver(new GameScenarioMessage(getGameSerialized()));
+                notifyObserver(new GameScenarioMessage(getGameSerialized()));
+            }
         }
     }
 
