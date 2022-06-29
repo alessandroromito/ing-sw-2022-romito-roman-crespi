@@ -366,6 +366,8 @@ public class ExpertGame extends Game {
         scoreboard.addStudentOnDining(card.getStudent(number));
         ((Card_219) activeCard).addStudent(bag.pickSorted());
 
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
+
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
