@@ -391,7 +391,16 @@ public class CLI extends ViewObservable implements View {
 
         do {
             if(!triedToUseCharacter) {
+                out.println();
                 out.println("E' il tuo turno...");
+
+                int i = 0;
+                for (CharacterCard characterCard : characterCards){
+                    out.println("Carta " + i + " - Costo " + characterCard.getCost());
+                    printEffect(characterCard.getID());
+                    i++;
+                }
+                out.println();
                 out.println("Vuoi usare una carta personaggio? Y/N");
             }else
                 out.println("Vuoi usare un'altra carta personaggio? Y/N");
@@ -403,13 +412,7 @@ public class CLI extends ViewObservable implements View {
             }
 
             triedToUseCharacter = true;
-            out.println("Scegli tra le seguenti Carte Personaggio:");
-            int i = 0;
-            for (CharacterCard characterCard : characterCards){
-                out.println("Carta " + i + " - Costo " + characterCard.getCost());
-                printEffect(characterCard.getID());
-                i++;
-            }
+            out.println("Scegli una Carta Personaggio:");
             out.println("Inserisci un numero tra 0 e " + (characterCards.size() - 1) + ":");
 
             try{
@@ -624,14 +627,14 @@ public class CLI extends ViewObservable implements View {
     private void printEffect(int ID) {
         switch(ID){
             case 209 -> out.println(ANSI_GREEN + "Prendi 1 studente dalla carta e piazzalo su un isola a tua scelta." + ANSI_RESET ); //tested
-            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET ); //tested
-            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET ); //tested
-            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET ); //tested
+            case 210 -> out.println(ANSI_GREEN + "Durante questo turno prendi il controllo dei professori anche se nella tua sala hai lo stesso numero di studenti del giocatore che li controlla in quel momento." + ANSI_RESET );
+            case 211 -> out.println(ANSI_GREEN + "Scegli un isola e calcola la maggioranza come se madre natura avesse terminato il suo percorso lì. \nIn questo turno madre natura si muoverà come di consueto e nell'isola dove terminerà il suo movimento la maggioranza verrà normalmente calcolata" + ANSI_RESET );
+            case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
             case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
-            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET ); //tested
+            case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
             case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza. " + ANSI_RESET );
-            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET ); //tested
+            case 219 -> out.println(ANSI_GREEN + "Prendi 1 studente da questa carta e piazzalo nella tua sala." + ANSI_RESET );
         }
     }
 

@@ -61,10 +61,11 @@ public class Server {
         }
         synchronized (lock) {
             String nickname = getNicknameFromClientHandler(clientHandler);
-            gameController.getReconnectingPlayersList().add(nickname);
+            if(gameController.getGame() != null && gameController.getGameState() == GameState.IN_GAME)
+                gameController.getReconnectingPlayersList().add(nickname);
 
             removeClient(nickname);
-            System.out.println("removeClient(" + nickname + ')');
+            System.out.println(nickname + " removed");
 
             if(nickname != null) {
                 gameController.showDisconnectionMessage(nickname);

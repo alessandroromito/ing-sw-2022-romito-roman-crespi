@@ -592,28 +592,33 @@ public class GameController implements Observer, Serializable {
             if(inputController.checkCoin(useEffectMessage)){
                 switch(useEffectMessage.getCardID()){
                     case 209 -> {
+                        System.out.println("Using 209");
                         Card209Message card209Message = (Card209Message) useEffectMessage;
                         if(game.useCharacter(209))
                             game.use_209(card209Message.getStudentPos(), card209Message.getIslandNumber()-1);
                         else System.out.println("Error while using 209");
                     }
                     case 210 -> {
+                        System.out.println("Using 210");
                         if(game.useCharacter(210))
                             game.use_210();
                         else System.out.println("Error while using 210");
                     }
                     case 211 -> {
+                        System.out.println("Using 211");
                         Card211Message card211Message = (Card211Message) useEffectMessage;
                         if(game.useCharacter(211))
                             game.use_211(card211Message.getIslandNumber());
                         else System.out.println("Error while using 211");
                     }
                     case 212 -> {
+                        System.out.println("Using 212");
                         if(game.useCharacter(212))
                             game.use_212();
                         else System.out.println("Error while using 212");
                     }
                     case 213 -> {
+                        System.out.println("Using 213");
                         Card213Message card213Message = (Card213Message) useEffectMessage;
                         if(game.useCharacter(213))
                             game.use_213(card213Message.getIslandNumber());
@@ -621,23 +626,27 @@ public class GameController implements Observer, Serializable {
 
                     }
                     case 214 -> {
+                        System.out.println("Using 214");
                         if(game.useCharacter(214))
                             game.use_214();
                         else System.out.println("Error while using 214");
                     }
                     case 216 -> {
+                        System.out.println("Using 216");
                         if(game.useCharacter(216))
                             game.use_216(game.getPlayerByNickname(useEffectMessage.getNickname()));
                         else System.out.println("Error while using 216");
 
                     }
                     case 217 -> {
+                        System.out.println("Using 217");
                         Card217Message card217Message = (Card217Message) useEffectMessage;
                         if(game.useCharacter(217))
                             game.use_217(card217Message.getColor());
                         else System.out.println("Error while using 217");
                     }
                     case 219 -> {
+                        System.out.println("Using 219");
                         Card219Message card219Message = (Card219Message) useEffectMessage;
                         if(game.useCharacter(219))
                             game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
