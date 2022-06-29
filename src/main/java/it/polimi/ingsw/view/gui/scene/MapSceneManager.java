@@ -1,17 +1,22 @@
 package it.polimi.ingsw.view.gui.scene;
 
 import it.polimi.ingsw.observer.ViewObservable;
+import it.polimi.ingsw.observer.ViewObserver;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.charactercards.Card_209;
+import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -265,16 +270,24 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private ImageView assistentCardOpponent2;
 
+    @FXML
+    private MenuButton islandMenu;
+
 
     private double r = 22;
     private double rIsl;
 
+    private List<List<Integer>> posWithGhost;
 
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
     private boolean opCard1 = false;
     private boolean opCard2 = false;
+    private int[] towerColor = new int[12];
+    private ImageView[] towers = new ImageView[12];
     ScoreboardSceneManager scoreboardSceneManager = null;
+    private int coins;
+    private int finalStudentPos;
 
     public void setPlayedAssistantCardsList(List<AssistantCard> playedAssistantCardsList) {
         this.playedAssistantCardsList = playedAssistantCardsList;
@@ -285,19 +298,25 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     ImageView[] cloudStudents1 = new ImageView[4];
     ImageView[] cloudStudents2 = new ImageView[4];
     ImageView[] towerBases = new ImageView[12];
+    ImageView[] island = new ImageView[12];
     ImageView[] assistantCards = new ImageView[10];
     ArrayList<ImageView>[] students = new ArrayList[12];
     ArrayList<Point>[] islands = new ArrayList[12];
     Point[] islandsPosCentre = new Point[12];
     Point[] motherNaturePoses = new Point[12];
-    int motherNaturePos = -1;
+    private int motherNaturePos = -1;
     private boolean switchMotherNature = false;
+    private List<CharacterCard> characterCards;
+    private ImageView[] cCards = new ImageView[3];
+    private ImageView[] card209 = new ImageView[4];
+
+    private GraphicController graphicController = null;
 
     public void setGraphicController(GraphicController graphicController) {
         this.graphicController = graphicController;
     }
 
-    private GraphicController graphicController = null;
+
 
     @FXML
     public void initialize() {
@@ -328,6 +347,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
 
+        island[0] = island1; island[1] = island2; island[2] = island3; island[3] = island4; island[4] = island5; island[5] = island6; island[6] = island7; island[7] = island8; island[8] = island9; island[9] = island10; island[10] = island11; island[11] = island12;
+
         motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
 
         cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2; cloudStudents1[3] = cloud1Student3;
@@ -342,6 +363,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         assistentCardOpponent1.setViewOrder(-1);    previous1lbl.setViewOrder(-1);  bgOpCard1.setViewOrder(-1); nicknameOp1.setViewOrder(-1);
         assistentCardOpponent2.setViewOrder(-1);    previous2lbl.setViewOrder(-1);  bgOpCard2.setViewOrder(-1); nicknameOp2.setViewOrder(-1);
 
+        for(int i=0;i<10;i++)   assistantCards[i].setVisible(true);
+
+        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
+
+        cCards[0] = card1; cCards[1] = card2; cCards[2] = card3;
+
         System.out.println("fine initialize fxml");
     }
 
@@ -350,17 +377,66 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         stage.setFullScreen(true);
     }
 
-    public void initializeCharacterCards(int[] number){
-        System.out.println("initialize characters");
-        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[0]+".jpg"));
+    public void initializeCharacterCards(){
+        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
+        int[] finalCharacterNumbers = new int[3];
+        for(int i = 0 ; i < characterCards.size(); i++)
+        {
+            finalCharacterNumbers[i] = characterCards.get(i).getID() - 209;
+        }
+
+        Image image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[0]+".jpg"));
         card1.setImage(image);
-        card1.setId(Integer.toString(number[0]));
-        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[1]+".jpg"));
+        card1.setId(Integer.toString(characterCards.get(0).getID()));
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[1]+".jpg"));
         card2.setImage(image);
-        card2.setId(Integer.toString(number[1]));
-        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+number[2]+".jpg"));
+        card2.setId(Integer.toString(characterCards.get(1).getID()));
+        image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Personaggi/CarteTOT_front"+finalCharacterNumbers[2]+".jpg"));
         card3.setImage(image);
-        card3.setId(Integer.toString(number[2]));
+        card3.setId(Integer.toString(characterCards.get(2).getID()));
+
+        if(gameSerialized.getActiveCardID()!=-1){
+            card1.setMouseTransparent(true); card2.setMouseTransparent(true); card3.setMouseTransparent(true);
+            Glow ef = new Glow(0.45);   ef.setInput(new DropShadow());
+            getCharacterById(gameSerialized.getActiveCardID()).setEffect(ef);
+        }else
+            for(int i=0;i<3;i++)
+                cCards[i].setMouseTransparent(false);
+
+        for(int i=0;i<3;i++)
+            if(characterCards.get(i).getCost()<=coins)
+                cCards[i].setDisable(false);
+
+        for(int i=0;i<3;i++)
+            switch(characterCards.get(i).getID()){
+            case 209 -> {
+                Card_209 temp = (Card_209) characterCards.get(i);
+                card209[0].setImage(createImage(temp.getStudents().get(0).getColorInt()));
+                card209[1].setImage(createImage(temp.getStudents().get(1).getColorInt()));
+                card209[2].setImage(createImage(temp.getStudents().get(2).getColorInt()));
+                card209[3].setImage(createImage(temp.getStudents().get(3).getColorInt()));
+
+                card209[0].setX(getCharacterById(209).getX()); card209[0].setY(getCharacterById(209).getY());
+                card209[1].setX(getCharacterById(209).getX()); card209[1].setY(getCharacterById(209).getY());
+                card209[2].setX(getCharacterById(209).getX()); card209[2].setY(getCharacterById(209).getY());
+                card209[3].setX(getCharacterById(209).getX()); card209[3].setY(getCharacterById(209).getY());
+                pane.getChildren().addAll(card209);
+            }
+            }
+
+        new Thread( () -> notifyObserver(obs -> obs.onUpdateUseEffect(false))).start();
+    }
+
+    public Image createImage(int color){
+        Image image = null;
+        switch (color){
+            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png")); break;
+            case 0: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png")); break;
+            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png")); break;
+            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png")); break;
+            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png")); break;
+        }
+        return image;
     }
 
 //color: 1/5  isalnd:0/11
@@ -375,6 +451,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png")); break;
             case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png")); break;
         }
+
         student.setImage(image);
         DropShadow dr = new DropShadow(); dr.setWidth(15); dr.setHeight(15);
         student.setOnMouseExited(ex -> student.setEffect(dr));
@@ -387,7 +464,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
         }
 
-        student.setEffect(dr);
+        student.setEffect(null);
         student.setId(Integer.toString(id));
         students[island].add(student);
 
@@ -564,39 +641,41 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void moveMotherNature(int pos){
-        if(motherNaturePos+pos<=11){
-            motherNaturePos += pos;
-            setMotherNaturePose(motherNaturePos);
+        if(posWithGhost==null) {
+            if (motherNaturePos + pos <= 11) {
+                motherNaturePos += pos;
+                setMotherNaturePose(motherNaturePos);
+            } else {
+                motherNaturePos += pos - 12;
+                setMotherNaturePose(motherNaturePos);
+            }
         }else{
-            motherNaturePos += pos-12;
-            setMotherNaturePose(motherNaturePos);
+           /* int finalIsland;
+            int startingPos;
+            for(int i=0;i<posWithGhost.size();i++)
+                if(posWithGhost.get(i).contains())
+*/
         }
+
     }
 
     public void light(MouseEvent mouseEvent) {
-            switch(mouseEvent.getSource().toString().charAt(19)){
-                case '2':   island2.setEffect(new Bloom(0.72));   break;
-                case '3':   island3.setEffect(new Bloom(0.72));   break;
-                case '4':   island4.setEffect(new Bloom(0.72));   break;
-                case '5':   island5.setEffect(new Bloom(0.72));   break;
-                case '6':   island6.setEffect(new Bloom(0.72));   break;
-                case '7':   island7.setEffect(new Bloom(0.72));   break;
-                case '8':   island8.setEffect(new Bloom(0.72));   break;
-                case '9':   island9.setEffect(new Bloom(0.72));   break;
-                case '1':   switch(mouseEvent.getSource().toString().charAt(20)){
-                    case '0':
-                        island10.setEffect(new Bloom(0.72));
-                        break;
-                    case '1':
-                        island11.setEffect(new Bloom(0.72));
-                        break;
-                    case '2':
-                        island12.setEffect(new Bloom(0.72));
-                        break;
-                    default:    island1.setEffect(new Bloom(0.72)); break;
-                }
+        String selection = mouseEvent.getSource().toString().substring(19,21);
+        if(selection.charAt(1)==',')
+            selection = selection.substring(0,1);
 
-            }
+        int sel = Integer.parseInt(selection);
+        island[sel-1].setEffect(new Bloom(0.72));
+
+        if(posWithGhost!=null){
+            List<Integer> lightlist=null;
+            for(List<Integer> l: posWithGhost)
+                if(l.contains(sel))
+                    lightlist = l;
+
+            for(Integer in: lightlist)
+                island[in-1].setEffect(new Bloom(0.72));
+        }
     }
 
     public void dark(MouseEvent mouseEvent) {
@@ -671,34 +750,75 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     //color: 0=black 1=white 2=grey
     public void setTower(int island,int color){
-        Image image = null;
+        if(towers[island] == null) {
+            System.out.println("Aggiungendo torre a " + island);
+            Image image = null;
 
-        if(color == 0)
-            image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerBlack.png"));
-        if(color == 1)
-            image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerWhite.png"));
-        if(color == 2)
-            image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerGrey.png"));
+            if (color == 0)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerBlack.png"));
+            if (color == 1)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerWhite.png"));
+            if (color == 2)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerGrey.png"));
 
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(49);
-        imageView.setFitHeight(101);
-        imageView.setLayoutY(towerBases[island].getLayoutY()-49);
-        imageView.setLayoutX(towerBases[island].getLayoutX()+12);
-        imageView.setEffect(new InnerShadow());
-        imageView.setOpacity(1);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(49);
+            imageView.setFitHeight(101);
+            imageView.setLayoutY(towerBases[island].getLayoutY() - 49);
+            imageView.setLayoutX(towerBases[island].getLayoutX() + 12);
+            imageView.setEffect(new Shadow());
+            imageView.setEffect(new DropShadow());
+            imageView.setOpacity(1);
 
-        pane.getChildren().addAll(imageView);
+            pane.getChildren().addAll(imageView);
+            towers[island] = imageView;
+            towerColor[island] = color;
 
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),imageView);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),imageView);
-        tt.setFromY(imageView.getY()-20);
-        tt.setToY(imageView.getY());
-        ft.setFromValue(0);
-        ft.setToValue(1);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(1000), imageView);
+            FadeTransition ft = new FadeTransition(Duration.millis(1000), imageView);
+            tt.setFromY(imageView.getY() - 20);
+            tt.setToY(imageView.getY());
+            ft.setFromValue(0);
+            ft.setToValue(1);
 
-        ft.play();
-        tt.play();
+            ft.play();
+            tt.play();
+        }
+        if(towerColor[island] != color) {
+            System.out.println("Aggiungendo torre a " + island);
+            pane.getChildren().remove(towers[island]);
+            Image image = null;
+
+            if (color == 0)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerBlack.png"));
+            if (color == 1)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerWhite.png"));
+            if (color == 2)
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/towerGrey.png"));
+
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(49);
+            imageView.setFitHeight(101);
+            imageView.setLayoutY(towerBases[island].getLayoutY() - 49);
+            imageView.setLayoutX(towerBases[island].getLayoutX() + 12);
+            imageView.setEffect(new Shadow());
+            imageView.setEffect(new DropShadow());
+            imageView.setOpacity(1);
+
+            pane.getChildren().addAll(imageView);
+            towers[island] = imageView;
+            towerColor[island] = color;
+
+            TranslateTransition tt = new TranslateTransition(Duration.millis(1000), imageView);
+            FadeTransition ft = new FadeTransition(Duration.millis(1000), imageView);
+            tt.setFromY(imageView.getY() - 20);
+            tt.setToY(imageView.getY());
+            ft.setFromValue(0);
+            ft.setToValue(1);
+
+            ft.play();
+            tt.play();
+        }
 
 
     }
@@ -790,7 +910,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return false;
     }
 
+    public ImageView getCharacterById(int id){
+        if(Integer.parseInt(card1.getId())==id)
+            return card1;
+        if(Integer.parseInt(card2.getId())==id)
+            return card2;
+        if(Integer.parseInt(card3.getId())==id)
+            return card3;
+
+        return null;
+    }
+
     public void updateValues(GameSerialized gameSerialized) {
+        characterCards = gameSerialized.getCharacterCards();
+        for(int i=0;i<3;i++)
+            cCards[i].setDisable(true);
+
+        clearCloud1();
+        clearCloud2();
+        addStudentsToCloud(gameSerialized.getClouds().get(0),1);
+        if(gameSerialized.getClouds().get(1)!=null) addStudentsToCloud(gameSerialized.getClouds().get(1),2);
+
         this.gameSerialized = gameSerialized;
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
@@ -822,29 +962,63 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }else{
             int islandMarker = 0;
             setMotherNaturePose(gameSerialized.getMotherNaturePos());
-/*
+
             //aggiorna torri
             for (SerializableIsland island : islands) {
-                if (!island.isGhost())
-                    if (island.getTowerNumber() != 0) {
-                        for (int i = 0; i < island.getTowerNumber(); i++)
-                            switch (island.getTowerColor()) {
-                                case BLACK -> setTower(i, 0);
-                                case GREY -> setTower(i, 2);
-                                case WHITE -> setTower(i, 1);
-                            }
-                    }
-                if (island.isGhost())
-                    for (int islnb : island.getReferencedIslands())
-                        if (island.getTowerNumber() != 0) {
-                            for (int i = 0; i < island.getTowerNumber(); i++)
-                                switch (island.getTowerColor()) {
-                                    case BLACK -> setTower(islands.indexOf(island), 0);
-                                    case GREY -> setTower(islands.indexOf(island), 2);
-                                    case WHITE -> setTower(islands.indexOf(island), 1);
-                                }
+
+                if (!island.isGhost()) {
+                    if (island.getTowerNumber() != 0)
+                        switch (island.getTowerColor()) {
+                            case BLACK -> setTower(islandMarker, 0);
+                            case GREY -> setTower(islandMarker, 2);
+                            case WHITE -> setTower(islandMarker, 1);
                         }
-            }*/
+                    islandMarker++;
+                }
+
+                if (island.isGhost())
+                    for (int islnb : island.getReferencedIslands()) {
+                        switch (island.getTowerColor()) {
+                            case BLACK -> setTower(islnb-1, 0);
+                            case GREY -> setTower(islnb-1, 2);
+                            case WHITE -> setTower(islnb-1, 1);
+                        }
+                        islandMarker++;
+                    }
+            }
+            islandMarker = 0;
+            posWithGhost = new ArrayList<>();
+            for (SerializableIsland island : islands) {
+                ArrayList<Integer> islandPawnsId = island.getIslandsPawnsID();
+
+                if(!island.isGhost()) {
+                    for (Integer id : islandPawnsId) {
+                        boolean add = true;
+                        for (int j = 0; j < students[islandMarker].size(); j++) {
+                            if (students[islandMarker].get(j).getId().equals(Integer.toString(id)))
+                                add = false;
+                        }
+                        if (add)
+                            addStudentToIsland(getColorFromId(id), id, islandMarker);
+                    }
+                    posWithGhost.add(List.of(islandMarker));
+                    islandMarker++;
+                }else if(island.isGhost()){
+                    //da sistemare
+                    for (Integer id : islandPawnsId) {
+                        boolean add = true;
+                        for (int isl : island.getReferencedIslands())
+                            for (int j = 0; j < students[isl].size(); j++) {
+                                if (students[isl].get(j).getId().equals(Integer.toString(id)))
+                                    add = false;
+                            }
+                        if (add)
+                            addStudentToIsland(getColorFromId(id), id, island.getReferencedIslands().get(0));
+                    }
+                    posWithGhost.add(island.getReferencedIslands());
+                    islandMarker += island.getReferencedIslands().size();
+                }
+            }
         }
 
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
@@ -866,6 +1040,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         if(GraphicController.nicknameOpponent2!=null) nicknameOp2.setText(GraphicController.nicknameOpponent2.toUpperCase(Locale.ROOT));
 
         if(scoreboardSceneManager!=null)    scoreboardSceneManager.updateValues(gameSerialized);
+
+        if(characterCards!=null){
+            initializeCharacterCards();
+        }
     }
 
     public void setOpponent1Card(int number){
@@ -1287,6 +1465,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void switchView(MouseEvent mouseEvent) {
         if(opCard1) viewOpCard1();
         if(opCard2) viewOpCard2();
+        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
 
         for(AssistantCard a: assistantCardsList){
             this.assistantCards[a.getValue()-1].setVisible(true);
@@ -1361,6 +1540,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void closeHand(MouseEvent mouseEvent) {
         if(opCard1) hideOpCard1();
         if(opCard2) hideOpCard2();
+        if(characterCards!=null) initializeCharacterCards();
 
         for(AssistantCard a: assistantCardsList){
 
@@ -1463,6 +1643,80 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void setCoin(int coin){
+        coins = coin;
         labelCoins.setText("X "+Integer.toString(coin));
+    }
+
+    public void inCard1(MouseEvent mouseEvent) {
+        Glow iCard = new Glow(0.45);
+        iCard.setInput(new DropShadow());
+
+        card1.setEffect(iCard);
+    }
+
+    public void outCard1(MouseEvent mouseEvent) {
+        card1.setEffect(new DropShadow());
+    }
+
+    public void clickCard1(MouseEvent mouseEvent) {
+        cardSelected(0);
+    }
+
+    public void inCard2(MouseEvent mouseEvent) {
+        Glow iCard = new Glow(0.45);
+        iCard.setInput(new DropShadow());
+
+        card2.setEffect(iCard);
+    }
+
+    public void outCard2(MouseEvent mouseEvent) {
+        card2.setEffect(new DropShadow());
+    }
+
+    public void clickCard2(MouseEvent mouseEvent) {
+        cardSelected(1);
+    }
+
+    public void inCard3(MouseEvent mouseEvent) {
+        Glow iCard = new Glow(0.45);
+        iCard.setInput(new DropShadow());
+
+        card3.setEffect(iCard);
+    }
+
+    public void outCard3(MouseEvent mouseEvent) {
+        card3.setEffect(new DropShadow());
+    }
+
+    public void clickCard3(MouseEvent mouseEvent) {
+        cardSelected(2);
+    }
+
+    private void cardSelected(int choice){
+        int idCard = Integer.parseInt(cCards[choice].getId());
+
+        if(idCard==209){
+
+        }
+
+        switch(idCard){
+            case 210 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse210)).start();
+            case 212 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse212)).start();
+            case 214 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse214)).start();
+            case 216 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse216)).start();
+        }
+    }
+
+    private void menuCard209() {
+        islandMenu.setVisible(true);
+        islandMenu.setDisable(false);
+        for (int j = 0; j < 12; j++) {
+            int finalJ = j;
+            islandMenu.getItems().get(j).setOnAction(event -> card209(finalJ + 1));
+        }
+    }
+
+    private void card209(int islandSelected){
+        notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected));
     }
 }

@@ -1109,5 +1109,41 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </Button>
+      <Label layoutX="36.0" layoutY="983.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="219.0" text="ENTRATA" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="40.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label layoutX="758.0" layoutY="975.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="114.0" text="SALA" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="45.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label layoutX="1623.0" layoutY="621.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="123.0" text="TORRI" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="43.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
    </children>
 </AnchorPane>
