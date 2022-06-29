@@ -64,7 +64,7 @@ public class ClientHandler implements Runnable {
                     Message message = (Message) in.readObject();
                     if (message != null && !message.getClass().equals(PingMessage.class)) {
                         if (message.getClass().equals(LoginRequest.class)) {
-                            System.out.println(message);
+                            Server.LOGGER.info(() -> "MESSAGE RECEIVED: " + message);
                             socketServer.addClient(message.getNickname(), this);
                         } else {
                             Server.LOGGER.info(() -> "MESSAGE RECEIVED: " + message);

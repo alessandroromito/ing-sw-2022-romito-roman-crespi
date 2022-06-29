@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.network.message.GameScenarioMessage;
-import it.polimi.ingsw.network.message.GenericMessage;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
@@ -320,7 +319,6 @@ public class ExpertGame extends Game {
      */
     public void use_216(Player p){
         p.setAdditionalPoints(true);
-        notifyObserver(new GenericMessage("CharacterCard Impostata!"));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();

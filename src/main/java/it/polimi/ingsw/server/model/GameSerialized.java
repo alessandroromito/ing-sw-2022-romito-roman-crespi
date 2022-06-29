@@ -21,6 +21,7 @@ public class GameSerialized implements Serializable {
 
     private final Boolean expertMode;
     private final int motherNaturePos;
+    private int activeCardID = -1;
 
     private final ArrayList<CharacterCard> characterCards = new ArrayList<>();
     private final ArrayList<Cloud> clouds = new ArrayList<>();
@@ -61,8 +62,11 @@ public class GameSerialized implements Serializable {
 
         clouds.addAll(game.getMap().getClouds());
 
-        if(expertMode)
+        if(expertMode){
             characterCards.addAll(game.getCharacterCards());
+            activeCardID = game.getActiveCardID();
+        }
+
     }
 
     /**
@@ -105,12 +109,24 @@ public class GameSerialized implements Serializable {
         return expertMode;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<CharacterCard> getCharacterCards() {
         return characterCards;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
+    public int getActiveCardID() {
+        return activeCardID;
+    }
     @Override
     public String toString() {
         return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
     }
+
 }
