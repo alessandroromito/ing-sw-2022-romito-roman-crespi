@@ -22,6 +22,7 @@ public class GameSerialized implements Serializable {
     private final Boolean expertMode;
     private final int motherNaturePos;
     private int activeCardID = -1;
+    private String activeNickname;
 
     private final ArrayList<CharacterCard> characterCards = new ArrayList<>();
     private final ArrayList<Cloud> clouds = new ArrayList<>();
@@ -35,6 +36,7 @@ public class GameSerialized implements Serializable {
     public GameSerialized(Game game){
         this.motherNaturePos = game.getMap().getMotherNaturePosition();
         this.expertMode = game.isExpertMode();
+        this.activeNickname = game.getActivePlayer().getNickname();
 
         ArrayList<Integer> groupIDs = new ArrayList<>();
 
