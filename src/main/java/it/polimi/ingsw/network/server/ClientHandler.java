@@ -124,7 +124,7 @@ public class ClientHandler implements Runnable {
                 out.writeObject(message);
                 out.flush();
                 out.reset();
-                Server.LOGGER.info(() -> "Messaggio inviato: " + message);
+                Server.LOGGER.fine(() -> "Messaggio inviato: " + message);
             }
         } catch (IOException e) {
             e.printStackTrace();

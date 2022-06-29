@@ -348,16 +348,23 @@ public class Game extends Observable implements Serializable {
         } else {
             // CASE there is already a tower
             System.out.println("Already a tower on Island " + (islandID+1) + " CheckInfluence");
-            int currentPlayerInfluence = island.getInfluence(currentPlayer);
-            System.out.println("current player influence: " + currentPlayerInfluence);
+
+            Player activePlayer = getPlayerByColor(island.getTowerColor());
+            bestInfluence = island.getInfluence(activePlayer);
+            int activePlayerInfluence = island.getInfluence(activePlayer);
+            System.out.println("Active player influence: " + activePlayerInfluence);
+
             for(Player p : players){
-                if(p.getScoreboard().getTowerColor() == island.getTowerColor() && p.getScoreboard().getTowerColor() != currentPlayer.getScoreboard().getTowerColor()){
-                    opponentPlayer = p;
-                    break;
+                int playerInfluence = island.getInfluence(p);
+                if(!p.getNickname().equals(activePlayer.getNickname()) &&  playerInfluence > activePlayerInfluence && playerInfluence > bestInfluence){
+                    bestInfluence = island.getInfluence(p);
+                    dominantPlayer = p;
                 }
             }
-            System.out.println("opponent player influence: " + island.getInfluence(opponentPlayer));
-            if(opponentPlayer != null && currentPlayerInfluence > island.getInfluence(opponentPlayer)){
+
+            if(dominantPlayer != null){
+                System.out.println("Dominant player influence: " + island.getInfluence(dominantPlayer));
+
                 moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
                 checkTowerWinner(currentPlayer);
                 checkMerge(islandID);
@@ -365,6 +372,14 @@ public class Game extends Observable implements Serializable {
                 notifyObserver(new GameScenarioMessage(getGameSerialized()));
             }
         }
+    }
+
+    private Player getPlayerByColor(TowerColors color) {
+        for(Player player : players){
+            if(player.getScoreboard().getTowerColor() == color)
+                return player;
+        }
+        return null;
     }
 
     public void checkTowerWinner(Player player) {

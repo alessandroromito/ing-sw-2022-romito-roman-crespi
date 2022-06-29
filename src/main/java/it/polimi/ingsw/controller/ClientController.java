@@ -71,7 +71,7 @@ public class ClientController implements ViewObserver, Observer {
             }
             case GENERIC_MESSAGE -> {
                 GenericMessage genericMessage = (GenericMessage) message;
-                view.showGenericMessage(genericMessage.getMessage());
+                queue.execute(() -> view.showGenericMessage(genericMessage.getMessage()));
             }
             case DISCONNECTED_PLAYER -> {
                 DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;
