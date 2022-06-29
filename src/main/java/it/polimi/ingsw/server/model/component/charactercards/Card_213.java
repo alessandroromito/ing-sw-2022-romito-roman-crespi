@@ -12,7 +12,7 @@ public class Card_213 extends CharacterCard{
 
     public Card_213(List<Component> nt) {
         super(213);
-        this.cost = 1;
+        this.cost = 2;
 
         for(int i=0;i<4;i++)
             this.noEntryTiles.add((NoEntryTile) nt.get(i));
