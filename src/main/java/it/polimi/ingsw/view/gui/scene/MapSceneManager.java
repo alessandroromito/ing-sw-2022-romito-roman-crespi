@@ -1109,6 +1109,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         if(characterCards!=null&&!characterCards.isEmpty()){
             initializeCharacterCards();
+        }else{
+            coin.setVisible(false);
+            labelCoins.setVisible(false);
+            switchHandMap.setScaleY(1.5);
+            switchHandMap.setScaleX(1.5);
+            toScoreboard.setScaleY(1.5);
+            toScoreboard.setScaleX(1.5);
+            switchHandMap.setLayoutX(832);
+            switchHandMap.setLayoutY(406);
+            toScoreboard.setLayoutX(833);
+            toScoreboard.setLayoutY(586);
+            labelHand.setLayoutX(877);
+            labelHand.setLayoutY(485);
+            labelScrbd.setLayoutX(863);
+            labelScrbd.setLayoutY(606);
         }
     }
 
@@ -1396,8 +1411,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableAssistant(List<AssistantCard> assistantCards){
         this.assistantCardsList = assistantCards;
-
-        switchView(null);
     }
 
     public void disableAssistant(){
