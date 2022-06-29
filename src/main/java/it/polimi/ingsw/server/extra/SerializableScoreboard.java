@@ -7,25 +7,27 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SerializableScoreboard implements Serializable {
-    private static final long serialVersionUID = 1L;
+    @Serial
+    private static final long serialVersionUID = 5449490962500277502L;
 
-    private String nickname;
-    private ArrayList<PawnColors> entrance = new ArrayList<>();
-    private ArrayList<Integer> entranceId = new ArrayList<>();
+    private final String nickname;
+    private final ArrayList<PawnColors> entrance = new ArrayList<>();
+    private final ArrayList<Integer> entranceId = new ArrayList<>();
     private int diningRedStudents = 0;
     private int diningGreenStudents = 0;
     private int diningBlueStudents = 0;
     private int diningYellowStudents = 0;
     private int diningPinkStudents = 0;
-    private int towerNumber;
+    private final int towerNumber;
 
-    private int coins;
-    private TowerColors towerColor;
-    private ArrayList<PawnColors> professors = new ArrayList<>();
+    private final int coins;
+    private final TowerColors towerColor;
+    private final ArrayList<PawnColors> professors = new ArrayList<>();
 
     public SerializableScoreboard(Scoreboard scoreboard, Player player){
         this.nickname = player.getNickname();

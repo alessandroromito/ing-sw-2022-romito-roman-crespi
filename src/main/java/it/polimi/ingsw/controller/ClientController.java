@@ -39,7 +39,7 @@ public class ClientController implements ViewObserver, Observer {
 
     /**
      * Server updates the client using this method.
-     * @param message information to be analized to manage the update to supply to the client.
+     * @param message information to be analyzed to manage the update to supply to the client.
      */
     @Override
     public void update(Message message) {
@@ -188,7 +188,7 @@ public class ClientController implements ViewObserver, Observer {
      * Client updates the server about moving a student.
      * @param student student to be moved.
      * @param position dining room (0) or island (1)
-     * @param islandNumber island choosen.
+     * @param islandNumber island chosen.
      */
     @Override
     public void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber) {

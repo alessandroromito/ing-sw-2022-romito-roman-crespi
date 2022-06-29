@@ -22,7 +22,7 @@ public class SerializableIsland implements Serializable {
     private int blueStudents = 0;
     private int yellowStudents = 0;
     private int pinkStudents = 0;
-    private int towerNumber;
+    private final int towerNumber;
     private final TowerColors towerColor;
 
     public SerializableIsland(Island island){

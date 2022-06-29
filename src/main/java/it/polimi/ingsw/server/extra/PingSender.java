@@ -28,7 +28,6 @@ public class PingSender implements Runnable{
         while(connected){
 
             clientHandler.sendMessage(new PingMessage());
-            connected = false;
 
             try{
                 Thread.sleep(1000*10);
@@ -36,10 +35,11 @@ public class PingSender implements Runnable{
                 e.printStackTrace();
             }
 
-            if(clientHandler.isConnected())
+            if(!clientHandler.isConnected()){
                 clientHandler.disconnect();
-
-            System.out.println("Disconnection caused by ping");
+                connected = false;
+                System.out.println("Disconnection caused by ping");
+            }
         }
     }
 

@@ -7,7 +7,7 @@ public class Card_217 extends CharacterCard{
 
     public Card_217(){
         super(217);
-        this.cost = 0; //3
+        this.cost = 3;
     }
 
     public PawnColors getDisColor() {

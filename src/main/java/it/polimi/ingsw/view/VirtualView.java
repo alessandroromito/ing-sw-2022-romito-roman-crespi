@@ -10,12 +10,11 @@ import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualView implements View, Observer {
-    private ClientHandler clientHandler;
+    private final ClientHandler clientHandler;
 
     /**
      * Default constructor.
@@ -26,11 +25,7 @@ public class VirtualView implements View, Observer {
         this.clientHandler = clientHandler;
     }
 
-    public ClientHandler getClientHandler() {
-        return clientHandler;
-    }
-
-    public void showMessage(String nickName, String messageString) {
+    public void showMessage(String messageString) {
         clientHandler.sendMessage(new ErrorMessage(messageString));
     }
 

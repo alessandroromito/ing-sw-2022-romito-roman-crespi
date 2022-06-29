@@ -42,11 +42,7 @@ public class InputController implements Serializable {
      * @return {code @true} if it is ok, {code @false} otherwise.
      */
     public boolean playerNumberReplyCheck(int chosenPlayerNumber) {
-        if (chosenPlayerNumber < 4 && chosenPlayerNumber> 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return chosenPlayerNumber < 4 && chosenPlayerNumber > 1;
     }
 
     /**
@@ -66,7 +62,7 @@ public class InputController implements Serializable {
         }
         else{
             VirtualView virtualView = virtualViewMap.get(message.getNickname());
-            virtualView.showMessage(message.getNickname(), "You can't move Mother Nature so far!");
+            virtualView.showMessage("Non puoi spostare madre nature così lontano!");
             return false;
         }
     }

@@ -229,7 +229,7 @@ public class Game extends Observable implements Serializable {
 
 
     /**
-     *
+     * Move a tower to an island and notify the observer
      * @param tower
      * @param islandID
      */
@@ -317,7 +317,6 @@ public class Game extends Observable implements Serializable {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
         Player dominantPlayer = null;
-        Player opponentPlayer = null;
 
         Island island = map.getIsland(islandID);
         if(island.isDisabled()){

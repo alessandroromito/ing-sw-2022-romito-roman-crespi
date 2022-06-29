@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * This class identifies a component of the game map.
- * Sub-type of Pawn.
+ * Subtype of Pawn.
  */
 public class ProfessorPawn extends Pawn implements Serializable {
 

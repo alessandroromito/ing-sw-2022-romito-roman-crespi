@@ -8,7 +8,7 @@ public class Card_210 extends CharacterCard {
     public Card_210(Player[] old) {
         super(210);
         this.old = old;
-        this.cost = 0; //2
+        this.cost = 2;
     }
 
     public void updateOldPos (Player[] old) {

@@ -13,7 +13,7 @@ import java.util.List;
  * This class represents the bag of the game. 130 student pawn of initial capacity.
  */
 public class Bag implements Serializable {
-    private List<StudentDisc> bagStudents = new ArrayList<>(130);
+    private final List<StudentDisc> bagStudents = new ArrayList<>(130);
 
     /**
      * Constructor of the class. Initialize all the students and insert them in a list.

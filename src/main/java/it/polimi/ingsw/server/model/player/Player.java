@@ -12,7 +12,7 @@ import java.util.List;
 public class Player extends Observable implements Serializable {
 
     private AssistantCard currentAssistantCard;
-    private List<AssistantCard> hand = new ArrayList<>();
+    private final List<AssistantCard> hand = new ArrayList<>();
     private int coin = 0;
 
     private String nickname;

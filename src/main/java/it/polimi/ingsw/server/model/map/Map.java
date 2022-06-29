@@ -178,13 +178,4 @@ public class Map extends Observable implements Serializable {
 
         return islandPrev.isDisabled() ? getGhostIsland(islandPrev.getID()) : islandPrev;
     }
-
-    public int getNextInt(int islandID){
-        return islandID == 11 ? 0 : islandID + 1;
-    }
-
-    public int getPrevInt(int islandID){
-        return islandID == 0 ? 11 : islandID - 1;
-    }
-
 }

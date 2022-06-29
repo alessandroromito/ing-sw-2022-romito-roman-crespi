@@ -369,8 +369,9 @@ public class GameController implements Observer, Serializable {
         long end = start + 1000;
         System.out.println("Waiting 30 sec for reconnecting...");
         while (System.currentTimeMillis() < end) {
-            // wait
+            if(resume) break;
         }
+
         virtualViewMap.get(nickname).showGameScenario(new GameSerialized(game));
 
     }

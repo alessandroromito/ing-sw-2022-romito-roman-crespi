@@ -7,7 +7,7 @@ import java.io.Serializable;
  * This class identifies a component of the game map.
  */
 public class Tower extends Component implements Serializable {
-    private TowerColors color;
+    private final TowerColors color;
 
     /**
      * Default constructor.
