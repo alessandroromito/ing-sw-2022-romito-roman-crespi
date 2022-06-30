@@ -12,8 +12,9 @@ Interfacce grafiche implementate: CLI e GUI.
 ## Documentazione
 
 ### UML
-- Diagramma UML iniziale dell'applicazione (ad alto livello): [UML iniziale](link)
-- Diagramma UML finale dell'applicazione che mostrino com'è progettato il software: [UML finale](link)
+- Diagramma UML iniziale dell'applicazione: [UML iniziale](link)
+- Diagramma UML finale dell'applicazione che mostri com'è progettato il software: [UML finale](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/UML/Final/HighLevel/UML_HighLevel.png)
+- Diagramma UML finale dettagliato:
 
 ### Documentazione di protocollo di comunicazione tra client e server
 - Protocollo implementato: [Documentazione di protocollo](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/ProtocolDocumentation/SequenceDiagram.jpeg)
