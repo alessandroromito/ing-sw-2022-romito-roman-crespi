@@ -16,7 +16,11 @@ import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.effect.*;
@@ -25,10 +29,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.random.RandomGenerator;
@@ -329,73 +336,130 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
 
-
     @FXML
     public void initialize() {
         System.out.println("start initialize fxml");
 
-        for(int j=1;j<=10;j++)
-            assistantCardsList.add(new AssistantCard(0,j,0));
+        for (int j = 1; j <= 10; j++)
+            assistantCardsList.add(new AssistantCard(0, j, 0));
 
-        for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
+        for (int i = 0; i < 12; i++) students[i] = new ArrayList<ImageView>();
 
-        islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
-        islandsPosCentre[1] = new Point(island2.getLayoutX()+island2.getFitWidth()/2,island2.getLayoutY()+island2.getFitHeight()/2);
-        islandsPosCentre[2] = new Point(island3.getLayoutX()+island3.getFitWidth()/2,island3.getLayoutY()+island3.getFitHeight()/2);
-        islandsPosCentre[3] = new Point(island4.getLayoutX()+island4.getFitWidth()/2,island4.getLayoutY()+island4.getFitHeight()/2);
-        islandsPosCentre[4] = new Point(island5.getLayoutX()+island5.getFitWidth()/2,island5.getLayoutY()+island5.getFitHeight()/2);
-        islandsPosCentre[5] = new Point(island6.getLayoutX()+island6.getFitWidth()/2,island6.getLayoutY()+island6.getFitHeight()/2);
-        islandsPosCentre[6] = new Point(island7.getLayoutX()+island7.getFitWidth()/2,island7.getLayoutY()+island7.getFitHeight()/2);
-        islandsPosCentre[7] = new Point(island8.getLayoutX()+island8.getFitWidth()/2,island8.getLayoutY()+island8.getFitHeight()/2);
-        islandsPosCentre[8] = new Point(island9.getLayoutX()+island9.getFitWidth()/2,island9.getLayoutY()+island9.getFitHeight()/2);
-        islandsPosCentre[9] = new Point(island10.getLayoutX()+island10.getFitWidth()/2,island10.getLayoutY()+island10.getFitHeight()/2);
-        islandsPosCentre[10] = new Point(island11.getLayoutX()+island11.getFitWidth()/2,island11.getLayoutY()+island11.getFitHeight()/2);
-        islandsPosCentre[11] = new Point(island12.getLayoutX()+island12.getFitWidth()/2,island12.getLayoutY()+island12.getFitHeight()/2);
+        islandsPosCentre[0] = new Point(island1.getLayoutX() + island1.getFitWidth() / 2, island1.getLayoutY() + island1.getFitHeight() / 2);
+        islandsPosCentre[1] = new Point(island2.getLayoutX() + island2.getFitWidth() / 2, island2.getLayoutY() + island2.getFitHeight() / 2);
+        islandsPosCentre[2] = new Point(island3.getLayoutX() + island3.getFitWidth() / 2, island3.getLayoutY() + island3.getFitHeight() / 2);
+        islandsPosCentre[3] = new Point(island4.getLayoutX() + island4.getFitWidth() / 2, island4.getLayoutY() + island4.getFitHeight() / 2);
+        islandsPosCentre[4] = new Point(island5.getLayoutX() + island5.getFitWidth() / 2, island5.getLayoutY() + island5.getFitHeight() / 2);
+        islandsPosCentre[5] = new Point(island6.getLayoutX() + island6.getFitWidth() / 2, island6.getLayoutY() + island6.getFitHeight() / 2);
+        islandsPosCentre[6] = new Point(island7.getLayoutX() + island7.getFitWidth() / 2, island7.getLayoutY() + island7.getFitHeight() / 2);
+        islandsPosCentre[7] = new Point(island8.getLayoutX() + island8.getFitWidth() / 2, island8.getLayoutY() + island8.getFitHeight() / 2);
+        islandsPosCentre[8] = new Point(island9.getLayoutX() + island9.getFitWidth() / 2, island9.getLayoutY() + island9.getFitHeight() / 2);
+        islandsPosCentre[9] = new Point(island10.getLayoutX() + island10.getFitWidth() / 2, island10.getLayoutY() + island10.getFitHeight() / 2);
+        islandsPosCentre[10] = new Point(island11.getLayoutX() + island11.getFitWidth() / 2, island11.getLayoutY() + island11.getFitHeight() / 2);
+        islandsPosCentre[11] = new Point(island12.getLayoutX() + island12.getFitWidth() / 2, island12.getLayoutY() + island12.getFitHeight() / 2);
 
-        rIsl = (island1.getFitHeight()+17)/2;
+        rIsl = (island1.getFitHeight() + 17) / 2;
 
-        for(int i=0;i<12;i++)
+        for (int i = 0; i < 12; i++)
             islands[i] = new ArrayList<Point>();
         disableIslands();
 
-        assistantCards[0] = assistentCard0; assistantCards[1] = assistentCard1; assistantCards[2] = assistentCard2; assistantCards[3] = assistentCard3; assistantCards[4] = assistentCard4; assistantCards[5] = assistentCard5; assistantCards[6] = assistentCard6; assistantCards[7] = assistentCard7; assistantCards[8] = assistentCard8; assistantCards[9] = assistentCard9;
+        assistantCards[0] = assistentCard0;
+        assistantCards[1] = assistentCard1;
+        assistantCards[2] = assistentCard2;
+        assistantCards[3] = assistentCard3;
+        assistantCards[4] = assistentCard4;
+        assistantCards[5] = assistentCard5;
+        assistantCards[6] = assistentCard6;
+        assistantCards[7] = assistentCard7;
+        assistantCards[8] = assistentCard8;
+        assistantCards[9] = assistentCard9;
 
-        towerBases[0] = towerBase0; towerBases[1] = towerBase1; towerBases[2] = towerBase2; towerBases[3] = towerBase3; towerBases[4] = towerBase4; towerBases[5] = towerBase5; towerBases[6] = towerBase6; towerBases[7] = towerBase7; towerBases[8] = towerBase8; towerBases[9] = towerBase9; towerBases[10] = towerBase10; towerBases[11] = towerBase11;
+        towerBases[0] = towerBase0;
+        towerBases[1] = towerBase1;
+        towerBases[2] = towerBase2;
+        towerBases[3] = towerBase3;
+        towerBases[4] = towerBase4;
+        towerBases[5] = towerBase5;
+        towerBases[6] = towerBase6;
+        towerBases[7] = towerBase7;
+        towerBases[8] = towerBase8;
+        towerBases[9] = towerBase9;
+        towerBases[10] = towerBase10;
+        towerBases[11] = towerBase11;
 
-        island[0] = island1; island[1] = island2; island[2] = island3; island[3] = island4; island[4] = island5; island[5] = island6; island[6] = island7; island[7] = island8; island[8] = island9; island[9] = island10; island[10] = island11; island[11] = island12;
+        island[0] = island1;
+        island[1] = island2;
+        island[2] = island3;
+        island[3] = island4;
+        island[4] = island5;
+        island[5] = island6;
+        island[6] = island7;
+        island[7] = island8;
+        island[8] = island9;
+        island[9] = island10;
+        island[10] = island11;
+        island[11] = island12;
 
-        motherNaturePoses[0] = new Point(1492,536); motherNaturePoses[1] = new Point(1455,684); motherNaturePoses[2] = new Point(1277,684); motherNaturePoses[3] = new Point(1038,724); motherNaturePoses[4] = new Point(688,727); motherNaturePoses[5] = new Point(357,684); motherNaturePoses[6] = new Point(276,578); motherNaturePoses[7] = new Point(365,331); motherNaturePoses[8] = new Point(504,317); motherNaturePoses[9] = new Point(780,264); motherNaturePoses[10] = new Point(1252,317); motherNaturePoses[11] = new Point(1453,324);
+        motherNaturePoses[0] = new Point(1492, 536);
+        motherNaturePoses[1] = new Point(1455, 684);
+        motherNaturePoses[2] = new Point(1277, 684);
+        motherNaturePoses[3] = new Point(1038, 724);
+        motherNaturePoses[4] = new Point(688, 727);
+        motherNaturePoses[5] = new Point(357, 684);
+        motherNaturePoses[6] = new Point(276, 578);
+        motherNaturePoses[7] = new Point(365, 331);
+        motherNaturePoses[8] = new Point(504, 317);
+        motherNaturePoses[9] = new Point(780, 264);
+        motherNaturePoses[10] = new Point(1252, 317);
+        motherNaturePoses[11] = new Point(1453, 324);
 
-        cloudStudents1[0] = cloud1Student0; cloudStudents1[1] = cloud1Student1; cloudStudents1[2] = cloud1Student2; cloudStudents1[3] = cloud1Student3;
-        cloudStudents2[0] = cloud2Student0; cloudStudents2[1] = cloud2Student1; cloudStudents2[2] = cloud2Student2; cloudStudents2[3] = cloud2Student3;
+        cloudStudents1[0] = cloud1Student0;
+        cloudStudents1[1] = cloud1Student1;
+        cloudStudents1[2] = cloud1Student2;
+        cloudStudents1[3] = cloud1Student3;
+        cloudStudents2[0] = cloud2Student0;
+        cloudStudents2[1] = cloud2Student1;
+        cloudStudents2[2] = cloud2Student2;
+        cloudStudents2[3] = cloud2Student3;
 
         disableClouds();
 
-        for(int k=0;k<10;k++)
-        assistantCards[k].setViewOrder(-1);
+        for (int k = 0; k < 10; k++)
+            assistantCards[k].setViewOrder(-1);
         xButton.setViewOrder(-1);
-        
-        assistentCardOpponent1.setViewOrder(-1);    previous1lbl.setViewOrder(-1);  bgOpCard1.setViewOrder(-1); nicknameOp1.setViewOrder(-1);
-        assistentCardOpponent2.setViewOrder(-1);    previous2lbl.setViewOrder(-1);  bgOpCard2.setViewOrder(-1); nicknameOp2.setViewOrder(-1);
 
-        for(int i=0;i<10;i++)   assistantCards[i].setVisible(true);
+        assistentCardOpponent1.setViewOrder(-1);
+        previous1lbl.setViewOrder(-1);
+        bgOpCard1.setViewOrder(-1);
+        nicknameOp1.setViewOrder(-1);
+        assistentCardOpponent2.setViewOrder(-1);
+        previous2lbl.setViewOrder(-1);
+        bgOpCard2.setViewOrder(-1);
+        nicknameOp2.setViewOrder(-1);
 
-        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
+        for (int i = 0; i < 10; i++) assistantCards[i].setVisible(true);
 
-        cCards[0] = card1; cCards[1] = card2; cCards[2] = card3;
+        card1.setDisable(true);
+        card2.setDisable(true);
+        card3.setDisable(true);
+
+        cCards[0] = card1;
+        cCards[1] = card2;
+        cCards[2] = card3;
 
         labelOpTurn.setViewOrder(-1);
 
         System.out.println("fine initialize fxml");
     }
 
-    public void fullscreen(){
+    public void fullscreen() {
         Stage stage = (Stage) pane.getScene().getWindow();
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
     }
 
-    public void initializeCharacterCards(){
-        if(gameSerialized.getExpertMode()) {
+    public void initializeCharacterCards() {
+        if (gameSerialized.getExpertMode()) {
             card1.setDisable(true);
             card2.setDisable(true);
             card3.setDisable(true);
@@ -506,66 +570,98 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    public Image createImage(int color){
+    public Image createImage(int color) {
         Image image = null;
-        switch (color){
-            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png")); break;
-            case 0: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png")); break;
-            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png")); break;
-            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png")); break;
-            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png")); break;
+        switch (color) {
+            case 2:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
+                break;
+            case 0:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
+                break;
+            case 3:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png"));
+                break;
+            case 4:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
+                break;
+            case 1:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
+                break;
         }
         return image;
     }
 
-//color: 1/5  isalnd:0/11
-    public void addStudentToIsland(int color,int id,int island){
+    //color: 1/5  isalnd:0/11
+    public void addStudentToIsland(int color, int id, int island) {
         Image image = null;
         ImageView student = new ImageView();
 
-        switch (color){
-            case 1: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png")); break;
-            case 2: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png")); break;
-            case 3: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png")); break;
-            case 4: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png")); break;
-            case 5: image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png")); break;
+        switch (color) {
+            case 1:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/1_VerdeWood.png"));
+                break;
+            case 2:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/2_RossoWood.png"));
+                break;
+            case 3:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/3_GialloWood.png"));
+                break;
+            case 4:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/4_ViolaWood.png"));
+                break;
+            case 5:
+                image = new Image(getClass().getResourceAsStream("/Graphical_Assets/Pedine/3D/5_AzzurroWood.png"));
+                break;
         }
 
         student.setImage(image);
-        DropShadow dr = new DropShadow(); dr.setWidth(15); dr.setHeight(15);
+        DropShadow dr = new DropShadow();
+        dr.setWidth(15);
+        dr.setHeight(15);
         student.setOnMouseExited(ex -> student.setEffect(dr));
 
-        switch(color){
-            case 1: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
-            case 2: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.23))); break;
-            case 3: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.65))); break;
-            case 4: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.48))); break;
-            case 5: student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55))); break;
+        switch (color) {
+            case 1:
+                student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55)));
+                break;
+            case 2:
+                student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.23)));
+                break;
+            case 3:
+                student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.65)));
+                break;
+            case 4:
+                student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.48)));
+                break;
+            case 5:
+                student.setOnMouseEntered(en -> student.setEffect(new Bloom(0.55)));
+                break;
         }
 
         student.setEffect(null);
         student.setId(Integer.toString(id));
         students[island].add(student);
 
-        student.setFitHeight(r*2);
-        student.setFitWidth(r*2);
+        student.setFitHeight(r * 2);
+        student.setFitWidth(r * 2);
         student.setDisable(true);
 
         Point pos = findCoord(island);
 
-        student.setX(islandsPosCentre[island].getX()-rIsl+pos.getX()-rIsl*0.1);
-        student.setY(islandsPosCentre[island].getY()-rIsl+pos.getY()-rIsl*0.1);
-        student.setLayoutX(r/2);
+        student.setX(islandsPosCentre[island].getX() - rIsl + pos.getX() - rIsl * 0.1);
+        student.setY(islandsPosCentre[island].getY() - rIsl + pos.getY() - rIsl * 0.1);
+        student.setLayoutX(r / 2);
 
         pane.getChildren().addAll(student);
     }
 
     //number: 1/2
-    public void addStudentsToCloud(Cloud cloud, int number){
+    public void addStudentsToCloud(Cloud cloud, int number) {
         clouds.add(cloud);
         Image image = null;
 
-        for(int i=0;i<cloud.getCloudStudents().size();i++) {
+        for (int i = 0; i < cloud.getCloudStudents().size(); i++) {
             StudentDisc s = cloud.getCloudStudents().get(i);
             switch (s.getColorInt()) {
                 case 2:
@@ -585,7 +681,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     break;
             }
 
-            if(number == 1) {
+            if (number == 1) {
                 cloudStudents1[i].setImage(image);
                 DropShadow dr = new DropShadow();
                 dr.setWidth(15);
@@ -593,7 +689,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
                 cloudStudents1[i].setEffect(dr);
                 cloudStudents1[i].setId(Integer.toString(s.getID()));
-            }else{
+            } else {
                 cloudStudents2[i].setImage(image);
                 DropShadow dr = new DropShadow();
                 dr.setWidth(15);
@@ -605,10 +701,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    public void removeStudent(int id){
-        for(int i=0;i<12;i++)
-            for(ImageView p: students[i])
-                if(p.getId().equals(Integer.toString(id)))
+    public void removeStudent(int id) {
+        for (int i = 0; i < 12; i++)
+            for (ImageView p : students[i])
+                if (p.getId().equals(Integer.toString(id)))
                     pane.getChildren().remove(p);
     }
 
@@ -629,35 +725,35 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     //island varies form 0 to 11
-    public Point findCoord(int island){
+    public Point findCoord(int island) {
         Point p;
         RandomGenerator randomGenerator = new Random();
 
-        for(int i=0;i<1000000;i++){
+        for (int i = 0; i < 1000000; i++) {
             boolean valid = true;
-            p = new Point(randomGenerator.nextDouble(rIsl*2-r*2-rIsl*0.1),randomGenerator.nextDouble(rIsl*2-r*2-rIsl*0.1));
+            p = new Point(randomGenerator.nextDouble(rIsl * 2 - r * 2 - rIsl * 0.1), randomGenerator.nextDouble(rIsl * 2 - r * 2 - rIsl * 0.1));
 
-            if((p.getX()-(rIsl*2-r*2)/2)*(p.getX()-(rIsl*2-r*2)/2)+(p.getY()-(rIsl*2-r*2)/2)*(p.getY()-(rIsl*2-r*2)/2) > (rIsl/2)*(rIsl/2)+rIsl*rIsl*0.2){
+            if ((p.getX() - (rIsl * 2 - r * 2) / 2) * (p.getX() - (rIsl * 2 - r * 2) / 2) + (p.getY() - (rIsl * 2 - r * 2) / 2) * (p.getY() - (rIsl * 2 - r * 2) / 2) > (rIsl / 2) * (rIsl / 2) + rIsl * rIsl * 0.2) {
                 valid = false;
             }
 
-            for(Point rl:islands[island]){
-                if((abs(p.getX()-rl.getX())<r*2) && (abs(p.getY()-rl.getY())<r*2))
+            for (Point rl : islands[island]) {
+                if ((abs(p.getX() - rl.getX()) < r * 2) && (abs(p.getY() - rl.getY()) < r * 2))
                     valid = false;
             }
 
-            if(valid){
+            if (valid) {
                 islands[island].add(p);
                 return p;
             }
         }
-        p = new Point(randomGenerator.nextDouble(rIsl*0.8),randomGenerator.nextDouble(rIsl*0.8));
-        while((p.getX()-(rIsl*2-r*2)/2)*(p.getX()-(rIsl*2-r*2)/2)+(p.getY()-(rIsl*2-r*2)/2)*(p.getY()-(rIsl*2-r*2)/2) > (rIsl/2)*(rIsl/2)+rIsl*rIsl*0.2)
-            p = new Point(randomGenerator.nextDouble(rIsl*2-r*2-rIsl*0.1),randomGenerator.nextDouble(rIsl*2-r*2-rIsl*0.1));
+        p = new Point(randomGenerator.nextDouble(rIsl * 0.8), randomGenerator.nextDouble(rIsl * 0.8));
+        while ((p.getX() - (rIsl * 2 - r * 2) / 2) * (p.getX() - (rIsl * 2 - r * 2) / 2) + (p.getY() - (rIsl * 2 - r * 2) / 2) * (p.getY() - (rIsl * 2 - r * 2) / 2) > (rIsl / 2) * (rIsl / 2) + rIsl * rIsl * 0.2)
+            p = new Point(randomGenerator.nextDouble(rIsl * 2 - r * 2 - rIsl * 0.1), randomGenerator.nextDouble(rIsl * 2 - r * 2 - rIsl * 0.1));
         return p;
     }
 
-    public void setMotherNaturePose(int island){
+    public void setMotherNaturePose(int island) {
         motherNature.setLayoutX(motherNaturePoses[island].getX());
         motherNature.setLayoutY(motherNaturePoses[island].getY());
         motherNature.setVisible(true);
@@ -666,28 +762,28 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableMotherNature(int maxSteps) {
         switchMotherNature = true;
-        if(posWithGhost==null) {
+        if (posWithGhost == null) {
             for (int i = 1; i <= maxSteps; i++) {
                 if (i + motherNaturePos >= 12)
                     enableSingleIsland(i + motherNaturePos - 11);
                 else
                     enableSingleIsland(i + motherNaturePos + 1);
             }
-        }else{
+        } else {
 
-            for(int j=0;j<posWithGhost.size();j++)
-                if(posWithGhost.get(j).contains(motherNaturePos))
-                    startingPose=j;
+            for (int j = 0; j < posWithGhost.size(); j++)
+                if (posWithGhost.get(j).contains(motherNaturePos))
+                    startingPose = j;
 
-            System.out.println("starting pose: "+startingPose);
+            System.out.println("starting pose: " + startingPose);
             List<List<Integer>> temp = new ArrayList<>();
             temp.addAll(posWithGhost);
             temp.addAll(posWithGhost);
 
 
-            for(int j=startingPose+1;j<=startingPose+maxSteps;j++)
-                for(int island: temp.get(j))
-                    enableSingleIsland(island+1);
+            for (int j = startingPose + 1; j <= startingPose + maxSteps; j++)
+                for (int island : temp.get(j))
+                    enableSingleIsland(island + 1);
         }
     }
 
@@ -732,7 +828,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    public void moveMotherNature(int steps){
+    public void moveMotherNature(int steps) {
         if (motherNaturePos + steps <= 11) {
             motherNaturePos += steps;
             setMotherNaturePose(motherNaturePos);
@@ -743,31 +839,31 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void light(MouseEvent mouseEvent) {
-        String selection = mouseEvent.getSource().toString().substring(19,21);
-        if(selection.charAt(1)==',')
-            selection = selection.substring(0,1);
+        String selection = mouseEvent.getSource().toString().substring(19, 21);
+        if (selection.charAt(1) == ',')
+            selection = selection.substring(0, 1);
 
         int sel = Integer.parseInt(selection);
-        island[sel-1].setEffect(new Bloom(0.72));
+        island[sel - 1].setEffect(new Bloom(0.72));
 
-        if(posWithGhost!=null){
-            List<Integer> lightlist=null;
-            for(List<Integer> l: posWithGhost)
-                if(l.contains(sel-1))
+        if (posWithGhost != null) {
+            List<Integer> lightlist = null;
+            for (List<Integer> l : posWithGhost)
+                if (l.contains(sel - 1))
                     lightlist = l;
 
-            if(lightlist!=null)
-            for(Integer in: lightlist)
-                island[in].setEffect(new Bloom(0.72));
+            if (lightlist != null)
+                for (Integer in : lightlist)
+                    island[in].setEffect(new Bloom(0.72));
         }
     }
 
     public void dark(MouseEvent mouseEvent) {
-        for(ImageView isl: island)
+        for (ImageView isl : island)
             isl.setEffect(null);
     }
 
-    public void disableIslands(){
+    public void disableIslands() {
         island1.setDisable(true);
         island2.setDisable(true);
         island3.setDisable(true);
@@ -782,7 +878,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         island12.setDisable(true);
     }
 
-    public void enableIslands(){
+    public void enableIslands() {
         island2.setDisable(false);
         island1.setDisable(false);
         island3.setDisable(false);
@@ -797,23 +893,23 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         island12.setDisable(false);
     }
 
-    public void enableStudents(){
-        for(int i=0;i<12;i++)
-            for(ImageView pawn: students[i])
+    public void enableStudents() {
+        for (int i = 0; i < 12; i++)
+            for (ImageView pawn : students[i])
                 pawn.setDisable(false);
 
     }
 
-    public void disableStudents(){
-        for(int i=0;i<12;i++)
-            for(ImageView pawn: students[i])
+    public void disableStudents() {
+        for (int i = 0; i < 12; i++)
+            for (ImageView pawn : students[i])
                 pawn.setDisable(true);
 
     }
 
     //color: 0=black 1=white 2=grey
-    public void setTower(int island,int color){
-        if(towers[island] == null) {
+    public void setTower(int island, int color) {
+        if (towers[island] == null) {
             System.out.println("Aggiungendo torre a " + island);
             Image image = null;
 
@@ -847,7 +943,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             ft.play();
             tt.play();
         }
-        if(towerColor[island] != color) {
+        if (towerColor[island] != color) {
             System.out.println("Aggiungendo torre a " + island);
             pane.getChildren().remove(towers[island]);
             Image image = null;
@@ -889,7 +985,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void chooseIsland(MouseEvent mouseEvent) {
         int choosenIsland = -99;
 
-        switch(mouseEvent.getSource().toString().charAt(19)) {
+        switch (mouseEvent.getSource().toString().charAt(19)) {
             case '2':
                 choosenIsland = 2;
                 break;
@@ -932,21 +1028,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
         final int choosen = choosenIsland;
         System.out.println(choosen);
-        if(switchMotherNature){
+        if (switchMotherNature) {
             switchMotherNature = false;
             int steps = 0;
-            if(choosen-motherNaturePos>0)
-                steps = choosen-motherNaturePos-1;
+            if (choosen - motherNaturePos > 0)
+                steps = choosen - motherNaturePos - 1;
             else
-                steps =  choosen-motherNaturePos+11;
+                steps = choosen - motherNaturePos + 11;
 
             moveMotherNature(steps);
 
-            if(posWithGhost==null){
+            if (posWithGhost == null) {
                 int finalSteps = steps;
-                new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
                 setActive(false);
-            }else{
+            } else {
                 System.out.println("Spostamento modalità ghost");
                 Integer finalPose = null;
 
@@ -954,15 +1050,16 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 temp.addAll(posWithGhost);
                 temp.addAll(posWithGhost);
 
-                for(int j=startingPose;j<temp.size();j++){
-                    if(temp.get(j).contains(choosen-1)){
-                        finalPose=j;
-                        break;}
+                for (int j = startingPose; j < temp.size(); j++) {
+                    if (temp.get(j).contains(choosen - 1)) {
+                        finalPose = j;
+                        break;
+                    }
                 }
-                System.out.println("starting , final  pose: "+startingPose+" , "+finalPose);
-                int move = finalPose-startingPose;
-                System.out.println("Passi: "+move);
-                new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(move))).start();
+                System.out.println("starting , final  pose: " + startingPose + " , " + finalPose);
+                int move = finalPose - startingPose;
+                System.out.println("Passi: " + move);
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(move))).start();
                 setActive(false);
             }
         }
@@ -971,32 +1068,32 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         darkAll();
     }
 
-    private int getColorFromId(int id){
-        if(id-59>=0 && id-59<=25)
+    private int getColorFromId(int id) {
+        if (id - 59 >= 0 && id - 59 <= 25)
             return 2;
-        else if(id-59>=26 && id-59<=51)
+        else if (id - 59 >= 26 && id - 59 <= 51)
             return 5;
-        else if(id-59>=52 && id-59<=77)
+        else if (id - 59 >= 52 && id - 59 <= 77)
             return 1;
-        else if(id-59>=78 && id-59<=103)
+        else if (id - 59 >= 78 && id - 59 <= 103)
             return 3;
-        else if(id-59>=104 && id-59<=129)
+        else if (id - 59 >= 104 && id - 59 <= 129)
             return 4;
-        else System.out.println("id mancante: "+id);
+        else System.out.println("id mancante: " + id);
 
         return 0;
     }
 
-    private boolean containId(int island,int id){
+    private boolean containId(int island, int id) {
         return false;
     }
 
-    public ImageView getCharacterById(int id){
-        if(Integer.parseInt(card1.getId())==id)
+    public ImageView getCharacterById(int id) {
+        if (Integer.parseInt(card1.getId()) == id)
             return card1;
-        if(Integer.parseInt(card2.getId())==id)
+        if (Integer.parseInt(card2.getId()) == id)
             return card2;
-        if(Integer.parseInt(card3.getId())==id)
+        if (Integer.parseInt(card3.getId()) == id)
             return card3;
 
         return null;
@@ -1005,20 +1102,20 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void updateValues(GameSerialized gameSerialized) {
         disableMenu();
         characterCards = gameSerialized.getCharacterCards();
-        for(int i=0;i<3;i++)
+        for (int i = 0; i < 3; i++)
             cCards[i].setDisable(true);
 
         clearCloud1();
         clearCloud2();
-        addStudentsToCloud(gameSerialized.getClouds().get(0),1);
-        if(gameSerialized.getClouds().get(1)!=null) addStudentsToCloud(gameSerialized.getClouds().get(1),2);
+        addStudentsToCloud(gameSerialized.getClouds().get(0), 1);
+        if (gameSerialized.getClouds().get(1) != null) addStudentsToCloud(gameSerialized.getClouds().get(1), 2);
 
         this.gameSerialized = gameSerialized;
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
 
-        if(islands.size() == 12) {
+        if (islands.size() == 12) {
             setMotherNaturePose(gameSerialized.getMotherNaturePos());
-            for(int k=0;k<12;k++){
+            for (int k = 0; k < 12; k++) {
                 if (islands.get(k).getTowerNumber() != 0) {
                     switch (islands.get(k).getTowerColor()) {
                         case BLACK -> setTower(k, 0);
@@ -1041,7 +1138,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     }
                 }
             }
-        }else{
+        } else {
             int islandMarker = 0;
             setMotherNaturePose(gameSerialized.getMotherNaturePos());
 
@@ -1061,9 +1158,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 if (island.isGhost())
                     for (int islnb : island.getReferencedIslands()) {
                         switch (island.getTowerColor()) {
-                            case BLACK -> setTower(islnb-1, 0);
-                            case GREY -> setTower(islnb-1, 2);
-                            case WHITE -> setTower(islnb-1, 1);
+                            case BLACK -> setTower(islnb - 1, 0);
+                            case GREY -> setTower(islnb - 1, 2);
+                            case WHITE -> setTower(islnb - 1, 1);
                         }
                         islandMarker++;
                     }
@@ -1073,8 +1170,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             for (SerializableIsland island : islands) {
                 ArrayList<Integer> islandPawnsId = island.getIslandsPawnsID();
 
-                if(!island.isGhost()) {
-                    System.out.println("Confrontando non ghost isola: "+(islandMarker+1)+" con isola: "+(islandMarker+1));
+                if (!island.isGhost()) {
+                    System.out.println("Confrontando non ghost isola: " + (islandMarker + 1) + " con isola: " + (islandMarker + 1));
                     for (Integer id : islandPawnsId) {
                         boolean add = true;
                         for (int j = 0; j < students[islandMarker].size(); j++) {
@@ -1086,35 +1183,35 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     }
                     posWithGhost.add(List.of(islandMarker));
                     islandMarker++;
-                }else if(island.isGhost()){
+                } else if (island.isGhost()) {
                     //da sistemare
                     System.out.println();
-                    System.out.print("Confrontando ghost isola: "+(islandMarker+1)+" con isole: ");
-                    for(int is:island.getReferencedIslands()) System.out.print(is+" , ");
+                    System.out.print("Confrontando ghost isola: " + (islandMarker + 1) + " con isole: ");
+                    for (int is : island.getReferencedIslands()) System.out.print(is + " , ");
                     for (Integer id : islandPawnsId) {
                         boolean add = true;
                         for (int isl : island.getReferencedIslands())
-                            for (int j = 0; j < students[isl-1].size(); j++) {
-                                if (students[isl-1].get(j).getId().equals(Integer.toString(id)))
+                            for (int j = 0; j < students[isl - 1].size(); j++) {
+                                if (students[isl - 1].get(j).getId().equals(Integer.toString(id)))
                                     add = false;
                             }
                         if (add) {
-                            int finalIsland = island.getReferencedIslands().get(0)-1;
-                            Integer min = students[island.getReferencedIslands().get(0)-1].size();
-                            for(int isl: island.getReferencedIslands())
-                                if(students[isl-1].size()<min){
-                                    min = students[isl-1].size();
+                            int finalIsland = island.getReferencedIslands().get(0) - 1;
+                            Integer min = students[island.getReferencedIslands().get(0) - 1].size();
+                            for (int isl : island.getReferencedIslands())
+                                if (students[isl - 1].size() < min) {
+                                    min = students[isl - 1].size();
                                 }
-                            for(int i=0;i<island.getReferencedIslands().size();i++)
-                                if(students[island.getReferencedIslands().get(i)-1].size()==min)
-                                    finalIsland = island.getReferencedIslands().get(i)-1;
+                            for (int i = 0; i < island.getReferencedIslands().size(); i++)
+                                if (students[island.getReferencedIslands().get(i) - 1].size() == min)
+                                    finalIsland = island.getReferencedIslands().get(i) - 1;
 
                             addStudentToIsland(getColorFromId(id), id, finalIsland);
                         }
                     }
                     ArrayList<Integer> temp = new ArrayList<Integer>();
-                    for(int j=0;j<island.getReferencedIslands().size();j++)
-                        temp.add(island.getReferencedIslands().get(j)-1);
+                    for (int j = 0; j < island.getReferencedIslands().size(); j++)
+                        temp.add(island.getReferencedIslands().get(j) - 1);
 
                     posWithGhost.add(temp);
                     islandMarker += island.getReferencedIslands().size();
@@ -1122,37 +1219,38 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             }
             System.out.println();
             System.out.println("posWithGhost: ");
-            for(int j=0;j<posWithGhost.size();j++){
-                System.out.print("pos: "+j+":");
-                for(int i=0;i<posWithGhost.get(j).size();i++)
-                    System.out.print(" "+posWithGhost.get(j).get(i));
+            for (int j = 0; j < posWithGhost.size(); j++) {
+                System.out.print("pos: " + j + ":");
+                for (int i = 0; i < posWithGhost.get(j).size(); i++)
+                    System.out.print(" " + posWithGhost.get(j).get(i));
                 System.out.println();
             }
         }
 
-        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
-            if(s.getNickname().equals(nickname))
+        for (SerializableScoreboard s : gameSerialized.getSerializableScoreboard())
+            if (s.getNickname().equals(nickname))
                 setCoin(s.getCoins());
 
         int opponentCount = 0;
-        for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
-            if(!s.getNickname().equals(nickname)){
-                if(opponentCount == 0)
+        for (SerializableScoreboard s : gameSerialized.getSerializableScoreboard())
+            if (!s.getNickname().equals(nickname)) {
+                if (opponentCount == 0)
                     GraphicController.nicknameOpponent1 = s.getNickname();
                 else
                     GraphicController.nicknameOpponent2 = s.getNickname();
 
-            opponentCount++;
+                opponentCount++;
             }
 
         nicknameOp1.setText(GraphicController.nicknameOpponent1.toUpperCase(Locale.ROOT));
-        if(GraphicController.nicknameOpponent2!=null) nicknameOp2.setText(GraphicController.nicknameOpponent2.toUpperCase(Locale.ROOT));
+        if (GraphicController.nicknameOpponent2 != null)
+            nicknameOp2.setText(GraphicController.nicknameOpponent2.toUpperCase(Locale.ROOT));
 
-        if(scoreboardSceneManager!=null)    scoreboardSceneManager.updateValues(gameSerialized);
+        if (scoreboardSceneManager != null) scoreboardSceneManager.updateValues(gameSerialized);
 
-        if(gameSerialized.getExpertMode()){
+        if (gameSerialized.getExpertMode()) {
             initializeCharacterCards();
-        }else{
+        } else {
             coin.setVisible(false);
             labelCoins.setVisible(false);
             switchHandMap.setScaleY(1.5);
@@ -1169,43 +1267,69 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             labelScrbd.setLayoutY(610);
         }
 
-        if(gameSerialized.getActiveNickname().equals(nickname))
+        if (gameSerialized.getActiveNickname().equals(nickname))
             setActive(true);
         else
             setActive(false);
+
+        resizeElements();
     }
 
-    public void setOpponent1Card(int number){
-        assistentCardOpponent1.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente("+number+").png")));
+    public void setOpponent1Card(int number) {
+        assistentCardOpponent1.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente(" + number + ").png")));
     }
 
-    public void setOpponent2Card(int number){
-        assistentCardOpponent2.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente("+number+").png")));
+    public void setOpponent2Card(int number) {
+        assistentCardOpponent2.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente(" + number + ").png")));
     }
 
     //passare numero isola precedente in senso orario
     public void build(int island) {
-        switch(island){
-            case 1: build_1_2(); break;
-            case 2: build_2_3(); break;
-            case 3: build_3_4(); break;
-            case 4: build_4_5(); break;
-            case 5: build_5_6(); break;
-            case 6: build_6_7(); break;
-            case 7: build_7_8(); break;
-            case 8: build_8_9(); break;
-            case 9: build_9_10(); break;
-            case 10: build_10_11(); break;
-            case 11: build_11_12(); break;
-            case 12: build_12_1(); break;
+        switch (island) {
+            case 1:
+                build_1_2();
+                break;
+            case 2:
+                build_2_3();
+                break;
+            case 3:
+                build_3_4();
+                break;
+            case 4:
+                build_4_5();
+                break;
+            case 5:
+                build_5_6();
+                break;
+            case 6:
+                build_6_7();
+                break;
+            case 7:
+                build_7_8();
+                break;
+            case 8:
+                build_8_9();
+                break;
+            case 9:
+                build_9_10();
+                break;
+            case 10:
+                build_10_11();
+                break;
+            case 11:
+                build_11_12();
+                break;
+            case 12:
+                build_12_1();
+                break;
         }
 
     }
 
-    private void build_1_2(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_1_2);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_1_2);
-        tt.setFromY(bridge_1_2.getY()-20);
+    private void build_1_2() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_1_2);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_1_2);
+        tt.setFromY(bridge_1_2.getY() - 20);
         tt.setToY(bridge_1_2.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1215,10 +1339,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
-    private void build_2_3(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_2_3);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_2_3);
-        tt.setFromY(bridge_2_3.getY()-20);
+    private void build_2_3() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_2_3);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_2_3);
+        tt.setFromY(bridge_2_3.getY() - 20);
         tt.setToY(bridge_2_3.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1227,10 +1351,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_3_4(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_3_4);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_3_4);
-        tt.setFromY(bridge_3_4.getY()-20);
+    private void build_3_4() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_3_4);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_3_4);
+        tt.setFromY(bridge_3_4.getY() - 20);
         tt.setToY(bridge_3_4.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1240,10 +1364,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
-    private void build_4_5(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_4_5);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_4_5);
-        tt.setFromY(bridge_4_5.getY()-20);
+    private void build_4_5() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_4_5);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_4_5);
+        tt.setFromY(bridge_4_5.getY() - 20);
         tt.setToY(bridge_4_5.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1252,10 +1376,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_5_6(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_5_6);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_5_6);
-        tt.setFromY(bridge_5_6.getY()-20);
+    private void build_5_6() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_5_6);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_5_6);
+        tt.setFromY(bridge_5_6.getY() - 20);
         tt.setToY(bridge_5_6.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1264,10 +1388,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_6_7(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_6_7);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_6_7);
-        tt.setFromY(bridge_6_7.getY()-20);
+    private void build_6_7() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_6_7);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_6_7);
+        tt.setFromY(bridge_6_7.getY() - 20);
         tt.setToY(bridge_6_7.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1276,10 +1400,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_7_8(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_7_8);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_7_8);
-        tt.setFromY(bridge_7_8.getY()-20);
+    private void build_7_8() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_7_8);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_7_8);
+        tt.setFromY(bridge_7_8.getY() - 20);
         tt.setToY(bridge_7_8.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1288,10 +1412,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_8_9(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_8_9);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_8_9);
-        tt.setFromY(bridge_8_9.getY()-20);
+    private void build_8_9() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_8_9);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_8_9);
+        tt.setFromY(bridge_8_9.getY() - 20);
         tt.setToY(bridge_8_9.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1300,10 +1424,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_9_10(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_9_10);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_9_10);
-        tt.setFromY(bridge_9_10.getY()-20);
+    private void build_9_10() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_9_10);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_9_10);
+        tt.setFromY(bridge_9_10.getY() - 20);
         tt.setToY(bridge_9_10.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1312,10 +1436,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_10_11(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_10_11);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_10_11);
-        tt.setFromY(bridge_10_11.getY()-20);
+    private void build_10_11() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_10_11);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_10_11);
+        tt.setFromY(bridge_10_11.getY() - 20);
         tt.setToY(bridge_10_11.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1324,10 +1448,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_11_12(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_11_12);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_11_12);
-        tt.setFromY(bridge_11_12.getY()-20);
+    private void build_11_12() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_11_12);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_11_12);
+        tt.setFromY(bridge_11_12.getY() - 20);
         tt.setToY(bridge_11_12.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1336,10 +1460,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
-    private void build_12_1(){
-        TranslateTransition tt = new TranslateTransition(Duration.millis(1000),bridge_1_12);
-        FadeTransition ft = new FadeTransition(Duration.millis(1000),bridge_1_12);
-        tt.setFromY(bridge_1_12.getY()-20);
+    private void build_12_1() {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_1_12);
+        FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_1_12);
+        tt.setFromY(bridge_1_12.getY() - 20);
         tt.setToY(bridge_1_12.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1360,35 +1484,35 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         disableClouds();
     }
 
-    public void disableClouds(){
+    public void disableClouds() {
         cloud1.setDisable(true);
         cloud2.setDisable(true);
     }
 
-    public void enableClouds(){
-        if(cloud1Student0.getImage()!=null) cloud1.setDisable(false);
-        if(cloud2Student0.getImage()!=null) cloud2.setDisable(false);
+    public void enableClouds() {
+        if (cloud1Student0.getImage() != null) cloud1.setDisable(false);
+        if (cloud2Student0.getImage() != null) cloud2.setDisable(false);
     }
 
     public void selectCloudObserverNotification(int cloudNumber) {
         ArrayList<Cloud> finalCloud = new ArrayList<>();
-        finalCloud.add(clouds.get(cloudNumber-1));
-        new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
+        finalCloud.add(clouds.get(cloudNumber - 1));
+        new Thread(() -> notifyObserver(obs -> obs.onUpdatePickCloud(finalCloud))).start();
         setActive(false);
         clouds.clear();
-        if(cloudNumber == 1)
+        if (cloudNumber == 1)
             clearCloud1();
-        if(cloudNumber == 2)
+        if (cloudNumber == 2)
             clearCloud2();
     }
 
-    public void clearCloud1(){
-        for(int i=0;i<4;i++)
+    public void clearCloud1() {
+        for (int i = 0; i < 4; i++)
             cloudStudents1[i].setImage(null);
     }
 
-    public void clearCloud2(){
-        for(int i=0;i<4;i++)
+    public void clearCloud2() {
+        for (int i = 0; i < 4; i++)
             cloudStudents2[i].setImage(null);
     }
 
@@ -1408,21 +1532,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloud2.setEffect(new DropShadow());
     }
 
-    public void setAssistants(List<AssistantCard> assistantCards){
-        for(AssistantCard assistantCard: assistantCards){
-            this.assistantCards[assistantCard.getValue()-1].setVisible(true);
-            this.assistantCards[assistantCard.getValue()-1].setDisable(false);
+    public void setAssistants(List<AssistantCard> assistantCards) {
+        for (AssistantCard assistantCard : assistantCards) {
+            this.assistantCards[assistantCard.getValue() - 1].setVisible(true);
+            this.assistantCards[assistantCard.getValue() - 1].setDisable(false);
         }
 
     }
 
     public void choosenAssistant(MouseEvent mouseEvent) {
-        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
+        int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27));
         setActive(false);
 
         assistantCards[assistantUsed].setMouseTransparent(true);
         //TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[assistantUsed]);
-        FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[assistantUsed]);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), assistantCards[assistantUsed]);
         //tt.setFromY(assistantCards[assistantUsed].getY());
         //tt.setToY(assistantCards[assistantUsed].getY()+25);
         ft.setFromValue(1);
@@ -1436,105 +1560,105 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         disableAssistant();
 
         AssistantCard finalAssistantCard = null;
-        for(AssistantCard a: assistantCardsList)
-            if(a.getValue() == assistantUsed+1)
+        for (AssistantCard a : assistantCardsList)
+            if (a.getValue() == assistantUsed + 1)
                 finalAssistantCard = a;
 
         playedAssistantCardsList.add(finalAssistantCard);
         AssistantCard finalAssistantCard1 = finalAssistantCard;
-        new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList))).start();
+        new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList))).start();
         assistantCardsList.remove(finalAssistantCard);
         return;
 
     }
 
     public void outAssistant(MouseEvent mouseEvent) {
-        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new DropShadow());
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27))].setEffect(new DropShadow());
     }
 
     public void inAssistant(MouseEvent mouseEvent) {
 
 
-        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26,27))].setEffect(new InnerShadow());
+        assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27))].setEffect(new InnerShadow());
     }
 
-    public void enableAssistant(List<AssistantCard> assistantCards){
+    public void enableAssistant(List<AssistantCard> assistantCards) {
         this.assistantCardsList = assistantCards;
     }
 
-    public void disableAssistant(){
-        for(ImageView i: assistantCards) {
+    public void disableAssistant() {
+        for (ImageView i : assistantCards) {
             i.setDisable(true);
         }
     }
 
-    public void disableOpcard1(){
+    public void disableOpcard1() {
         opCard1 = false;
     }
 
-    public void disableOpcard2(){
+    public void disableOpcard2() {
         opCard2 = false;
     }
 
-    public void enableOpcard1(){
+    public void enableOpcard1() {
         opCard1 = true;
     }
 
-    public void enableOpcard2(){
+    public void enableOpcard2() {
         opCard2 = true;
     }
 
-    public void viewOpCard1(){
+    public void viewOpCard1() {
         opCard1 = true;
 
-        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent1);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent1);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),bgOpCard1);
+        ft = new FadeTransition(Duration.millis(600), bgOpCard1);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),previous1lbl);
+        ft = new FadeTransition(Duration.millis(600), previous1lbl);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),nicknameOp1);
+        ft = new FadeTransition(Duration.millis(600), nicknameOp1);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
-        
+
     }
 
-    public void viewOpCard2(){
+    public void viewOpCard2() {
         opCard2 = true;
 
-        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent2);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent2);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),bgOpCard2);
+        ft = new FadeTransition(Duration.millis(600), bgOpCard2);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),previous2lbl);
+        ft = new FadeTransition(Duration.millis(600), previous2lbl);
         ft.setFromValue(0);
         ft.setToValue(1);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),nicknameOp2);
+        ft = new FadeTransition(Duration.millis(600), nicknameOp2);
         ft.setFromValue(0);
         ft.setToValue(1);
 
@@ -1542,27 +1666,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
-    public void hideOpCard1(){
+    public void hideOpCard1() {
 
-        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent1);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent1);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),bgOpCard1);
+        ft = new FadeTransition(Duration.millis(600), bgOpCard1);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),previous1lbl);
+        ft = new FadeTransition(Duration.millis(600), previous1lbl);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),nicknameOp1);
+        ft = new FadeTransition(Duration.millis(600), nicknameOp1);
         ft.setFromValue(1);
         ft.setToValue(0);
 
@@ -1570,27 +1694,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
-    public void hideOpCard2(){
+    public void hideOpCard2() {
 
-        FadeTransition ft = new FadeTransition(Duration.millis(600),assistentCardOpponent2);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent2);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),bgOpCard2);
+        ft = new FadeTransition(Duration.millis(600), bgOpCard2);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),previous2lbl);
+        ft = new FadeTransition(Duration.millis(600), previous2lbl);
         ft.setFromValue(1);
         ft.setToValue(0);
 
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),nicknameOp2);
+        ft = new FadeTransition(Duration.millis(600), nicknameOp2);
         ft.setFromValue(1);
         ft.setToValue(0);
 
@@ -1599,27 +1723,29 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void switchView(MouseEvent mouseEvent) {
-        if(opCard1) viewOpCard1();
-        if(opCard2) viewOpCard2();
-        card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
+        if (opCard1) viewOpCard1();
+        if (opCard2) viewOpCard2();
+        card1.setDisable(true);
+        card2.setDisable(true);
+        card3.setDisable(true);
 
-        for(AssistantCard a: assistantCardsList){
-            this.assistantCards[a.getValue()-1].setVisible(true);
+        for (AssistantCard a : assistantCardsList) {
+            this.assistantCards[a.getValue() - 1].setVisible(true);
 
-            assistantCards[a.getValue()-1].setMouseTransparent(false);
-            TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[a.getValue()-1]);
-            FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[a.getValue()-1]);
-            tt.setFromY(assistantCards[a.getValue()-1].getY()+25);
-            tt.setToY(assistantCards[a.getValue()-1].getY());
+            assistantCards[a.getValue() - 1].setMouseTransparent(false);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(600), assistantCards[a.getValue() - 1]);
+            FadeTransition ft = new FadeTransition(Duration.millis(600), assistantCards[a.getValue() - 1]);
+            tt.setFromY(assistantCards[a.getValue() - 1].getY() + 25);
+            tt.setToY(assistantCards[a.getValue() - 1].getY());
             ft.setFromValue(0);
             ft.setToValue(1);
 
             ft.play();
             tt.play();
         }
-        TranslateTransition tt = new TranslateTransition(Duration.millis(600),xButton);
-        FadeTransition ft = new FadeTransition(Duration.millis(600),xButton);
-        tt.setFromY(xButton.getY()+25);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(600), xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), xButton);
+        tt.setFromY(xButton.getY() + 25);
         tt.setToY(xButton.getY());
         ft.setFromValue(0);
         ft.setToValue(1);
@@ -1628,37 +1754,37 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
         xButton.setDisable(false);
 
-        ft = new FadeTransition(Duration.millis(600),switchHandMap);
+        ft = new FadeTransition(Duration.millis(600), switchHandMap);
         ft.setFromValue(1);
         ft.setToValue(0);
         switchHandMap.setDisable(true);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),toScoreboard);
+        ft = new FadeTransition(Duration.millis(600), toScoreboard);
         ft.setFromValue(1);
         ft.setToValue(0);
         toScoreboard.setDisable(true);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelHand);
+        ft = new FadeTransition(Duration.millis(600), labelHand);
         ft.setFromValue(1);
         ft.setToValue(0);
         labelHand.setDisable(true);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelScrbd);
+        ft = new FadeTransition(Duration.millis(600), labelScrbd);
         ft.setFromValue(1);
         ft.setToValue(0);
         labelScrbd.setDisable(true);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),coin);
+        ft = new FadeTransition(Duration.millis(600), coin);
         ft.setFromValue(1);
         ft.setToValue(0);
         coin.setDisable(true);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelCoins);
+        ft = new FadeTransition(Duration.millis(600), labelCoins);
         ft.setFromValue(1);
         ft.setToValue(0);
         labelCoins.setDisable(true);
@@ -1674,27 +1800,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void closeHand(MouseEvent mouseEvent) {
-        if(opCard1) hideOpCard1();
-        if(opCard2) hideOpCard2();
-        if(gameSerialized.getExpertMode()) initializeCharacterCards();
+        if (opCard1) hideOpCard1();
+        if (opCard2) hideOpCard2();
+        if (gameSerialized.getExpertMode()) initializeCharacterCards();
 
-        for(AssistantCard a: assistantCardsList){
+        for (AssistantCard a : assistantCardsList) {
 
-            assistantCards[a.getValue()-1].setMouseTransparent(true);
-            TranslateTransition tt = new TranslateTransition(Duration.millis(600),assistantCards[a.getValue()-1]);
-            FadeTransition ft = new FadeTransition(Duration.millis(600),assistantCards[a.getValue()-1]);
-            tt.setFromY(assistantCards[a.getValue()-1].getY());
-            tt.setToY(assistantCards[a.getValue()-1].getY()+25);
+            assistantCards[a.getValue() - 1].setMouseTransparent(true);
+            TranslateTransition tt = new TranslateTransition(Duration.millis(600), assistantCards[a.getValue() - 1]);
+            FadeTransition ft = new FadeTransition(Duration.millis(600), assistantCards[a.getValue() - 1]);
+            tt.setFromY(assistantCards[a.getValue() - 1].getY());
+            tt.setToY(assistantCards[a.getValue() - 1].getY() + 25);
             ft.setFromValue(1);
             ft.setToValue(0);
 
             ft.play();
             tt.play();
         }
-        TranslateTransition tt = new TranslateTransition(Duration.millis(600),xButton);
-        FadeTransition ft = new FadeTransition(Duration.millis(600),xButton);
+        TranslateTransition tt = new TranslateTransition(Duration.millis(600), xButton);
+        FadeTransition ft = new FadeTransition(Duration.millis(600), xButton);
         tt.setFromY(xButton.getY());
-        tt.setToY(xButton.getY()+25);
+        tt.setToY(xButton.getY() + 25);
         ft.setFromValue(1);
         ft.setToValue(0);
 
@@ -1703,37 +1829,37 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         xButton.setDisable(true);
 
-        ft = new FadeTransition(Duration.millis(600),switchHandMap);
+        ft = new FadeTransition(Duration.millis(600), switchHandMap);
         ft.setFromValue(0);
         ft.setToValue(1);
         switchHandMap.setDisable(false);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),toScoreboard);
+        ft = new FadeTransition(Duration.millis(600), toScoreboard);
         ft.setFromValue(0);
         ft.setToValue(1);
         toScoreboard.setDisable(false);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelHand);
+        ft = new FadeTransition(Duration.millis(600), labelHand);
         ft.setFromValue(0);
         ft.setToValue(1);
         labelHand.setDisable(false);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelScrbd);
+        ft = new FadeTransition(Duration.millis(600), labelScrbd);
         ft.setFromValue(0);
         ft.setToValue(1);
         labelScrbd.setDisable(false);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),coin);
+        ft = new FadeTransition(Duration.millis(600), coin);
         ft.setFromValue(0);
         ft.setToValue(1);
         coin.setDisable(false);
         ft.play();
 
-        ft = new FadeTransition(Duration.millis(600),labelCoins);
+        ft = new FadeTransition(Duration.millis(600), labelCoins);
         ft.setFromValue(0);
         ft.setToValue(1);
         labelCoins.setDisable(false);
@@ -1762,13 +1888,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         toScoreboard.setEffect(new DropShadow());
     }
 
-    public void setCoin(int coin){
+    public void setCoin(int coin) {
         coins = coin;
-        labelCoins.setText("X "+Integer.toString(coin));
+        labelCoins.setText("X " + Integer.toString(coin));
     }
 
     public void inCard1(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1781,13 +1907,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard1(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             cardSelected(0);
         }
     }
 
     public void inCard2(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1800,13 +1926,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard2(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             cardSelected(1);
         }
     }
 
     public void inCard3(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1819,128 +1945,190 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard3(MouseEvent mouseEvent) {
-        if(active&&actionFase) {
+        if (active && actionFase) {
             cardSelected(2);
         }
     }
 
-    private void cardSelected(int choice){
+    private void cardSelected(int choice) {
         int idCard = Integer.parseInt(cCards[choice].getId());
-        for(ImageView im:cCards)
+        for (ImageView im : cCards)
             im.setDisable(true);
 
-        if(idCard==209)
-            for(int i=0;i<4;i++){
+        if (idCard == 209)
+            for (int i = 0; i < 4; i++) {
                 card209[i].setDisable(false);
                 int finalI = i;
-                card209[i].setOnMousePressed(ev -> {finalStudentPos = finalI; menuCard209();});
+                card209[i].setOnMousePressed(ev -> {
+                    finalStudentPos = finalI;
+                    menuCard209();
+                });
                 card209[i].setOnMouseEntered(ev -> card209[finalI].setEffect(new Glow()));
                 card209[i].setOnMouseExited(ev -> card209[finalI].setEffect(null));
             }
 
-        if(idCard==219)
-            for(int i=0;i<4;i++){
+        if (idCard == 219)
+            for (int i = 0; i < 4; i++) {
                 card219[i].setDisable(false);
                 int finalI = i;
-                card219[i].setOnMousePressed(ev -> {disableMenu(); disable219(); new Thread( () ->  notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();});
+                card219[i].setOnMousePressed(ev -> {
+                    disableMenu();
+                    disable219();
+                    new Thread(() -> notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();
+                });
                 card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow()));
                 card219[i].setOnMouseExited(ev -> card219[finalI].setEffect(null));
             }
 
-        if(idCard==211)
+        if (idCard == 211)
             menuCard211();
 
-        if(idCard==213)
+        if (idCard == 213)
             menuCard213();
 
-        if(idCard==217)
+        if (idCard == 217)
             menuCard217();
 
-        switch(idCard){
-            case 210 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse210)).start();
-            case 212 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse212)).start();
-            case 214 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse214)).start();
-            case 216 -> new Thread( () -> notifyObserver(ViewObserver::onUpdateUse216)).start();
+        switch (idCard) {
+            case 210 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse210)).start();
+            case 212 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse212)).start();
+            case 214 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse214)).start();
+            case 216 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse216)).start();
         }
     }
 
-    private void disableMenu(){
+    private void disableMenu() {
         islandMenu.setDisable(true);
         islandMenu.setVisible(false);
         colorMenu.setDisable(true);
         colorMenu.setVisible(false);
     }
 
-    private void disable209(){
-        for(ImageView student: card209)
+    private void disable209() {
+        for (ImageView student : card209)
             student.setDisable(true);
     }
 
-    private void disable219(){
-        for(ImageView student: card219)
+    private void disable219() {
+        for (ImageView student : card219)
             student.setDisable(true);
     }
 
     private void menuCard209() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
-        islandMenu.setLayoutX(getCharacterById(209).getLayoutX()-17);
-        islandMenu.setLayoutY(getCharacterById(209).getLayoutY()+10);
+        islandMenu.setLayoutX(getCharacterById(209).getLayoutX() - 17);
+        islandMenu.setLayoutY(getCharacterById(209).getLayoutY() + 10);
 
         for (int j = 0; j < 12; j++) {
             int finalJ = j;
-            islandMenu.getItems().get(j).setOnAction(event -> {System.out.println("carta 209 usata"); useCard209(finalJ + 1);});
+            islandMenu.getItems().get(j).setOnAction(event -> {
+                System.out.println("carta 209 usata");
+                useCard209(finalJ + 1);
+            });
         }
     }
 
-    private void useCard209(int islandSelected){
+    private void useCard209(int islandSelected) {
         disableMenu();
         disable209();
-        new Thread( () -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
+        new Thread(() -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
     }
 
     private void menuCard211() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
-        islandMenu.setLayoutX(getCharacterById(211).getLayoutX()-17);
-        islandMenu.setLayoutY(getCharacterById(211).getLayoutY()+10);
+        islandMenu.setLayoutX(getCharacterById(211).getLayoutX() - 17);
+        islandMenu.setLayoutY(getCharacterById(211).getLayoutY() + 10);
 
         for (int j = 0; j < 12; j++) {
             int finalJ = j;
-            islandMenu.getItems().get(j).setOnAction(event -> {disableMenu(); new Thread( () ->  notifyObserver(obs -> obs.onUpdateUse211(finalJ+1))).start();});
+            islandMenu.getItems().get(j).setOnAction(event -> {
+                disableMenu();
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse211(finalJ + 1))).start();
+            });
         }
     }
 
     private void menuCard213() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
-        islandMenu.setLayoutX(getCharacterById(213).getLayoutX()-17);
-        islandMenu.setLayoutY(getCharacterById(213).getLayoutY()+10);
+        islandMenu.setLayoutX(getCharacterById(213).getLayoutX() - 17);
+        islandMenu.setLayoutY(getCharacterById(213).getLayoutY() + 10);
 
         for (int j = 0; j < 12; j++) {
             int finalJ = j;
-            islandMenu.getItems().get(j).setOnAction(event -> {disableMenu(); new Thread( () -> notifyObserver(obs -> obs.onUpdateUse213(finalJ+1))).start();});
+            islandMenu.getItems().get(j).setOnAction(event -> {
+                disableMenu();
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse213(finalJ + 1))).start();
+            });
         }
     }
 
-    private void menuCard217(){
+    private void menuCard217() {
         colorMenu.setVisible(true);
         colorMenu.setDisable(false);
-        colorMenu.setLayoutX(getCharacterById(217).getLayoutX()-17);
-        colorMenu.setLayoutY(getCharacterById(217).getLayoutY()+10);
-        for(int i=0;i<5;i++) {
+        colorMenu.setLayoutX(getCharacterById(217).getLayoutX() - 17);
+        colorMenu.setLayoutY(getCharacterById(217).getLayoutY() + 10);
+        for (int i = 0; i < 5; i++) {
             int finalI = i;
-            colorMenu.getItems().get(i).setOnAction(event -> {disableMenu(); disable219(); new Thread( () -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]))).start();});
+            colorMenu.getItems().get(i).setOnAction(event -> {
+                disableMenu();
+                disable219();
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]))).start();
+            });
         }
     }
 
     public void setActive(boolean active) {
         this.active = active;
-        if(active) labelOpTurn.setVisible(false);
+        if (active) labelOpTurn.setVisible(false);
         else labelOpTurn.setVisible(true);
     }
 
     public void setActionFase(boolean actionFase) {
         this.actionFase = actionFase;
+    }
+
+    public void resizeElements() {
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        Stage stage = (Stage) pane.getScene().getWindow();
+        Scene scene = pane.getScene();
+
+        System.out.println("Dimensioni schermo: " + width + " x " + height + " , Dimensioni scena: " + bg.getWidth() + " x " + bg.getHeight() + " , Dimensioni stage: " + stage.getWidth() + " x " + stage.getHeight());
+
+
+        Scale scale = new Scale(scene.getWidth() / (bg.getWidth()), scene.getHeight() / (bg.getHeight()));
+        scale.setPivotX(0);
+        scale.setPivotY(0);
+        pane.getScene().getRoot().getTransforms().setAll(scale);
+        resizeElements2();
+    }
+
+    private void resizeElements2() {
+        Scene scene = pane.getScene();
+
+        SceneSizeChangeListener sizeListener = new SceneSizeChangeListener(scene);
+        scene.widthProperty().addListener(sizeListener);
+        scene.heightProperty().addListener(sizeListener);
+    }
+
+    private class SceneSizeChangeListener implements ChangeListener<Number> {
+        private final Scene scene;
+
+        public SceneSizeChangeListener(Scene scene) {
+            this.scene = scene;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
+
+            Scale scale = new Scale(scene.getWidth() / (bg.getWidth()), scene.getHeight() / (bg.getHeight()));
+            scale.setPivotX(0);
+            scale.setPivotY(0);
+            pane.getScene().getRoot().getTransforms().setAll(scale);
+        }
     }
 }
