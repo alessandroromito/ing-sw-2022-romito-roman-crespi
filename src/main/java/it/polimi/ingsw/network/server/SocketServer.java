@@ -26,6 +26,9 @@ public class SocketServer implements Runnable{
         this.port = port;
     }
 
+    /**
+     * Method that accept a new connection and bing the client with his clientHandler
+     */
     @Override
     public void run() {
         try {
@@ -45,7 +48,7 @@ public class SocketServer implements Runnable{
                 client = serverSocket.accept();
                 System.out.println("Received client connection");
             } catch(IOException e) {
-                System.out.println("SocketServer.run(): Client connection not accepted");
+                System.out.println("SocketServer.accept(): Client connection not accepted");
                 continue;
             }
 

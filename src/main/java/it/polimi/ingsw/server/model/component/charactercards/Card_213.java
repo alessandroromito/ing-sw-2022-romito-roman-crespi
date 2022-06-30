@@ -7,6 +7,9 @@ import it.polimi.ingsw.server.model.component.NoEntryTile;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class represent the character card with id 213.
+ */
 public class Card_213 extends CharacterCard{
     ArrayList<NoEntryTile> noEntryTiles = new ArrayList<>();
 

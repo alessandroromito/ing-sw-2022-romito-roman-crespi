@@ -10,10 +10,10 @@ import java.util.Comparator;
 public class ComparatorAssistantCard implements Comparator<Player> {
 
     /**
-     * Object comparator.
-     * @param player1 the first object to be compared.
-     * @param player2 the second object to be compared.
-     * @return {code @true} if are the same, {code @false} otherwise
+     * Compare two assistant card.
+     * @param player1 the first player to be compared.
+     * @param player2 the second player to be compared.
+     * @return 1 if player1's card is bigger, -1 if player2's card is bigger 0 if have the same value
      */
     public int compare(Player player1, Player player2){
         return Integer.compare(player1.getCurrentCard().getValue(), player2.getCurrentCard().getValue());

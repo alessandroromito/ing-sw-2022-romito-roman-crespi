@@ -28,6 +28,10 @@ public class SerializableIsland implements Serializable {
     private final int towerNumber;
     private final TowerColors towerColor;
 
+    /**
+     * Default Constructor for an Island
+     * @param island island to be serialized
+     */
     public SerializableIsland(Island island){
         this.id  = island.getID();
         this.isGhost = false;
@@ -38,6 +42,10 @@ public class SerializableIsland implements Serializable {
             islandsPawnsID.add(s.getID());
     }
 
+    /**
+     * Default Constructor for a GhostIsland
+     * @param ghostIsland ghostIsland to be serialized
+     */
     public SerializableIsland(GhostIsland ghostIsland){
         this.isGhost = true;
         setColors(ghostIsland);
@@ -47,6 +55,10 @@ public class SerializableIsland implements Serializable {
             islandsPawnsID.add(s.getID());
     }
 
+    /**
+     * Set the students on the island
+     * @param island island to take te students
+     */
     private void setColors(Island island) {
         for(StudentDisc studentDisc : island.getStudents()){
             switch (studentDisc.getColor()) {
@@ -59,48 +71,96 @@ public class SerializableIsland implements Serializable {
         }
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getRedStudents() {
         return redStudents;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getGreenStudents() {
         return greenStudents;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getBlueStudents() {
         return blueStudents;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getYellowStudents() {
         return yellowStudents;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getPinkStudents() {
         return pinkStudents;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public int getTowerNumber() {
         return towerNumber;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public TowerColors getTowerColor() {
         return towerColor;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public boolean isGhost() {
         return isGhost;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<Integer> getReferencedIslands() {
         return referencedIslands;
     }
 
+    /**
+     * Getter method
+     * @return
+     */
     public ArrayList<Integer> getIslandsPawnsID() { return islandsPawnsID; }
 
+    /**
+     * Getter method
+     * @return
+     */
     public void setReferencedIslands(ArrayList<Integer> referencedIslands) {
         this.referencedIslands = referencedIslands;
     }

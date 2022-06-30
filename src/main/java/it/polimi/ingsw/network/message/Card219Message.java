@@ -9,11 +9,19 @@ public class Card219Message extends UseEffectMessage{
     private static final long serialVersionUID = -2709956195019031162L;
     int number;
 
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     * @param number parameter for the effect
+     */
     public Card219Message(String nickname, int number) {
         super(nickname, 219);
         this.number = number;
     }
 
+    /**
+     * @return number
+     */
     public int getNumber() {
         return number;
     }

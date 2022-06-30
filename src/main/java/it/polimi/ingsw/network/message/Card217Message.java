@@ -11,11 +11,19 @@ public class Card217Message extends UseEffectMessage{
 
     PawnColors color;
 
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     * @param color parameter of the effect
+     */
     public Card217Message(String nickname, PawnColors color) {
         super(nickname, 217);
         this.color = color;
     }
 
+    /**
+     * @return color
+     */
     public PawnColors getColor() {
         return color;
     }

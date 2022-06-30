@@ -8,6 +8,10 @@ public class Card212Message extends UseEffectMessage{
     @Serial
     private static final long serialVersionUID = -896254201388907635L;
 
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     */
     public Card212Message(String nickname) {
         super(nickname, 212);
     }

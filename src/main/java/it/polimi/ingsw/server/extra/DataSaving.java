@@ -37,7 +37,7 @@ public class DataSaving {
         System.out.println("Lettura avvenuta con successo.");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         persistenceGameController = (PersistenceGameController) objectInputStream.readObject();
-        return persistenceGameController.getGameController();
+        return persistenceGameController.gameController();
     }
 
     /**

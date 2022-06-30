@@ -12,6 +12,12 @@ public class Card215Message extends UseEffectMessage{
     ArrayList<Integer> entranceStudents;
     ArrayList<Integer> cardStudents;
 
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     * @param entrance
+     * @param card
+     */
     public Card215Message(String nickname, ArrayList<Integer> entrance, ArrayList<Integer> card) {
         super(nickname, 215);
         this.entranceStudents = entrance;

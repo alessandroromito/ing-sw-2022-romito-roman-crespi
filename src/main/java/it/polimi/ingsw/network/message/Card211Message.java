@@ -10,11 +10,19 @@ public class Card211Message extends UseEffectMessage{
 
     int islandNumber;
 
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     * @param islandNumber parameter for the effect
+     */
     public Card211Message(String nickname, int islandNumber) {
         super(nickname, 211);
         this.islandNumber = islandNumber;
     }
 
+    /**
+     * @return islandNumber
+     */
     public int getIslandNumber() {
         return islandNumber;
     }
