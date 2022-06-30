@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AssistantCardTest {
 
-    private Animals animal;
     private int value;
     private int movement;
     AssistantCard assistantCard = new AssistantCard(10, 11, 12);
@@ -19,17 +18,6 @@ class AssistantCardTest {
 
     @AfterEach
     void tearDown() {
-    }
-
-    @Test
-    void setAnimal() {
-        assistantCard.setAnimal(animal);
-    }
-
-    @Test
-    void getAnimal() {
-        if (assistantCard.getAnimal() != null)
-            assertEquals(Animals.class, assistantCard.getAnimal().getClass());
     }
 
     @Test

@@ -9,8 +9,6 @@ import java.io.Serializable;
 public class AssistantCard extends Component implements Serializable {
     @Serial
     private static final long serialVersionUID = 6062936035595096057L;
-
-    private Animals animal;
     private final int value;
     private final int movement;
 
@@ -24,21 +22,6 @@ public class AssistantCard extends Component implements Serializable {
         this.ID = id;
         this.value = value;
         this.movement = movement;
-    }
-
-    /**
-     * Set the type of animal of the assistant card.
-     * @param animal
-     */
-    public void setAnimal(Animals animal) {
-        this.animal = animal;
-    }
-
-    /**
-     * Get the type of animal of the assistant card.
-     */
-    public Animals getAnimal(){
-        return this.animal;
     }
 
     /**
