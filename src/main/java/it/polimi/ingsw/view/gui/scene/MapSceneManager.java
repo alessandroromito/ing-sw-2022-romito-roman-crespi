@@ -1581,25 +1581,25 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         opCard1 = true;
 
         FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent1);
-        ft.setFromValue(0);
+        ft.setFromValue(assistentCardOpponent1.getOpacity());
         ft.setToValue(1);
 
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), bgOpCard1);
-        ft.setFromValue(0);
+        ft.setFromValue(bgOpCard1.getOpacity());
         ft.setToValue(1);
 
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), previous1lbl);
-        ft.setFromValue(0);
+        ft.setFromValue(previous1lbl.getOpacity());
         ft.setToValue(1);
 
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), nicknameOp1);
-        ft.setFromValue(0);
+        ft.setFromValue(nicknameOp1.getOpacity());
         ft.setToValue(1);
 
         ft.play();
@@ -1616,19 +1616,19 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), bgOpCard2);
-        ft.setFromValue(0);
+        ft.setFromValue(bgOpCard2.getOpacity());
         ft.setToValue(1);
 
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), previous2lbl);
-        ft.setFromValue(0);
+        ft.setFromValue(previous2lbl.getOpacity());
         ft.setToValue(1);
 
         ft.play();
 
         ft = new FadeTransition(Duration.millis(600), nicknameOp2);
-        ft.setFromValue(0);
+        ft.setFromValue(nicknameOp2.getOpacity());
         ft.setToValue(1);
 
         ft.play();
