@@ -20,6 +20,10 @@ public class Card220Message extends UseEffectMessage{
         return color;
     }
 
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);

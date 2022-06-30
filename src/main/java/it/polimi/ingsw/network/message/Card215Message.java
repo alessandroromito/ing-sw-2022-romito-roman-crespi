@@ -26,6 +26,10 @@ public class Card215Message extends UseEffectMessage{
         return cardStudents;
     }
 
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);

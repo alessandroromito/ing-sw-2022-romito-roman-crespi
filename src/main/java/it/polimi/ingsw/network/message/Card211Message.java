@@ -19,6 +19,10 @@ public class Card211Message extends UseEffectMessage{
         return islandNumber;
     }
 
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);

@@ -35,7 +35,6 @@ public class GameController implements Observer, Serializable {
     private List<String> playersNicknames = new ArrayList<>();
     private transient Map<String, VirtualView> virtualViewMap;
 
-
     private ArrayList<String> reconnectingPlayersList;
 
     private int chosenPlayerNumber = 3;

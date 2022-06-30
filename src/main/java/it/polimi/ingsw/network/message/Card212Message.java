@@ -12,6 +12,10 @@ public class Card212Message extends UseEffectMessage{
         super(nickname, 212);
     }
 
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);

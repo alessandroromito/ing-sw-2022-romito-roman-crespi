@@ -27,6 +27,11 @@ public class Card218Message extends UseEffectMessage{
     public List<PawnColors> getDiningList() {
         return diningList;
     }
+
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);
