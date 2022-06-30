@@ -1081,9 +1081,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                             if (students[islandMarker].get(j).getId().equals(Integer.toString(id)))
                                 add = false;
                         }
-                        if (add) {
+                        if (add)
                             addStudentToIsland(getColorFromId(id), id, islandMarker);
-                        }
                     }
                     posWithGhost.add(List.of(islandMarker));
                     islandMarker++;
@@ -1099,8 +1098,19 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                                 if (students[isl-1].get(j).getId().equals(Integer.toString(id)))
                                     add = false;
                             }
-                        if (add)
-                            addStudentToIsland(getColorFromId(id), id, island.getReferencedIslands().get(0)-1);
+                        if (add) {
+                            int finalIsland = island.getReferencedIslands().get(0)-1;
+                            Integer min = students[island.getReferencedIslands().get(0)-1].size();
+                            for(int isl: island.getReferencedIslands())
+                                if(students[isl-1].size()<min){
+                                    min = students[isl-1].size();
+                                }
+                            for(int i=0;i<island.getReferencedIslands().size();i++)
+                                if(students[island.getReferencedIslands().get(i)-1].size()==min)
+                                    finalIsland = island.getReferencedIslands().get(i)-1;
+
+                            addStudentToIsland(getColorFromId(id), id, finalIsland);
+                        }
                     }
                     ArrayList<Integer> temp = new ArrayList<Integer>();
                     for(int j=0;j<island.getReferencedIslands().size();j++)
