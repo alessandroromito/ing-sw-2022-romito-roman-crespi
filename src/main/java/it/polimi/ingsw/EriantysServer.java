@@ -5,7 +5,7 @@ import it.polimi.ingsw.network.server.Server;
 import it.polimi.ingsw.network.server.SocketServer;
 
 /**
- *  Server application of the Game.
+ *  Main Eryantis server application.
  */
 public class EriantysServer {
 

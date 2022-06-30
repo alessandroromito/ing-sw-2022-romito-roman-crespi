@@ -5,6 +5,9 @@ import it.polimi.ingsw.view.cli.CLI;
 import it.polimi.ingsw.view.gui.GUI;
 import javafx.application.Application;
 
+/**
+ * Main Eriantys client application.
+ */
 public class EriantysClient {
 
     public static void main(String[] args) {
