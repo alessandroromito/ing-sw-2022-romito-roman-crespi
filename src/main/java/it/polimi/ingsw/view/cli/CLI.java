@@ -32,7 +32,6 @@ public class CLI extends ViewObservable implements View {
     private String nickname;
     boolean expertMode;
 
-    private int activeCardID;
     private int coin;
 
     public static final String ANSI_RESET = "\u001B[0m";
@@ -336,7 +335,6 @@ public class CLI extends ViewObservable implements View {
 
         int finalSteps = steps;
         notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
-        activeCardID = -1;
     }
 
     /**
@@ -520,7 +518,6 @@ public class CLI extends ViewObservable implements View {
                 notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
             }
             case 212 -> {
-                activeCardID = 212;
                 out.println("\nEffetto abilitato!\n");
                 notifyObserver(ViewObserver::onUpdateUse212);
             }
