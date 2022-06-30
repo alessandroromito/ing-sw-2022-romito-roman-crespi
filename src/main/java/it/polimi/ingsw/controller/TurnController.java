@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PhaseState;
 import it.polimi.ingsw.server.exception.InvalidActionPhaseStateException;
+import it.polimi.ingsw.server.extra.ANSICostants;
 import it.polimi.ingsw.server.extra.ComparatorAssistantCard;
 import it.polimi.ingsw.server.extra.DataSaving;
 import it.polimi.ingsw.server.model.Game;
@@ -58,10 +59,13 @@ public class TurnController implements Serializable {
      * Initialize a new Turn.
      */
     public void newTurn() {
+        if(turnCount == 10){
+            gameController.winnerChecker();
+            return;
+        }
+
         turnCount++;
         System.out.println("Turn: " + turnCount);
-        if(turnCount == 10)
-            gameController.winnerChecker();
 
         activePlayer = nicknameQueue.get(0);
 
@@ -71,6 +75,7 @@ public class TurnController implements Serializable {
                 System.out.println("Salvataggio partita in corso...");
                 dataSaving.save(gameController);
             } catch (IOException e) {
+                System.out.println(ANSICostants.ANSI_RED + "Errore durante il salvataggio" + ANSICostants.ANSI_RESET);
                 e.printStackTrace();
             }
         }
@@ -95,6 +100,10 @@ public class TurnController implements Serializable {
             }catch (RuntimeException ignored){
             }
         } else {
+            try{
+                game.deleteActiveCard();
+            }catch (RuntimeException ignored){
+            }
             nextPhase();
             return;
         }

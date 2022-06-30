@@ -486,12 +486,12 @@ public class CLI extends ViewObservable implements View {
 
                 int finalStudentPos = studentPos;
                 int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, finalIslandNum));
 
             }
             case 210 -> {
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(ViewObserver::onUpdateUse210);
             }
             case 211 -> {
@@ -517,12 +517,12 @@ public class CLI extends ViewObservable implements View {
                 } while(error);
 
                 int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(obs -> obs.onUpdateUse211(finalIslandNum));
             }
             case 212 -> {
                 activeCardID = 212;
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(ViewObserver::onUpdateUse212);
             }
             case 213 -> {
@@ -546,12 +546,12 @@ public class CLI extends ViewObservable implements View {
                 } while (error);
 
                 int finalIslandNum = islandNum;
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(obs -> obs.onUpdateUse213(finalIslandNum));
 
             }
             case 214 -> {
-                out.println("Effetto abilitato!");
+                out.println("\nEffetto abilitato!\n");
                 notifyObserver(ViewObserver::onUpdateUse214);
             }
             case 215 -> {
@@ -1050,7 +1050,7 @@ public class CLI extends ViewObservable implements View {
      */
     @Override
     public void showVictoryMessage(String winner) {
-        out.println("Il gioco è terminato. Il VINCITORE è " + winner + "!");
+        out.println("\n Il gioco è terminato. Il VINCITORE è " + winner + "! \n");
         System.exit(1);
     }
 

@@ -234,7 +234,6 @@ public class Game extends Observable implements Serializable {
      * @param islandID
      */
     public void moveTowerToIsland(Tower tower, int islandID) {
-
         try{
              Island island = map.getIsland(islandID);
 
@@ -261,9 +260,6 @@ public class Game extends Observable implements Serializable {
                      }
                  }
              }
-
-            notifyObserver(new GameScenarioMessage(getGameSerialized()));
-
         } catch (DisabledIslandException e) {
             throw new RuntimeException(e);
         }
@@ -297,7 +293,6 @@ public class Game extends Observable implements Serializable {
             Island island = map.getIsland(islandID);
             island.addStudent(student);
         }
-        //checkInfluence(islandID);
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
@@ -341,8 +336,6 @@ public class Game extends Observable implements Serializable {
                 moveTowerToIsland(dominantPlayer.getScoreboard().removeTower(), islandID);
                 checkTowerWinner(dominantPlayer);
                 checkMerge(islandID);
-
-                notifyObserver(new GameScenarioMessage(getGameSerialized()));
             }
         } else {
             // CASE there is already a tower
@@ -367,11 +360,10 @@ public class Game extends Observable implements Serializable {
                 moveTowerToIsland(currentPlayer.getScoreboard().removeTower(), islandID);
                 checkTowerWinner(currentPlayer);
                 checkMerge(islandID);
-
-                notifyObserver(new GameScenarioMessage(getGameSerialized()));
             }
-            else notifyObserver(new GameScenarioMessage(getGameSerialized()));
         }
+
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
     private Player getPlayerByColor(TowerColors color) {
