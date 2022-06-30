@@ -100,12 +100,14 @@ public class TurnController implements Serializable {
         if (currentActive + 1 < nicknameQueue.size()) {
             currentActive = currentActive + 1;
             try{
-                game.deleteActiveCard();
+                System.out.println("Disable Card Effect!");
+                game.disableCardEffects();
             }catch (RuntimeException ignored){
             }
         } else {
             try{
-                game.deleteActiveCard();
+                System.out.println("Disable Card Effect!");
+                game.disableCardEffects();
             }catch (RuntimeException ignored){
             }
             nextPhase();
