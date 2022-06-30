@@ -203,7 +203,7 @@ public class GameController implements Observer, Serializable {
 
 
     /**
-     * Re-initialise the controller and prepare for a new game
+     * Re-initialise the controller and prepare for a new game.
      */
     public void endGame() {
         game = null;

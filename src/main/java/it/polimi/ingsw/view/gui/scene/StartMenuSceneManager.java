@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * Manager of the first scene of the gui.
+ */
 public class StartMenuSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
@@ -17,11 +20,19 @@ public class StartMenuSceneManager extends ViewObservable implements SceneManage
     @FXML
     private Button quitButton;
 
+    /**
+     * Handles the click on the play button.
+     * @param event mouse event.
+     */
     @FXML
     private void onPlayButtonClick(Event event) {
         GraphicController.paneTransition(observers, event, "addressPort_scene.fxml");
     }
 
+    /**
+     * Handles the click of the quit button.
+     * @param actionEvent mouse event.
+     */
     @FXML
     public void onQuitButtonClick(ActionEvent actionEvent) {
         System.exit(0);

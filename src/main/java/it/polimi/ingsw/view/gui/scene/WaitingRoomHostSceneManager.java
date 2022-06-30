@@ -10,6 +10,9 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
+/**
+ * Lobby scene manager. Shows the players waiting to start the game.
+ */
 public class WaitingRoomHostSceneManager extends ViewObservable implements SceneManagerInterface {
 
     private List<String> playersNickname;
@@ -38,21 +41,26 @@ public class WaitingRoomHostSceneManager extends ViewObservable implements Scene
         }
     }
 
+    /**
+     * Set the nicknames of the players waiting to join the game.
+     * @param playersNickname list of string of nickname of players.
+     */
     public void setPlayersNickname(List<String> playersNickname){
         this.playersNickname = playersNickname;
     }
 
+    /**
+     * Set the maximum number of player contained in the lobby.
+     * @param maxPlayers maximum number of player.
+     */
     public void setNumMaxPlayers(int maxPlayers){
         this.numMaxPlayers = maxPlayers;
     }
 
+    /**
+     * Update the values of the lobby scene.
+     */
     public void updateValues(){
         initialize();
     }
-
-    @FXML
-    void startGame(ActionEvent event) {
-        //da eliminare... il gameController farà partire il game... chiedere a Teo
-    }
-
 }
