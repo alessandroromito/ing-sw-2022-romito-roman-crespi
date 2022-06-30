@@ -25,21 +25,22 @@ public class PingSender implements Runnable{
      */
     @Override
     public void run() {
-        while(connected){
+        while(connected) {
 
             clientHandler.sendMessage(new PingMessage());
+            connected = false;
 
-            try{
-                Thread.sleep(1000*10);
+            try {
+                Thread.sleep(1000 * 10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
 
-            if(!clientHandler.isConnected()){
-                clientHandler.disconnect();
-                connected = false;
-                System.out.println("Disconnection caused by ping");
-            }
+        //Reach this only if client didn't respond to the ping
+        if(clientHandler.isConnected()){
+            clientHandler.disconnect();
+            System.out.println("Disconnection caused by ping");
         }
     }
 
@@ -50,6 +51,9 @@ public class PingSender implements Runnable{
         connected = true;
     }
 
+    /**
+     * Setter for connected
+     */
     public void setConnected(boolean bool){
         connected = bool;
     }
