@@ -438,7 +438,6 @@ public class GraphicController extends ViewObservable implements View {
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
-            mapSceneManager.closeHand(null);
             if(playedAssistantCards.size() == 0) {
                 mapSceneManager.hideOpCard1();
                 mapSceneManager.hideOpCard2();
