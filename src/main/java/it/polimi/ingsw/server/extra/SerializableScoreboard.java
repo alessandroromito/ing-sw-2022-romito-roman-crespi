@@ -11,6 +11,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Game data serializable for scoreboards.
+ */
 public class SerializableScoreboard implements Serializable {
     @Serial
     private static final long serialVersionUID = 5449490962500277502L;

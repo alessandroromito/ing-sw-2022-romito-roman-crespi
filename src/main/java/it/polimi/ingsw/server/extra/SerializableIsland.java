@@ -9,6 +9,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Game data serializable for islands.
+ */
 public class SerializableIsland implements Serializable {
     @Serial
     private static final long serialVersionUID = -6510869516084911664L;
