@@ -24,8 +24,6 @@ public class Server {
 
     public static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
-    private boolean resumeGame;
-
     public Server(GameController gameController) {
         this.gameController = gameController;
         this.clientHandlerMap = new HashMap<>(); //or synchronized map?

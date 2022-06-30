@@ -3,10 +3,8 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.GameController;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Socket of the server.
@@ -40,12 +38,6 @@ public class SocketServer implements Runnable{
         }
 
         System.out.println("Server socket ready on IP: " + serverSocket.getInetAddress().getHostAddress());
-
-        try {
-            System.out.println("Server socket ready on IP (from arg): " + InetAddress.getByName(DEFAULT_IP));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
 
         while(!Thread.currentThread().isInterrupted()) {
             Socket client;

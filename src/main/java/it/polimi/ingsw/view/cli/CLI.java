@@ -83,7 +83,7 @@ public class CLI extends ViewObservable implements View {
         do{
             out.println("Server address: ");
             String address = "127.0.0.1";
-            //address = readRow();
+            address = readRow();
             if(Validator.validateIpAddress(address)) {
                 server.put("address", address);
                 validInput = true;
@@ -97,7 +97,7 @@ public class CLI extends ViewObservable implements View {
         do{
             out.println("Port address: ");
             String port = "1511";
-            //port = readRow();
+            port = readRow();
             if(Validator.validatePort(port)) {
                 server.put("port", port);
                 validInput = true;

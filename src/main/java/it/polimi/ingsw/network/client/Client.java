@@ -6,7 +6,6 @@ import it.polimi.ingsw.network.message.PingMessage;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.server.enumerations.MessageType;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -54,9 +53,6 @@ public class Client extends Observable {
                     if(message.getMessageType() == MessageType.PING)
                         sendMessage(new PingMessage());
                     else notifyObserver(message);
-                } catch (EOFException e){
-                    message = new ErrorMessage("Connection lost");
-                    notifyObserver(message);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                     message = new ErrorMessage("Connection lost");
