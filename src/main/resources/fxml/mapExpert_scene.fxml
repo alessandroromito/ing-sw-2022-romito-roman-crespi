@@ -55,7 +55,7 @@
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island4" fitHeight="312.0" fitWidth="312.0" layoutX="819.0" layoutY="781.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island4" fitHeight="312.0" fitWidth="312.0" layoutX="819.0" layoutY="778.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola1.png" />
          </image>
@@ -80,7 +80,7 @@
             <Image url="@../Graphical_Assets/Reame/isola2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="island10" fitHeight="312.0" fitWidth="312.0" layoutX="796.0" layoutY="7.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="island10" fitHeight="312.0" fitWidth="312.0" layoutX="796.0" layoutY="10.0" onMouseClicked="#chooseIsland" onMouseEntered="#light" onMouseExited="#dark" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Reame/isola3.png" />
          </image>

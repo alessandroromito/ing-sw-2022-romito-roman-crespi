@@ -131,4 +131,7 @@ public class GameSerialized implements Serializable {
         return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
     }
 
+    public String getActiveNickname() {
+        return activeNickname;
+    }
 }

@@ -937,6 +937,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 ImageView temp = entrance[i];
                 entrance[i].setImage(createImage(color));
                 entrance[i].setId(Integer.toString(id));
+                entrance[i].setMouseTransparent(false);
+
+                if(i!=8)
+                    for(int j=i+1;j<9;j++)
+                        entrance[j].setMouseTransparent(true);
                 return;
             }
     }

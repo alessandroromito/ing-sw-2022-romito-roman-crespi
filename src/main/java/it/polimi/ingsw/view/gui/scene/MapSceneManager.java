@@ -329,6 +329,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void initialize() {
         System.out.println("start initialize fxml");
 
+        for(int j=1;j<=10;j++)
+            assistantCardsList.add(new AssistantCard(0,j,0));
+
         for(int i=0;i<12;i++)   students[i] = new ArrayList<ImageView>();
 
         islandsPosCentre[0] = new Point(island1.getLayoutX()+island1.getFitWidth()/2,island1.getLayoutY()+island1.getFitHeight()/2);
@@ -385,7 +388,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void initializeCharacterCards(){
-        if(characterCards!=null && !characterCards.isEmpty()) {
+        if(gameSerialized.getExpertMode()) {
             card1.setDisable(true);
             card2.setDisable(true);
             card3.setDisable(true);
@@ -1107,9 +1110,29 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         if(scoreboardSceneManager!=null)    scoreboardSceneManager.updateValues(gameSerialized);
 
-        if(characterCards!=null&&!characterCards.isEmpty()){
+        if(gameSerialized.getExpertMode()){
             initializeCharacterCards();
+        }else{
+            coin.setVisible(false);
+            labelCoins.setVisible(false);
+            switchHandMap.setScaleY(1.5);
+            switchHandMap.setScaleX(1.5);
+            toScoreboard.setScaleY(1.5);
+            toScoreboard.setScaleX(1.5);
+            switchHandMap.setLayoutX(832);
+            switchHandMap.setLayoutY(406);
+            toScoreboard.setLayoutX(833);
+            toScoreboard.setLayoutY(586);
+            labelHand.setLayoutX(877);
+            labelHand.setLayoutY(485);
+            labelScrbd.setLayoutX(863);
+            labelScrbd.setLayoutY(606);
         }
+
+        if(gameSerialized.getActiveNickname().equals(nickname))
+            setActive(true);
+        else
+            setActive(false);
     }
 
     public void setOpponent1Card(int number){
@@ -1396,8 +1419,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableAssistant(List<AssistantCard> assistantCards){
         this.assistantCardsList = assistantCards;
-
-        switchView(null);
     }
 
     public void disableAssistant(){
@@ -1412,6 +1433,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void disableOpcard2(){
         opCard2 = false;
+    }
+
+    public void enableOpcard1(){
+        opCard1 = true;
+    }
+
+    public void enableOpcard2(){
+        opCard2 = true;
     }
 
     public void viewOpCard1(){
@@ -1606,7 +1635,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void closeHand(MouseEvent mouseEvent) {
         if(opCard1) hideOpCard1();
         if(opCard2) hideOpCard2();
-        if(characterCards!=null) initializeCharacterCards();
+        if(gameSerialized.getExpertMode()) initializeCharacterCards();
 
         for(AssistantCard a: assistantCardsList){
 
@@ -1714,10 +1743,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inCard1(MouseEvent mouseEvent) {
-        Glow iCard = new Glow(0.45);
-        iCard.setInput(new DropShadow());
+        if(active) {
+            Glow iCard = new Glow(0.45);
+            iCard.setInput(new DropShadow());
 
-        card1.setEffect(iCard);
+            card1.setEffect(iCard);
+        }
     }
 
     public void outCard1(MouseEvent mouseEvent) {
@@ -1725,14 +1756,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard1(MouseEvent mouseEvent) {
-        cardSelected(0);
+        if(active) {
+            cardSelected(0);
+        }
     }
 
     public void inCard2(MouseEvent mouseEvent) {
-        Glow iCard = new Glow(0.45);
-        iCard.setInput(new DropShadow());
+        if(active) {
+            Glow iCard = new Glow(0.45);
+            iCard.setInput(new DropShadow());
 
-        card2.setEffect(iCard);
+            card2.setEffect(iCard);
+        }
     }
 
     public void outCard2(MouseEvent mouseEvent) {
@@ -1740,14 +1775,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard2(MouseEvent mouseEvent) {
-        cardSelected(1);
+        if(active) {
+            cardSelected(1);
+        }
     }
 
     public void inCard3(MouseEvent mouseEvent) {
-        Glow iCard = new Glow(0.45);
-        iCard.setInput(new DropShadow());
+        if(active) {
+            Glow iCard = new Glow(0.45);
+            iCard.setInput(new DropShadow());
 
-        card3.setEffect(iCard);
+            card3.setEffect(iCard);
+        }
     }
 
     public void outCard3(MouseEvent mouseEvent) {
@@ -1755,7 +1794,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard3(MouseEvent mouseEvent) {
-        cardSelected(2);
+        if(active) {
+            cardSelected(2);
+        }
     }
 
     private void cardSelected(int choice){
