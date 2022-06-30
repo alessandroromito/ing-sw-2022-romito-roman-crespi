@@ -5,6 +5,9 @@ package it.polimi.ingsw.server.model.component.charactercards;
  */
 public class Card_211 extends CharacterCard{
 
+    /**
+     * Default Constructor
+     */
     public Card_211(){
         super(211);
         this.cost = 3;

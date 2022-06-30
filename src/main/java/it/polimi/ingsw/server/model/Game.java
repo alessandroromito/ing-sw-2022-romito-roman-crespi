@@ -267,7 +267,7 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     *
+     * Move the professor
      * @param color professor color
      */
     public void moveProfessor(PawnColors color, Player player) {
@@ -380,7 +380,10 @@ public class Game extends Observable implements Serializable {
             notifyObserver(new VictoryMessage(player.getNickname()));
     }
 
-
+    /**
+     *
+     * @param color
+     */
     private void checkProfessors(PawnColors color) {
         Player activePlayer = getActivePlayer();
         int numStudent = activePlayer.getScoreboard().getPlayerStudentFromDining(color);
@@ -407,6 +410,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Check if it's possible to merge two island
+     * @param islandID
+     */
     public void checkMerge(int islandID){
         Island island = map.getIsland(islandID);
         Island islandSucc = map.getNext(islandID);
@@ -427,10 +434,20 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Get next number of island
+     * @param islandID starting island
+     * @return number of the next island
+     */
     public int getNextInt(int islandID){
         return islandID == 11 ? 0 : islandID + 1;
     }
 
+    /**
+     * Get previous number of island
+     * @param islandID starting island
+     * @return number of the previous island
+     */
     public int getPrevInt(int islandID){
         return islandID == 0 ? 11 : islandID - 1;
     }
@@ -449,7 +466,7 @@ public class Game extends Observable implements Serializable {
                 do{
                     motherNaturePos++;
                     if((motherNaturePos) == 12) motherNaturePos = 0;
-                } while (map.getIsland(motherNaturePos+1).getGroupID() == groupID);
+                } while (map.getIsland(getNextInt(motherNaturePos)).getGroupID() == groupID);
             }
         }
         System.out.println("Move MotherNature to island " + (motherNaturePos + 1));

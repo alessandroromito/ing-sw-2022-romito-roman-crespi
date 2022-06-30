@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.enumerations;
 
+/**
+ * All types of messages used
+ */
 public enum MessageType {
     PING,
     ERROR,

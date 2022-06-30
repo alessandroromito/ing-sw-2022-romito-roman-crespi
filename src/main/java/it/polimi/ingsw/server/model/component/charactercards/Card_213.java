@@ -13,6 +13,9 @@ import java.util.List;
 public class Card_213 extends CharacterCard{
     ArrayList<NoEntryTile> noEntryTiles = new ArrayList<>();
 
+    /**
+     * Default Constructor
+     */
     public Card_213(List<Component> nt) {
         super(213);
         this.cost = 2;
@@ -21,6 +24,10 @@ public class Card_213 extends CharacterCard{
             this.noEntryTiles.add((NoEntryTile) nt.get(i));
     }
 
+    /**
+     * Method to use this card
+     * @return a no entry tile
+     */
     public NoEntryTile use() {
         try {
             if(!noEntryTiles.isEmpty())
@@ -32,6 +39,10 @@ public class Card_213 extends CharacterCard{
         return null;
     }
 
+    /**
+     * Add a no entry tile to this card
+     * @param noEntryTile tile to add
+     */
     public void recoverTile(NoEntryTile noEntryTile){
         noEntryTiles.add(noEntryTile);
     }

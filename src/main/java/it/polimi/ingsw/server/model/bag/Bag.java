@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 /**
  * This class represents the bag of the game. 130 student pawn of initial capacity.
  */

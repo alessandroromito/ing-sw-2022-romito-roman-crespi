@@ -9,6 +9,11 @@ public enum ActionPhaseState {
     MOVE_STUDENT4,
     PICK_CLOUD;
 
+    /**
+     * Calculate the next ActionPhaseState from the @param ActionPhaseState
+     * @param actionPhaseState starting state
+     * @return next state
+     */
     public ActionPhaseState next(ActionPhaseState actionPhaseState){
         switch (actionPhaseState) {
             case USE_EFFECT -> {
