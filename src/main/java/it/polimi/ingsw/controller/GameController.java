@@ -664,7 +664,7 @@ public class GameController implements Observer, Serializable {
                         System.out.println("Using 219");
                         Card219Message card219Message = (Card219Message) useEffectMessage;
                         if(game.useCharacter(219))
-                            game.use_219(game.getPlayerByNickname(card219Message.getNickname()), card219Message.getNumber());
+                            game.use_219(card219Message.getNumber());
                         else System.out.println("Error while using 219");
                     }
                     case 220 -> {

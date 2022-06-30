@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.server.extra.SerializableIsland;
 import it.polimi.ingsw.server.extra.SerializableScoreboard;
 import it.polimi.ingsw.server.model.map.Island;
@@ -15,6 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GameSerializedTest {
 
+    private GameController gameController;
+    private TurnController turnController;
+
     private int motherNaturePos;
     private final ArrayList<SerializableIsland> serializableIslands = new ArrayList<>();
     private final ArrayList<SerializableScoreboard> serializableScoreboard = new ArrayList<>();
@@ -26,7 +31,17 @@ class GameSerializedTest {
         List<String> nicknames = new ArrayList<>();
         nicknames.add("Giorgio");
         nicknames.add("Marco");
+
+        gameController = new GameController();
+
+        gameController.getPlayersNicknames().addAll(nicknames);
+
         game = new Game(nicknames);
+        turnController = new TurnController(gameController, gameController.getVirtualViewMap());
+        game.setExpertMode(false);
+        game.setTurnController(turnController);
+        turnController.setActivePlayer(nicknames.get(0));
+
         gameSerialized = new GameSerialized(game);
 
         ArrayList<Integer> groupIDs = new ArrayList<>();
@@ -74,9 +89,5 @@ class GameSerializedTest {
     void getMotherNaturePos() {
         assertTrue(gameSerialized.getMotherNaturePos() >= 0);
         assertTrue(gameSerialized.getMotherNaturePos() <= 11);
-    }
-
-    @Test
-    void testToString() {
     }
 }

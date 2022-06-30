@@ -599,7 +599,7 @@ public class Game extends Observable implements Serializable {
         throw new RuntimeException();
     }
 
-    public void use_219(Player player, int number) {
+    public void use_219(int number) {
         throw new RuntimeException();
     }
 

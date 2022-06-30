@@ -27,6 +27,6 @@ public class Card217Message extends UseEffectMessage{
 
     @Override
     public String toString() {
-        return "Card211Message[nickname:" + getNickname() + " color: " + color.toString() + "]";
+        return "Card217Message[nickname:" + getNickname() + " color: " + color.toString() + "]";
     }
 }

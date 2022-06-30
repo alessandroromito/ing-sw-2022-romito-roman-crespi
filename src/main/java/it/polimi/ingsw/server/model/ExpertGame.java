@@ -382,9 +382,9 @@ public class ExpertGame extends Game {
 
     /**
      * Used to activate the effect of the card217
-     * @param p
+     * @param color
      */
-    public void use_217(PawnColors p){
+    public void use_217(PawnColors color){
         try{
             if(activeCardID != 217)
                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
@@ -393,7 +393,7 @@ public class ExpertGame extends Game {
         }
 
         Card_217 card = (Card_217) activeCard;
-        card.setDisColor(p);
+        card.setDisColor(color);
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -434,21 +434,26 @@ public class ExpertGame extends Game {
      * EFFECT: Take 1 student from this card and place it on your dining room,
      *         then take 1 student from the bag and place it on this card
      *
-     * @param player player that use the effect
      * @param number from 0 to 3 which is the number of the 4 student to take
      */
-     public void use_219(Player player, int number) {
-        Scoreboard scoreboard = player.getScoreboard();
-        Card_219 card = (Card_219) activeCard;
-        scoreboard.addStudentOnDining(card.getStudent(number));
-        ((Card_219) activeCard).addStudent(bag.pickSorted());
+     public void use_219(int number) {
+         try{
+             if(activeCardID != 219)
+                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+         } catch (ActiveCardAlreadyExistingException e) {
+             e.printStackTrace();
+         }
 
-        notifyObserver(new GameScenarioMessage(getGameSerialized()));
+         Scoreboard scoreboard = getActivePlayer().getScoreboard();
+         Card_219 card = (Card_219) activeCard;
+         scoreboard.addStudentOnDining(card.getStudent(number));
+         card.addStudent(bag.pickSorted());
 
-        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
-            turnController.nextActionPhase();
-        else turnController.actionPhase();
+         notifyObserver(new GameScenarioMessage(getGameSerialized()));
 
+         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+             turnController.nextActionPhase();
+         else turnController.actionPhase();
     }
 
     /**
@@ -524,6 +529,7 @@ public class ExpertGame extends Game {
             return;
 
         if(activeCardID == 214) {
+            System.out.println("Checking influence 214");
             int bestInfluence = 0;
             Player dominantPlayer = null;
             Player opponentPlayer = null;
@@ -580,6 +586,7 @@ public class ExpertGame extends Game {
             }
         }
         else if(activeCardID == 217){
+            System.out.println("Checking influence 217");
             Card_217 card = (Card_217) activeCard;
             int bestInfluence = 0;
             Player dominantPlayer = null;
@@ -637,6 +644,7 @@ public class ExpertGame extends Game {
             }
         }
         else {
+            System.out.println("Checking influence");
             super.checkInfluence(islandID);
         }
     }
