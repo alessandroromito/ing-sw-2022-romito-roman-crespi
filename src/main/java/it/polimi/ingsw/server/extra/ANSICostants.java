@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.extra;
 
+/**
+ * Class uses to print colored text
+ */
 public class ANSICostants {
 
     public static final String ANSI_RESET = "\u001B[0m";

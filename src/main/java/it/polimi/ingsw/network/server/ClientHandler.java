@@ -3,7 +3,6 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.network.message.LoginRequest;
 import it.polimi.ingsw.network.message.Message;
 import it.polimi.ingsw.network.message.PingMessage;
-import it.polimi.ingsw.server.extra.PingSender;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

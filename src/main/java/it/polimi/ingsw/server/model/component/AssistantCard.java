@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model.component;
 
-import it.polimi.ingsw.server.enumerations.Animals;
-
 import java.io.Serial;
 import java.io.Serializable;
 

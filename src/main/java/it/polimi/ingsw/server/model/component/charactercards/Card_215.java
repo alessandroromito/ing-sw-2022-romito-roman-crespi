@@ -19,10 +19,18 @@ public class Card_215 extends CharacterCard{
         this.cost = 1;
     }
 
+    /**
+     * Getter of students
+     * @return students array
+     */
     public ArrayList<StudentDisc> getStudents() {
         return students;
     }
 
+    /**
+     * Add a student
+     * @param stud to add
+     */
     public void addStudent(StudentDisc stud){
         students.add(stud);
     }

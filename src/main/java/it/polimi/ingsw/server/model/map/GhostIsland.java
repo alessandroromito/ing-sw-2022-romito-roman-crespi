@@ -6,7 +6,9 @@ import it.polimi.ingsw.server.model.component.Tower;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * Class that represents two or more island merged
+ */
 public class GhostIsland extends Island implements Serializable {
 
     /**
