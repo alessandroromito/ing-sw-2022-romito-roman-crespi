@@ -491,6 +491,7 @@ public class ExpertGame extends Game {
             case 210: endTurn_210();
             case 216: endTurn_216(getActivePlayer());
         }
+
         deleteActiveCard();
     }
 
