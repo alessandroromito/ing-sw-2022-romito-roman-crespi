@@ -20,7 +20,6 @@ public class Card_209 extends CharacterCard {
         this.cost = 1;
     }
 
-
     /**
      * Method that allow the user to apply the card effect.
      * @param studentPos position of the student to remove.

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.extra;
+package it.polimi.ingsw.network.server;
 
 import it.polimi.ingsw.network.message.PingMessage;
 import it.polimi.ingsw.network.server.ClientHandler;
