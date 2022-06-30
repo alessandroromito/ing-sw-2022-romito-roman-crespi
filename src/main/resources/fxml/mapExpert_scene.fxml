@@ -4,7 +4,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.Bloom?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
@@ -367,16 +366,12 @@
             <Image url="@../Graphical_Assets/Plancia/Plancia_DEF2.png" />
          </image>
          <effect>
-            <DropShadow>
-               <input>
-                  <BoxBlur />
-               </input>
-            </DropShadow>
+            <DropShadow />
          </effect>
       </ImageView>
-      <Label fx:id="labelHand" layoutX="709.0" layoutY="683.0" mouseTransparent="true" pickOnBounds="false" text="MANO" textFill="#f4f805">
+      <Label fx:id="labelHand" layoutX="708.0" layoutY="683.0" mouseTransparent="true" pickOnBounds="false" text="MANO" textFill="#f4f805">
          <font>
-            <Font size="36.0" />
+            <Font name="System Bold Italic" size="36.0" />
          </font>
          <effect>
             <Bloom>
@@ -386,9 +381,9 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="labelScrbd" layoutX="921.0" layoutY="655.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
+      <Label fx:id="labelScrbd" layoutX="917.0" layoutY="655.0" mouseTransparent="true" pickOnBounds="false" text="PLANCIA" textFill="#f4f805">
          <font>
-            <Font size="36.0" />
+            <Font name="System Bold Italic" size="36.0" />
          </font>
          <effect>
             <Bloom>
@@ -725,5 +720,17 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </MenuButton>
+      <Label fx:id="labelOpTurn" layoutX="707.0" layoutY="954.0" mouseTransparent="true" pickOnBounds="false" text="TURNO DELL'AVVERSARIO" textFill="#f51b07" visible="false">
+         <font>
+            <Font name="System Bold Italic" size="36.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
    </children>
 </AnchorPane>

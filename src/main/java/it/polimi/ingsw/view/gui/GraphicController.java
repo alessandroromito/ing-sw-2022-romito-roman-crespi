@@ -339,6 +339,8 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
+            mapSceneManager.setActionFase(false);
+            mapSceneManager.setActive(true);
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);
             mapSceneManager.setAssistants(assistantCards);
             mapSceneManager.enableAssistant(assistantCards);
@@ -352,8 +354,9 @@ public class GraphicController extends ViewObservable implements View {
             if(playedAssistantCards.size() == 1) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
                 mapSceneManager.enableOpcard1();
-                mapSceneManager.hideOpCard2();
                 mapSceneManager.disableOpcard2();
+                mapSceneManager.hideOpCard2();
+
             }
             if(playedAssistantCards.size() == 2) {
                 mapSceneManager.setOpponent1Card(playedAssistantCards.get(0).getValue());
@@ -368,6 +371,8 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         Platform.runLater( () -> {
+            mapSceneManager.setActionFase(true);
+            mapSceneManager.setActive(true);
             showGenericMessage("Spostamento", "Muovi uno studente dall'entrata");
             scoreboardSceneManager.enableEntrance();
         } );
@@ -376,6 +381,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         Platform.runLater( () -> {
+            mapSceneManager.setActive(true);
             showGenericMessage("Madre natura", "Muovi madre natura di massimo " + maxSteps + " passi!");
             mapSceneManager.enableMotherNature(maxSteps);
         } );
@@ -417,7 +423,7 @@ public class GraphicController extends ViewObservable implements View {
     public void showVictoryMessage(String winner) {
         Platform.runLater( () -> {
             showWinner(winner);
-            paneTransition(observers, "scene_menu.fxml");
+            paneTransition(observers, "victory_scene.fxml");
         });
     }
 
