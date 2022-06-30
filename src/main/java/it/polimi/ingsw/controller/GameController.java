@@ -191,8 +191,11 @@ public class GameController implements Observer, Serializable {
      * Called when a player has won the match, it notifies all the player who has won
      */
     public void win(Player player){
-        VirtualView vv = virtualViewMap.get(player.getNickname());
-        vv.showVictoryMessage(player.getNickname());
+        for(Map.Entry<String, VirtualView> entry : virtualViewMap.entrySet()){
+            if(player.getNickname().equals(entry.getKey()))
+                entry.getValue().showVictoryMessage(player.getNickname());
+            else entry.getValue().showGenericMessage("\n Il gioco è terminato! Il VINCITORE è " + player.getNickname() +"! \n");
+        }
 
         endGame();
     }
