@@ -186,7 +186,6 @@ public class ExpertGame extends Game {
 
         StudentDisc moving = card209.use(studentPos, bag.pickSorted());
         map.getIsland(islandID).addStudent(moving);
-        deleteActiveCard();
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
 
