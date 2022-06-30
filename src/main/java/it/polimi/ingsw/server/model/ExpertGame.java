@@ -20,6 +20,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class that extends the normal mode of the game
+ * It contains the components of the expert mode of the game and works with that
+ * Make that communicate and collaborate each other
+ */
 public class ExpertGame extends Game {
     private int activeCardID = -1;
     private CharacterCard activeCard = null;

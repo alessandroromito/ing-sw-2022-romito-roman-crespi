@@ -149,6 +149,11 @@ public class Map extends Observable implements Serializable {
         return c;
     }
 
+    /**
+     * Get next island/ghostIsland
+     * @param islandID island of the starting island
+     * @return the next island
+     */
     public Island getNext(int islandID){
         Island island = getIsland(islandID);
         Island islandSucc;
@@ -164,6 +169,11 @@ public class Map extends Observable implements Serializable {
         return islandSucc.isDisabled() ? getGhostIsland(islandSucc.getID()) : islandSucc;
     }
 
+    /**
+     * Get previous island/ghostIsland
+     * @param islandID island of the starting island
+     * @return the previous island
+     */
     public Island getPrev(int islandID){
         Island island = getIsland(islandID);
         Island islandPrev;

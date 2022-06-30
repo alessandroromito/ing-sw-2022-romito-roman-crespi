@@ -24,6 +24,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Class that contains all the components of the normal mode of the game and work with that
+ * Make that communicate and collaborate each other
+ */
 public class Game extends Observable implements Serializable {
 
     protected List<Player> players = new ArrayList<>();
@@ -309,6 +313,10 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
+    /**
+     * Method that calculate the influence on an island and who has the best conquer that island
+     * @param islandID island ID
+     */
     public void checkInfluence(int islandID) {
         int bestInfluence = 0;
         Player currentPlayer = getPlayerByNickname(turnController.getActivePlayer());
@@ -367,6 +375,10 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
+    /**
+     * @param color tower color
+     * @return the player that correspond to that color
+     */
     private Player getPlayerByColor(TowerColors color) {
         for(Player player : players){
             if(player.getScoreboard().getTowerColor() == color)
@@ -375,6 +387,10 @@ public class Game extends Observable implements Serializable {
         return null;
     }
 
+    /**
+     * Check if someone has won because has finished the towers
+     * @param player
+     */
     public void checkTowerWinner(Player player) {
         if(player.getScoreboard().getNumTowers() == 0)
             notifyObserver(new VictoryMessage(player.getNickname()));
@@ -496,10 +512,38 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
+    /**
+     * Method used to restore the game from the saved file
+     * @param restoredMap map saved
+     * @param restoredBag bag saved
+     * @param restoredComponents components saved
+     * @param restoredPlayers players saved
+     * @param restoredExpertMode mode saved
+     * @param restoredActiveCardID activeCardID saved
+     * @param restoreActiveCard activeCard saved
+     * @param restorePool pool saved
+     */
+    public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
+        this.map = restoredMap;
+        this.bag = restoredBag;
+        this.components = restoredComponents;
+        this.players = restoredPlayers;
+        this.expertMode = restoredExpertMode;
+    }
+
+    /**
+     * Getter
+     * @return activePlayer
+     */
     public Player getActivePlayer(){
         return getPlayerByNickname(turnController.getActivePlayer());
     }
 
+    /**
+     * Calculate the opposite island
+     * @param pos island num you want to calculate the oppsite
+     * @return the opposite island number
+     */
     public int oppositePosition(int pos) {
         int oppositePos = pos;
         for(int i=0; i < 6; i++){
@@ -510,11 +554,18 @@ public class Game extends Observable implements Serializable {
         return oppositePos;
     }
 
-
+    /**
+     * Getter
+     * @return number of players connected or not
+     */
     public int getNumberOfPlayer() {
         return players.size();
     }
 
+    /**
+     * Getter of the played assistant card in this turn
+     * @return
+     */
     public List<AssistantCard> getPlayedAssistantCards() {
         List<AssistantCard> playedAssistantCards = new ArrayList<>();
 
@@ -635,14 +686,5 @@ public class Game extends Observable implements Serializable {
 
     public int getActiveCardID() {
         throw new RuntimeException();
-    }
-
-
-    public void restoreGame(Map restoredMap, Bag restoredBag, ArrayList<Component> restoredComponents, List<Player> restoredPlayers, boolean restoredExpertMode, int restoredActiveCardID, CharacterCard restoreActiveCard, ArrayList<CharacterCard> restorePool) {
-        this.map = restoredMap;
-        this.bag = restoredBag;
-        this.components = restoredComponents;
-        this.players = restoredPlayers;
-        this.expertMode = restoredExpertMode;
     }
 }

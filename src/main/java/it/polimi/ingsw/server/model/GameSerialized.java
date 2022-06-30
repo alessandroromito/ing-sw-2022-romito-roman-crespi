@@ -73,7 +73,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return Array of serializableIslands
      */
     public ArrayList<SerializableIsland> getSerializableIslands() {
         return serializableIslands;
@@ -81,7 +81,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return Array of serializableScoreboard
      */
     public ArrayList<SerializableScoreboard> getSerializableScoreboard() {
         return serializableScoreboard;
@@ -89,7 +89,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return clouds
      */
     public ArrayList<Cloud> getClouds() {
         return clouds;
@@ -97,7 +97,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return motherNaturePos
      */
     public int getMotherNaturePos() {
         return motherNaturePos;
@@ -105,7 +105,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return true if expertMode is true
      */
     public Boolean getExpertMode() {
         return expertMode;
@@ -113,7 +113,7 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return characterCards
      */
     public ArrayList<CharacterCard> getCharacterCards() {
         return characterCards;
@@ -121,16 +121,20 @@ public class GameSerialized implements Serializable {
 
     /**
      * Getter method
-     * @return
+     * @return activeCardID
      */
     public int getActiveCardID() {
         return activeCardID;
     }
+
     @Override
     public String toString() {
         return "GameSerialized:[ " + "islands: " + serializableIslands.size() + "]";
     }
-
+    /**
+     * Getter method
+     * @return activeNickname
+     */
     public String getActiveNickname() {
         return activeNickname;
     }
