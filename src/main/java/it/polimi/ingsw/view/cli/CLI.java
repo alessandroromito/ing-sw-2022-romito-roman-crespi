@@ -23,7 +23,7 @@ import java.io.PrintStream;
 import java.util.*;
 
 /**
- * Class that visualize the game trough the terminal
+ * Class that visualize the game trough the terminal.
  */
 public class CLI extends ViewObservable implements View {
 
@@ -52,7 +52,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Initialization of the cli view
+     * Initialization of the cli.
      */
     public void initialization() {
         out.println(
@@ -72,7 +72,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     *
+     * Method that ask ip address and port to the client for a new connection to the server.
      */
     public void askServerParametersConfiguration() {
         HashMap<String, String> server = new HashMap<>();
@@ -110,8 +110,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Read the input
-     * @return the input
+     * Read the input using buffered reader.
+     * @return the input.
      */
     public String readRow() {
         BufferedReader reader = new BufferedReader(
@@ -126,7 +126,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask the nickname to the player
+     * Ask the nickname to the player.
      */
     @Override
     public void askPlayerNickname() {
@@ -138,7 +138,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask how many players want to play the game
+     * Ask how many players want to play the game.
      */
     @Override
     public void askPlayersNumber() {
@@ -159,7 +159,7 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask the gameMode
+     * Ask the gameMode.
      */
     @Override
     public void askGameMode() {
@@ -180,9 +180,9 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask chose an assistant card
-     * @param assistantCards assistantCards in hand
-     * @param playedAssistantCards cards already played in this turn by the other players
+     * Ask chose an assistant card.
+     * @param assistantCards assistantCards in hand.
+     * @param playedAssistantCards cards already played in this turn by the other players.
      */
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
@@ -217,7 +217,12 @@ public class CLI extends ViewObservable implements View {
     }
 
 
-
+    /**
+     * Ask to the player to move a student, so which student to move and were.
+     * @param studentDiscs student to move.
+     * @param position where to move the student (0 dining room, 1 island).
+     * @param islandNumber if position = 1, chose the island to move the student.
+     */
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         int choose;
@@ -308,8 +313,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask how many steps move motherNature forward
-     * @param maxSteps max step the player can do
+     * Ask how many steps move motherNature forward.
+     * @param maxSteps max step the player can do.
      */
     @Override
     public void askToMoveMotherNature(int maxSteps) {
@@ -338,8 +343,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask to choose a cloud to pick the students
-     * @param cloudList list of available clouds
+     * Ask to choose a cloud to pick the students.
+     * @param cloudList list of available clouds.
      */
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
@@ -376,8 +381,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method to ask if the player want to use a character card
-     * @param characterCards list of available character cards
+     * Method to ask if the player want to use a character card.
+     * @param characterCards list of available character cards.
      */
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
@@ -429,8 +434,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Ask the card paramenter to the player and then send a Card### message to the server
-     * @param characterCard chosen characterCard
+     * Ask the card paramenter to the player and then send a Card### message to the server.
+     * @param characterCard chosen characterCard.
      */
     private void applyEffect(CharacterCard characterCard) {
         boolean error;
@@ -773,8 +778,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Print the effect of a card
-     * @param ID id of the card to print the effect
+     * Print the effect of a card.
+     * @param ID id of the card to print the effect.
      */
     private void printEffect(int ID) {
         switch(ID){
@@ -795,9 +800,9 @@ public class CLI extends ViewObservable implements View {
 
 
     /**
-     * Method use to show the players in the lobby
-     * @param playersNickname
-     * @param numPlayers
+     * Method use to show the players in the lobby.
+     * @param playersNickname nicknames of the player.
+     * @param numPlayers number of players to be shown.
      */
     @Override
     public void showLobby(List<String> playersNickname, int numPlayers) {
@@ -809,8 +814,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method used to notify all the players that someone has disconnected
-     * @param nicknameDisconnected nick of the player that has disconnected
+     * Method used to notify all the players that someone has disconnected.
+     * @param nicknameDisconnected nick of the player that has disconnected.
      */
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
@@ -818,8 +823,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method used to notify all the players that someone has reconnected
-     * @param nicknameReconnecting nick of the player that has reconnected
+     * Method used to notify all the players that someone has reconnected.
+     * @param nicknameReconnecting nick of the player that has reconnected.
      */
     @Override
     public void showReconnectedMessage(String nicknameReconnecting) {
@@ -830,8 +835,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method used to show an error message
-     * @param error text to show
+     * Method used to show an error message.
+     * @param error text to show.
      */
     @Override
     public void showErrorMessage(String error) {
@@ -839,10 +844,10 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method used to print the state of the game
-     * It shows alle the island and all the scoreboard
+     * Method used to print the state of the game.
+     * It shows alle the island and all the scoreboard.
      *
-     * @param gameSerialized reduced version of the game
+     * @param gameSerialized reduced version of the game.
      */
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
@@ -907,8 +912,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method that print a scoreboard
-     * @param currentPlayerScoreboard scoreboard to print
+     * Method that print a scoreboard.
+     * @param currentPlayerScoreboard scoreboard to print.
      */
     public void showScoreboard(SerializableScoreboard currentPlayerScoreboard){
         if(expertMode){
@@ -964,8 +969,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Show which island are merged
-     * @param unifiedIsland two id of the islands
+     * Show which island are merged.
+     * @param unifiedIsland two id of the islands.
      */
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland){
@@ -976,12 +981,12 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Method used to show the info of the game
-     * @param playersNicknames nicknames of the players in game
-     * @param unifiedIslandsNumber number of unified islands
-     * @param remainingBagStudents bag students remaining
-     * @param activePlayer player in turn
-     * @param characterCards avaiable character cards
+     * Method used to show the info of the game.
+     * @param playersNicknames nicknames of the players in game.
+     * @param unifiedIslandsNumber number of unified islands.
+     * @param remainingBagStudents bag students remaining.
+     * @param activePlayer player in turn.
+     * @param characterCards avaiable character cards.
      */
     @Override
     public void showGameInfo(List<String> playersNicknames, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
@@ -1014,8 +1019,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Print a generic message sent by the server
-     * @param genericMessage message to print
+     * Print a generic message sent by the server.
+     * @param genericMessage message to print.
      */
     @Override
     public void showGenericMessage(String genericMessage) {
@@ -1023,10 +1028,10 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Show the result of the loginRequest
-     * @param nickname nickname
-     * @param playerNicknameAccepted bool true if accepted
-     * @param connectionSuccessful bool true if connected
+     * Show the result of the loginRequest.
+     * @param nickname nickname.
+     * @param playerNicknameAccepted bool true if accepted.
+     * @param connectionSuccessful bool true if connected.
      */
     @Override
     public void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful) {
@@ -1042,8 +1047,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Print a victory message to notify the end of the game
-     * @param winner nick of the player that has won
+     * Print a victory message to notify the end of the game.
+     * @param winner nick of the player that has won.
      */
     @Override
     public void showVictoryMessage(String winner) {
@@ -1052,8 +1057,8 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Print a student
-     * @param stud student to print
+     * Print a student.
+     * @param stud student to print.
      */
     public String printStudent(StudentDisc stud){
         if(stud != null){
@@ -1079,9 +1084,9 @@ public class CLI extends ViewObservable implements View {
     }
 
     /**
-     * Print a tower
-     * @param color color of the tower
-     * @return
+     * Print a tower.
+     * @param color color of the tower.
+     * @return null.
      */
     public String printTower(TowerColors color) {
         switch (color) {

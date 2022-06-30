@@ -1,8 +1,16 @@
 package it.polimi.ingsw.view.cli;
 import java.util.*;
 
+/**
+ * This class validate input from the client. In particular ip address and port.
+ */
 public class Validator {
 
+    /**
+     * Check if an ip address is valid.
+     * @param address address to be validated.
+     * @return {code @true} if it is ok, {code @false} otherwise.
+     */
     public static boolean validateIpAddress(String address) {
         boolean result = false;
         StringTokenizer t = new StringTokenizer(address, ".");
@@ -16,6 +24,11 @@ public class Validator {
         return result;
     }
 
+    /**
+     * Check if a port is valid.
+     * @param port port to be validated.
+     * @return {code @true} if it is ok, {code @false} otherwise.
+     */
     public static boolean validatePort(String port) {
         int portInt = Integer.parseInt(port);
         return portInt >= 1 && portInt <=65535;

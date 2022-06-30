@@ -43,6 +43,7 @@ public class AddressPortSceneManager extends ViewObservable implements SceneMana
             server.put("port", port);
             new Thread(() -> notifyObserver(obs -> obs.onUpdateServerDetails(server))).start();
         }
+
     }
 
 }
