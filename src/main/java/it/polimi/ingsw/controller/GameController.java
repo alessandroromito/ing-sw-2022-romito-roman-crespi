@@ -129,7 +129,9 @@ public class GameController implements Observer, Serializable {
         Player player = game.getPlayerByNickname(turnController.getActivePlayer());
 
         VirtualView virtualView = virtualViewMap.get(player.getNickname());
-        virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement());
+        if(game.getActiveCardID() == 212)
+            virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement() + 2);
+        else virtualView.askToMoveMotherNature(player.getCurrentCard().getMovement());
     }
 
     /**

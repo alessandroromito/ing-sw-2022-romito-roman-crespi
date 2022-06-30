@@ -319,7 +319,6 @@ public class CLI extends ViewObservable implements View {
 
         do {
             error = false;
-            if(activeCardID == 212) maxSteps = maxSteps + 2;
             out.println("Di quante isole vuoi muovere Madre Natura? Al massimo puoi fare " + maxSteps + " passi.");
 
             try{
