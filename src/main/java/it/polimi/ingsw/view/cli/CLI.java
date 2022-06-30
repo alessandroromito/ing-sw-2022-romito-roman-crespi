@@ -828,6 +828,7 @@ public class CLI extends ViewObservable implements View {
     @Override
     public void showReconnectedMessage(String nicknameReconnecting) {
         out.flush();
+        out.println();
         out.println(ANSI_GREEN + nicknameReconnecting + " si è riconnesso al gioco!" + ANSI_RESET);
         out.println();
     }

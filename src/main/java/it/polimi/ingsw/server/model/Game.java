@@ -208,6 +208,7 @@ public class Game extends Observable implements Serializable {
         for(Cloud cloud: map.getClouds()){
             Iterator<StudentDisc> iterator = cloud.getCloudStudents().iterator();
             while (iterator.hasNext()) {
+                iterator.next();
                 iterator.remove();
             }
         }
@@ -245,7 +246,7 @@ public class Game extends Observable implements Serializable {
 
              if(island.getTowers().isEmpty()) {
                  island.addTower(tower);
-                 System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID) ;
+                 System.out.println("Move Tower " + tower.getColor() + " to island " + (islandID+1));
              }
              else{
                  TowerColors oldColor = island.getTowerColor();
@@ -255,7 +256,7 @@ public class Game extends Observable implements Serializable {
                          island.removeTowers();
 
                          island.addTower(tower); //add tower to island
-                         System.out.println("Move Tower " + tower.getColor() + " To IslandID " + islandID);
+                         System.out.println("Move Tower " + tower.getColor() + " to island " + (islandID+1));
                          System.out.println("Move Tower/s " + oldColor + " Back To " + p.getNickname());
                      }
                  }

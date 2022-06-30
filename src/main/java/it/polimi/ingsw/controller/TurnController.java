@@ -74,6 +74,7 @@ public class TurnController implements Serializable {
                 DataSaving dataSaving = new DataSaving();
                 System.out.println("Salvataggio partita in corso...");
                 dataSaving.save(gameController);
+                System.out.println("Salvataggio partita terminato con successo!");
             } catch (IOException e) {
                 System.out.println(ANSICostants.ANSI_RED + "Errore durante il salvataggio" + ANSICostants.ANSI_RESET);
                 e.printStackTrace();
@@ -81,10 +82,13 @@ public class TurnController implements Serializable {
         }
         gameController.showGenericMessageToAll("Turn of " + activePlayer + "...");
         gameController.refillClouds();
-        System.out.println("Refill Clouds!");
+        System.out.println("Refill Clouds");
         gameController.refreshAssistantCard();
-        System.out.println("Refresh Assistant Cards!");
-        gameController.askAssistantCard();
+        System.out.println("Refresh Assistant Cards");
+        if(!game.getPlayerByNickname(activePlayer).isConnected()){
+            gameController.showGenericMessageToAll("Turno di " + activePlayer + " saltato");
+            next();
+        } else gameController.askAssistantCard();
     }
 
     /**
@@ -108,8 +112,10 @@ public class TurnController implements Serializable {
             return;
         }
         activePlayer = nicknameQueue.get(currentActive);
-        if(!game.getPlayerByNickname(activePlayer).isConnected())
+        if(!game.getPlayerByNickname(activePlayer).isConnected()){
+            gameController.showGenericMessageToAll("Turno di " + activePlayer + " saltato");
             next();
+        }
 
         if(phaseState == PLANNING_PHASE)
             gameController.askAssistantCard();
@@ -127,6 +133,9 @@ public class TurnController implements Serializable {
                 System.out.println("Building nickname queue");
                 buildQueue(nicknameQueue);
                 phaseState = ACTION_PHASE;
+                activePlayer = nicknameQueue.get(0);
+                if(!game.getPlayerByNickname(activePlayer).isConnected())
+                    next();
                 actionPhaseState = ActionPhaseState.USE_EFFECT;
                 actionPhase();
             }
