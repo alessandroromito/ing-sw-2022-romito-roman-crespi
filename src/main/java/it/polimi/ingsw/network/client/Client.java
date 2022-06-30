@@ -2,8 +2,11 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.message.ErrorMessage;
 import it.polimi.ingsw.network.message.Message;
+import it.polimi.ingsw.network.message.PingMessage;
 import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.server.enumerations.MessageType;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  *  Socket client implementation.
@@ -22,7 +24,6 @@ public class Client extends Observable {
     private final ObjectInputStream objectInputStream;
     private final ObjectOutputStream objectOutputStream;
     private final ExecutorService readExecutionQueue;
-    private final ScheduledExecutorService pinger;
 
 
     private static final int SOCKET_TIMEOUT = 10000;
@@ -39,9 +40,7 @@ public class Client extends Observable {
         this.objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         this.objectInputStream = new ObjectInputStream(socket.getInputStream());
         this.readExecutionQueue = Executors.newSingleThreadExecutor();
-        this.pinger = Executors.newSingleThreadScheduledExecutor();
     }
-
 
     /**
      *  Reads a message from the server vis socket and notify the ClientController via Observer.
@@ -52,6 +51,11 @@ public class Client extends Observable {
                 Message message;
                 try {
                     message = (Message) objectInputStream.readObject();
+                    if(message.getMessageType() == MessageType.PING)
+                        sendMessage(new PingMessage());
+                    else notifyObserver(message);
+                } catch (EOFException e){
+                    message = new ErrorMessage("Connection lost");
                     notifyObserver(message);
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
