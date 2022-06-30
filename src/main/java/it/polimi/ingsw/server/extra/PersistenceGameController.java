@@ -8,17 +8,19 @@ import java.io.Serializable;
 /**
  * This class represents the gameController the persistence additional functionality
  */
-public record PersistenceGameController(GameController gameController) implements Serializable {
+public class PersistenceGameController implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 382104422531955291L;
+    GameController gameController;
 
     /**
      * Default constructor.
      *
      * @param gameController gameController to be saved.
      */
-    public PersistenceGameController {
+    public PersistenceGameController (GameController gameController) {
+        this.gameController = gameController;
     }
 
     /**
@@ -26,7 +28,6 @@ public record PersistenceGameController(GameController gameController) implement
      *
      * @return gameController.
      */
-    @Override
     public GameController gameController() {
         return gameController;
     }

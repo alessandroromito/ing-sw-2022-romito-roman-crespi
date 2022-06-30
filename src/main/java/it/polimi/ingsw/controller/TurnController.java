@@ -69,7 +69,7 @@ public class TurnController implements Serializable {
 
         activePlayer = nicknameQueue.get(0);
 
-        if(turnCount > 1 ){
+        if(turnCount > 1){
             try {
                 DataSaving dataSaving = new DataSaving();
                 System.out.println("Salvataggio partita in corso...");
