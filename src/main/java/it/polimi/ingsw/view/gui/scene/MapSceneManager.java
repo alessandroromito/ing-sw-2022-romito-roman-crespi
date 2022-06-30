@@ -288,6 +288,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private Label labelOpTurn;
 
+    @FXML
+    private Label labelCrc;
+
 
     private double r = 22;
     private double rIsl;
@@ -460,6 +463,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void initializeCharacterCards() {
         if (gameSerialized.getExpertMode()) {
+            labelCrc.setVisible(true);
             card1.setDisable(true);
             card2.setDisable(true);
             card3.setDisable(true);
@@ -2088,6 +2092,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void setActionFase(boolean actionFase) {
         this.actionFase = actionFase;
+        if(actionFase) {
+            Glow ef = new Glow();
+            ef.setInput(new DropShadow());
+            labelCrc.setEffect(ef);
+        }else
+            labelCrc.setEffect(new DropShadow());
     }
 
     public void resizeElements() {
