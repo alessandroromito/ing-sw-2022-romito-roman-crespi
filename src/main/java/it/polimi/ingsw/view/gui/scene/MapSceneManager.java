@@ -1567,13 +1567,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableOpcard1() {
         opCard1 = true;
-        if(!xButton.isDisabled())
             viewOpCard1();
     }
 
     public void enableOpcard2() {
         opCard2 = true;
-        if(!xButton.isDisabled())
             viewOpCard2();
     }
 
