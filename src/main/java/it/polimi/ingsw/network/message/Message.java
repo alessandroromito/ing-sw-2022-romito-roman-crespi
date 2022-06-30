@@ -41,7 +41,7 @@ public abstract class Message implements Serializable {
     }
 
     /**
-     * This method comunicate with messageHandler to handle the message.
+     * This method communicate with messageHandler to handle the message.
      * @param messageHandler handler of the message.
      */
     public abstract void handle(MessageHandler messageHandler);

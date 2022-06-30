@@ -31,7 +31,7 @@ public class GameModeMessage extends Message{
     }
 
     /**
-     * This method comunicate with messageHandler to handle the message.
+     * This method communicate with messageHandler to handle the message.
      * @param messageHandler handler of the message.
      */
     @Override
