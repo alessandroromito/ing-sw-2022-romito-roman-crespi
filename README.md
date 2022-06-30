@@ -12,9 +12,9 @@ Interfacce grafiche implementate: CLI e GUI.
 ## Documentazione
 
 ### UML
-- Diagramma UML iniziale dell'applicazione: [UML iniziale](link)
-- Diagramma UML finale dell'applicazione che mostri com'è progettato il software: [UML finale](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/UML/Final/HighLevel/UML_HighLevel.png)
-- Diagramma UML finale dettagliato:
+- Diagramma UML iniziale dell'applicazione: [UML iniziale]([link](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/UML/Initial/UML_initial.png))
+- Diagramma UML finale dell'applicazione che mostri com'è progettato il software: [UML finale ad alto livello](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/UML/Final/HighLevel/UML_HighLevel.png)
+- Diagramma UML finale dettagliato: [UML finale dettagliato](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/UML/Final/Detailed/UML_final_detailed.png)
 
 ### Documentazione di protocollo di comunicazione tra client e server
 - Protocollo implementato: [Documentazione di protocollo](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/blob/main/deliverables/ProtocolDocumentation/SequenceDiagram.jpeg)
