@@ -7,12 +7,20 @@ import java.util.ArrayList;
 public class Card_219 extends CharacterCard {
     private final ArrayList<StudentDisc> students;
 
+    /**
+     * Default Constructor
+     */
     public Card_219(ArrayList<StudentDisc> studentDiscArray){
         super(219);
         this.students = studentDiscArray;
         this.cost = 2;
     }
 
+    /**
+     * Getter
+     * @param i index
+     * @return student at i
+     */
     public StudentDisc getStudent(int i){
         if(i>=0 && i<=3) {
             StudentDisc studentToReturn = students.get(i);

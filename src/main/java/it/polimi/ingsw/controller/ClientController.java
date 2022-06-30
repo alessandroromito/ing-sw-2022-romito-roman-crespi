@@ -195,62 +195,108 @@ public class ClientController implements ViewObserver, Observer {
         client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 209
+     * @param studentPos used by the effect
+     * @param island used by the effect
+     */
     @Override
     public void onUpdateUse209(int studentPos, int island){
         client.sendMessage(new Card209Message(this.nickname, studentPos, island));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 210
+     */
     @Override
     public void onUpdateUse210() {
         client.sendMessage(new Card210Message(this.nickname));
     }
 
-
+    /**
+     * Client update the server about the use of the characterCard 211
+     * @param islandNum
+     */
     @Override
     public void onUpdateUse211(int islandNum) {
         client.sendMessage(new Card211Message(this.nickname, islandNum));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 212
+     */
     @Override
     public void onUpdateUse212() {
         client.sendMessage(new Card212Message(this.nickname));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 213
+     * @param islandNum
+     */
     @Override
     public void onUpdateUse213(int islandNum) {
         client.sendMessage(new Card213Message(this.nickname, islandNum));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 214
+     */
     @Override
     public void onUpdateUse214() {
         client.sendMessage(new Card214Message(this.nickname));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 215
+     * @param entranceStud
+     * @param cardStudents
+     */
     @Override
     public void onUpdateUse215(ArrayList<Integer> entranceStud, ArrayList<Integer> cardStudents) {
         client.sendMessage(new Card215Message(this.nickname, entranceStud, cardStudents));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 216
+     */
     @Override
     public void onUpdateUse216() {
         client.sendMessage(new Card216Message(this.nickname));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 217
+     * @param color
+     */
     @Override
     public void onUpdateUse217(PawnColors color) {
         client.sendMessage(new Card217Message(this.nickname, color));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 218
+     * @param entranceStud
+     * @param diningStud
+     */
     @Override
     public void onUpdateUse218(List<Integer> entranceStud, List<PawnColors> diningStud) {
         client.sendMessage(new Card218Message(this.nickname, entranceStud, diningStud));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 219
+     * @param studentNum
+     */
     @Override
     public void onUpdateUse219(int studentNum) {
         client.sendMessage(new Card219Message(this.nickname, studentNum));
     }
 
+    /**
+     * Client update the server about the use of the characterCard 220
+     * @param color
+     */
     @Override
     public void onUpdateUse220(PawnColors color) {
         client.sendMessage(new Card220Message(this.nickname, color));

@@ -55,7 +55,7 @@ public class GameInfoMessage extends Message {
     public int getRemainingBagStudents(){ return remainingBagStudents; }
 
     /**
-     * This method comunicate with messageHandler to handle the message.
+     * This method communicate with messageHandler to handle the message.
      * @param messageHandler handler of the message.
      */
     @Override

@@ -3,10 +3,8 @@ package it.polimi.ingsw.network.server;
 import it.polimi.ingsw.controller.GameController;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 /**
  * Socket of the server.
@@ -28,6 +26,9 @@ public class SocketServer implements Runnable{
         this.port = port;
     }
 
+    /**
+     * Method that accept a new connection and bing the client with his clientHandler
+     */
     @Override
     public void run() {
         try {
@@ -41,19 +42,13 @@ public class SocketServer implements Runnable{
 
         System.out.println("Server socket ready on IP: " + serverSocket.getInetAddress().getHostAddress());
 
-        try {
-            System.out.println("Server socket ready on IP (from arg): " + InetAddress.getByName(DEFAULT_IP));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
         while(!Thread.currentThread().isInterrupted()) {
             Socket client;
             try {
                 client = serverSocket.accept();
                 System.out.println("Received client connection");
             } catch(IOException e) {
-                System.out.println("SocketServer.run(): Client connection not accepted");
+                System.out.println("SocketServer.accept(): Client connection not accepted");
                 continue;
             }
 

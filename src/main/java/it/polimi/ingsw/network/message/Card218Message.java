@@ -13,7 +13,12 @@ public class Card218Message extends UseEffectMessage{
     List<Integer> entranceList;
     List<PawnColors> diningList;
 
-
+    /**
+     * Default Constructor
+     * @param nickname nickname of the sender
+     * @param entranceList parameter for the effect
+     * @param diningList parameter for the effect
+     */
     public Card218Message(String nickname, List<Integer> entranceList, List<PawnColors> diningList) {
         super(nickname, 218);
         this.entranceList = entranceList;
@@ -27,6 +32,11 @@ public class Card218Message extends UseEffectMessage{
     public List<PawnColors> getDiningList() {
         return diningList;
     }
+
+    /**
+     * This method communicate with messageHandler to handle the message.
+     * @param messageHandler handler of the message.
+     */
     @Override
     public void handle(MessageHandler messageHandler) {
         messageHandler.handleMessage(this);
