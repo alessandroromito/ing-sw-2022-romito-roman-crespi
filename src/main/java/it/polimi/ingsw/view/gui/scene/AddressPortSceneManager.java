@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 
 import java.util.HashMap;
 
+/**
+ * Manager of the scene where the player choose ip address and port of the server.
+ */
 public class AddressPortSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
@@ -25,6 +28,10 @@ public class AddressPortSceneManager extends ViewObservable implements SceneMana
     @FXML
     private TextField portField;
 
+    /**
+     * Handle the click on the connect button.
+     * @param event mouse click event.
+     */
     @FXML
     void onButtonClick(ActionEvent event) {
         String address = addressField.getText();
