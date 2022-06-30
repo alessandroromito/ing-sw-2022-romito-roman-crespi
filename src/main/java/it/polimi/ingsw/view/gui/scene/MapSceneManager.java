@@ -685,7 +685,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             temp.addAll(posWithGhost);
 
 
-            for(int j=startingPose+1;j<startingPose+maxSteps;j++)
+            for(int j=startingPose+1;j<=startingPose+maxSteps;j++)
                 for(int island: temp.get(j))
                     enableSingleIsland(island+1);
         }
