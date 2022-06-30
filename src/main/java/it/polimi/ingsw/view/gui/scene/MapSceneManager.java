@@ -1967,7 +1967,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     finalStudentPos = finalI;
                     menuCard209();
                 });
-                card209[i].setOnMouseEntered(ev -> card209[finalI].setEffect(new Glow()));
+                card209[i].setOnMouseEntered(ev -> card209[finalI].setEffect(new Glow(0.6)));
                 card209[i].setOnMouseExited(ev -> card209[finalI].setEffect(null));
             }
 
@@ -1980,7 +1980,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     disable219();
                     new Thread(() -> notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();
                 });
-                card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow()));
+                card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow(0.6)));
                 card219[i].setOnMouseExited(ev -> card219[finalI].setEffect(null));
             }
 
@@ -1992,6 +1992,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         if (idCard == 217)
             menuCard217();
+
+        if (idCard == 220)
+            menuCard220();
 
         switch (idCard) {
             case 210 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse210)).start();
@@ -2080,6 +2083,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 disableMenu();
                 disable219();
                 new Thread(() -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]))).start();
+            });
+        }
+    }
+
+    private void menuCard220() {
+        colorMenu.setVisible(true);
+        colorMenu.setDisable(false);
+        colorMenu.setLayoutX(getCharacterById(220).getLayoutX() - 17);
+        colorMenu.setLayoutY(getCharacterById(220).getLayoutY() + 10);
+        for (int i = 0; i < 5; i++) {
+            int finalI = i;
+            colorMenu.getItems().get(i).setOnAction(event -> {
+                disableMenu();
+                disable219();
+                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse220(PawnColors.values()[finalI]))).start();
             });
         }
     }
