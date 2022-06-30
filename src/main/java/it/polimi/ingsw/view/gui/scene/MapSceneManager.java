@@ -278,17 +278,21 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private MenuButton colorMenu;
 
+    @FXML
+    private Label labelOpTurn;
+
 
     private double r = 22;
     private double rIsl;
     private boolean active = false;
 
-    private List<List<Integer>> posWithGhost;
+    private List<List<Integer>> posWithGhost = null;
 
     GameSerialized gameSerialized;
     List<AssistantCard> assistantCardsList = new ArrayList<>();
     private boolean opCard1 = false;
     private boolean opCard2 = false;
+    private boolean actionFase = false;
     private int[] towerColor = new int[12];
     private ImageView[] towers = new ImageView[12];
     ScoreboardSceneManager scoreboardSceneManager = null;
@@ -316,6 +320,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView[] cCards = new ImageView[3];
     private ImageView[] card209 = new ImageView[4];
     private ImageView[] card219 = new ImageView[4];
+    private Integer startingPose = null;
 
     private GraphicController graphicController = null;
 
@@ -378,6 +383,8 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         card1.setDisable(true); card2.setDisable(true); card3.setDisable(true);
 
         cCards[0] = card1; cCards[1] = card2; cCards[2] = card3;
+
+        labelOpTurn.setViewOrder(-1);
 
         System.out.println("fine initialize fxml");
     }
@@ -659,11 +666,28 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void enableMotherNature(int maxSteps) {
         switchMotherNature = true;
-        for (int i = 1; i <= maxSteps; i++) {
-            if (i + motherNaturePos >= 12)
-                enableSingleIsland(i+motherNaturePos-11);
-            else
-                enableSingleIsland(i+motherNaturePos+1);
+        if(posWithGhost==null) {
+            for (int i = 1; i <= maxSteps; i++) {
+                if (i + motherNaturePos >= 12)
+                    enableSingleIsland(i + motherNaturePos - 11);
+                else
+                    enableSingleIsland(i + motherNaturePos + 1);
+            }
+        }else{
+
+            for(int j=0;j<posWithGhost.size();j++)
+                if(posWithGhost.get(j).contains(motherNaturePos))
+                    startingPose=j;
+
+            System.out.println("starting pose: "+startingPose);
+            List<List<Integer>> temp = new ArrayList<>();
+            temp.addAll(posWithGhost);
+            temp.addAll(posWithGhost);
+
+
+            for(int j=startingPose+1;j<=startingPose+maxSteps;j++)
+                for(int island: temp.get(j))
+                    enableSingleIsland(island+1);
         }
     }
 
@@ -708,23 +732,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
-    public void moveMotherNature(int pos){
-        if(posWithGhost==null) {
-            if (motherNaturePos + pos <= 11) {
-                motherNaturePos += pos;
-                setMotherNaturePose(motherNaturePos);
-            } else {
-                motherNaturePos += pos - 12;
-                setMotherNaturePose(motherNaturePos);
-            }
-        }else{
-           /* int finalIsland;
-            int startingPos;
-            for(int i=0;i<posWithGhost.size();i++)
-                if(posWithGhost.get(i).contains())
-*/
+    public void moveMotherNature(int steps){
+        if (motherNaturePos + steps <= 11) {
+            motherNaturePos += steps;
+            setMotherNaturePose(motherNaturePos);
+        } else {
+            motherNaturePos += steps - 12;
+            setMotherNaturePose(motherNaturePos);
         }
-
     }
 
     public void light(MouseEvent mouseEvent) {
@@ -738,38 +753,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         if(posWithGhost!=null){
             List<Integer> lightlist=null;
             for(List<Integer> l: posWithGhost)
-                if(l.contains(sel))
+                if(l.contains(sel-1))
                     lightlist = l;
 
+            if(lightlist!=null)
             for(Integer in: lightlist)
-                island[in-1].setEffect(new Bloom(0.72));
+                island[in].setEffect(new Bloom(0.72));
         }
     }
 
     public void dark(MouseEvent mouseEvent) {
-        switch(mouseEvent.getSource().toString().charAt(19)){
-            case '2':   island2.setEffect(null);   break;
-            case '3':   island3.setEffect(null);   break;
-            case '4':   island4.setEffect(null);   break;
-            case '5':   island5.setEffect(null);   break;
-            case '6':   island6.setEffect(null);   break;
-            case '7':   island7.setEffect(null);   break;
-            case '8':   island8.setEffect(null);   break;
-            case '9':   island9.setEffect(null);   break;
-            case '1':   switch(mouseEvent.getSource().toString().charAt(20)){
-                case '0':
-                    island10.setEffect(null);
-                    break;
-                case '1':
-                    island11.setEffect(null);
-                    break;
-                case '2':
-                    island12.setEffect(null);
-                    break;
-                default:    island1.setEffect(null); break;
-            }
-
-        }
+        for(ImageView isl: island)
+            isl.setEffect(null);
     }
 
     public void disableIslands(){
@@ -895,9 +890,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         int choosenIsland = -99;
 
         switch(mouseEvent.getSource().toString().charAt(19)) {
-            case '0':
-                choosenIsland = 0;
-                break;
             case '2':
                 choosenIsland = 2;
                 break;
@@ -939,19 +931,40 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 }
         }
         final int choosen = choosenIsland;
+        System.out.println(choosen);
         if(switchMotherNature){
             switchMotherNature = false;
             int steps = 0;
-
             if(choosen-motherNaturePos>0)
                 steps = choosen-motherNaturePos-1;
             else
                 steps =  choosen-motherNaturePos+11;
 
-            System.out.println("passi da fare: "+steps);
-            int finalSteps = steps;
             moveMotherNature(steps);
-            new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
+
+            if(posWithGhost==null){
+                int finalSteps = steps;
+                new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
+                setActive(false);
+            }else{
+                System.out.println("Spostamento modalità ghost");
+                Integer finalPose = null;
+
+                List<List<Integer>> temp = new ArrayList<>();
+                temp.addAll(posWithGhost);
+                temp.addAll(posWithGhost);
+
+                for(int j=startingPose;j<temp.size();j++){
+                    if(temp.get(j).contains(choosen-1)){
+                        finalPose=j;
+                        break;}
+                }
+                System.out.println("starting , final  pose: "+startingPose+" , "+finalPose);
+                int move = finalPose-startingPose;
+                System.out.println("Passi: "+move);
+                new Thread( () -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(move))).start();
+                setActive(false);
+            }
         }
 
         disableIslands();
@@ -1061,6 +1074,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 ArrayList<Integer> islandPawnsId = island.getIslandsPawnsID();
 
                 if(!island.isGhost()) {
+                    System.out.println("Confrontando non ghost isola: "+(islandMarker+1)+" con isola: "+(islandMarker+1));
                     for (Integer id : islandPawnsId) {
                         boolean add = true;
                         for (int j = 0; j < students[islandMarker].size(); j++) {
@@ -1074,19 +1088,45 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     islandMarker++;
                 }else if(island.isGhost()){
                     //da sistemare
+                    System.out.println();
+                    System.out.print("Confrontando ghost isola: "+(islandMarker+1)+" con isole: ");
+                    for(int is:island.getReferencedIslands()) System.out.print(is+" , ");
                     for (Integer id : islandPawnsId) {
                         boolean add = true;
                         for (int isl : island.getReferencedIslands())
-                            for (int j = 0; j < students[isl].size(); j++) {
-                                if (students[isl].get(j).getId().equals(Integer.toString(id)))
+                            for (int j = 0; j < students[isl-1].size(); j++) {
+                                if (students[isl-1].get(j).getId().equals(Integer.toString(id)))
                                     add = false;
                             }
-                        if (add)
-                            addStudentToIsland(getColorFromId(id), id, island.getReferencedIslands().get(0));
+                        if (add) {
+                            int finalIsland = island.getReferencedIslands().get(0)-1;
+                            Integer min = students[island.getReferencedIslands().get(0)-1].size();
+                            for(int isl: island.getReferencedIslands())
+                                if(students[isl-1].size()<min){
+                                    min = students[isl-1].size();
+                                }
+                            for(int i=0;i<island.getReferencedIslands().size();i++)
+                                if(students[island.getReferencedIslands().get(i)-1].size()==min)
+                                    finalIsland = island.getReferencedIslands().get(i)-1;
+
+                            addStudentToIsland(getColorFromId(id), id, finalIsland);
+                        }
                     }
-                    posWithGhost.add(island.getReferencedIslands());
+                    ArrayList<Integer> temp = new ArrayList<Integer>();
+                    for(int j=0;j<island.getReferencedIslands().size();j++)
+                        temp.add(island.getReferencedIslands().get(j)-1);
+
+                    posWithGhost.add(temp);
                     islandMarker += island.getReferencedIslands().size();
                 }
+            }
+            System.out.println();
+            System.out.println("posWithGhost: ");
+            for(int j=0;j<posWithGhost.size();j++){
+                System.out.print("pos: "+j+":");
+                for(int i=0;i<posWithGhost.get(j).size();i++)
+                    System.out.print(" "+posWithGhost.get(j).get(i));
+                System.out.println();
             }
         }
 
@@ -1122,11 +1162,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             switchHandMap.setLayoutX(832);
             switchHandMap.setLayoutY(406);
             toScoreboard.setLayoutX(833);
-            toScoreboard.setLayoutY(586);
+            toScoreboard.setLayoutY(590);
             labelHand.setLayoutX(877);
             labelHand.setLayoutY(485);
-            labelScrbd.setLayoutX(863);
-            labelScrbd.setLayoutY(606);
+            labelScrbd.setLayoutX(850);
+            labelScrbd.setLayoutY(610);
         }
 
         if(gameSerialized.getActiveNickname().equals(nickname))
@@ -1334,6 +1374,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         ArrayList<Cloud> finalCloud = new ArrayList<>();
         finalCloud.add(clouds.get(cloudNumber-1));
         new Thread( () -> notifyObserver( obs -> obs.onUpdatePickCloud(finalCloud))).start();
+        setActive(false);
         clouds.clear();
         if(cloudNumber == 1)
             clearCloud1();
@@ -1377,6 +1418,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26,27));
+        setActive(false);
 
         assistantCards[assistantUsed].setMouseTransparent(true);
         //TranslateTransition tt = new TranslateTransition(Duration.millis(1000),assistantCards[assistantUsed]);
@@ -1401,7 +1443,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         playedAssistantCardsList.add(finalAssistantCard);
         AssistantCard finalAssistantCard1 = finalAssistantCard;
         new Thread( () -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList))).start();
-
         assistantCardsList.remove(finalAssistantCard);
         return;
 
@@ -1713,28 +1754,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void inScrb(MouseEvent mouseEvent) {
         DropShadow et = new DropShadow();
-        BoxBlur et2 = new BoxBlur();
-        et2.setInput(new Glow(0.3));
-        et.setInput(et2);
+        et.setInput(new Glow());
         toScoreboard.setEffect(et);
     }
 
     public void outScrb(MouseEvent mouseEvent) {
-        DropShadow et = new DropShadow();
-        et.setInput(new BoxBlur());
-        toScoreboard.setEffect(et);
-    }
-
-    public void addCoin(){
-        int coin = Integer.parseInt(String.valueOf(labelCoins.getText().charAt(2)));
-        coin++;
-        labelCoins.setText("X "+Integer.toString(coin));
-    }
-
-    public void removeCoin(){
-        int coin = Integer.parseInt(String.valueOf(labelCoins.getText().charAt(2)));
-        coin--;
-        labelCoins.setText("X "+Integer.toString(coin));
+        toScoreboard.setEffect(new DropShadow());
     }
 
     public void setCoin(int coin){
@@ -1743,7 +1768,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void inCard1(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1756,13 +1781,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard1(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             cardSelected(0);
         }
     }
 
     public void inCard2(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1775,13 +1800,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard2(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             cardSelected(1);
         }
     }
 
     public void inCard3(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             Glow iCard = new Glow(0.45);
             iCard.setInput(new DropShadow());
 
@@ -1794,7 +1819,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void clickCard3(MouseEvent mouseEvent) {
-        if(active) {
+        if(active&&actionFase) {
             cardSelected(2);
         }
     }
@@ -1911,5 +1936,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void setActive(boolean active) {
         this.active = active;
+        if(active) labelOpTurn.setVisible(false);
+        else labelOpTurn.setVisible(true);
+    }
+
+    public void setActionFase(boolean actionFase) {
+        this.actionFase = actionFase;
     }
 }
