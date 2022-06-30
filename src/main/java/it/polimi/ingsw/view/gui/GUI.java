@@ -15,9 +15,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+/**
+ * This class represents the JavaFx application of the GUI.
+ */
 public class GUI extends Application {
 
 
+    /**
+     * Start the application.
+     * @param stage default parameter for javafx application.
+     */
     @Override
     public void start(Stage stage) {
         try {
@@ -58,6 +65,9 @@ public class GUI extends Application {
         }
     }
 
+    /**
+     * Stop the application.
+     */
     @Override
     public void stop() {
         Platform.exit();

@@ -23,6 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Class that control the GUI and implement View.
+ * This class represents the GUI (Graphic User Interface).
+ */
 public class GraphicController extends ViewObservable implements View {
 
     private static Scene activeScene;
@@ -46,6 +50,14 @@ public class GraphicController extends ViewObservable implements View {
         return paneTransition(observerList, activeScene, fxml);
     }
 
+    /**
+     * Make a scene transition.
+     * @param observerList list of observer to be added to the new scene.
+     * @param scene new scene.
+     * @param fxml path for resource fxml.
+     * @param <T>
+     * @return manager(controller) of the fxml file.
+     */
     public static <T> T paneTransition(List<ViewObserver> observerList, Scene scene, String fxml) {
         T manager = null;
 
@@ -64,6 +76,11 @@ public class GraphicController extends ViewObservable implements View {
         return manager;
     }
 
+    /**
+     * Make a scene transition.
+     * @param sceneManager sceneManager for the new scene.
+     * @param fxml path for resource fxml.
+     */
     public static void paneTransition(SceneManagerInterface sceneManager, String fxml) {
         paneTransition(sceneManager, activeScene, fxml);
     }
@@ -87,6 +104,9 @@ public class GraphicController extends ViewObservable implements View {
     }
 
 
+    /**
+     * Customized method that switches from login part to game part.
+     */
     public synchronized void getAndPaneTransitionGameScenario() {
         if(!gameScenarioEnabled)
         {
@@ -115,10 +135,21 @@ public class GraphicController extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Make a scene transition without a fxml controller setted.
+     * @param sceneManager sceneManager for the new scene.
+     * @param fxml path resource for fxml file.
+     */
     public static void paneTransitionNoController(SceneManagerInterface sceneManager, String fxml) {
         paneTransitionNoController(sceneManager, activeScene, fxml);
     }
 
+    /**
+     * Make a scene transition without a fxml controller setted.
+     * @param sceneManager sceneManager for the new scene.
+     * @param scene new scene.
+     * @param fxml path resource for fxml file.
+     */
     public static void paneTransitionNoController(SceneManagerInterface sceneManager, Scene scene, String fxml) {
         try{
             FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/" + fxml));
@@ -134,11 +165,24 @@ public class GraphicController extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Make a scene transition.
+     * @param observerList list of observer to be added to the new scene.
+     * @param event event happened to switch the scene.
+     * @param fxml path resource for fxml file.
+     * @param <T>
+     * @return the manager(controller) of the scene.
+     */
     public static <T> T paneTransition(List<ViewObserver> observerList, Event event, String fxml){
         Scene scene = ((Node) event.getSource()).getScene();
         return paneTransition(observerList, scene, fxml);
     }
 
+    /**
+     * Shows an error message.
+     * @param errorTitle title.
+     * @param errorMessage text message.
+     */
     public static void showErrorMessage(String errorTitle, String errorMessage) {
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/errorMessage_scene.fxml"));
         Parent parent;
@@ -148,10 +192,7 @@ public class GraphicController extends ViewObservable implements View {
             e.printStackTrace();
             return;
         }
-        //nel caso in cui non avessimo il controllo da parte di fxml manager
         ErrorMessageSceneManager errorMessageSceneManager = fxmlLoader.getController();
-        //altrimenti
-        //ErrorMessageSceneManager errorMessageSceneManager = new ErrorMessageSceneManager();
         Scene errorMessageScene = new Scene(parent);
         errorMessageSceneManager.setScene(errorMessageScene);
         errorMessageSceneManager.setErrorTitle(errorTitle);
@@ -159,6 +200,11 @@ public class GraphicController extends ViewObservable implements View {
         errorMessageSceneManager.showMessage();
     }
 
+    /**
+     * Shows a generic message.
+     * @param genericMessageTitle title.
+     * @param genericMessageText text message.
+     */
     public static void showGenericMessage(String genericMessageTitle, String genericMessageText) {
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/genericMessage_scene.fxml"));
         Parent parent;
@@ -168,10 +214,7 @@ public class GraphicController extends ViewObservable implements View {
             e.printStackTrace();
             return;
         }
-        //nel caso in cui non avessimo il controllo da parte di fxml manager
         GenericMessageSceneManager genericMessageSceneManager = fxmlLoader.getController();
-        //altrimenti
-        //GenericMessageSceneManager genericMessageSceneManager = new GenericMessageSceneManager();
         Scene genericMessageScene = new Scene(parent);
         genericMessageSceneManager.setScene(genericMessageScene);
         genericMessageSceneManager.setGenericTitle(genericMessageTitle);
@@ -179,6 +222,9 @@ public class GraphicController extends ViewObservable implements View {
         genericMessageSceneManager.showMessage();
     }
 
+    /**
+     * Initialize the scoreboard manager to be ready for call.
+     */
     public synchronized void initializeScoreboard(){
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource("fxml/scoreboard_scene.fxml"));
         Parent parent;
@@ -194,6 +240,11 @@ public class GraphicController extends ViewObservable implements View {
         scoreboardSceneManager.setScene(scoreboardScene);
     }
 
+    /**
+     * Shows the scoreboard.
+     * @param snapshot snapshot of the match in progress.
+     * @return the manager for scoreboard.
+     */
     public ScoreboardSceneManager showScoreboards(Image snapshot) {
         if (scoreboardSceneManager == null) initializeScoreboard();
         else{ scoreboardSceneManager.showScoreboards();
@@ -201,6 +252,10 @@ public class GraphicController extends ViewObservable implements View {
         return scoreboardSceneManager;
     }
 
+    /**
+     * Shows the winner.
+     * @param winner nickname of the winner of the game.
+     */
     public static void showWinner(String winner) {
         FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getResource("/fxml/victory_scene.fxml"));
         Parent parent;
@@ -217,28 +272,17 @@ public class GraphicController extends ViewObservable implements View {
         victorySceneManager.showVictoryScene();
     }
 
-    /*public static <T> T setLayout(Scene scene, String path, ClientController clientController) {
-        FXMLLoader fxmlLoader = new FXMLLoader(GraphicController.class.getClassLoader().getResource(path));
-
-        Pane pane;
-        try {
-            pane = fxmlLoader.load();
-            scene.setRoot(pane);
-        } catch (IOException e) {
-            Logger.getLogger("client").severe(e.getMessage());
-            return null;
-        }
-        StartMenuSceneManager manager = new StartMenuSceneManager();
-        manager.addObserver(clientController);
-        return fxmlLoader.getController();
-    }
+    /**
+     * Ask the nickname to the player.
      */
-
     @Override
     public void askPlayerNickname() {
         Platform.runLater(() -> paneTransition(observers, "login_scene.fxml"));
     }
 
+    /**
+     * Ask how many players want to play the game.
+     */
     @Override
     public void askPlayersNumber() {
         PlayersNumberSceneManager playersNumberSceneManager = new PlayersNumberSceneManager();
@@ -246,6 +290,9 @@ public class GraphicController extends ViewObservable implements View {
         Platform.runLater(() -> paneTransition(playersNumberSceneManager, "playersNumber_scene.fxml"));
     }
 
+    /**
+     * Ask the gameMode.
+     */
     @Override
     public void askGameMode() {
         GameModeSelectSceneManager gameModeSelectSceneManager = new GameModeSelectSceneManager();
@@ -253,6 +300,11 @@ public class GraphicController extends ViewObservable implements View {
         Platform.runLater(() -> paneTransition(gameModeSelectSceneManager, "gameModeSelect_scene.fxml"));
     }
 
+    /**
+     * Method use to show the players in the lobby.
+     * @param playersNickname nicknames of the player.
+     * @param numPlayers number of players to be shown.
+     */
     @Override
     public void showLobby(List<String> playersNickname, int numPlayers) {
         WaitingRoomHostSceneManager waitingRoomHostSceneManager;
@@ -271,6 +323,10 @@ public class GraphicController extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Method used to notify all the players that someone has disconnected.
+     * @param nicknameDisconnected nick of the player that has disconnected.
+     */
     @Override
     public void showDisconnectedPlayerMessage(String nicknameDisconnected) {
         Platform.runLater( () -> {
@@ -287,6 +343,12 @@ public class GraphicController extends ViewObservable implements View {
         } );
     }
 
+    /**
+     * Method used to print the state of the game.
+     * It shows alle the island and all the scoreboard.
+     *
+     * @param gameSerialized reduced version of the game.
+     */
     @Override
     public void showGameScenario(GameSerialized gameSerialized) {
         //getAndPaneTransitionGameScenario();
@@ -300,6 +362,10 @@ public class GraphicController extends ViewObservable implements View {
         });
     }
 
+    /**
+     * Show which island are merged.
+     * @param unifiedIsland two id of the islands.
+     */
     @Override
     public void showMergeIslandMessage(List<Integer> unifiedIsland) {
         //max 2 alla volta
@@ -313,21 +379,44 @@ public class GraphicController extends ViewObservable implements View {
         Platform.runLater( () -> mapSceneManager.build(finalMinValue) );
     }
 
+    /**
+     * Method to ask if the player want to use a character card.
+     * @param characterCards list of available character cards.
+     */
     @Override
     public void askCharacterCard(List<CharacterCard> characterCards) {
         new Thread( () -> notifyObserver(obs -> obs.onUpdateUseEffect(false))).start();
     }
 
+    /**
+     * Method used to show the info of the game.
+     * @param playersNickname nicknames of the players in game.
+     * @param unifiedIslandsNumber number of unified islands.
+     * @param remainingBagStudents bag students remaining.
+     * @param activePlayer player in turn.
+     * @param characterCards avaiable character cards.
+     */
     @Override
     public void showGameInfo(List<String> playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List<CharacterCard> characterCards) {
 
     }
 
+    /**
+     * Method used to show the info of the game.
+     * @param playersNicknames nicknames of the players in game
+     * @param length
+     * @param size
+     * @param activePlayer player in turn
+     */
     @Override
     public void showGameInfo(List<String> playersNicknames, int length, int size, String activePlayer) {
 
     }
 
+    /**
+     * Update a generic message sent by the server.
+     * @param genericMessage message to print.
+     */
     @Override
     public void showGenericMessage(String genericMessage) {
         Platform.runLater( () -> {
@@ -336,6 +425,11 @@ public class GraphicController extends ViewObservable implements View {
         } );
     }
 
+    /**
+     * Ask chose an assistant card.
+     * @param assistantCards assistantCards in hand.
+     * @param playedAssistantCards cards already played in this turn by the other players.
+     */
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
@@ -368,6 +462,12 @@ public class GraphicController extends ViewObservable implements View {
         });
     }
 
+    /**
+     * Ask to the player to move a student, so which student to move and were.
+     * @param studentDiscs student to move.
+     * @param position where to move the student (0 dining room, 1 island).
+     * @param islandNumber if position = 1, chose the island to move the student.
+     */
     @Override
     public void askToMoveAStudent(List<StudentDisc> studentDiscs, int position, int islandNumber) {
         Platform.runLater( () -> {
@@ -378,6 +478,10 @@ public class GraphicController extends ViewObservable implements View {
         } );
     }
 
+    /**
+     * Ask how many steps move motherNature forward.
+     * @param maxSteps max step the player can do.
+     */
     @Override
     public void askToMoveMotherNature(int maxSteps) {
         Platform.runLater( () -> {
@@ -387,6 +491,10 @@ public class GraphicController extends ViewObservable implements View {
         } );
     }
 
+    /**
+     * Ask to choose a cloud to pick the students.
+     * @param cloudList list of available clouds.
+     */
     @Override
     public void askToChooseACloud(ArrayList<Cloud> cloudList) {
         Platform.runLater( () -> {
@@ -401,6 +509,12 @@ public class GraphicController extends ViewObservable implements View {
         });
     }
 
+    /**
+     * Show the result of the loginRequest.
+     * @param nickname nickname.
+     * @param playerNicknameAccepted bool true if accepted.
+     * @param connectionSuccessful bool true if connected.
+     */
     @Override
     public void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful) {
         if (!playerNicknameAccepted || !connectionSuccessful) {
@@ -419,6 +533,10 @@ public class GraphicController extends ViewObservable implements View {
         }
     }
 
+    /**
+     * Print a victory message to notify the end of the game.
+     * @param winner nick of the player that has won.
+     */
     @Override
     public void showVictoryMessage(String winner) {
         Platform.runLater( () -> {
@@ -427,8 +545,12 @@ public class GraphicController extends ViewObservable implements View {
         });
     }
 
+    /**
+     * Method used to notify all the players that someone has reconnected.
+     * @param nicknameReconnecting nick of the player that has reconnected.
+     */
     @Override
     public void showReconnectedMessage(String nicknameReconnecting) {
-        // da implementare
+        showGenericMessage("GAME", nicknameReconnecting + "si è riconnesso al gioco!");
     }
 }
