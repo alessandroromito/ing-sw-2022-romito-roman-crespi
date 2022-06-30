@@ -1,10 +1,13 @@
 package it.polimi.ingsw.view.gui.scene;
 
+import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Locale;
 
@@ -20,6 +23,17 @@ public class VictorySceneManager {
 
     @FXML
     private Text winner;
+
+    /**
+     * Default constructor.
+     */
+    public VictorySceneManager(){
+        stage = new Stage();
+        stage.initOwner(GraphicController.getActiveScene().getWindow());
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.setAlwaysOnTop(true);
+    }
 
     /**
      * Set the nickname of the winner.
