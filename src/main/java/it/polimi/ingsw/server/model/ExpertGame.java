@@ -27,6 +27,7 @@ import java.util.Objects;
  */
 public class ExpertGame extends Game {
     private int activeCardID = -1;
+
     private CharacterCard activeCard = null;
     private ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
@@ -657,6 +658,23 @@ public class ExpertGame extends Game {
             System.out.println("Checking influence");
             super.checkInfluence(islandID);
         }
+    }
+
+    /**
+     * Setter
+     * @param activeCard card to set
+     */
+    public void setActiveCard(CharacterCard activeCard) {
+        this.activeCardID = activeCard.getID();
+        this.activeCard = activeCard;
+    }
+
+    /**
+     * Setter
+     * @param activeCardID id to set
+     */
+    public void setActiveCardID(int activeCardID) {
+        this.activeCardID = activeCardID;
     }
 
     /**

@@ -105,16 +105,15 @@ public class Player extends Observable implements Serializable {
      * Setter for the assistant card
      * @param chosenCard set this as the current card
      */
-    public void setCurrentCard(AssistantCard chosenCard) {
+    public boolean setCurrentCard(AssistantCard chosenCard) {
         try {
             for(AssistantCard card: hand){
                 if(card.getValue() == chosenCard.getValue()){
                     this.currentAssistantCard = card;
-                    return;
+                    return true;
                 }
             }
             throw new MissingAssistantCardException("Assistant Card not in hand!");
-
         } catch (MissingAssistantCardException e) {
             throw new RuntimeException(e);
         }

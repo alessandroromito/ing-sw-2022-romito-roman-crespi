@@ -385,7 +385,7 @@ public class Game extends Observable implements Serializable {
      * @param color tower color
      * @return the player that correspond to that color
      */
-    private Player getPlayerByColor(TowerColors color) {
+    public Player getPlayerByColor(TowerColors color) {
         for(Player player : players){
             if(player.getScoreboard().getTowerColor() == color)
                 return player;
@@ -397,16 +397,20 @@ public class Game extends Observable implements Serializable {
      * Check if someone has won because has finished the towers
      * @param player
      */
-    public void checkTowerWinner(Player player) {
-        if(player.getScoreboard().getNumTowers() == 0)
+    public boolean checkTowerWinner(Player player) {
+        if(player.getScoreboard().getNumTowers() == 0){
             notifyObserver(new VictoryMessage(player.getNickname()));
+            return true;
+        }
+        return false;
     }
 
     /**
-     *
-     * @param color
+     * Check if the active player has obtained a professor
+     * Called when the player move a student on the dining room
+     * @param color color of the student moved
      */
-    private void checkProfessors(PawnColors color) {
+    public void checkProfessors(PawnColors color) {
         Player activePlayer = getActivePlayer();
         int numStudent = activePlayer.getScoreboard().getPlayerStudentFromDining(color);
         boolean addProf = false;

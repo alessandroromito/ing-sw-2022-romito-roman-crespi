@@ -45,6 +45,7 @@ public class GameController implements Observer, Serializable {
     private boolean chosenExpertMode = false;
 
     private GameState gameState;
+
     private TurnController turnController;
     private InputController inputController;
 
@@ -817,11 +818,20 @@ public class GameController implements Observer, Serializable {
         return inPause;
     }
 
+
+    public void setTurnController(TurnController turnController) {
+        this.turnController = turnController;
+    }
+
     /**
      * Getter method.
      * @return the reconnectingPlayerList.
      */
     public ArrayList<String> getReconnectingPlayersList() {
         return reconnectingPlayersList;
+    }
+
+    public void setGame(ExpertGame expertgame) {
+        this.game = expertgame;
     }
 }

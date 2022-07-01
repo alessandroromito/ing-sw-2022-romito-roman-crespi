@@ -44,6 +44,7 @@ public class GameTest {
         String player3 = "gio";
 
         gameController.getPlayersNicknames().add(player1);
+
         gameController.getPlayersNicknames().add(player2);
         gameController.getPlayersNicknames().add(player3);
 
@@ -125,7 +126,7 @@ public class GameTest {
     }
 
     @Test
-    public void moveMotherNatureTest() {
+    public void moveMotherNature() {
         map.setMotherNaturePos(1);
         game.moveMotherNature(3);
         assertEquals(map.getMotherNaturePosition(), 4);
@@ -158,13 +159,19 @@ public class GameTest {
     @Test
     public void refillClouds() {
         ArrayList<Cloud> clouds = game.getMap().getClouds();
-        if(clouds.get(0).getCloudStudents().isEmpty() && clouds.get(1).getCloudStudents().isEmpty())
-            game.refillClouds();
-        clouds = game.getMap().getClouds();
+
+        game.refillClouds();
+
         assertFalse(clouds.get(0).getCloudStudents().isEmpty());
         assertEquals(4, clouds.get(0).getCloudStudents().size());
         assertFalse(clouds.get(1).getCloudStudents().isEmpty());
         assertEquals(4, clouds.get(1).getCloudStudents().size());
+
+        game.flushClouds();
+
+        assertTrue(game.getMap().getCloud(0).getCloudStudents().isEmpty());
+        assertTrue(game.getMap().getCloud(1).getCloudStudents().isEmpty());
+
     }
 
     @Test
@@ -260,8 +267,67 @@ public class GameTest {
     }
 
     @Test
-    public void getComponentByIDTest() {
+    public void getComponentByID() {
         assertEquals(components.get(0), game.getComponent(1));
         assertEquals(components.get(1), game.getComponent(2));
     }
+
+    @Test
+    public void getPlayerByColor(){
+        assertEquals(game.getPlayerByColor(TowerColors.BLACK), teo);
+    }
+
+    @Test
+    public void checkTowerWinner(){
+        for(int i = 0; i < 6; i++){
+            teo.getScoreboard().removeTower();
+        }
+
+        assertEquals(0, teo.getScoreboard().getNumTowers());
+
+        assertTrue(game.checkTowerWinner(teo));
+    }
+
+    @Test
+    public void checkProfessors(){
+        teo.getScoreboard().addStudentOnDining(new StudentDisc(1, PawnColors.RED));
+        teo.getScoreboard().addStudentOnDining(new StudentDisc(1, PawnColors.RED));
+        teo.getScoreboard().addProfessor(new ProfessorPawn(1, PawnColors.RED));
+
+        ale.getScoreboard().addStudentOnDining(new StudentDisc(1, PawnColors.RED));
+        ale.getScoreboard().addStudentOnDining(new StudentDisc(1, PawnColors.RED));
+        ale.getScoreboard().addStudentOnDining(new StudentDisc(1, PawnColors.RED));
+
+        turnController.setActivePlayer("ale");
+        game.checkProfessors(PawnColors.RED);
+
+        assertTrue(ale.getScoreboard().getProfessor(PawnColors.RED));
+    }
+
+    @Test
+    public void getNextInt(){
+        assertEquals(3, game.getNextInt(2));
+        assertEquals(0, game.getNextInt(11));
+    }
+
+    @Test
+    public void getPrevInt(){
+        assertEquals(3, game.getPrevInt(4));
+        assertEquals(11, game.getPrevInt(0));
+    }
+
+    @Test
+    public void getPlayedAssistantCards(){
+        AssistantCard assistantCard = new AssistantCard(1, 1, 1);
+        System.out.println("Hand size: " + teo.getHand().size());
+
+        assertTrue(teo.setCurrentCard(assistantCard));
+        assertTrue(game.getPlayedAssistantCards().contains(teo.getCurrentCard()));
+    }
+
+    @Test
+    public void getPlayersConnected(){
+        assertEquals(3, game.getPlayersConnected().size());
+    }
+
 }
