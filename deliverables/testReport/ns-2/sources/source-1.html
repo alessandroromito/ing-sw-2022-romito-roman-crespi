@@ -1,0 +1,435 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ClientController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: ClientController (it.polimi.ingsw.controller)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/23)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/73)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ClientController$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/74)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.controller;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.network.client.Client;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.network.message.*;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.observer.Observer;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.observer.ViewObserver;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.server.enumerations.PawnColors;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.server.model.component.AssistantCard;
+<i class="no-highlight">9</i>&nbsp;import it.polimi.ingsw.server.model.component.StudentDisc;
+<i class="no-highlight">10</i>&nbsp;import it.polimi.ingsw.server.model.map.Cloud;
+<i class="no-highlight">11</i>&nbsp;import it.polimi.ingsw.view.View;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">14</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">15</i>&nbsp;import java.util.HashMap;
+<i class="no-highlight">16</i>&nbsp;import java.util.List;
+<i class="no-highlight">17</i>&nbsp;import java.util.concurrent.ExecutorService;
+<i class="no-highlight">18</i>&nbsp;import java.util.concurrent.Executors;
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;/**
+<i class="no-highlight">21</i>&nbsp; * Class client side.
+<i class="no-highlight">22</i>&nbsp; * The client notify changes on the graphic interface only with the methods of this class.
+<i class="no-highlight">23</i>&nbsp; * The server notify changes to the client only with &quot;update&quot; method of this class.
+<i class="no-highlight">24</i>&nbsp; */
+<i class="no-highlight">25</i>&nbsp;public class ClientController implements ViewObserver, Observer {
+<i class="no-highlight">26</i>&nbsp;    private final View view;
+<i class="no-highlight">27</i>&nbsp;    private String nickname;
+<i class="no-highlight">28</i>&nbsp;    private final ExecutorService queue;
+<i class="no-highlight">29</i>&nbsp;    private Client client;
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;    /**
+<i class="no-highlight">32</i>&nbsp;     * Default Constructor.
+<i class="no-highlight">33</i>&nbsp;     * @param view view (interface implemented)
+<i class="no-highlight">34</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">35</i>&nbsp;    public ClientController(View view) {</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;        this.view = view;</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        queue = Executors.newSingleThreadExecutor();</b>
+<i class="no-highlight">38</i>&nbsp;    }
+<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">40</i>&nbsp;    /**
+<i class="no-highlight">41</i>&nbsp;     * Server updates the client using this method.
+<i class="no-highlight">42</i>&nbsp;     * @param message information to be analyzed to manage the update to supply to the client.
+<i class="no-highlight">43</i>&nbsp;     */
+<i class="no-highlight">44</i>&nbsp;    @Override
+<i class="no-highlight">45</i>&nbsp;    public void update(Message message) {
+<b class="nc"><i class="no-highlight">46</i>&nbsp;        switch(message.getMessageType()){</b>
+<i class="no-highlight">47</i>&nbsp;            case ERROR -&gt; {
+<b class="nc"><i class="no-highlight">48</i>&nbsp;                ErrorMessage errorMessage = (ErrorMessage) message;</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;                view.showErrorMessage(errorMessage.getError());</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;            }</b>
+<i class="no-highlight">51</i>&nbsp;            case WINNER_DECLARATION -&gt; {
+<b class="nc"><i class="no-highlight">52</i>&nbsp;                VictoryMessage victoryMessage = (VictoryMessage) message;</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;                view.showVictoryMessage(victoryMessage.getWinnerNickname());</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;            }</b>
+<i class="no-highlight">55</i>&nbsp;            case LOBBY -&gt; {
+<b class="nc"><i class="no-highlight">56</i>&nbsp;                LobbyMessage lobbyMessage = (LobbyMessage) message;</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                view.showLobby(lobbyMessage.getPlayersNickname(), lobbyMessage.getNumMaxPlayers());</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;            }</b>
+<i class="no-highlight">59</i>&nbsp;            case LOGIN_REPLY -&gt; {
+<b class="nc"><i class="no-highlight">60</i>&nbsp;                LoginReply loginReplyMessage = (LoginReply) message;</b>
+<b class="nc"><i class="no-highlight">61</i>&nbsp;                queue.execute(() -&gt; view.showLoginResult(loginReplyMessage.getNickname(), loginReplyMessage.isNicknameAccepted(), loginReplyMessage.isConnectionSuccessful()));</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;            }</b>
+<i class="no-highlight">63</i>&nbsp;            case MERGE_ISLANDS -&gt; {
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                MergeIslandMessage mergeIslandMessage = (MergeIslandMessage) message;</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;                view.showMergeIslandMessage(mergeIslandMessage.getUnifiedIslands());</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">67</i>&nbsp;            case PLAYER_NUMBER_REQUEST -&gt; queue.execute(view::askPlayersNumber);</b>
+<i class="no-highlight">68</i>&nbsp;            case PLAY_ASSISTANT_CARD -&gt; {
+<b class="nc"><i class="no-highlight">69</i>&nbsp;                AssistantCardMessage assistantCardMessage = (AssistantCardMessage) message;</b>
+<b class="nc"><i class="no-highlight">70</i>&nbsp;                queue.execute(() -&gt; view.askAssistantCard(assistantCardMessage.getAssistantCards(), assistantCardMessage.getPlayedAssistantCards()));</b>
+<b class="nc"><i class="no-highlight">71</i>&nbsp;            }</b>
+<i class="no-highlight">72</i>&nbsp;            case GENERIC_MESSAGE -&gt; {
+<b class="nc"><i class="no-highlight">73</i>&nbsp;                GenericMessage genericMessage = (GenericMessage) message;</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;                queue.execute(() -&gt; view.showGenericMessage(genericMessage.getMessage()));</b>
+<b class="nc"><i class="no-highlight">75</i>&nbsp;            }</b>
+<i class="no-highlight">76</i>&nbsp;            case DISCONNECTED_PLAYER -&gt; {
+<b class="nc"><i class="no-highlight">77</i>&nbsp;                DisconnectedPlayerMessage disconnectedPlayerMessage = (DisconnectedPlayerMessage) message;</b>
+<b class="nc"><i class="no-highlight">78</i>&nbsp;                view.showDisconnectedPlayerMessage(disconnectedPlayerMessage.getNicknameDisconnected());</b>
+<b class="nc"><i class="no-highlight">79</i>&nbsp;            }</b>
+<i class="no-highlight">80</i>&nbsp;            case GAME_SCENARIO -&gt; {
+<b class="nc"><i class="no-highlight">81</i>&nbsp;                GameScenarioMessage gameScenarioMessage = (GameScenarioMessage) message;</b>
+<b class="nc"><i class="no-highlight">82</i>&nbsp;                queue.execute(() -&gt; view.showGameScenario(gameScenarioMessage.getGameSerialized()));</b>
+<b class="nc"><i class="no-highlight">83</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">84</i>&nbsp;            case MOVE_MOTHER_NATURE -&gt; queue.execute(() -&gt; view.askToMoveMotherNature(((MoveMotherNatureMessage) message).getSteps()));</b>
+<i class="no-highlight">85</i>&nbsp;            case MOVE_STUDENT -&gt; {
+<b class="nc"><i class="no-highlight">86</i>&nbsp;                MoveStudentMessage moveStudentMessage = (MoveStudentMessage) message;</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;                queue.execute(() -&gt; view.askToMoveAStudent(moveStudentMessage.getStudentDiscs(), moveStudentMessage.getPosition(), moveStudentMessage.getIslandNumber()));</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;            }</b>
+<i class="no-highlight">89</i>&nbsp;            case PICK_CLOUD -&gt; {
+<b class="nc"><i class="no-highlight">90</i>&nbsp;                CloudMessage cloudMessage = (CloudMessage) message;</b>
+<b class="nc"><i class="no-highlight">91</i>&nbsp;                queue.execute(() -&gt; view.askToChooseACloud(cloudMessage.getCloudList()));</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">93</i>&nbsp;            case GAME_MODE -&gt; queue.execute(view::askGameMode);</b>
+<i class="no-highlight">94</i>&nbsp;            case PLAY_CHARACTER_CARD -&gt; {
+<b class="nc"><i class="no-highlight">95</i>&nbsp;                CharacterCardMessage characterCardMessage = (CharacterCardMessage) message;</b>
+<b class="nc"><i class="no-highlight">96</i>&nbsp;                queue.execute(() -&gt; view.askCharacterCard(characterCardMessage.getCharacterCards()));</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;            }</b>
+<i class="no-highlight">98</i>&nbsp;            case RECONNECTING_MESSAGE -&gt; {
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                ReconnectingMessage reconnectingMessage = (ReconnectingMessage) message;</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;                view.showReconnectedMessage(reconnectingMessage.getNicknameReconnecting());</b>
+<i class="no-highlight">101</i>&nbsp;            }
+<i class="no-highlight">102</i>&nbsp;        }
+<i class="no-highlight">103</i>&nbsp;    }
+<i class="no-highlight">104</i>&nbsp;
+<i class="no-highlight">105</i>&nbsp;    /**
+<i class="no-highlight">106</i>&nbsp;     * Client updates the server about GameMode.
+<i class="no-highlight">107</i>&nbsp;     * @param gameMode information sent by the client.
+<i class="no-highlight">108</i>&nbsp;     */
+<i class="no-highlight">109</i>&nbsp;    @Override
+<i class="no-highlight">110</i>&nbsp;    public void onUpdateGameMode(String gameMode) {
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        client.sendMessage(new GameModeReplyMessage(this.nickname, gameMode.equals(&quot;Esperta&quot;)));</b>
+<i class="no-highlight">112</i>&nbsp;    }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    /**
+<i class="no-highlight">115</i>&nbsp;     * Client updates the server about the effect to use.
+<i class="no-highlight">116</i>&nbsp;     * @param useEffect effect to use.
+<i class="no-highlight">117</i>&nbsp;     */
+<i class="no-highlight">118</i>&nbsp;    @Override
+<i class="no-highlight">119</i>&nbsp;    public void onUpdateUseEffect(boolean useEffect) {
+<b class="nc"><i class="no-highlight">120</i>&nbsp;        client.sendMessage(new CharacterCardReplyMessage(this.nickname, false));</b>
+<i class="no-highlight">121</i>&nbsp;    }
+<i class="no-highlight">122</i>&nbsp;
+<i class="no-highlight">123</i>&nbsp;    /**
+<i class="no-highlight">124</i>&nbsp;     * Client updates the server about the address and the port to be connected on.
+<i class="no-highlight">125</i>&nbsp;     * @param server contains address and port.
+<i class="no-highlight">126</i>&nbsp;     */
+<i class="no-highlight">127</i>&nbsp;    @Override
+<i class="no-highlight">128</i>&nbsp;    public void onUpdateServerDetails(HashMap&lt;String, String&gt; server){
+<i class="no-highlight">129</i>&nbsp;        try{
+<b class="nc"><i class="no-highlight">130</i>&nbsp;            client = new Client(server.get(&quot;address&quot;), Integer.parseInt(server.get(&quot;port&quot;)));</b>
+<b class="nc"><i class="no-highlight">131</i>&nbsp;            client.addObserver(this);</b>
+<b class="nc"><i class="no-highlight">132</i>&nbsp;            client.readMessage();</b>
+<b class="nc"><i class="no-highlight">133</i>&nbsp;            queue.execute(view::askPlayerNickname);</b>
+<i class="no-highlight">134</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">135</i>&nbsp;        catch(IOException e){</b>
+<b class="nc"><i class="no-highlight">136</i>&nbsp;            queue.execute(() -&gt; view.showLoginResult(nickname, false, false));</b>
+<b class="nc"><i class="no-highlight">137</i>&nbsp;        }</b>
+<i class="no-highlight">138</i>&nbsp;    }
+<i class="no-highlight">139</i>&nbsp;
+<i class="no-highlight">140</i>&nbsp;    /**
+<i class="no-highlight">141</i>&nbsp;     * Client updates the server about nickname of the user connected.
+<i class="no-highlight">142</i>&nbsp;     * @param nickname nickname.
+<i class="no-highlight">143</i>&nbsp;     */
+<i class="no-highlight">144</i>&nbsp;    @Override
+<i class="no-highlight">145</i>&nbsp;    public void onUpdateNickname(String nickname) {
+<b class="nc"><i class="no-highlight">146</i>&nbsp;        this.nickname = nickname;</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;        client.sendMessage(new LoginRequest(this.nickname));</b>
+<i class="no-highlight">148</i>&nbsp;    }
+<i class="no-highlight">149</i>&nbsp;
+<i class="no-highlight">150</i>&nbsp;    /**
+<i class="no-highlight">151</i>&nbsp;     * Client updates the server about player number of the match.
+<i class="no-highlight">152</i>&nbsp;     * @param playersNumber number of player playing the match.
+<i class="no-highlight">153</i>&nbsp;     */
+<i class="no-highlight">154</i>&nbsp;    @Override
+<i class="no-highlight">155</i>&nbsp;    public void onUpdatePlayersNumber(int playersNumber) {
+<b class="nc"><i class="no-highlight">156</i>&nbsp;        client.sendMessage(new PlayerNumberReply(this.nickname, playersNumber));</b>
+<i class="no-highlight">157</i>&nbsp;    }
+<i class="no-highlight">158</i>&nbsp;
+<i class="no-highlight">159</i>&nbsp;    /**
+<i class="no-highlight">160</i>&nbsp;     * Client updates the server about the movement of mother nature.
+<i class="no-highlight">161</i>&nbsp;     * @param steps movement of mother nature.
+<i class="no-highlight">162</i>&nbsp;     */
+<i class="no-highlight">163</i>&nbsp;    @Override
+<i class="no-highlight">164</i>&nbsp;    public void onUpdateMotherNaturePosition(int steps) {
+<b class="nc"><i class="no-highlight">165</i>&nbsp;        client.sendMessage(new MoveMotherNatureMessage(this.nickname, steps));</b>
+<i class="no-highlight">166</i>&nbsp;    }
+<i class="no-highlight">167</i>&nbsp;
+<i class="no-highlight">168</i>&nbsp;    /**
+<i class="no-highlight">169</i>&nbsp;     * Client updates the server about picking a cloud.
+<i class="no-highlight">170</i>&nbsp;     * @param clouds cloud picked.
+<i class="no-highlight">171</i>&nbsp;     */
+<i class="no-highlight">172</i>&nbsp;    @Override
+<i class="no-highlight">173</i>&nbsp;    public void onUpdatePickCloud(ArrayList&lt;Cloud&gt; clouds) {
+<b class="nc"><i class="no-highlight">174</i>&nbsp;        client.sendMessage(new CloudMessage(this.nickname, clouds));</b>
+<i class="no-highlight">175</i>&nbsp;    }
+<i class="no-highlight">176</i>&nbsp;
+<i class="no-highlight">177</i>&nbsp;    /**
+<i class="no-highlight">178</i>&nbsp;     * Client updates the server about playing assistant card.
+<i class="no-highlight">179</i>&nbsp;     * @param assistantCards assistant card chosen by the user.
+<i class="no-highlight">180</i>&nbsp;     * @param playedAssistantCards assistant card played yet.
+<i class="no-highlight">181</i>&nbsp;     */
+<i class="no-highlight">182</i>&nbsp;    @Override
+<i class="no-highlight">183</i>&nbsp;    public void onUpdatePlayAssistantCard(List&lt;AssistantCard&gt; assistantCards, List&lt;AssistantCard&gt; playedAssistantCards){
+<b class="nc"><i class="no-highlight">184</i>&nbsp;        client.sendMessage(new AssistantCardMessage(nickname, assistantCards, assistantCards));</b>
+<i class="no-highlight">185</i>&nbsp;    }
+<i class="no-highlight">186</i>&nbsp;
+<i class="no-highlight">187</i>&nbsp;    /**
+<i class="no-highlight">188</i>&nbsp;     * Client updates the server about moving a student.
+<i class="no-highlight">189</i>&nbsp;     * @param student student to be moved.
+<i class="no-highlight">190</i>&nbsp;     * @param position dining room (0) or island (1)
+<i class="no-highlight">191</i>&nbsp;     * @param islandNumber island chosen.
+<i class="no-highlight">192</i>&nbsp;     */
+<i class="no-highlight">193</i>&nbsp;    @Override
+<i class="no-highlight">194</i>&nbsp;    public void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber) {
+<b class="nc"><i class="no-highlight">195</i>&nbsp;        client.sendMessage(new MoveStudentMessage(this.nickname, List.of(student), position, islandNumber));</b>
+<i class="no-highlight">196</i>&nbsp;    }
+<i class="no-highlight">197</i>&nbsp;
+<i class="no-highlight">198</i>&nbsp;    /**
+<i class="no-highlight">199</i>&nbsp;     * Client update the server about the use of the characterCard 209
+<i class="no-highlight">200</i>&nbsp;     * @param studentPos used by the effect
+<i class="no-highlight">201</i>&nbsp;     * @param island used by the effect
+<i class="no-highlight">202</i>&nbsp;     */
+<i class="no-highlight">203</i>&nbsp;    @Override
+<i class="no-highlight">204</i>&nbsp;    public void onUpdateUse209(int studentPos, int island){
+<b class="nc"><i class="no-highlight">205</i>&nbsp;        client.sendMessage(new Card209Message(this.nickname, studentPos, island));</b>
+<i class="no-highlight">206</i>&nbsp;    }
+<i class="no-highlight">207</i>&nbsp;
+<i class="no-highlight">208</i>&nbsp;    /**
+<i class="no-highlight">209</i>&nbsp;     * Client update the server about the use of the characterCard 210
+<i class="no-highlight">210</i>&nbsp;     */
+<i class="no-highlight">211</i>&nbsp;    @Override
+<i class="no-highlight">212</i>&nbsp;    public void onUpdateUse210() {
+<b class="nc"><i class="no-highlight">213</i>&nbsp;        client.sendMessage(new Card210Message(this.nickname));</b>
+<i class="no-highlight">214</i>&nbsp;    }
+<i class="no-highlight">215</i>&nbsp;
+<i class="no-highlight">216</i>&nbsp;    /**
+<i class="no-highlight">217</i>&nbsp;     * Client update the server about the use of the characterCard 211
+<i class="no-highlight">218</i>&nbsp;     * @param islandNum
+<i class="no-highlight">219</i>&nbsp;     */
+<i class="no-highlight">220</i>&nbsp;    @Override
+<i class="no-highlight">221</i>&nbsp;    public void onUpdateUse211(int islandNum) {
+<b class="nc"><i class="no-highlight">222</i>&nbsp;        client.sendMessage(new Card211Message(this.nickname, islandNum));</b>
+<i class="no-highlight">223</i>&nbsp;    }
+<i class="no-highlight">224</i>&nbsp;
+<i class="no-highlight">225</i>&nbsp;    /**
+<i class="no-highlight">226</i>&nbsp;     * Client update the server about the use of the characterCard 212
+<i class="no-highlight">227</i>&nbsp;     */
+<i class="no-highlight">228</i>&nbsp;    @Override
+<i class="no-highlight">229</i>&nbsp;    public void onUpdateUse212() {
+<b class="nc"><i class="no-highlight">230</i>&nbsp;        client.sendMessage(new Card212Message(this.nickname));</b>
+<i class="no-highlight">231</i>&nbsp;    }
+<i class="no-highlight">232</i>&nbsp;
+<i class="no-highlight">233</i>&nbsp;    /**
+<i class="no-highlight">234</i>&nbsp;     * Client update the server about the use of the characterCard 213
+<i class="no-highlight">235</i>&nbsp;     * @param islandNum
+<i class="no-highlight">236</i>&nbsp;     */
+<i class="no-highlight">237</i>&nbsp;    @Override
+<i class="no-highlight">238</i>&nbsp;    public void onUpdateUse213(int islandNum) {
+<b class="nc"><i class="no-highlight">239</i>&nbsp;        client.sendMessage(new Card213Message(this.nickname, islandNum));</b>
+<i class="no-highlight">240</i>&nbsp;    }
+<i class="no-highlight">241</i>&nbsp;
+<i class="no-highlight">242</i>&nbsp;    /**
+<i class="no-highlight">243</i>&nbsp;     * Client update the server about the use of the characterCard 214
+<i class="no-highlight">244</i>&nbsp;     */
+<i class="no-highlight">245</i>&nbsp;    @Override
+<i class="no-highlight">246</i>&nbsp;    public void onUpdateUse214() {
+<b class="nc"><i class="no-highlight">247</i>&nbsp;        client.sendMessage(new Card214Message(this.nickname));</b>
+<i class="no-highlight">248</i>&nbsp;    }
+<i class="no-highlight">249</i>&nbsp;
+<i class="no-highlight">250</i>&nbsp;    /**
+<i class="no-highlight">251</i>&nbsp;     * Client update the server about the use of the characterCard 215
+<i class="no-highlight">252</i>&nbsp;     * @param entranceStud
+<i class="no-highlight">253</i>&nbsp;     * @param cardStudents
+<i class="no-highlight">254</i>&nbsp;     */
+<i class="no-highlight">255</i>&nbsp;    @Override
+<i class="no-highlight">256</i>&nbsp;    public void onUpdateUse215(ArrayList&lt;Integer&gt; entranceStud, ArrayList&lt;Integer&gt; cardStudents) {
+<b class="nc"><i class="no-highlight">257</i>&nbsp;        client.sendMessage(new Card215Message(this.nickname, entranceStud, cardStudents));</b>
+<i class="no-highlight">258</i>&nbsp;    }
+<i class="no-highlight">259</i>&nbsp;
+<i class="no-highlight">260</i>&nbsp;    /**
+<i class="no-highlight">261</i>&nbsp;     * Client update the server about the use of the characterCard 216
+<i class="no-highlight">262</i>&nbsp;     */
+<i class="no-highlight">263</i>&nbsp;    @Override
+<i class="no-highlight">264</i>&nbsp;    public void onUpdateUse216() {
+<b class="nc"><i class="no-highlight">265</i>&nbsp;        client.sendMessage(new Card216Message(this.nickname));</b>
+<i class="no-highlight">266</i>&nbsp;    }
+<i class="no-highlight">267</i>&nbsp;
+<i class="no-highlight">268</i>&nbsp;    /**
+<i class="no-highlight">269</i>&nbsp;     * Client update the server about the use of the characterCard 217
+<i class="no-highlight">270</i>&nbsp;     * @param color
+<i class="no-highlight">271</i>&nbsp;     */
+<i class="no-highlight">272</i>&nbsp;    @Override
+<i class="no-highlight">273</i>&nbsp;    public void onUpdateUse217(PawnColors color) {
+<b class="nc"><i class="no-highlight">274</i>&nbsp;        client.sendMessage(new Card217Message(this.nickname, color));</b>
+<i class="no-highlight">275</i>&nbsp;    }
+<i class="no-highlight">276</i>&nbsp;
+<i class="no-highlight">277</i>&nbsp;    /**
+<i class="no-highlight">278</i>&nbsp;     * Client update the server about the use of the characterCard 218
+<i class="no-highlight">279</i>&nbsp;     * @param entranceStud
+<i class="no-highlight">280</i>&nbsp;     * @param diningStud
+<i class="no-highlight">281</i>&nbsp;     */
+<i class="no-highlight">282</i>&nbsp;    @Override
+<i class="no-highlight">283</i>&nbsp;    public void onUpdateUse218(List&lt;Integer&gt; entranceStud, List&lt;PawnColors&gt; diningStud) {
+<b class="nc"><i class="no-highlight">284</i>&nbsp;        client.sendMessage(new Card218Message(this.nickname, entranceStud, diningStud));</b>
+<i class="no-highlight">285</i>&nbsp;    }
+<i class="no-highlight">286</i>&nbsp;
+<i class="no-highlight">287</i>&nbsp;    /**
+<i class="no-highlight">288</i>&nbsp;     * Client update the server about the use of the characterCard 219
+<i class="no-highlight">289</i>&nbsp;     * @param studentNum
+<i class="no-highlight">290</i>&nbsp;     */
+<i class="no-highlight">291</i>&nbsp;    @Override
+<i class="no-highlight">292</i>&nbsp;    public void onUpdateUse219(int studentNum) {
+<b class="nc"><i class="no-highlight">293</i>&nbsp;        client.sendMessage(new Card219Message(this.nickname, studentNum));</b>
+<i class="no-highlight">294</i>&nbsp;    }
+<i class="no-highlight">295</i>&nbsp;
+<i class="no-highlight">296</i>&nbsp;    /**
+<i class="no-highlight">297</i>&nbsp;     * Client update the server about the use of the characterCard 220
+<i class="no-highlight">298</i>&nbsp;     * @param color
+<i class="no-highlight">299</i>&nbsp;     */
+<i class="no-highlight">300</i>&nbsp;    @Override
+<i class="no-highlight">301</i>&nbsp;    public void onUpdateUse220(PawnColors color) {
+<b class="nc"><i class="no-highlight">302</i>&nbsp;        client.sendMessage(new Card220Message(this.nickname, color));</b>
+<i class="no-highlight">303</i>&nbsp;    }
+<i class="no-highlight">304</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

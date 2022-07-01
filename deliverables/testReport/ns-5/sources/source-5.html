@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > SocketServer</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.network.server</a>
+</div>
+
+<h1>Coverage Summary for Class: SocketServer (it.polimi.ingsw.network.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SocketServer</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.network.server;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.controller.GameController;
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import java.io.IOException;
+<i class="no-highlight">6</i>&nbsp;import java.net.ServerSocket;
+<i class="no-highlight">7</i>&nbsp;import java.net.Socket;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;/**
+<i class="no-highlight">10</i>&nbsp; * Socket of the server.
+<i class="no-highlight">11</i>&nbsp; * Handles all the incoming socket connections.
+<i class="no-highlight">12</i>&nbsp; */
+<i class="no-highlight">13</i>&nbsp;public class SocketServer implements Runnable{
+<i class="no-highlight">14</i>&nbsp;    private final Server server;
+<i class="no-highlight">15</i>&nbsp;    private final int port;
+<b class="nc"><i class="no-highlight">16</i>&nbsp;    private final String DEFAULT_IP = &quot;127.0.0.1&quot;; //localhost</b>
+<i class="no-highlight">17</i>&nbsp;    ServerSocket serverSocket;
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    /**
+<i class="no-highlight">20</i>&nbsp;     * Default constructor.
+<i class="no-highlight">21</i>&nbsp;     * @param server server associated to the socket of this class.
+<i class="no-highlight">22</i>&nbsp;     * @param port socket port to open.
+<i class="no-highlight">23</i>&nbsp;     */
+<b class="nc"><i class="no-highlight">24</i>&nbsp;    public SocketServer(Server server , int port) {</b>
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        this.server = server;</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        this.port = port;</b>
+<i class="no-highlight">27</i>&nbsp;    }
+<i class="no-highlight">28</i>&nbsp;
+<i class="no-highlight">29</i>&nbsp;    /**
+<i class="no-highlight">30</i>&nbsp;     * Method that accept a new connection and bing the client with his clientHandler
+<i class="no-highlight">31</i>&nbsp;     */
+<i class="no-highlight">32</i>&nbsp;    @Override
+<i class="no-highlight">33</i>&nbsp;    public void run() {
+<i class="no-highlight">34</i>&nbsp;        try {
+<b class="nc"><i class="no-highlight">35</i>&nbsp;            serverSocket = new ServerSocket(port);</b>
+<b class="nc"><i class="no-highlight">36</i>&nbsp;            Server.LOGGER.info(() -&gt; &quot;Server avviato su porta &quot; + port + &quot;.&quot;);</b>
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;            Server.LOGGER.severe(&quot;Impossibile avviare il server.&quot;);</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;            e.printStackTrace();</b>
+<i class="no-highlight">40</i>&nbsp;            return;
+<b class="nc"><i class="no-highlight">41</i>&nbsp;        }</b>
+<i class="no-highlight">42</i>&nbsp;
+<b class="nc"><i class="no-highlight">43</i>&nbsp;        System.out.println(&quot;Server socket ready on IP: &quot; + serverSocket.getInetAddress().getHostAddress());</b>
+<i class="no-highlight">44</i>&nbsp;
+<b class="nc"><i class="no-highlight">45</i>&nbsp;        while(!Thread.currentThread().isInterrupted()) {</b>
+<i class="no-highlight">46</i>&nbsp;            Socket client;
+<i class="no-highlight">47</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">48</i>&nbsp;                client = serverSocket.accept();</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;                System.out.println(&quot;Received client connection&quot;);</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;            } catch(IOException e) {</b>
+<b class="nc"><i class="no-highlight">51</i>&nbsp;                System.out.println(&quot;SocketServer.accept(): Client connection not accepted&quot;);</b>
+<b class="nc"><i class="no-highlight">52</i>&nbsp;                continue;</b>
+<b class="nc"><i class="no-highlight">53</i>&nbsp;            }</b>
+<i class="no-highlight">54</i>&nbsp;
+<i class="no-highlight">55</i>&nbsp;            ClientHandler clientHandler;
+<i class="no-highlight">56</i>&nbsp;            try {
+<b class="nc"><i class="no-highlight">57</i>&nbsp;                clientHandler = new ClientHandler(this, client);</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;                Thread thread = new Thread (clientHandler, &quot;serverSocket_handler&quot; + client.getInetAddress());</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;                thread.start();</b>
+<i class="no-highlight">60</i>&nbsp;
+<b class="nc"><i class="no-highlight">61</i>&nbsp;            } catch (IOException e) {</b>
+<b class="nc"><i class="no-highlight">62</i>&nbsp;                e.printStackTrace();</b>
+<b class="nc"><i class="no-highlight">63</i>&nbsp;                System.out.println(&quot;SocketServer.run(): Error creating a clientHandler&quot;);</b>
+<b class="nc"><i class="no-highlight">64</i>&nbsp;                System.out.println(&quot;Server still active&quot;);</b>
+<b class="nc"><i class="no-highlight">65</i>&nbsp;            }</b>
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        }</b>
+<i class="no-highlight">67</i>&nbsp;    }
+<i class="no-highlight">68</i>&nbsp;
+<i class="no-highlight">69</i>&nbsp;    /**
+<i class="no-highlight">70</i>&nbsp;     * Handles the adding of a new client.
+<i class="no-highlight">71</i>&nbsp;     * @param nickname nickname associated to the client.
+<i class="no-highlight">72</i>&nbsp;     * @param clientHandler clientHandler associated to the client.
+<i class="no-highlight">73</i>&nbsp;     */
+<i class="no-highlight">74</i>&nbsp;    public void addClient(String nickname, ClientHandler clientHandler){
+<b class="nc"><i class="no-highlight">75</i>&nbsp;        server.addClient(nickname, clientHandler);</b>
+<i class="no-highlight">76</i>&nbsp;    }
+<i class="no-highlight">77</i>&nbsp;
+<i class="no-highlight">78</i>&nbsp;    /**
+<i class="no-highlight">79</i>&nbsp;     * Handles a client disconnection.
+<i class="no-highlight">80</i>&nbsp;     * @param clientHandler clientHandler associated to disconnecting client.
+<i class="no-highlight">81</i>&nbsp;     */
+<i class="no-highlight">82</i>&nbsp;    public void onDisconnect(ClientHandler clientHandler) {
+<b class="nc"><i class="no-highlight">83</i>&nbsp;        server.onDisconnect(clientHandler);</b>
+<i class="no-highlight">84</i>&nbsp;    }
+<i class="no-highlight">85</i>&nbsp;
+<i class="no-highlight">86</i>&nbsp;    /**
+<i class="no-highlight">87</i>&nbsp;     * Getter method.
+<i class="no-highlight">88</i>&nbsp;     * @return gameController
+<i class="no-highlight">89</i>&nbsp;     */
+<i class="no-highlight">90</i>&nbsp;    public GameController getGameController(){
+<b class="nc"><i class="no-highlight">91</i>&nbsp;        return server.getGameController();</b>
+<i class="no-highlight">92</i>&nbsp;    }
+<i class="no-highlight">93</i>&nbsp;
+<i class="no-highlight">94</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > StartMenuSceneManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.view.gui.scene</a>
+</div>
+
+<h1>Coverage Summary for Class: StartMenuSceneManager (it.polimi.ingsw.view.gui.scene)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">StartMenuSceneManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.view.gui.scene;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.observer.ViewObservable;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.view.gui.GraphicController;
+<i class="no-highlight">5</i>&nbsp;import javafx.event.ActionEvent;
+<i class="no-highlight">6</i>&nbsp;import javafx.event.Event;
+<i class="no-highlight">7</i>&nbsp;import javafx.fxml.FXML;
+<i class="no-highlight">8</i>&nbsp;import javafx.scene.control.Button;
+<i class="no-highlight">9</i>&nbsp;import javafx.scene.layout.AnchorPane;
+<i class="no-highlight">10</i>&nbsp;
+<i class="no-highlight">11</i>&nbsp;/**
+<i class="no-highlight">12</i>&nbsp; * Manager of the first scene of the gui.
+<i class="no-highlight">13</i>&nbsp; */
+<b class="nc"><i class="no-highlight">14</i>&nbsp;public class StartMenuSceneManager extends ViewObservable implements SceneManagerInterface {</b>
+<i class="no-highlight">15</i>&nbsp;
+<i class="no-highlight">16</i>&nbsp;    @FXML
+<i class="no-highlight">17</i>&nbsp;    private AnchorPane parentPane;
+<i class="no-highlight">18</i>&nbsp;    @FXML
+<i class="no-highlight">19</i>&nbsp;    private Button playButton;
+<i class="no-highlight">20</i>&nbsp;    @FXML
+<i class="no-highlight">21</i>&nbsp;    private Button quitButton;
+<i class="no-highlight">22</i>&nbsp;
+<i class="no-highlight">23</i>&nbsp;    /**
+<i class="no-highlight">24</i>&nbsp;     * Handles the click on the play button.
+<i class="no-highlight">25</i>&nbsp;     * @param event mouse event.
+<i class="no-highlight">26</i>&nbsp;     */
+<i class="no-highlight">27</i>&nbsp;    @FXML
+<i class="no-highlight">28</i>&nbsp;    private void onPlayButtonClick(Event event) {
+<b class="nc"><i class="no-highlight">29</i>&nbsp;        GraphicController.paneTransition(observers, event, &quot;addressPort_scene.fxml&quot;);</b>
+<i class="no-highlight">30</i>&nbsp;    }
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    /**
+<i class="no-highlight">33</i>&nbsp;     * Handles the click of the quit button.
+<i class="no-highlight">34</i>&nbsp;     * @param actionEvent mouse event.
+<i class="no-highlight">35</i>&nbsp;     */
+<i class="no-highlight">36</i>&nbsp;    @FXML
+<i class="no-highlight">37</i>&nbsp;    public void onQuitButtonClick(ActionEvent actionEvent) {
+<b class="nc"><i class="no-highlight">38</i>&nbsp;        System.exit(0);</b>
+<i class="no-highlight">39</i>&nbsp;    }
+<i class="no-highlight">40</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > View</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.view</a>
+</div>
+
+<h1>Coverage Summary for Class: View (it.polimi.ingsw.view)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">View</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.view;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.server.model.GameSerialized;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.server.model.component.AssistantCard;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.server.model.component.StudentDisc;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.server.model.map.Cloud;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">10</i>&nbsp;import java.util.List;
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;public interface View {
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;    /**
+<i class="no-highlight">15</i>&nbsp;     * Asks how many players
+<i class="no-highlight">16</i>&nbsp;     */
+<i class="no-highlight">17</i>&nbsp;    void askPlayersNumber();
+<i class="no-highlight">18</i>&nbsp;
+<i class="no-highlight">19</i>&nbsp;    void askGameMode();
+<i class="no-highlight">20</i>&nbsp;
+<i class="no-highlight">21</i>&nbsp;    //ask a player to choose his nickname
+<i class="no-highlight">22</i>&nbsp;    void askPlayerNickname();
+<i class="no-highlight">23</i>&nbsp;
+<i class="no-highlight">24</i>&nbsp;    //show connected players
+<i class="no-highlight">25</i>&nbsp;    void showLobby(List&lt;String&gt; playersNickname, int numPlayers);
+<i class="no-highlight">26</i>&nbsp;
+<i class="no-highlight">27</i>&nbsp;    //show disconnection message
+<i class="no-highlight">28</i>&nbsp;    void showDisconnectedPlayerMessage(String nicknameDisconnected);
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;    //show error message
+<i class="no-highlight">31</i>&nbsp;    void showErrorMessage(String error);
+<i class="no-highlight">32</i>&nbsp;
+<i class="no-highlight">33</i>&nbsp;    //show game scenario
+<i class="no-highlight">34</i>&nbsp;    void showGameScenario(GameSerialized gameSerialized);
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;    void showMergeIslandMessage(List&lt;Integer&gt; unifiedIsland);
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    void askCharacterCard(List&lt;CharacterCard&gt; characterCards);
+<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">40</i>&nbsp;    //show game info detailed
+<i class="no-highlight">41</i>&nbsp;    void showGameInfo(List&lt;String&gt; playersNickname, int unifiedIslandsNumber, int remainingBagStudents, String activePlayer, List&lt;CharacterCard&gt; characterCards);
+<i class="no-highlight">42</i>&nbsp;    void showGameInfo(List&lt;String&gt; playersNicknames, int length, int size, String activePlayer);
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    //show generic message
+<i class="no-highlight">45</i>&nbsp;    void showGenericMessage(String genericMessage);
+<i class="no-highlight">46</i>&nbsp;
+<i class="no-highlight">47</i>&nbsp;    //ask to choose assistant card
+<i class="no-highlight">48</i>&nbsp;    void askAssistantCard(List&lt;AssistantCard&gt; assistantCards, List&lt;AssistantCard&gt; playedAssistantCards);
+<i class="no-highlight">49</i>&nbsp;
+<i class="no-highlight">50</i>&nbsp;    //ask to move a student
+<i class="no-highlight">51</i>&nbsp;    void askToMoveAStudent(List&lt;StudentDisc&gt; studentDiscs, int position, int islandNumber);
+<i class="no-highlight">52</i>&nbsp;
+<i class="no-highlight">53</i>&nbsp;    //ask to move mother nature
+<i class="no-highlight">54</i>&nbsp;    void askToMoveMotherNature(int maxSteps);
+<i class="no-highlight">55</i>&nbsp;
+<i class="no-highlight">56</i>&nbsp;    //ask to choose a Cloud
+<i class="no-highlight">57</i>&nbsp;    void askToChooseACloud(ArrayList&lt;Cloud&gt; cloudList);
+<i class="no-highlight">58</i>&nbsp;
+<i class="no-highlight">59</i>&nbsp;    //show if the login has gone successful
+<i class="no-highlight">60</i>&nbsp;    void showLoginResult(String nickname, boolean playerNicknameAccepted, boolean connectionSuccessful);
+<i class="no-highlight">61</i>&nbsp;
+<i class="no-highlight">62</i>&nbsp;    //show victory message
+<i class="no-highlight">63</i>&nbsp;    void showVictoryMessage(String winner);
+<i class="no-highlight">64</i>&nbsp;
+<i class="no-highlight">65</i>&nbsp;    void showReconnectedMessage(String nicknameReconnecting);
+<i class="no-highlight">66</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

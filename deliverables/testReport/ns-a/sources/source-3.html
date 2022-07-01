@@ -1,0 +1,246 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GameSerialized</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model</a>
+</div>
+
+<h1>Coverage Summary for Class: GameSerialized (it.polimi.ingsw.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameSerialized</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40%
+  </span>
+  <span class="absValue">
+    (4/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    85%
+  </span>
+  <span class="absValue">
+    (34/40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.server.model;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.server.extra.SerializableIsland;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.server.extra.SerializableScoreboard;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.server.model.map.Cloud;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.server.model.map.Island;
+<i class="no-highlight">8</i>&nbsp;import it.polimi.ingsw.server.model.player.Player;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;import java.io.Serial;
+<i class="no-highlight">11</i>&nbsp;import java.io.Serializable;
+<i class="no-highlight">12</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;/**
+<i class="no-highlight">15</i>&nbsp; * Reduced version of the whole game class, used to refresh the map with the changes during the game
+<i class="no-highlight">16</i>&nbsp; * Reduced as possible to be able to sent it through the network easily
+<i class="no-highlight">17</i>&nbsp; */
+<i class="no-highlight">18</i>&nbsp;public class GameSerialized implements Serializable {
+<i class="no-highlight">19</i>&nbsp;    @Serial
+<i class="no-highlight">20</i>&nbsp;    private static final long serialVersionUID = -7030282992609372936L;
+<i class="no-highlight">21</i>&nbsp;
+<i class="no-highlight">22</i>&nbsp;    private final Boolean expertMode;
+<i class="no-highlight">23</i>&nbsp;    private final int motherNaturePos;
+<b class="fc"><i class="no-highlight">24</i>&nbsp;    private int activeCardID = -1;</b>
+<i class="no-highlight">25</i>&nbsp;    private String activeNickname;
+<i class="no-highlight">26</i>&nbsp;
+<b class="fc"><i class="no-highlight">27</i>&nbsp;    private final ArrayList&lt;CharacterCard&gt; characterCards = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">28</i>&nbsp;    private final ArrayList&lt;Cloud&gt; clouds = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">29</i>&nbsp;    private final ArrayList&lt;SerializableIsland&gt; serializableIslands = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">30</i>&nbsp;    private final ArrayList&lt;SerializableScoreboard&gt; serializableScoreboard = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    /**
+<i class="no-highlight">33</i>&nbsp;     * Default constructor
+<i class="no-highlight">34</i>&nbsp;     * @param game game to be reduced
+<i class="no-highlight">35</i>&nbsp;     */
+<b class="fc"><i class="no-highlight">36</i>&nbsp;    public GameSerialized(Game game){</b>
+<b class="fc"><i class="no-highlight">37</i>&nbsp;        this.motherNaturePos = game.getMap().getMotherNaturePosition();</b>
+<b class="fc"><i class="no-highlight">38</i>&nbsp;        this.expertMode = game.isExpertMode();</b>
+<b class="fc"><i class="no-highlight">39</i>&nbsp;        this.activeNickname = game.getActivePlayer().getNickname();</b>
+<i class="no-highlight">40</i>&nbsp;
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        ArrayList&lt;Integer&gt; groupIDs = new ArrayList&lt;&gt;();</b>
+<i class="no-highlight">42</i>&nbsp;
+<b class="fc"><i class="no-highlight">43</i>&nbsp;        for(Island island : game.getMap().getIslands()){</b>
+<b class="fc"><i class="no-highlight">44</i>&nbsp;                if (island.isDisabled()) {</b>
+<b class="fc"><i class="no-highlight">45</i>&nbsp;                    if(!groupIDs.contains(island.getGroupID())){</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;                        serializableIslands.add(new SerializableIsland(game.getMap().getGhostIsland(island.getID())));</b>
+<b class="fc"><i class="no-highlight">47</i>&nbsp;                        ArrayList&lt;Integer&gt; referencedIslands = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i class="no-highlight">48</i>&nbsp;                        for (Island isl : game.getMap().getIslands()) {</b>
+<b class="fc"><i class="no-highlight">49</i>&nbsp;                            if (isl.isDisabled() &amp;&amp; isl.getGroupID() == island.getGroupID()) {</b>
+<b class="fc"><i class="no-highlight">50</i>&nbsp;                                referencedIslands.add(isl.getID() + 1);</b>
+<i class="no-highlight">51</i>&nbsp;                            }
+<b class="fc"><i class="no-highlight">52</i>&nbsp;                        }</b>
+<b class="fc"><i class="no-highlight">53</i>&nbsp;                        serializableIslands.get(serializableIslands.size() - 1).setReferencedIslands(referencedIslands);</b>
+<b class="fc"><i class="no-highlight">54</i>&nbsp;                        groupIDs.add(island.getGroupID());</b>
+<b class="fc"><i class="no-highlight">55</i>&nbsp;                    }</b>
+<i class="no-highlight">56</i>&nbsp;                } else {
+<b class="fc"><i class="no-highlight">57</i>&nbsp;                    serializableIslands.add(new SerializableIsland(island));</b>
+<i class="no-highlight">58</i>&nbsp;                }
+<b class="fc"><i class="no-highlight">59</i>&nbsp;        }</b>
+<i class="no-highlight">60</i>&nbsp;
+<b class="fc"><i class="no-highlight">61</i>&nbsp;        for(Player player : game.getPlayers()){</b>
+<b class="fc"><i class="no-highlight">62</i>&nbsp;            serializableScoreboard.add(new SerializableScoreboard(player.getScoreboard(), player));</b>
+<b class="fc"><i class="no-highlight">63</i>&nbsp;        }</b>
+<i class="no-highlight">64</i>&nbsp;
+<b class="fc"><i class="no-highlight">65</i>&nbsp;        clouds.addAll(game.getMap().getClouds());</b>
+<i class="no-highlight">66</i>&nbsp;
+<b class="fc"><i class="no-highlight">67</i>&nbsp;        if(expertMode){</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;            characterCards.addAll(game.getCharacterCards());</b>
+<b class="fc"><i class="no-highlight">69</i>&nbsp;            activeCardID = game.getActiveCardID();</b>
+<i class="no-highlight">70</i>&nbsp;        }
+<i class="no-highlight">71</i>&nbsp;
+<i class="no-highlight">72</i>&nbsp;    }
+<i class="no-highlight">73</i>&nbsp;
+<i class="no-highlight">74</i>&nbsp;    /**
+<i class="no-highlight">75</i>&nbsp;     * Getter method
+<i class="no-highlight">76</i>&nbsp;     * @return Array of serializableIslands
+<i class="no-highlight">77</i>&nbsp;     */
+<i class="no-highlight">78</i>&nbsp;    public ArrayList&lt;SerializableIsland&gt; getSerializableIslands() {
+<b class="fc"><i class="no-highlight">79</i>&nbsp;        return serializableIslands;</b>
+<i class="no-highlight">80</i>&nbsp;    }
+<i class="no-highlight">81</i>&nbsp;
+<i class="no-highlight">82</i>&nbsp;    /**
+<i class="no-highlight">83</i>&nbsp;     * Getter method
+<i class="no-highlight">84</i>&nbsp;     * @return Array of serializableScoreboard
+<i class="no-highlight">85</i>&nbsp;     */
+<i class="no-highlight">86</i>&nbsp;    public ArrayList&lt;SerializableScoreboard&gt; getSerializableScoreboard() {
+<b class="fc"><i class="no-highlight">87</i>&nbsp;        return serializableScoreboard;</b>
+<i class="no-highlight">88</i>&nbsp;    }
+<i class="no-highlight">89</i>&nbsp;
+<i class="no-highlight">90</i>&nbsp;    /**
+<i class="no-highlight">91</i>&nbsp;     * Getter method
+<i class="no-highlight">92</i>&nbsp;     * @return clouds
+<i class="no-highlight">93</i>&nbsp;     */
+<i class="no-highlight">94</i>&nbsp;    public ArrayList&lt;Cloud&gt; getClouds() {
+<b class="nc"><i class="no-highlight">95</i>&nbsp;        return clouds;</b>
+<i class="no-highlight">96</i>&nbsp;    }
+<i class="no-highlight">97</i>&nbsp;
+<i class="no-highlight">98</i>&nbsp;    /**
+<i class="no-highlight">99</i>&nbsp;     * Getter method
+<i class="no-highlight">100</i>&nbsp;     * @return motherNaturePos
+<i class="no-highlight">101</i>&nbsp;     */
+<i class="no-highlight">102</i>&nbsp;    public int getMotherNaturePos() {
+<b class="fc"><i class="no-highlight">103</i>&nbsp;        return motherNaturePos;</b>
+<i class="no-highlight">104</i>&nbsp;    }
+<i class="no-highlight">105</i>&nbsp;
+<i class="no-highlight">106</i>&nbsp;    /**
+<i class="no-highlight">107</i>&nbsp;     * Getter method
+<i class="no-highlight">108</i>&nbsp;     * @return true if expertMode is true
+<i class="no-highlight">109</i>&nbsp;     */
+<i class="no-highlight">110</i>&nbsp;    public Boolean getExpertMode() {
+<b class="nc"><i class="no-highlight">111</i>&nbsp;        return expertMode;</b>
+<i class="no-highlight">112</i>&nbsp;    }
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    /**
+<i class="no-highlight">115</i>&nbsp;     * Getter method
+<i class="no-highlight">116</i>&nbsp;     * @return characterCards
+<i class="no-highlight">117</i>&nbsp;     */
+<i class="no-highlight">118</i>&nbsp;    public ArrayList&lt;CharacterCard&gt; getCharacterCards() {
+<b class="nc"><i class="no-highlight">119</i>&nbsp;        return characterCards;</b>
+<i class="no-highlight">120</i>&nbsp;    }
+<i class="no-highlight">121</i>&nbsp;
+<i class="no-highlight">122</i>&nbsp;    /**
+<i class="no-highlight">123</i>&nbsp;     * Getter method
+<i class="no-highlight">124</i>&nbsp;     * @return activeCardID
+<i class="no-highlight">125</i>&nbsp;     */
+<i class="no-highlight">126</i>&nbsp;    public int getActiveCardID() {
+<b class="nc"><i class="no-highlight">127</i>&nbsp;        return activeCardID;</b>
+<i class="no-highlight">128</i>&nbsp;    }
+<i class="no-highlight">129</i>&nbsp;
+<i class="no-highlight">130</i>&nbsp;    @Override
+<i class="no-highlight">131</i>&nbsp;    public String toString() {
+<b class="nc"><i class="no-highlight">132</i>&nbsp;        return &quot;GameSerialized:[ &quot; + &quot;islands: &quot; + serializableIslands.size() + &quot;]&quot;;</b>
+<i class="no-highlight">133</i>&nbsp;    }
+<i class="no-highlight">134</i>&nbsp;    /**
+<i class="no-highlight">135</i>&nbsp;     * Getter method
+<i class="no-highlight">136</i>&nbsp;     * @return activeNickname
+<i class="no-highlight">137</i>&nbsp;     */
+<i class="no-highlight">138</i>&nbsp;    public String getActiveNickname() {
+<b class="nc"><i class="no-highlight">139</i>&nbsp;        return activeNickname;</b>
+<i class="no-highlight">140</i>&nbsp;    }
+<i class="no-highlight">141</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

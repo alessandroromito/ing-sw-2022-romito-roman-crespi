@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ViewObserver</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.observer</a>
+</div>
+
+<h1>Coverage Summary for Class: ViewObserver (it.polimi.ingsw.observer)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">ViewObserver</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.observer;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.network.message.Message;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.server.enumerations.PawnColors;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.server.model.component.AssistantCard;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.server.model.component.StudentDisc;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.server.model.map.Cloud;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">10</i>&nbsp;import java.util.HashMap;
+<i class="no-highlight">11</i>&nbsp;import java.util.List;
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;/**
+<i class="no-highlight">14</i>&nbsp; * This class is related to the view part of the application.
+<i class="no-highlight">15</i>&nbsp; * Depending on the observer turned on there are different methods to be called.
+<i class="no-highlight">16</i>&nbsp; * Graphic Controller class (GUI) and CLI implements ViewObserver.
+<i class="no-highlight">17</i>&nbsp; */
+<i class="no-highlight">18</i>&nbsp;public interface ViewObserver {
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;    /**
+<i class="no-highlight">21</i>&nbsp;     * Update server details to establish a connection client-server.
+<i class="no-highlight">22</i>&nbsp;     * @param server details containing address and port of the server.
+<i class="no-highlight">23</i>&nbsp;     */
+<i class="no-highlight">24</i>&nbsp;    void onUpdateServerDetails(HashMap&lt;String, String&gt; server);
+<i class="no-highlight">25</i>&nbsp;
+<i class="no-highlight">26</i>&nbsp;    /**
+<i class="no-highlight">27</i>&nbsp;     * Message to server containing nickname chosen by the player.
+<i class="no-highlight">28</i>&nbsp;     * @param nickname nickname chosen.
+<i class="no-highlight">29</i>&nbsp;     */
+<i class="no-highlight">30</i>&nbsp;    void onUpdateNickname(String nickname);
+<i class="no-highlight">31</i>&nbsp;
+<i class="no-highlight">32</i>&nbsp;    /**
+<i class="no-highlight">33</i>&nbsp;     * Message to server containing players number chosen by the player.
+<i class="no-highlight">34</i>&nbsp;     * @param playersNumber player number chosen by the player.
+<i class="no-highlight">35</i>&nbsp;     */
+<i class="no-highlight">36</i>&nbsp;    void onUpdatePlayersNumber(int playersNumber);
+<i class="no-highlight">37</i>&nbsp;
+<i class="no-highlight">38</i>&nbsp;    void onUpdateMotherNaturePosition(int steps);
+<i class="no-highlight">39</i>&nbsp;
+<i class="no-highlight">40</i>&nbsp;    /**
+<i class="no-highlight">41</i>&nbsp;     * Message to server containing the cloud chosen by the player.
+<i class="no-highlight">42</i>&nbsp;     * @param cloudList cloud chosen by the player.
+<i class="no-highlight">43</i>&nbsp;     */
+<i class="no-highlight">44</i>&nbsp;    void onUpdatePickCloud(ArrayList&lt;Cloud&gt; cloudList);
+<i class="no-highlight">45</i>&nbsp;
+<i class="no-highlight">46</i>&nbsp;    /**
+<i class="no-highlight">47</i>&nbsp;     * Message to server containing the motion of a student.
+<i class="no-highlight">48</i>&nbsp;     * @param student student to be moved.
+<i class="no-highlight">49</i>&nbsp;     * @param position where to move the student (0 dining room, 1 island).
+<i class="no-highlight">50</i>&nbsp;     * @param islandNumber if island, in which one move the student.
+<i class="no-highlight">51</i>&nbsp;     */
+<i class="no-highlight">52</i>&nbsp;    void onUpdateMoveStudent(StudentDisc student, int position, int islandNumber);
+<i class="no-highlight">53</i>&nbsp;
+<i class="no-highlight">54</i>&nbsp;    /**
+<i class="no-highlight">55</i>&nbsp;     * Message to server containing the assistant card played.
+<i class="no-highlight">56</i>&nbsp;     * @param assistantCards assistant card played.
+<i class="no-highlight">57</i>&nbsp;     * @param playedAssistantCards assistant cards played from the start of the match.
+<i class="no-highlight">58</i>&nbsp;     */
+<i class="no-highlight">59</i>&nbsp;    void onUpdatePlayAssistantCard(List&lt;AssistantCard&gt; assistantCards, List&lt;AssistantCard&gt; playedAssistantCards);
+<i class="no-highlight">60</i>&nbsp;
+<i class="no-highlight">61</i>&nbsp;    /**
+<i class="no-highlight">62</i>&nbsp;     * Message to server containing the game mode type for the match creation.
+<i class="no-highlight">63</i>&nbsp;     * @param mode game mode passed (&quot;Esperta&quot; or &quot;Normale&quot;)
+<i class="no-highlight">64</i>&nbsp;     */
+<i class="no-highlight">65</i>&nbsp;    void onUpdateGameMode(String mode);
+<i class="no-highlight">66</i>&nbsp;
+<i class="no-highlight">67</i>&nbsp;    /**
+<i class="no-highlight">68</i>&nbsp;     * Message to server containing if actuate the effect.
+<i class="no-highlight">69</i>&nbsp;     * @param useEffect {code @true} use the effect, {code @false} do not use the effect.
+<i class="no-highlight">70</i>&nbsp;     */
+<i class="no-highlight">71</i>&nbsp;    void onUpdateUseEffect(boolean useEffect);
+<i class="no-highlight">72</i>&nbsp;
+<i class="no-highlight">73</i>&nbsp;    /**
+<i class="no-highlight">74</i>&nbsp;     * Message to server containing infos about using character card 209.
+<i class="no-highlight">75</i>&nbsp;     * @param studentPos student position.
+<i class="no-highlight">76</i>&nbsp;     * @param island island.
+<i class="no-highlight">77</i>&nbsp;     */
+<i class="no-highlight">78</i>&nbsp;    void onUpdateUse209(int studentPos, int island);
+<i class="no-highlight">79</i>&nbsp;
+<i class="no-highlight">80</i>&nbsp;    /**
+<i class="no-highlight">81</i>&nbsp;     * Message to server containing infos about using character card 210.
+<i class="no-highlight">82</i>&nbsp;     */
+<i class="no-highlight">83</i>&nbsp;    void onUpdateUse210();
+<i class="no-highlight">84</i>&nbsp;
+<i class="no-highlight">85</i>&nbsp;    /**
+<i class="no-highlight">86</i>&nbsp;     * Message to server containing infos about using character card 211.
+<i class="no-highlight">87</i>&nbsp;     * @param islandNum number of the island.
+<i class="no-highlight">88</i>&nbsp;     */
+<i class="no-highlight">89</i>&nbsp;    void onUpdateUse211(int islandNum);
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;    /**
+<i class="no-highlight">92</i>&nbsp;     * Message to server containing infos about using character card 212.
+<i class="no-highlight">93</i>&nbsp;     */
+<i class="no-highlight">94</i>&nbsp;    void onUpdateUse212();
+<i class="no-highlight">95</i>&nbsp;
+<i class="no-highlight">96</i>&nbsp;    /**
+<i class="no-highlight">97</i>&nbsp;     * Message to server containing infos about using character card 213.
+<i class="no-highlight">98</i>&nbsp;     * @param islandNum number of the island.
+<i class="no-highlight">99</i>&nbsp;     */
+<i class="no-highlight">100</i>&nbsp;    void onUpdateUse213(int islandNum);
+<i class="no-highlight">101</i>&nbsp;
+<i class="no-highlight">102</i>&nbsp;    /**
+<i class="no-highlight">103</i>&nbsp;     * Message to server containing infos about using character card 214.
+<i class="no-highlight">104</i>&nbsp;     */
+<i class="no-highlight">105</i>&nbsp;    void onUpdateUse214();
+<i class="no-highlight">106</i>&nbsp;
+<i class="no-highlight">107</i>&nbsp;    /**
+<i class="no-highlight">108</i>&nbsp;     * Message to server containing infos about using character card 215.
+<i class="no-highlight">109</i>&nbsp;     * @param entranceStud  array list of id of student in entrance room.
+<i class="no-highlight">110</i>&nbsp;     * @param cardStudents students of the card.
+<i class="no-highlight">111</i>&nbsp;     */
+<i class="no-highlight">112</i>&nbsp;    void onUpdateUse215(ArrayList&lt;Integer&gt; entranceStud, ArrayList&lt;Integer&gt; cardStudents);
+<i class="no-highlight">113</i>&nbsp;
+<i class="no-highlight">114</i>&nbsp;    /**
+<i class="no-highlight">115</i>&nbsp;     * Message to server containing infos about using character card 216.
+<i class="no-highlight">116</i>&nbsp;     */
+<i class="no-highlight">117</i>&nbsp;    void onUpdateUse216();
+<i class="no-highlight">118</i>&nbsp;
+<i class="no-highlight">119</i>&nbsp;    /**
+<i class="no-highlight">120</i>&nbsp;     * Message to server containing infos about using character card 217.
+<i class="no-highlight">121</i>&nbsp;     * @param color color chosen.
+<i class="no-highlight">122</i>&nbsp;     */
+<i class="no-highlight">123</i>&nbsp;    void onUpdateUse217(PawnColors color);
+<i class="no-highlight">124</i>&nbsp;
+<i class="no-highlight">125</i>&nbsp;    /**
+<i class="no-highlight">126</i>&nbsp;     * Message to server containing infos about using character card 218.
+<i class="no-highlight">127</i>&nbsp;     * @param entranceStud
+<i class="no-highlight">128</i>&nbsp;     * @param diningStud
+<i class="no-highlight">129</i>&nbsp;     */
+<i class="no-highlight">130</i>&nbsp;    void onUpdateUse218(List&lt;Integer&gt; entranceStud, List&lt;PawnColors&gt; diningStud);
+<i class="no-highlight">131</i>&nbsp;
+<i class="no-highlight">132</i>&nbsp;    /**
+<i class="no-highlight">133</i>&nbsp;     * Message to server containing infos about using character card 219.
+<i class="no-highlight">134</i>&nbsp;     * @param finalStudentPos
+<i class="no-highlight">135</i>&nbsp;     */
+<i class="no-highlight">136</i>&nbsp;    void onUpdateUse219(int finalStudentPos);
+<i class="no-highlight">137</i>&nbsp;
+<i class="no-highlight">138</i>&nbsp;    /**
+<i class="no-highlight">139</i>&nbsp;     * Message to server containing infos about using character card 220.
+<i class="no-highlight">140</i>&nbsp;     * @param red
+<i class="no-highlight">141</i>&nbsp;     */
+<i class="no-highlight">142</i>&nbsp;    void onUpdateUse220(PawnColors red);
+<i class="no-highlight">143</i>&nbsp;
+<i class="no-highlight">144</i>&nbsp;    /**
+<i class="no-highlight">145</i>&nbsp;     * Generic update method.
+<i class="no-highlight">146</i>&nbsp;     * @param message message of the update.
+<i class="no-highlight">147</i>&nbsp;     */
+<i class="no-highlight">148</i>&nbsp;    void update(Message message);
+<i class="no-highlight">149</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>

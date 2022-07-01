@@ -1,0 +1,102 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Scoreboard</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">it.polimi.ingsw.server.model.player</a>
+</div>
+
+<h1>Coverage Summary for Class: Scoreboard (it.polimi.ingsw.server.model.player)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">Scoreboard</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;package it.polimi.ingsw.server.model.player;
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;import it.polimi.ingsw.server.enumerations.PawnColors;
+<i class="no-highlight">4</i>&nbsp;import it.polimi.ingsw.server.enumerations.TowerColors;
+<i class="no-highlight">5</i>&nbsp;import it.polimi.ingsw.server.model.component.ProfessorPawn;
+<i class="no-highlight">6</i>&nbsp;import it.polimi.ingsw.server.model.component.StudentDisc;
+<i class="no-highlight">7</i>&nbsp;import it.polimi.ingsw.server.model.component.Tower;
+<i class="no-highlight">8</i>&nbsp;
+<i class="no-highlight">9</i>&nbsp;import java.util.ArrayList;
+<i class="no-highlight">10</i>&nbsp;import java.util.List;
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;public interface Scoreboard {
+<i class="no-highlight">13</i>&nbsp;
+<i class="no-highlight">14</i>&nbsp;    void addProfessor(ProfessorPawn professor);
+<i class="no-highlight">15</i>&nbsp;    ProfessorPawn removeProfessor(PawnColors color);
+<i class="no-highlight">16</i>&nbsp;    Tower removeTower();
+<i class="no-highlight">17</i>&nbsp;    StudentDisc removeStudent(StudentDisc student);
+<i class="no-highlight">18</i>&nbsp;    boolean getProfessor(PawnColors color);
+<i class="no-highlight">19</i>&nbsp;    int getNumTowers();
+<i class="no-highlight">20</i>&nbsp;    int getNumStudentsFromEntrance();
+<i class="no-highlight">21</i>&nbsp;    int getNumProf();
+<i class="no-highlight">22</i>&nbsp;    int getPlayerStudentFromDining(PawnColors color);
+<i class="no-highlight">23</i>&nbsp;    boolean addStudentOnEntrance(StudentDisc student);
+<i class="no-highlight">24</i>&nbsp;    void addStudentOnDining(StudentDisc student);
+<i class="no-highlight">25</i>&nbsp;    boolean moveFromEntranceToDining(StudentDisc student);
+<i class="no-highlight">26</i>&nbsp;    TowerColors getTowerColor();
+<i class="no-highlight">27</i>&nbsp;    List&lt;StudentDisc&gt; getEntrance();
+<i class="no-highlight">28</i>&nbsp;    Integer[] getDiningRoom();
+<i class="no-highlight">29</i>&nbsp;    StudentDisc getStudentFromDining(PawnColors color);
+<i class="no-highlight">30</i>&nbsp;    ArrayList&lt;ProfessorPawn&gt; getProfessorList();
+<i class="no-highlight">31</i>&nbsp;    void addTowers(ArrayList&lt;Tower&gt; towers);
+<i class="no-highlight">32</i>&nbsp;    void removeStudentFromDining(StudentDisc studentFromDining);
+<i class="no-highlight">33</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-07-01 22:36</div>
+</div>
+</body>
+</html>
