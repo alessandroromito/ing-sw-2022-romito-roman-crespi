@@ -45,6 +45,7 @@ public class TurnController implements Serializable {
         this.game = gameController.getGame();
         this.nicknameQueue = new ArrayList<>(gameController.getPlayersNicknames());
         this.phaseState = PhaseState.PLANNING_PHASE;
+        this.actionPhaseState = ActionPhaseState.USE_EFFECT;
 
         this.gameController = gameController;
         this.virtualViewMap = virtualViewMap;
@@ -159,6 +160,7 @@ public class TurnController implements Serializable {
         try {
             switch (actionPhaseState) {
                 case USE_EFFECT -> {
+                    gameController.sendGameScenarioMessageToAll();
                     if(game.isExpertMode()){
                         gameController.askCharacterCard();
                     }

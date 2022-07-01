@@ -45,6 +45,7 @@ public class GameController implements Observer, Serializable {
     private boolean chosenExpertMode = false;
 
     private GameState gameState;
+
     private TurnController turnController;
     private InputController inputController;
 
@@ -517,6 +518,15 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
+     * Send a game scenario message to all players
+     */
+    public void sendGameScenarioMessageToAll() {
+        for (VirtualView virtualView : virtualViewMap.values()) {
+            virtualView.showGameScenario(new GameSerialized(game));
+        }
+    }
+
+    /**
      * Show a message only to the parameter player
      * @param nickname nickname of the player to send a message
      * @param message message to be sent
@@ -540,7 +550,6 @@ public class GameController implements Observer, Serializable {
      * Call a game method that refill the clouds with students.
      */
     public void refillClouds(){
-
         game.refillClouds();
     }
 
@@ -818,11 +827,20 @@ public class GameController implements Observer, Serializable {
         return inPause;
     }
 
+
+    public void setTurnController(TurnController turnController) {
+        this.turnController = turnController;
+    }
+
     /**
      * Getter method.
      * @return the reconnectingPlayerList.
      */
     public ArrayList<String> getReconnectingPlayersList() {
         return reconnectingPlayersList;
+    }
+
+    public void setGame(ExpertGame expertgame) {
+        this.game = expertgame;
     }
 }

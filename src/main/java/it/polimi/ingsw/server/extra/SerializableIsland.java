@@ -27,6 +27,7 @@ public class SerializableIsland implements Serializable {
     private int pinkStudents = 0;
     private final int towerNumber;
     private final TowerColors towerColor;
+    private boolean noEntryTile;
 
     /**
      * Default Constructor for an Island
@@ -40,6 +41,7 @@ public class SerializableIsland implements Serializable {
         this.towerNumber = island.getTowerNumber();
         for(StudentDisc s: island.getStudents())
             islandsPawnsID.add(s.getID());
+        this.noEntryTile = island.checkNoEntryTile();
     }
 
     /**
@@ -53,6 +55,7 @@ public class SerializableIsland implements Serializable {
         this.towerNumber = ghostIsland.getTowerNumber();
         for(StudentDisc s: ghostIsland.getStudents())
             islandsPawnsID.add(s.getID());
+        this.noEntryTile = ghostIsland.checkNoEntryTile();
     }
 
     /**
@@ -163,5 +166,13 @@ public class SerializableIsland implements Serializable {
      */
     public void setReferencedIslands(ArrayList<Integer> referencedIslands) {
         this.referencedIslands = referencedIslands;
+    }
+
+    /**
+     * Return if there is a no entry tile
+     * @return true if it's present
+     */
+    public boolean getNoEntryTile() {
+        return noEntryTile;
     }
 }

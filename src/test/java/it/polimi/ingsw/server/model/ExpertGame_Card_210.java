@@ -1,15 +1,11 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
 import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.charactercards.Card_210;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 

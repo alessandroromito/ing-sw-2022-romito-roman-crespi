@@ -61,19 +61,19 @@ public class Game extends Observable implements Serializable {
 
         createComponents();
 
-        try {
-            gameInitialization();
-        } catch (EntranceFullException e) {
-            System.out.println("ERROR while gameInitialization()!");
-        }
+        gameInitialization();
 
         notifyObserver(new LobbyMessage(getPlayersNicknames(), playersNicknames.size()));
+
+        System.out.println("Game Ready!");
     }
 
     /**
      * Method to generate all the components needed
      */
     public void createComponents(){
+        System.out.println("Creating Components");
+
         // Create MOTHER NATURE
         components.add(new MotherNature(1));
 
@@ -83,14 +83,16 @@ public class Game extends Observable implements Serializable {
             components.add(new ProfessorPawn(id, color));
             id++;
         }
+
+        System.out.println("Components Created Success!");
     }
 
     /**
      * Initialise the game.
      * Creates all the object necessary for the game according to the number of player
      */
-    public void gameInitialization() throws EntranceFullException {
-        System.out.println("STARTING GameInitialization...");
+    public void gameInitialization() {
+        System.out.println("Starting Game Initialization");
 
         // Place MotherNature to a random island
         Random r = new Random();
@@ -117,7 +119,7 @@ public class Game extends Observable implements Serializable {
                 p.getScoreboard().addStudentOnEntrance(stud2);
             }
         }
-        System.out.println("...ENDED GameInitialization");
+        System.out.println("Game Initialization Success!");
     }
 
     /**
@@ -313,6 +315,7 @@ public class Game extends Observable implements Serializable {
         getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
         if(!getActivePlayer().getScoreboard().getProfessor(stud.getColor()))
             checkProfessors(stud.getColor());
+
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 
@@ -360,6 +363,7 @@ public class Game extends Observable implements Serializable {
 
             for(Player p : players){
                 int playerInfluence = island.getInfluence(p);
+                System.out.println( p.getNickname() + " influence: " + playerInfluence);
                 if(!p.getNickname().equals(activePlayer.getNickname()) &&  playerInfluence > activePlayerInfluence && playerInfluence > bestInfluence){
                     bestInfluence = island.getInfluence(p);
                     dominantPlayer = p;
@@ -382,7 +386,7 @@ public class Game extends Observable implements Serializable {
      * @param color tower color
      * @return the player that correspond to that color
      */
-    private Player getPlayerByColor(TowerColors color) {
+    public Player getPlayerByColor(TowerColors color) {
         for(Player player : players){
             if(player.getScoreboard().getTowerColor() == color)
                 return player;
@@ -394,16 +398,20 @@ public class Game extends Observable implements Serializable {
      * Check if someone has won because has finished the towers
      * @param player
      */
-    public void checkTowerWinner(Player player) {
-        if(player.getScoreboard().getNumTowers() == 0)
+    public boolean checkTowerWinner(Player player) {
+        if(player.getScoreboard().getNumTowers() == 0){
             notifyObserver(new VictoryMessage(player.getNickname()));
+            return true;
+        }
+        return false;
     }
 
     /**
-     *
-     * @param color
+     * Check if the active player has obtained a professor
+     * Called when the player move a student on the dining room
+     * @param color color of the student moved
      */
-    private void checkProfessors(PawnColors color) {
+    public void checkProfessors(PawnColors color) {
         Player activePlayer = getActivePlayer();
         int numStudent = activePlayer.getScoreboard().getPlayerStudentFromDining(color);
         boolean addProf = false;

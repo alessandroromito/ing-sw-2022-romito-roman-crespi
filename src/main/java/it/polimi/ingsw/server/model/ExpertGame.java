@@ -27,9 +27,9 @@ import java.util.Objects;
  */
 public class ExpertGame extends Game {
     private int activeCardID = -1;
+
     private CharacterCard activeCard = null;
     private ArrayList<CharacterCard> pool = new ArrayList<>(3);
-
 
     /**
      * Default constructor
@@ -38,12 +38,16 @@ public class ExpertGame extends Game {
     public ExpertGame(List<String> playersNicknames) {
         super(playersNicknames);
         ExpertGameInitialization();
+
+        System.out.println("ExpertGame Ready!");
     }
 
     /**
      * Initialize the expert version of the game
      */
     public void ExpertGameInitialization() {
+        System.out.println("Starting ExpertGame Initialization");
+
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();
@@ -94,6 +98,8 @@ public class ExpertGame extends Game {
                 case 11 -> pool.add(new Card_220());
             }
         }
+
+        System.out.println("ExpertGame Initialization Success!");
     }
 
     @Override
@@ -356,6 +362,8 @@ public class ExpertGame extends Game {
             }
         }
 
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
+
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
@@ -544,7 +552,6 @@ public class ExpertGame extends Game {
                 for(CharacterCard characterCard : pool)
                     if(characterCard.getID() == 213)
                         temp = (Card_213) characterCard;
-
                 assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;
@@ -652,6 +659,23 @@ public class ExpertGame extends Game {
             System.out.println("Checking influence");
             super.checkInfluence(islandID);
         }
+    }
+
+    /**
+     * Setter
+     * @param activeCard card to set
+     */
+    public void setActiveCard(CharacterCard activeCard) {
+        this.activeCardID = activeCard.getID();
+        this.activeCard = activeCard;
+    }
+
+    /**
+     * Setter
+     * @param activeCardID id to set
+     */
+    public void setActiveCardID(int activeCardID) {
+        this.activeCardID = activeCardID;
     }
 
     /**
