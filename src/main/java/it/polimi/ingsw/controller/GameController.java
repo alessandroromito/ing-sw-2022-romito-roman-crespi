@@ -219,8 +219,7 @@ public class GameController implements Observer, Serializable {
         try {
             DataSaving dataSaving = new DataSaving();
             dataSaving.remove();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
 
         init();
