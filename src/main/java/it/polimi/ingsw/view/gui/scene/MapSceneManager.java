@@ -41,7 +41,7 @@ import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 import static java.lang.Math.abs;
 
 /**
- * This class represent the map during all the match.
+ * This class represent the map on the view package.
  *
  */
 public class MapSceneManager extends ViewObservable implements SceneManagerInterface {
