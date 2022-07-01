@@ -100,7 +100,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="red4" fitHeight="81.0" fitWidth="82.0" layoutX="725.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="red4" fitHeight="81.0" fitWidth="82.0" layoutX="724.0" layoutY="490.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/2_Rosso.png" />
          </image>
@@ -155,7 +155,7 @@
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="yellow1" fitHeight="81.0" fitWidth="82.0" layoutX="451.0" layoutY="625.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="yellow1" fitHeight="81.0" fitWidth="82.0" layoutX="450.0" layoutY="626.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
@@ -200,32 +200,32 @@
             <Image url="@../Graphical_Assets/Pedine/2D/3_Giallo.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple0" fitHeight="81.0" fitWidth="82.0" layoutX="359.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple0" fitHeight="81.0" fitWidth="82.0" layoutX="358.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple1" fitHeight="81.0" fitWidth="82.0" layoutX="451.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple1" fitHeight="81.0" fitWidth="82.0" layoutX="450.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple2" fitHeight="81.0" fitWidth="82.0" layoutX="541.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple2" fitHeight="81.0" fitWidth="82.0" layoutX="541.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple3" fitHeight="81.0" fitWidth="82.0" layoutX="633.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple3" fitHeight="81.0" fitWidth="82.0" layoutX="633.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple4" fitHeight="81.0" fitWidth="82.0" layoutX="724.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple4" fitHeight="81.0" fitWidth="82.0" layoutX="724.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="purple5" fitHeight="81.0" fitWidth="82.0" layoutX="815.0" layoutY="761.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="purple5" fitHeight="81.0" fitWidth="82.0" layoutX="815.0" layoutY="762.0" nodeOrientation="INHERIT" onMouseClicked="#click" onMouseEntered="#in" onMouseExited="#out" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Graphical_Assets/Pedine/2D/4_Viola.png" />
          </image>
@@ -1187,9 +1187,10 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="nicknameOp1" alignment="CENTER" contentDisplay="TOP" layoutX="88.0" layoutY="231.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4a4a4a" height="44.0" layoutX="88.0" layoutY="247.0" opacity="0.73" stroke="BLACK" strokeLineCap="BUTT" strokeType="INSIDE" strokeWidth="0.0" width="355.0" />
+      <Label fx:id="nicknameOp1" alignment="CENTER" contentDisplay="TOP" layoutX="88.0" layoutY="228.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
          <font>
-            <Font size="41.0" />
+            <Font size="30.0" />
          </font>
          <effect>
             <Bloom>
@@ -1199,9 +1200,10 @@
             </Bloom>
          </effect>
       </Label>
-      <Label fx:id="nicknameOp2" alignment="CENTER" contentDisplay="TOP" layoutX="1353.0" layoutY="231.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4a4a4a" height="39.0" layoutX="1356.0" layoutY="249.0" opacity="0.73" stroke="BLACK" strokeLineCap="BUTT" strokeType="INSIDE" strokeWidth="0.0" width="355.0" />
+      <Label fx:id="nicknameOp2" alignment="CENTER" contentDisplay="TOP" layoutX="1353.0" layoutY="228.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
          <font>
-            <Font size="41.0" />
+            <Font size="30.0" />
          </font>
          <effect>
             <Bloom>
