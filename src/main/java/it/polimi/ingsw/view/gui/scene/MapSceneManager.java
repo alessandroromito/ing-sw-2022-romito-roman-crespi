@@ -40,6 +40,10 @@ import java.util.random.RandomGenerator;
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 import static java.lang.Math.abs;
 
+/**
+ * This class represent the map during all the match.
+ *
+ */
 public class MapSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
@@ -387,6 +391,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     private GraphicController graphicController = null;
 
+    /**
+     * Setter method.
+     * @param graphicController graphic controller.
+     */
     public void setGraphicController(GraphicController graphicController) {
         this.graphicController = graphicController;
     }
@@ -526,11 +534,17 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         System.out.println("fine initialize fxml");
     }
 
+    /**
+     * Fullscreen mode.
+     */
     public void fullscreen() {
         Stage stage = (Stage) pane.getScene().getWindow();
         //stage.setFullScreen(true);
     }
 
+    /**
+     * Initializer for character cards (Expert game).
+     */
     public void initializeCharacterCards() {
         if (gameSerialized.getExpertMode()) {
             labelCrc.setVisible(true);
@@ -645,6 +659,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Create imeges of pawn.
+     * @param color color of the pawn. Cases: 0, 1, 2, 3, 4
+     * @return
+     */
     public Image createImage(int color) {
         Image image = null;
         switch (color) {
@@ -667,6 +686,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return image;
     }
 
+    /**
+     * Add students pawn images to island.
+     * @param color color of the pawn.
+     * @param id if of the pawn.
+     * @param island island.
+     */
     //color: 1/5  isalnd:0/11
     public void addStudentToIsland(int color, int id, int island) {
         Image image = null;
@@ -731,6 +756,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         pane.getChildren().addAll(student);
     }
 
+    /**
+     * Add student pawn to a cloud.
+     * @param cloud cloud number.
+     * @param number color of the student to be added.
+     */
     //number: 1/2
     public void addStudentsToCloud(Cloud cloud, int number) {
         clouds.add(cloud);
@@ -800,6 +830,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Find a empty space fdr student positioning.
+     * @param island island where to find the space.
+     * @return the coordinates found using "Point" class.
+     */
     //island varies form 0 to 11
     public Point findCoord(int island) {
         Point p;
@@ -829,6 +864,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return p;
     }
 
+    /**
+     * Set mother nature pose.
+     * @param island island to set mother nature.
+     */
     public void setMotherNaturePose(int island) {
         motherNature.setLayoutX(motherNaturePoses[island].getX());
         motherNature.setLayoutY(motherNaturePoses[island].getY());
@@ -836,6 +875,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         motherNaturePos = island;
     }
 
+    /**
+     * Allow the user to choose an island where to move mother nature.
+     * @param maxSteps max steps allowed to move mother nature.
+     */
     public void enableMotherNature(int maxSteps) {
         switchMotherNature = true;
         if (posWithGhost == null) {
@@ -862,6 +905,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Allow the user to select an island.
+     * @param number number of island to be enabled.
+     */
     public void enableSingleIsland(int number) {
         switch (number) {
             case 1:
@@ -903,6 +950,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Move mother nature
+     * @param steps steps to move mother nature of.
+     */
     public void moveMotherNature(int steps) {
         if (motherNaturePos + steps <= 11) {
             motherNaturePos += steps;
@@ -913,6 +964,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Light the islands if mouse is passing on and if it is enabled.
+     * @param mouseEvent mouse event.
+     */
     public void light(MouseEvent mouseEvent) {
         String selection = mouseEvent.getSource().toString().substring(19, 21);
         if (selection.charAt(1) == ',')
@@ -934,11 +989,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Dark all the islands.
+     * @param mouseEvent mouse event.
+     */
     public void dark(MouseEvent mouseEvent) {
         for (ImageView isl : island)
             isl.setEffect(null);
     }
 
+    /**
+     * Disable the islands.
+     */
     public void disableIslands() {
         island1.setDisable(true);
         island2.setDisable(true);
@@ -954,6 +1016,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         island12.setDisable(true);
     }
 
+    /**
+     * Set the image of the tower.
+     * @param island island number.
+     * @param color tower color.
+     */
     //color: 0=black 1=white 2=grey
     public void setTower(int island, int color) {
         if (towers[island] == null) {
@@ -1029,6 +1096,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Method that modify the variable choosenIsland using island graphically selected.
+     * @param mouseEvent mouse event.
+     */
     public void chooseIsland(MouseEvent mouseEvent) {
         int choosenIsland = -99;
 
@@ -1113,6 +1184,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         darkAll();
     }
 
+    /**
+     * Getter method for students. From id return color.
+     * @param id id of the student.
+     * @return color of the student.
+     */
     private int getColorFromId(int id) {
         if (id - 59 >= 0 && id - 59 <= 25)
             return 2;
@@ -1133,6 +1209,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return false;
     }
 
+    /**
+     * Get the ImageView representing a character card from the id.
+     * @param id id of the character card.
+     * @return the character card.
+     */
     public ImageView getCharacterById(int id) {
         if (Integer.parseInt(card1.getId()) == id)
             return card1;
@@ -1144,6 +1225,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         return null;
     }
 
+    /**
+     * Update the values of the GUI.
+     * @param gameSerialized game data.
+     */
     public void updateValues(GameSerialized gameSerialized) {
         disableMenu();
         characterCards = gameSerialized.getCharacterCards();
@@ -1324,14 +1409,26 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         resizeElements();
     }
 
+    /**
+     * Assistant card opponent 1.
+     * @param number number of the assistant card.
+     */
     public void setOpponent1Card(int number) {
         assistentCardOpponent1.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente(" + number + ").png")));
     }
 
+    /**
+     * Assistant card opponent 2.
+     * @param number unmber of the assistant card.
+     */
     public void setOpponent2Card(int number) {
         assistentCardOpponent2.setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Assistenti/2x/Assistente(" + number + ").png")));
     }
 
+    /**
+     * Build bridges.
+     * @param island island number starting the bridge clockwise.
+     */
     //passare numero isola precedente in senso orario
     public void build(int island) {
         switch (island) {
@@ -1375,6 +1472,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Build the bridge between island 1 and 2.
+     */
     private void build_1_2() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_1_2);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_1_2);
@@ -1388,6 +1488,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Build the bridge between island 2 and 3.
+     */
     private void build_2_3() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_2_3);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_2_3);
@@ -1400,6 +1503,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 3 and 4.
+     */
     private void build_3_4() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_3_4);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_3_4);
@@ -1413,6 +1519,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Build the bridge between island 4 and 5.
+     */
     private void build_4_5() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_4_5);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_4_5);
@@ -1425,6 +1534,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 5 and 6.
+     */
     private void build_5_6() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_5_6);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_5_6);
@@ -1437,6 +1549,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 6 and 7.
+     */
     private void build_6_7() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_6_7);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_6_7);
@@ -1449,6 +1564,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 7 and 8.
+     */
     private void build_7_8() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_7_8);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_7_8);
@@ -1461,6 +1579,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 8 and 9.
+     */
     private void build_8_9() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_8_9);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_8_9);
@@ -1473,6 +1594,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 9 and 10.
+     */
     private void build_9_10() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_9_10);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_9_10);
@@ -1485,6 +1609,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 10 and 11.
+     */
     private void build_10_11() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_10_11);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_10_11);
@@ -1497,6 +1624,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 11 and 12.
+     */
     private void build_11_12() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_11_12);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_11_12);
@@ -1509,6 +1639,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Build the bridge between island 12 and 1.
+     */
     private void build_12_1() {
         TranslateTransition tt = new TranslateTransition(Duration.millis(1000), bridge_1_12);
         FadeTransition ft = new FadeTransition(Duration.millis(1000), bridge_1_12);
@@ -1521,36 +1654,58 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         tt.play();
     }
 
+    /**
+     * Select the cloud number 1.
+     * @param mouseEvent mouse event.
+     */
     public void selectedCloud1(MouseEvent mouseEvent) {
         cloud1.setEffect(new DropShadow());
         selectCloudObserverNotification(1);
         disableClouds();
     }
 
+    /**
+     * Select the cloud number 2.
+     * @param mouseEvent mouse event.
+     */
     public void selectedCloud2(MouseEvent mouseEvent) {
         cloud2.setEffect(new DropShadow());
         selectCloudObserverNotification(2);
         disableClouds();
     }
 
+    /**
+     * Select the cloud number 3.
+     * @param mouseEvent mouse event.
+     */
     public void selectedCloud3(MouseEvent mouseEvent) {
         cloud3.setEffect(new DropShadow());
         selectCloudObserverNotification(3);
         disableClouds();
     }
 
+    /**
+     * Disable the clouds.
+     */
     public void disableClouds() {
         cloud1.setDisable(true);
         cloud2.setDisable(true);
         cloud3.setDisable(true);
     }
 
+    /**
+     * Enable the clouds.
+     */
     public void enableClouds() {
         if (cloud1Student0.getImage() != null) cloud1.setDisable(false);
         if (cloud2Student0.getImage() != null) cloud2.setDisable(false);
         if (cloud3Student0.getImage() != null && modeCloud3) cloud3.setDisable(false);
     }
 
+    /**
+     * Notify the observer after selecting a cloud.
+     * @param cloudNumber cloud number selected.
+     */
     public void selectCloudObserverNotification(int cloudNumber) {
         ArrayList<Cloud> finalCloud = new ArrayList<>();
         finalCloud.add(clouds.get(cloudNumber - 1));
@@ -1564,6 +1719,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             clearCloud3();
     }
 
+    /**
+     * Initializing the cloud 3 (for 3 players game).
+     */
     private void modeCloud3(){
         modeCloud3 = true;
         cloud2Student0.setScaleX(0.75);
@@ -1593,45 +1751,82 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             i.setVisible(true);
     }
 
+    /**
+     * Clear the image of cloud 1.
+     */
     public void clearCloud1() {
         for (int i = 0; i < 4; i++)
             cloudStudents1[i].setImage(null);
     }
 
+    /**
+     * Clear the image of cloud 2.
+     */
     public void clearCloud2() {
         for (int i = 0; i < 4; i++)
             cloudStudents2[i].setImage(null);
     }
 
+    /**
+     * Clear the image of cloud 3.
+     */
     public void clearCloud3() {
         for (int i = 0; i < 4; i++)
             cloudStudents3[i].setImage(null);
     }
 
+    /**
+     * Effect of the cloud 1 entering with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void inCloud1(MouseEvent mouseEvent) {
         cloud1.setEffect(new Bloom(0.95));
     }
 
+    /**
+     * Effect of the cloud 1 exiting with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void outCloud1(MouseEvent mouseEvent) {
         cloud1.setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the cloud 2 entering with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void inCloud2(MouseEvent mouseEvent) {
         cloud2.setEffect(new Bloom(0.95));
     }
 
+    /**
+     * Effect of the cloud 2 exiting with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void outCloud2(MouseEvent mouseEvent) {
         cloud2.setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the cloud 3 entering with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void inCloud3(MouseEvent mouseEvent) {
         cloud3.setEffect(new Bloom(0.95));
     }
 
+    /**
+     * Effect of the cloud 3 exiting with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void outCloud3(MouseEvent mouseEvent) {
         cloud3.setEffect(new DropShadow());
     }
 
+    /**
+     * Set the visibility of the assistant cards.
+     * @param assistantCards assistant cards to be shown.
+     */
     public void setAssistants(List<AssistantCard> assistantCards) {
         for (AssistantCard assistantCard : assistantCards) {
             this.assistantCards[assistantCard.getValue() - 1].setVisible(true);
@@ -1640,6 +1835,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Notify the observer about choosing the assistant card.
+     * @param mouseEvent mouse event.
+     */
     public void choosenAssistant(MouseEvent mouseEvent) {
         int assistantUsed = Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27));
 
@@ -1671,44 +1870,73 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Effect of the assistant card exiting with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void outAssistant(MouseEvent mouseEvent) {
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27))].setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the assistant card entering with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void inAssistant(MouseEvent mouseEvent) {
-
-
         assistantCards[Integer.parseInt(mouseEvent.getSource().toString().substring(26, 27))].setEffect(new InnerShadow());
     }
 
+    /**
+     * Setter method. set the assistant cards.
+     * @param assistantCards
+     */
     public void enableAssistant(List<AssistantCard> assistantCards) {
         this.assistantCardsList = assistantCards;
     }
 
+    /**
+     * Disable assistant cards.
+     */
     public void disableAssistant() {
         for (ImageView i : assistantCards) {
             i.setDisable(true);
         }
     }
 
+    /**
+     * Set the visualization to disabled of the assistant cards opponent player 1.
+     */
     public void disableOpcard1() {
         opCard1 = false;
     }
 
+    /**
+     * Set the visualization to disabled of the assistant cards opponent player 2.
+     */
     public void disableOpcard2() {
         opCard2 = false;
     }
 
+    /**
+     * Set the visualization to enabled of the assistant cards opponent player 1.
+     */
     public void enableOpcard1() {
         opCard1 = true;
             viewOpCard1();
     }
 
+
+    /**
+     * Set the visualization to disabled of the assistant cards opponent player 2.
+     */
     public void enableOpcard2() {
         opCard2 = true;
             viewOpCard2();
     }
 
+    /**
+     * Show the played assistant card of the opponent player 1.
+     */
     public void viewOpCard1() {
         opCard1 = true;
 
@@ -1738,6 +1966,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Show the played assistant card of the opponent player 2.
+     */
     public void viewOpCard2() {
         opCard2 = true;
 
@@ -1767,6 +1998,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Hide the played assistant card of the opponent player 1.
+     */
     public void hideOpCard1() {
 
         FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent1);
@@ -1795,6 +2029,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Hide the played assistant card of the opponent player 2.
+     */
     public void hideOpCard2() {
 
         FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent2);
@@ -1823,6 +2060,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Show all the assistant cards during the askAssistantCards.
+     * @param mouseEvent mouse event.
+     */
     public void switchView(MouseEvent mouseEvent) {
         if (opCard1) viewOpCard1();
         if (opCard2) viewOpCard2();
@@ -1892,14 +2133,26 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         ft.play();
     }
 
+    /**
+     * Effect of the ImageView that shows the hand of the player during entering with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void inEffect(MouseEvent mouseEvent) {
         switchHandMap.setEffect(new Glow(0.3));
     }
 
+    /**
+     * Effect of the ImageView that show the hand of the player during exiting with the mouse.
+     * @param mouseEvent mouse event.
+     */
     public void outEffect(MouseEvent mouseEvent) {
         switchHandMap.setEffect(null);
     }
 
+    /**
+     * Hide the assistant card on the hand of the player scene.
+     * @param mouseEvent mouse event.
+     */
     public void closeHand(MouseEvent mouseEvent) {
         if (opCard1) hideOpCard1();
         if (opCard2) hideOpCard2();
@@ -1967,33 +2220,61 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     }
 
+    /**
+     * Effect of the x ImageView (to close the hand of the assistant cards of the player) during mouse entering.
+     * @param mouseEvent mouse event.
+     */
     public void inX(MouseEvent mouseEvent) {
         xButton.setEffect(new Bloom(0));
     }
 
+    /**
+     * Effect of the x ImageView (to close the hand of the assistant cards of the player) during mouse exiting.
+     * @param mouseEvent mouse event.
+     */
     public void outX(MouseEvent mouseEvent) {
         xButton.setEffect(new Bloom(0.25));
     }
 
+    /**
+     * Show the scoreboard after clicking on the Scoreboard ImageView.
+     * @param mouseEvent mouse event.
+     */
     public void moveToScoreboard(MouseEvent mouseEvent) {
         scoreboardSceneManager = graphicController.showScoreboards(pane.getScene().snapshot(null));
     }
 
+    /**
+     * Effect of ScoreBoard ImageView while mouse entering.
+     * @param mouseEvent
+     */
     public void inScrb(MouseEvent mouseEvent) {
         DropShadow et = new DropShadow();
         et.setInput(new Glow());
         toScoreboard.setEffect(et);
     }
 
+    /**
+     * Effect of ScoreBoard ImageView after mouse exiting.
+     * @param mouseEvent
+     */
     public void outScrb(MouseEvent mouseEvent) {
         toScoreboard.setEffect(new DropShadow());
     }
 
+    /**
+     * Set coin method.
+     * @param coin number of coin to be set.
+     */
     public void setCoin(int coin) {
         coins = coin;
         labelCoins.setText("X " + Integer.toString(coin));
     }
 
+    /**
+     * Effect of the character card 1 during mouse entering.
+     * @param mouseEvent mouse event.
+     */
     public void inCard1(MouseEvent mouseEvent) {
         if (active && actionFase) {
             Glow iCard = new Glow(0.45);
@@ -2003,16 +2284,28 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Effect of the character card 1 during mouse exiting.
+     * @param mouseEvent mouse event.
+     */
     public void outCard1(MouseEvent mouseEvent) {
         card1.setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the character card 1 after mouse clicking.
+     * @param mouseEvent mouse event.
+     */
     public void clickCard1(MouseEvent mouseEvent) {
         if (active && actionFase) {
             cardSelected(0);
         }
     }
 
+    /**
+     * Effect of the character card 2 during mouse entering.
+     * @param mouseEvent mouse event.
+     */
     public void inCard2(MouseEvent mouseEvent) {
         if (active && actionFase) {
             Glow iCard = new Glow(0.45);
@@ -2022,16 +2315,28 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Effect of the character card 2 during mouse exiting.
+     * @param mouseEvent mouse event.
+     */
     public void outCard2(MouseEvent mouseEvent) {
         card2.setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the character card 1 after mouse clicking.
+     * @param mouseEvent mouse event.
+     */
     public void clickCard2(MouseEvent mouseEvent) {
         if (active && actionFase) {
             cardSelected(1);
         }
     }
 
+    /**
+     * Effect of the character card 3 during mouse entering.
+     * @param mouseEvent mouse event.
+     */
     public void inCard3(MouseEvent mouseEvent) {
         if (active && actionFase) {
             Glow iCard = new Glow(0.45);
@@ -2041,16 +2346,28 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Effect of the character card 3 during mouse exiting.
+     * @param mouseEvent mouse event.
+     */
     public void outCard3(MouseEvent mouseEvent) {
         card3.setEffect(new DropShadow());
     }
 
+    /**
+     * Effect of the character card 3 after mouse clicking.
+     * @param mouseEvent mouse event.
+     */
     public void clickCard3(MouseEvent mouseEvent) {
         if (active && actionFase) {
             cardSelected(2);
         }
     }
 
+    /**
+     * Notify the observer after character card selected.
+     * @param choice id of character card selected.
+     */
     private void cardSelected(int choice) {
         int idCard = Integer.parseInt(cCards[choice].getId());
         for (ImageView im : cCards)
@@ -2102,6 +2419,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Disable all the active menu of character cards.
+     */
     private void disableMenu() {
         islandMenu.setDisable(true);
         islandMenu.setVisible(false);
@@ -2109,16 +2429,25 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         colorMenu.setVisible(false);
     }
 
+    /**
+     * Disable card 209.
+     */
     private void disable209() {
         for (ImageView student : card209)
             student.setDisable(true);
     }
 
+    /**
+     * Disable card 219.
+     */
     private void disable219() {
         for (ImageView student : card219)
             student.setDisable(true);
     }
 
+    /**
+     * Show the menu related to character card 209 effect.
+     */
     private void menuCard209() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
@@ -2133,6 +2462,13 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+
+    /**
+     * Notify the observer to use character card 209.
+     * And disable all the active menu of the card.
+     * Disable also the character card 209.
+     * @param islandSelected
+     */
     private void useCard209(int islandSelected) {
         disableMenu();
         disable209();
@@ -2140,6 +2476,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         new Thread(() -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
     }
 
+    /**
+     * Show the menu related to character card 211 effect.
+     */
     private void menuCard211() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
@@ -2156,6 +2495,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Show the menu related to character card 213 effect.
+     */
     private void menuCard213() {
         islandMenu.setVisible(true);
         islandMenu.setDisable(false);
@@ -2171,6 +2513,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+
+    /**
+     * Show the menu related to character card 217 effect.
+     */
     private void menuCard217() {
         colorMenu.setVisible(true);
         colorMenu.setDisable(false);
@@ -2186,6 +2532,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+
+    /**
+     * Show the menu related to character card 220 effect.
+     */
     private void menuCard220() {
         colorMenu.setVisible(true);
         colorMenu.setDisable(false);
@@ -2201,6 +2551,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Set the turn and make it visible.
+     * @param active {code @true} if the interface's user is active, {code @false} otherwise.
+     */
     public void setActive(boolean active) {
         this.active = active;
         if (active) labelOpTurn.setVisible(false);
@@ -2210,6 +2564,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         }
     }
 
+    /**
+     * Enable the character cards.
+     * @param actionFase
+     */
     public void setActionFase(boolean actionFase) {
         this.actionFase = actionFase;
         if(actionFase) {
@@ -2220,6 +2578,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             labelCrc.setEffect(new DropShadow());
     }
 
+    /**
+     * Initialization of resize property. Allow to resize the window without losing scale frame.
+     */
     public void resizeElements() {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
@@ -2237,6 +2598,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         resizeElements2();
     }
 
+    /**
+     * Allow to resize the window without losing scale frame automatically.
+     */
     private void resizeElements2() {
         Scene scene = pane.getScene();
 
@@ -2245,6 +2609,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         scene.heightProperty().addListener(sizeListener);
     }
 
+    /**
+     * This class allows to resize the window resizing all the contained elements.
+     */
     private class SceneSizeChangeListener implements ChangeListener<Number> {
         private final Scene scene;
 
