@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.effect.Bloom;
 import javafx.scene.effect.BoxBlur;
@@ -22,12 +23,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
@@ -524,15 +527,6 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     private ImageView red9_2;
 
     @FXML
-    private ImageView scorebrd;
-
-    @FXML
-    private ImageView scorebrd1;
-
-    @FXML
-    private ImageView scorebrd2;
-
-    @FXML
     private Circle tower0;
 
     @FXML
@@ -701,10 +695,32 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     private ImageView map;
 
     @FXML
+    private ImageView coinOp1;
+
+    @FXML
+    private ImageView coinOp2;
+
+    @FXML
+    private Label labelCoinsOp1;
+
+    @FXML
+    private Label labelCoinsOp2;
+
+    @FXML
     private MenuButton islandMenu;
 
     @FXML
     private Button diningButton;
+
+    @FXML
+    private Rectangle bgMap;
+
+    @FXML
+    private Label nicknameOp1;
+
+    @FXML
+    private Label nicknameOp2;
+
 
 
     private ImageView[] entrance = new ImageView[9];
@@ -1089,6 +1105,15 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         int scbNumber = 1;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(!s.getNickname().equals(nickname)){
+                if(scbNumber==1) {
+                    labelCoinsOp1.setText("X "+s.getCoins());
+                    nicknameOp1.setText(s.getNickname().toUpperCase(Locale.ROOT));
+                    nicknameOp2.setText(null);
+                }
+                else {
+                    labelCoinsOp2.setText("X "+s.getCoins());
+                    nicknameOp2.setText(s.getNickname().toUpperCase(Locale.ROOT));
+                }
                 setSecondaryScoreboardEntrance(s.getEntranceId(),scbNumber);
                 scbNumber++;
             }
@@ -1172,17 +1197,13 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
     }
 
     public void inMap(MouseEvent mouseEvent) {
-        DropShadow et = new DropShadow();
-        BoxBlur et2 = new BoxBlur();
-        et2.setInput(new Glow(0.3));
-        et.setInput(et2);
-        map.setEffect(et);
+        bgMap.setEffect(new Glow());
+        map.setEffect(new Glow());
     }
 
     public void outMap(MouseEvent mouseEvent) {
-        DropShadow et = new DropShadow();
-        et.setInput(new BoxBlur());
-        map.setEffect(et);
+        bgMap.setEffect(null);
+        map.setEffect(null);
     }
 
     public void selectedToDining(ActionEvent actionEvent) {

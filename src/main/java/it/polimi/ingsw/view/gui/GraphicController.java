@@ -433,6 +433,7 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
+            mapSceneManager.placeNoEntry();
             mapSceneManager.setActionFase(false);
             mapSceneManager.setActive(true);
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);

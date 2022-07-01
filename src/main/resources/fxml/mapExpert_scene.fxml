@@ -585,7 +585,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="518.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="505.0" layoutY="501.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
@@ -720,7 +720,7 @@
             <Font name="Berlin Sans FB" size="16.0" />
          </font>
       </MenuButton>
-      <Label fx:id="labelOpTurn" layoutX="707.0" layoutY="954.0" mouseTransparent="true" pickOnBounds="false" text="TURNO DELL'AVVERSARIO" textFill="#f51b07" visible="false">
+      <Label fx:id="labelOpTurn" alignment="CENTER" layoutX="542.0" layoutY="938.0" mouseTransparent="true" pickOnBounds="false" prefHeight="54.0" prefWidth="778.0" text="TURNO DELL'AVVERSARIO" textFill="#f51b07" visible="false">
          <font>
             <Font name="System Bold Italic" size="36.0" />
          </font>
@@ -770,6 +770,102 @@
       <ImageView fx:id="cloud3Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1323.0" layoutY="580.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" scaleZ="0.0" visible="false">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry0" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="1693.0" layoutY="503.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry1" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="1612.0" layoutY="823.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry2" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="1273.0" layoutY="875.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry3" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="939.0" layoutY="893.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry4" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="562.0" layoutY="875.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry5" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="218.0" layoutY="831.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry6" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="126.0" layoutY="506.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry7" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="249.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry8" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="581.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry9" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="917.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry10" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="1278.0" layoutY="140.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="noEntry11" disable="true" fitHeight="71.0" fitWidth="73.0" layoutX="1617.0" layoutY="186.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/noEntryTile.png" />
+         </image>
+         <effect>
+            <DropShadow />
          </effect>
       </ImageView>
    </children>

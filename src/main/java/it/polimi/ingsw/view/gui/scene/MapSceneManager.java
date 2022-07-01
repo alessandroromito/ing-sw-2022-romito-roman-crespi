@@ -303,6 +303,42 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     @FXML
     private Label labelCrc;
 
+    @FXML
+    private ImageView noEntry0;
+
+    @FXML
+    private ImageView noEntry1;
+
+    @FXML
+    private ImageView noEntry10;
+
+    @FXML
+    private ImageView noEntry11;
+
+    @FXML
+    private ImageView noEntry2;
+
+    @FXML
+    private ImageView noEntry3;
+
+    @FXML
+    private ImageView noEntry4;
+
+    @FXML
+    private ImageView noEntry5;
+
+    @FXML
+    private ImageView noEntry6;
+
+    @FXML
+    private ImageView noEntry7;
+
+    @FXML
+    private ImageView noEntry8;
+
+    @FXML
+    private ImageView noEntry9;
+
 
     private double r = 22;
     private double rIsl;
@@ -378,16 +414,20 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         islandsPosCentre[10] = new Point(island11.getLayoutX() + island11.getFitWidth() / 2, island11.getLayoutY() + island11.getFitHeight() / 2);
         islandsPosCentre[11] = new Point(island12.getLayoutX() + island12.getFitWidth() / 2, island12.getLayoutY() + island12.getFitHeight() / 2);
 
-        for(int i=0;i<12;i++) {
-            noEntryTile[i] = new ImageView();
-            noEntryTile[i].setLayoutX(islandsPosCentre[i].getX());
-            noEntryTile[i].setLayoutY(islandsPosCentre[i].getY());
-            noEntryTile[i].setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/noEntryTile.jpg")));
-            noEntryTile[i].setEffect(new DropShadow());
-            noEntryTile[i].setVisible(true);
-        }
-
         rIsl = (island1.getFitHeight() + 17) / 2;
+
+        noEntryTile[0] = noEntry0;
+        noEntryTile[1] = noEntry1;
+        noEntryTile[2] = noEntry2;
+        noEntryTile[3] = noEntry3;
+        noEntryTile[4] = noEntry4;
+        noEntryTile[5] = noEntry5;
+        noEntryTile[6] = noEntry6;
+        noEntryTile[7] = noEntry7;
+        noEntryTile[8] = noEntry8;
+        noEntryTile[9] = noEntry9;
+        noEntryTile[10] = noEntry10;
+        noEntryTile[11] = noEntry11;
 
         for (int i = 0; i < 12; i++)
             islands[i] = new ArrayList<Point>();
@@ -2035,6 +2075,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 card219[i].setOnMousePressed(ev -> {
                     disableMenu();
                     disable219();
+                    System.out.println("use 219 pos: "+finalI);
                     new Thread(() -> notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();
                 });
                 card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow(0.6)));
@@ -2087,7 +2128,6 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         for (int j = 0; j < 12; j++) {
             int finalJ = j;
             islandMenu.getItems().get(j).setOnAction(event -> {
-                System.out.println("carta 209 usata");
                 useCard209(finalJ + 1);
             });
         }
@@ -2096,6 +2136,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private void useCard209(int islandSelected) {
         disableMenu();
         disable209();
+        System.out.println("carta 209 pos: "+finalStudentPos+" "+islandSelected);
         new Thread(() -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
     }
 
@@ -2109,6 +2150,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             int finalJ = j;
             islandMenu.getItems().get(j).setOnAction(event -> {
                 disableMenu();
+                System.out.println("carta 211: "+(finalJ+1));
                 new Thread(() -> notifyObserver(obs -> obs.onUpdateUse211(finalJ + 1))).start();
             });
         }
@@ -2162,7 +2204,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void setActive(boolean active) {
         this.active = active;
         if (active) labelOpTurn.setVisible(false);
-        else labelOpTurn.setVisible(true);
+        else {
+            labelOpTurn.setVisible(true);
+            labelOpTurn.setText("TURNO DI "+gameSerialized.getActiveNickname().toUpperCase(Locale.ROOT));
+        }
     }
 
     public void setActionFase(boolean actionFase) {
@@ -2215,5 +2260,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             scale.setPivotY(0);
             pane.getScene().getRoot().getTransforms().setAll(scale);
         }
+    }
+
+    public void placeNoEntry(){
+
     }
 }

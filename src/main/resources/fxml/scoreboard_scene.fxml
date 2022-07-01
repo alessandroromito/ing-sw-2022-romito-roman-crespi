@@ -12,11 +12,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.scene.ScoreboardSceneManager">
    <children>
-      <ImageView fx:id="map" fitHeight="247.0" fitWidth="440.0" layoutX="730.0" layoutY="1.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" pickOnBounds="true" preserveRatio="true" AnchorPane.topAnchor="1.0">
+      <Rectangle fx:id="bgMap" arcHeight="5.0" arcWidth="5.0" fill="#69bae9" height="329.0" layoutX="615.0" layoutY="-30.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="657.0" />
+      <ImageView fx:id="map" fitHeight="249.0" fitWidth="460.0" layoutX="730.0" layoutY="1.0" onMouseClicked="#toMap" onMouseEntered="#inMap" onMouseExited="#outMap" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="730.0" AnchorPane.rightAnchor="730.0" AnchorPane.topAnchor="0.0">
          <image>
             <Image url="@../Graphical_Assets/Plancia/map.png" />
          </image>
@@ -1136,6 +1138,70 @@
       <Label layoutX="1623.0" layoutY="621.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="123.0" text="TORRI" textAlignment="CENTER" textFill="#f4f805">
          <font>
             <Font size="43.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <ImageView fx:id="coinOp1" fitHeight="85.0" fitWidth="88.0" layoutX="609.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/motherNature.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label fx:id="labelCoinsOp1" layoutX="665.0" layoutY="140.0" mouseTransparent="true" pickOnBounds="false" prefWidth="50.0" text="X 1" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="31.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <ImageView fx:id="coinOp2" fitHeight="85.0" fitWidth="88.0" layoutX="1180.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/motherNature.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label fx:id="labelCoinsOp2" layoutX="1236.0" layoutY="139.0" mouseTransparent="true" pickOnBounds="false" prefWidth="50.0" text="X 1" textFill="#f4f805">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="31.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="nicknameOp1" alignment="CENTER" contentDisplay="TOP" layoutX="88.0" layoutY="231.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="41.0" />
+         </font>
+         <effect>
+            <Bloom>
+               <input>
+                  <DropShadow />
+               </input>
+            </Bloom>
+         </effect>
+      </Label>
+      <Label fx:id="nicknameOp2" alignment="CENTER" contentDisplay="TOP" layoutX="1353.0" layoutY="231.0" mouseTransparent="true" pickOnBounds="false" prefHeight="85.0" prefWidth="355.0" textAlignment="CENTER" textFill="#f4f805">
+         <font>
+            <Font size="41.0" />
          </font>
          <effect>
             <Bloom>
