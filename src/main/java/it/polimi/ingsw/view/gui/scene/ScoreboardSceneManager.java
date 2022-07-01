@@ -35,6 +35,9 @@ import java.util.ResourceBundle;
 
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
 
+/**
+ * This class represent the scoreboard on the view package.
+ */
 public class ScoreboardSceneManager extends ViewObservable implements SceneManagerInterface, Initializable {
 
     private final Stage stage;
@@ -741,6 +744,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     private Integer selEntranceStudentId = null;
 
+    /**
+     * Default constructor.
+     */
     public ScoreboardSceneManager() {
         stage = new Stage();
         stage.initOwner(GraphicController.getActiveScene().getWindow());
@@ -749,6 +755,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         stage.setAlwaysOnTop(true);
     }
 
+    /**
+     * Set the effect of the ImageView related to the id.
+     * @param i ImageView.
+     */
     public void setEffect(ImageView i){
         int id = Integer.parseInt(i.getId());
         if(id-59>=0 && id-59<=25)
@@ -763,6 +773,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             i.setEffect(new Glow(0.53));
     }
 
+    /**
+     * Get the student in the entrance related to a certain id.
+     * @param id id correlated to the student.
+     * @return the imageview associated.
+     */
     public ImageView getEntranceFromId(String id){
         for(ImageView imageView: entrance)
             if(imageView.getId().equals(id))
@@ -770,6 +785,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         return null;
     }
 
+    /**
+     * Enable the clicking on the students of the entrance.
+     */
     public void enableEntrance(){
         for(int i=0;i<9;i++) {
             if (!entranceFree[i])
@@ -779,6 +797,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         }
     }
 
+    /**
+     * Disable the clicking on the students of the entrance.
+     */
     public void disableEntrance(){
         for(ImageView i:entrance)
             i.setDisable(true);
@@ -793,6 +814,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
     }
 
+    /**
+     * Menu shown after selecting a student on the entrance.
+     * @param mouseEvent mouse event.
+     */
     public void selectedEntrance(MouseEvent mouseEvent) {
         String idString = mouseEvent.getSource().toString().substring(13,16);
         if(idString.charAt(2) == ',')   idString = idString.substring(0,2);
@@ -810,6 +835,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setDisable(false);
     }
 
+    /**
+     * Effect of the students of the entrance while mouse entering.
+     * @param event mouse event.
+     */
     @FXML
     void in(MouseEvent event) {
         String idString = event.getSource().toString().substring(13,16);
@@ -818,6 +847,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         setEffect(getEntranceFromId(idString));
     }
 
+    /**
+     * Effect of the students of the entrance while mouse exiting.
+     * @param event mouse event.
+     */
     @FXML
     void out(MouseEvent event) {
         for(ImageView i: entrance)
@@ -877,6 +910,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         disableEntrance();
     }
 
+    /**
+     * Notify the observer about moving a student to an island.
+     * @param number number of island to move the student.
+     */
     public void islandMessage(int number){
         islandMenu.setDisable(true);
         diningButton.setDisable(true);
@@ -887,10 +924,18 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
     }
 
+    /**
+     * Setter method.
+     * @param image image to be set.
+     */
     public void setMap(Image image){
         map.setImage(image);
     }
 
+    /**
+     * Set the tower color of main scoreboard.
+     * @param color of the tower.
+     */
     //color: 0=black 1=white 2=grey
     public void setTowerColor(int color){
         Paint white = Color.WHITE;
@@ -906,6 +951,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         }
     }
 
+    /**
+     * Set the tower color of main scoreboard opponent 1.
+     * @param color of the tower.
+     */
     public void setTowerColor_1(int color){
         Paint white = Color.WHITE;
         Paint black = Color.BLACK;
@@ -920,6 +969,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         }
     }
 
+    /**
+     * Set the tower color of main scoreboard opponent 2.
+     * @param color of the tower.
+     */
     public void setTowerColor_2(int color){
         Paint white = Color.WHITE;
         Paint black = Color.BLACK;
@@ -934,18 +987,30 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         }
     }
 
+
+    /**
+     * Add student to dining room.
+     * @param color of the student to move.
+     */
     //color: 1/5
     public void addStudentOnDining(int color){
         diningRoom[color-1][visibleStudents[color-1]].setVisible(true);
         visibleStudents[color-1]++;
     }
 
+    /**
+     * Remove student from dining room.
+     * @param color of the student to remove.
+     */
     public void removeSudentfromDining(int color){
         diningRoom[color-1][visibleStudents[color-1]].setVisible(false);
         visibleStudents[color-1]--;
     }
 
-    //da testare se funziona onmouseclicked
+    /**
+     * Add student to entrance.
+     * @param color of the student to add.
+     */
     public void addStudentOnEntrance(int color,int id){
         for (int i=0;i<9;i++)
             if(entranceFree[i]){
@@ -962,16 +1027,25 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             }
     }
 
+    /**
+     * Clear all the entrance room of main scoreboard.
+     */
     public void clearEntrance(){
         for (int i=0;i<9;i++)   entranceFree[i] = true;
         for (int i=0;i<9;i++)   entrance[i].setImage(null);
     }
 
+    /**
+     * Clear all the entrance room of scoreboard opponent 1.
+     */
     public void clearEntranceSecondaryScoreboards(){
         for (int i=0;i<8;i++)   entrance_1[i].setImage(null);
         for (int i=0;i<8;i++)   entrance_2[i].setImage(null);
     }
 
+    /**
+     * Clear all the entrance room of scoreboard opponent 2.
+     */
     //scbNumber: 1/2
     public void setSecondaryScoreboardEntrance(ArrayList<Integer> idList,int scbNumber){
         if(scbNumber == 1)
@@ -982,6 +1056,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 entrance_2[i].setImage(createImage(getColorFromId(idList.get(i))));
     }
 
+    /**
+     * Remove student from entrance room.
+     * @param id id of the student to remove.
+     */
     public void removeStudentFromEntrance(int id){
         for(int i=0;i<7;i++)
             if(entrance[i].getId().equals(Integer.toString(id))){
@@ -990,6 +1068,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             }
     }
 
+    /**
+     * Set visible a certain tower.
+     * @param number number of the tower to make visible.
+     */
     public void setTowerNumber(int number){
         for(int k=0;k<8;k++)
             towers[k].setVisible(false);
@@ -997,6 +1079,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             towers[k].setVisible(true);
     }
 
+    /**
+     * Create an image about StudentPawns.
+     * @param color color of the pawn.
+     * @return the image created.
+     */
     public Image createImage(int color){
         Image image = null;
 
@@ -1010,19 +1097,34 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         return image;
     }
 
+    /**
+     * This method show the scoreboards.
+     */
     public void showScoreboards() {
         stage.showAndWait();
     }
 
+    /**
+     * Set the scene.
+     * @param scene scene to be set.
+     */
     public void setScene(Scene scene) {
         stage.setScene(scene);
     }
 
+    /**
+     * Close the scoreboard.
+     */
     @FXML
     public void closeScoreboard() {
         stage.close();
     }
 
+    /**
+     * Get the color from a student id.
+     * @param id id of the studentPawn.
+     * @return the color of the student.
+     */
     private int getColorFromId(int id){
         if(id-59>=0 && id-59<=25)
             return 1;
@@ -1039,6 +1141,11 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         return 0;
     }
 
+    /**
+     * Translator method from ordinal a certain number.
+     * @param ordinal ordinal.
+     * @return the number translated.
+     */
     public int transformOrdinal(int ordinal){
         if(ordinal == 0)
             return 1;
@@ -1053,6 +1160,9 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         return -1;
     }
 
+    /**
+     * Reset the dining room of the scoreboard.
+     */
     public void clearScoreboard(){
         for(int i=0;i<5;i++)
             for(int k=0;k<10;k++)
@@ -1060,6 +1170,10 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         for (int i=0;i<5;i++)   visibleStudents[i] = 0;
     }
 
+    /**
+     * Update/correct the values of the scoreboard.
+     * @param gameSerialized game data.
+     */
     public void updateValues(GameSerialized gameSerialized) {
         for(int id=59;id<=188;id++)   getColorFromId(id);
         SerializableScoreboard scoreboard = null;
@@ -1069,38 +1183,32 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
 
         clearScoreboard();
 
-        //aggiorna diningRoom
+        //update diningRoom
         while(scoreboard.getDiningGreenStudents()>visibleStudents[0])  addStudentOnDining(1);
         while(scoreboard.getDiningRedStudents()>visibleStudents[1])  addStudentOnDining(2);
         while(scoreboard.getDiningYellowStudents()>visibleStudents[2])  addStudentOnDining(3);
         while(scoreboard.getDiningPinkStudents()>visibleStudents[3])  addStudentOnDining(4);
         while(scoreboard.getDiningBlueStudents()>visibleStudents[4])  addStudentOnDining(5);
-/*
-        while(scoreboard.getDiningGreenStudents()<visibleStudents[0])  removeStudentFromDining(1);
-        while(scoreboard.getDiningRedStudents()<visibleStudents[1])  removeStudentFromDining(2);
-        while(scoreboard.getDiningYellowStudents()<visibleStudents[2])  removeStudentFromDining(3);
-        while(scoreboard.getDiningpurpleStudents()<visibleStudents[3])  removeStudentFromDining(4);
-        while(scoreboard.getDiningBlueStudents()<visibleStudents[4])  removeStudentFromDining(5);
-*/
-        //aggiorna Professori
+
+        //update professors
         for(int i=0;i<5;i++)
             professors[i].setVisible(false);
         for(PawnColors c: scoreboard.availableProfessors()){
             professors[c.ordinal()].setVisible(true);
         }
 
-        //aggiorna Torri
+        //update towers
         setTowerNumber(scoreboard.getTowerNumber());
         setTowerColor(scoreboard.getTowerColor().ordinal());
 
         clearEntrance();
 
-        //aggiorna entrata
+        //update entrance room
         for(int id: scoreboard.getEntranceId()){
             addStudentOnEntrance(getColorFromId(id),id);
         }
 
-        //aggiorna entrata secondary scoreboard
+        //update entrance room of opponent players
         clearEntranceSecondaryScoreboards();
         int scbNumber = 1;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
@@ -1123,7 +1231,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             towers_2[i].setVisible(false);
         }
 
-        //aggiorna torri secondarie
+        //update entrance room
         scbNumber = 1;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(!s.getNickname().equals(nickname)){
@@ -1145,7 +1253,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
                 diningRoom_2[i][k].setVisible(false);
             }
 
-        //aggiorna dining secondarie
+        //update dining room of opponent players
         scbNumber = 1;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(!s.getNickname().equals(nickname)){
@@ -1170,7 +1278,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             professors_2[i].setVisible(false);
         }
 
-        //aggiorna professors secondari
+        //update professor opponent players
         scbNumber = 1;
         for(SerializableScoreboard s: gameSerialized.getSerializableScoreboard())
             if(!s.getNickname().equals(nickname)){
@@ -1192,20 +1300,36 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
             xScoreboard.setVisible(true);
     }
 
+    /**
+     * Close the scoreboard.
+     * @param mouseEvent mouse event.
+     */
     public void toMap(MouseEvent mouseEvent) {
         closeScoreboard();
     }
 
+    /**
+     * Effect while mouse entering map ImageView.
+     * @param mouseEvent mouse event.
+     */
     public void inMap(MouseEvent mouseEvent) {
         bgMap.setEffect(new Glow());
         map.setEffect(new Glow());
     }
 
+    /**
+     * Effect while mouse exiting map ImageView.
+     * @param mouseEvent mouse event.
+     */
     public void outMap(MouseEvent mouseEvent) {
         bgMap.setEffect(null);
         map.setEffect(null);
     }
 
+    /**
+     * Notify observer to move students to dining room.
+     * @param actionEvent mouse event.
+     */
     public void selectedToDining(ActionEvent actionEvent) {
         islandMenu.setDisable(true);
         diningButton.setDisable(true);
