@@ -500,8 +500,17 @@ public class GraphicController extends ViewObservable implements View {
             if(cloudList.size() == 2){
                 mapSceneManager.clearCloud1();
                 mapSceneManager.clearCloud2();
+                mapSceneManager.clearCloud3();
                 mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
                 mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+                mapSceneManager.enableClouds();}
+            if(cloudList.size() == 3){
+                mapSceneManager.clearCloud1();
+                mapSceneManager.clearCloud2();
+                mapSceneManager.clearCloud3();
+                mapSceneManager.addStudentsToCloud(cloudList.get(0),1);
+                mapSceneManager.addStudentsToCloud(cloudList.get(1),2);
+                mapSceneManager.addStudentsToCloud(cloudList.get(2),3);
                 mapSceneManager.enableClouds();}
 
             showGenericMessage("Nuvole", "Scegli la nuvola che fa per te!");

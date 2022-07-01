@@ -439,10 +439,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudents2[1] = cloud2Student1;
         cloudStudents2[2] = cloud2Student2;
         cloudStudents2[3] = cloud2Student3;
-        cloudStudents3[0] = cloud1Student0;
-        cloudStudents3[1] = cloud1Student1;
-        cloudStudents3[2] = cloud1Student2;
-        cloudStudents3[3] = cloud1Student3;
+        cloudStudents3[0] = cloud3Student0;
+        cloudStudents3[1] = cloud3Student1;
+        cloudStudents3[2] = cloud3Student2;
+        cloudStudents3[3] = cloud3Student3;
 
         disableClouds();
 
@@ -1690,7 +1690,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         opCard2 = true;
 
         FadeTransition ft = new FadeTransition(Duration.millis(600), assistentCardOpponent2);
-        ft.setFromValue(0);
+        ft.setFromValue(assistentCardOpponent2.getOpacity());
         ft.setToValue(1);
 
         ft.play();
