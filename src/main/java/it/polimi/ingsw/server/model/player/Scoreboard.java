@@ -11,7 +11,6 @@ import java.util.List;
 
 public interface Scoreboard {
 
-    void setTowerColor(TowerColors t);
     void addProfessor(ProfessorPawn professor);
     ProfessorPawn removeProfessor(PawnColors color);
     Tower removeTower();
@@ -25,10 +24,8 @@ public interface Scoreboard {
     void addStudentOnDining(StudentDisc student);
     void moveFromEntranceToDining(StudentDisc student);
     TowerColors getTowerColor();
-    void addTower(Tower tower);
     List<StudentDisc> getEntrance();
     Integer[] getDiningRoom();
-    ArrayList<StudentDisc> getDiningRoomList();
     StudentDisc getStudentFromDining(PawnColors color);
     ArrayList<ProfessorPawn> getProfessorList();
     void addTowers(ArrayList<Tower> towers);

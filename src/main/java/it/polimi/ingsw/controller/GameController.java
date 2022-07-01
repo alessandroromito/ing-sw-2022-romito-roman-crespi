@@ -22,6 +22,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
@@ -30,6 +31,9 @@ import java.util.*;
  * Show messages, check win conditions, add players to the game.
  */
 public class GameController implements Observer, Serializable {
+    @Serial
+    private static final long serialVersionUID = -5123455777913761268L;
+
     public static final String SAVING = "dataSaving.rcr";
 
     private List<String> playersNicknames = new ArrayList<>();

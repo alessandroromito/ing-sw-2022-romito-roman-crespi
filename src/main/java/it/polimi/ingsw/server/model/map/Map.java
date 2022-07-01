@@ -5,10 +5,13 @@ import it.polimi.ingsw.server.exception.CloudNotFoundException;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Map extends Observable implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8671097043395780260L;
 
     private final ArrayList<Island> islands;
     private final ArrayList<Cloud> clouds;

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model.component;
 
 import it.polimi.ingsw.server.enumerations.PawnColors;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,8 @@ import java.io.Serializable;
  * Subtype of Pawn.
  */
 public class StudentDisc extends Pawn implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 47478918956462038L;
 
     /**
      * Default constructor.

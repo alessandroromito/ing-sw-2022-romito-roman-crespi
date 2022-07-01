@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ import static it.polimi.ingsw.server.enumerations.PhaseState.PLANNING_PHASE;
  * It is also able to save and restore the game.
  */
 public class TurnController implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -1659506566681833401L;
 
     private final Game game;
     private final List<String> nicknameQueue;
