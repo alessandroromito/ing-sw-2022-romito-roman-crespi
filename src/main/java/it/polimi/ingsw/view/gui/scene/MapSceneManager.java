@@ -346,6 +346,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView[] card219 = new ImageView[4];
     private Integer startingPose = null;
 
+    private ImageView[] noEntryTile = new ImageView[12];
+
+
     private GraphicController graphicController = null;
 
     public void setGraphicController(GraphicController graphicController) {
@@ -374,6 +377,15 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         islandsPosCentre[9] = new Point(island10.getLayoutX() + island10.getFitWidth() / 2, island10.getLayoutY() + island10.getFitHeight() / 2);
         islandsPosCentre[10] = new Point(island11.getLayoutX() + island11.getFitWidth() / 2, island11.getLayoutY() + island11.getFitHeight() / 2);
         islandsPosCentre[11] = new Point(island12.getLayoutX() + island12.getFitWidth() / 2, island12.getLayoutY() + island12.getFitHeight() / 2);
+
+        for(int i=0;i<12;i++) {
+            noEntryTile[i] = new ImageView();
+            noEntryTile[i].setLayoutX(islandsPosCentre[i].getX());
+            noEntryTile[i].setLayoutY(islandsPosCentre[i].getY());
+            noEntryTile[i].setImage(new Image(getClass().getResourceAsStream("/Graphical_Assets/Reame/noEntryTile.jpg")));
+            noEntryTile[i].setEffect(new DropShadow());
+            noEntryTile[i].setVisible(true);
+        }
 
         rIsl = (island1.getFitHeight() + 17) / 2;
 
