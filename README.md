@@ -29,7 +29,7 @@ Interfacce grafiche implementate: CLI e GUI.
 - [JavaDoc](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/tree/main/deliverables/javadocs)
 
 ### Test Coverage Report
-Coverage dei test effettuati con Junit: [Report](link)
+Coverage dei test effettuati con Junit: [Report](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/tree/main/deliverables/testReport)
 
 ### Librerie e plugin implementati
 - Maven
