@@ -48,6 +48,7 @@ Coverage dei test effettuati con Junit: [Report](https://github.com/alessandroro
   - __Resilienza alle disconnessioni__
 
 ## Esecuzione tramite files .jar
+[Executable jar files](https://github.com/alessandroromito/ing-sw-2022-romito-roman-crespi/tree/main/deliverables/jar)
 ### Server
 Per lanciare il server utilizzare il comando:
 ```
