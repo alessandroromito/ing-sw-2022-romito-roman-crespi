@@ -61,19 +61,19 @@ public class Game extends Observable implements Serializable {
 
         createComponents();
 
-        try {
-            gameInitialization();
-        } catch (EntranceFullException e) {
-            System.out.println("ERROR while gameInitialization()!");
-        }
+        gameInitialization();
 
         notifyObserver(new LobbyMessage(getPlayersNicknames(), playersNicknames.size()));
+
+        System.out.println("Game Ready!");
     }
 
     /**
      * Method to generate all the components needed
      */
     public void createComponents(){
+        System.out.println("Creating Components");
+
         // Create MOTHER NATURE
         components.add(new MotherNature(1));
 
@@ -83,14 +83,16 @@ public class Game extends Observable implements Serializable {
             components.add(new ProfessorPawn(id, color));
             id++;
         }
+
+        System.out.println("Components Created Success!");
     }
 
     /**
      * Initialise the game.
      * Creates all the object necessary for the game according to the number of player
      */
-    public void gameInitialization() throws EntranceFullException {
-        System.out.println("STARTING GameInitialization...");
+    public void gameInitialization() {
+        System.out.println("Starting Game Initialization");
 
         // Place MotherNature to a random island
         Random r = new Random();
@@ -117,7 +119,7 @@ public class Game extends Observable implements Serializable {
                 p.getScoreboard().addStudentOnEntrance(stud2);
             }
         }
-        System.out.println("...ENDED GameInitialization");
+        System.out.println("Game Initialization Success!");
     }
 
     /**

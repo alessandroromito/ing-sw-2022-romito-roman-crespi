@@ -1,13 +1,13 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.server.enumerations.PawnColors;
-import it.polimi.ingsw.server.exception.DifferentColorTowerException;
-import it.polimi.ingsw.server.exception.FullGroupIDListException;
-import it.polimi.ingsw.server.exception.MissingPlayerNicknameException;
-import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.component.MotherNature;
-import it.polimi.ingsw.server.model.component.ProfessorPawn;
+import it.polimi.ingsw.server.enumerations.TowerColors;
+import it.polimi.ingsw.server.model.bag.Bag;
+import it.polimi.ingsw.server.model.component.*;
 import it.polimi.ingsw.server.model.map.Cloud;
+import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
@@ -20,38 +20,48 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GameTest {
-    private Game game;
-    private List<String> players = new ArrayList<>();
+    Game game;
+    Map map;
+    Bag bag;
+    TurnController turnController;
+    GameController gameController;
+
+    private final List<String> playersNicknames = new ArrayList<>();
+
     protected ArrayList<Component> components;
 
     @Before
     public void setUp() {
-        players.add("player1");
-        players.add("player2");
-        players.add("player3");
+        gameController = new GameController();
 
-        game = new Game(players);
-        components = game.getComponents();
+        String player1 = "teo";
+        String player2 = "ale";
+        String player3 = "gio";
 
+        gameController.getPlayersNicknames().add(player1);
+        gameController.getPlayersNicknames().add(player2);
+        gameController.getPlayersNicknames().add(player3);
+
+        playersNicknames.add(player1);
+        playersNicknames.add(player2);
+        playersNicknames.add(player3);
+
+        game = new ExpertGame(playersNicknames);
+        turnController = new TurnController(gameController, gameController.getVirtualViewMap());
+        game.setExpertMode(true);
+        game.setTurnController(turnController);
+        turnController.setActivePlayer(player1);
+
+        this.components = game.getComponents();
+        this.map = game.getMap();
+        this.bag = game.getBag();
     }
-/*
-    @Test
-    public void scoreboardX3p(){
-        Object s2 = players.get(1).getScoreboard();
-        assertTrue(s2 instanceof ScoreboardX3p);
-    }
-*/
+
     @Test
     public void CreateComponents(){
 
         game.createComponents();
         components = game.getComponents();
-
-        // Print a visual log of the component's ID and class type
-        //for(int i = 0; i<188; i++) {
-//            System.out.print("ID: " + components.get(i).getID() + " ");
-//            System.out.println(components.get(i).getClass().getName());
-//        }
 
         assertNotNull(components.get(0));
         assertEquals(MotherNature.class, components.get(0).getClass());
@@ -79,88 +89,65 @@ public class GameTest {
         }
 
         // Opposite island free
-        int oppositeIslandNum = map.getIsland(game.oppositePosition(map.getMotherNaturePosition())).getID();
+        Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
 
-        //Island oppositeIsland = map.getIsland(map.getMotherNaturePosition());
-        for(Integer integer : map.getIsland(oppositeIslandNum).getNumberOfColors())
+        for(Integer integer : map.getIsland(oppositeIsland.getID()).getNumberOfColors())
         {
-            System.out.println(integer);
             assertEquals(0, (int) integer);
         }
-        //assertArrayEquals(oppositeIsland.getNumberOfColors(), null);
+        Integer[] numberOfColors = {0,0,0,0,0};
+        assertArrayEquals(oppositeIsland.getNumberOfColors(), numberOfColors);
 
         // Scoreboard entrance is full
         Player p1 = null;
-        p1 = game.getPlayerByNickname("player1");
+        p1 = game.getPlayerByNickname("teo");
         Scoreboard scoreboard1 = p1.getScoreboard();
 
-        Player p2 = game.getPlayerByNickname("player2");
-        Scoreboard scoreboard2 = p1.getScoreboard();
+        Player p2 = game.getPlayerByNickname("ale");
+        Scoreboard scoreboard2 = p2.getScoreboard();
+
+        Player p3 = game.getPlayerByNickname("ale");
+        Scoreboard scoreboard3 = p3.getScoreboard();
 
         assertEquals(9, scoreboard1.getNumStudentsFromEntrance());
         assertEquals(9, scoreboard2.getNumStudentsFromEntrance());
-        assertEquals(9, scoreboard1.getNumStudentsFromEntrance());
+        assertEquals(9, scoreboard3.getNumStudentsFromEntrance());
 
     }
 
     @Test
-    public void moveMotherNatureTest() throws DifferentColorTowerException, FullGroupIDListException {
-        /*
-        GameController gameController = new GameController();
-        //Game game = gameController.getGame();
-        Map map = game.getMap();
+    public void moveMotherNatureTest() {
+        map.setMotherNaturePos(1);
+        game.moveMotherNature(3);
+        assertEquals(map.getMotherNaturePosition(), 4);
 
-        map.setMotherNaturePos(2);
-
-        game.moveMotherNature(4);
-
-        assertEquals(6, map.getMotherNaturePosition());
-
-        map.merge(1,2);
-
-         */
-
+        map.setMotherNaturePos(11);
+        game.moveMotherNature(3);
+        assertEquals(map.getMotherNaturePosition(), 2);
     }
 
     @Test
-    public void getPlayerByNicknameTest() throws MissingPlayerNicknameException {
+    public void getPlayerByNicknameTest() {
 
-        Game game;
-        //già aggiunti
-        /*
-        String player1 = "Player1";
-        String player2 = "Player2";
-        String player3 = "Player3";
-
-        players.add(player1);
-        players.add(player2);
-        players.add(player3);
-         */
-
-        game = new Game(players);
-
-        assertEquals(players.get(0), game.getPlayerByNickname("player1").getNickname());
-        assertEquals(players.get(1), game.getPlayerByNickname("player2").getNickname());
-        assertEquals(players.get(2), game.getPlayerByNickname("player3").getNickname());
-
+        assertEquals(game.getPlayers().get(0).getNickname(), game.getPlayerByNickname("teo").getNickname());
+        assertEquals(game.getPlayers().get(1).getNickname(), game.getPlayerByNickname("ale").getNickname());
+        assertEquals(game.getPlayers().get(2).getNickname(), game.getPlayerByNickname("gio").getNickname());
     }
 
 
     @Test
     public void getPlayersNicknames() {
-        Game game = new Game(players);
         List<String> playersListFromMethod = game.getPlayersNicknames();
         List<String> realPlayerList = new ArrayList<>();
-        realPlayerList.add(players.get(0));
-        realPlayerList.add(players.get(1));
-        realPlayerList.add(players.get(2));
+        realPlayerList.add(game.getPlayers().get(0).getNickname());
+        realPlayerList.add(game.getPlayers().get(1).getNickname());
+        realPlayerList.add(game.getPlayers().get(2).getNickname());
 
         assertEquals(playersListFromMethod, realPlayerList);
     }
 
     @Test
     public void refillClouds() {
-        Game game = new Game(players);
         ArrayList<Cloud> clouds = game.getMap().getClouds();
         if(clouds.get(0).getCloudStudents().isEmpty() && clouds.get(1).getCloudStudents().isEmpty())
             game.refillClouds();
@@ -173,30 +160,63 @@ public class GameTest {
 
     @Test
     public void setAssistantCard() {
+        AssistantCard assistantCard = new AssistantCard(4, 4, 2);
+
+        game.setAssistantCard("teo", 4);
+
+        assertEquals(game.getPlayerByNickname("teo").getCurrentCard().getID(), assistantCard.getID());
+        assertEquals(game.getPlayerByNickname("teo").getCurrentCard().getValue(), assistantCard.getValue());
+        assertEquals(game.getPlayerByNickname("teo").getCurrentCard().getMovement(), assistantCard.getMovement());
+
+        game.getPlayerByNickname("teo").resetAssistantCard();
+
+        for(AssistantCard card : game.getPlayerByNickname("teo").getHand()){
+            assertNotEquals(4, card.getID());
+        }
     }
 
     @Test
     public void moveStudentToIsland() {
+        StudentDisc studentDisc = bag.getBagStudents().get(0);
+
+        game.moveStudentToIsland(studentDisc, 4);
+
+        assertTrue(map.getIsland(4).getStudents().contains(studentDisc));
     }
 
     @Test
     public void moveTowerToIsland() {
+        Tower tower = game.getPlayerByNickname("teo").getScoreboard().removeTower();
+
+        game.moveTowerToIsland(tower, 4);
+
+        assertTrue(map.getIsland(4).getTowers().contains(tower));
+        assertEquals(TowerColors.BLACK, map.getIsland(4).getTowerColor());
+
+        assertEquals(5, game.getPlayerByNickname("teo").getScoreboard().getNumTowers());
     }
 
     @Test
     public void moveProfessor() {
+
     }
 
     @Test
     public void moveStudentToDiningRoom() {
-    }
 
-    @Test
-    public void deleteActiveCard() {
     }
 
     @Test
     public void pickAndPlaceFromCloud() {
+        Cloud cloud = game.getMap().getCloud(1);
+        ArrayList<StudentDisc> studentsOnCloud = cloud.getCloudStudents();
+
+        game.pickAndPlaceFromCloud(1);
+
+        for(StudentDisc student: cloud.getCloudStudents()){
+            assertTrue(game.getActivePlayer().getScoreboard().getEntrance().contains(student));
+        }
+
     }
 
     @Test

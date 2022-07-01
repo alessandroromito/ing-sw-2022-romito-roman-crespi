@@ -4,15 +4,12 @@ import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.TurnController;
 import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
-import it.polimi.ingsw.view.VirtualView;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,7 +17,6 @@ class ExpertGameTest {
     ExpertGame expertgame;
     TurnController turnController;
     GameController gameController;
-    Map<String, VirtualView> virtualViewMap = new HashMap<>();
 
     private final List<String> playersNicknames = new ArrayList<>();
 

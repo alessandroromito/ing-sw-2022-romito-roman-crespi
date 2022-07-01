@@ -30,7 +30,6 @@ public class ExpertGame extends Game {
     private CharacterCard activeCard = null;
     private ArrayList<CharacterCard> pool = new ArrayList<>(3);
 
-
     /**
      * Default constructor
      * @param playersNicknames List of players nicknames
@@ -38,12 +37,16 @@ public class ExpertGame extends Game {
     public ExpertGame(List<String> playersNicknames) {
         super(playersNicknames);
         ExpertGameInitialization();
+
+        System.out.println("ExpertGame Ready!");
     }
 
     /**
      * Initialize the expert version of the game
      */
     public void ExpertGameInitialization() {
+        System.out.println("Starting ExpertGame Initialization");
+
         // Add 1 coin to all Players
         for(Player p: this.getPlayers()){
             p.addCoin();
@@ -94,6 +97,8 @@ public class ExpertGame extends Game {
                 case 11 -> pool.add(new Card_220());
             }
         }
+
+        System.out.println("ExpertGame Initialization Success!");
     }
 
     @Override
