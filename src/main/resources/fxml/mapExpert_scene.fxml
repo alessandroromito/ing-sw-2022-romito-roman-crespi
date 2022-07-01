@@ -124,7 +124,7 @@
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bridge_4_5" fitHeight="142.0" fitWidth="187.0" layoutX="699.0" layoutY="831.0" opacity="0.0" pickOnBounds="true" rotate="-20.6">
+      <ImageView fx:id="bridge_4_5" fitHeight="142.0" fitWidth="187.0" layoutX="699.0" layoutY="831.0" opacity="0.0" pickOnBounds="true" rotate="-24.9">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
          </image>
@@ -144,7 +144,7 @@
             <Image url="@../Graphical_Assets/Reame/bridge.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bridge_3_4" fitHeight="130.0" fitWidth="187.0" layoutX="1043.0" layoutY="839.0" opacity="0.0" pickOnBounds="true" rotate="24.2">
+      <ImageView fx:id="bridge_3_4" fitHeight="130.0" fitWidth="174.0" layoutX="1055.0" layoutY="843.0" opacity="0.0" pickOnBounds="true" rotate="19.7">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge.png" />
          </image>
