@@ -20,9 +20,9 @@ public interface Scoreboard {
     int getNumStudentsFromEntrance();
     int getNumProf();
     int getPlayerStudentFromDining(PawnColors color);
-    void addStudentOnEntrance(StudentDisc student);
+    boolean addStudentOnEntrance(StudentDisc student);
     void addStudentOnDining(StudentDisc student);
-    void moveFromEntranceToDining(StudentDisc student);
+    boolean moveFromEntranceToDining(StudentDisc student);
     TowerColors getTowerColor();
     List<StudentDisc> getEntrance();
     Integer[] getDiningRoom();

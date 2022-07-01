@@ -363,6 +363,7 @@ public class Game extends Observable implements Serializable {
 
             for(Player p : players){
                 int playerInfluence = island.getInfluence(p);
+                System.out.println( p.getNickname() + " influence: " + playerInfluence);
                 if(!p.getNickname().equals(activePlayer.getNickname()) &&  playerInfluence > activePlayerInfluence && playerInfluence > bestInfluence){
                     bestInfluence = island.getInfluence(p);
                     dominantPlayer = p;

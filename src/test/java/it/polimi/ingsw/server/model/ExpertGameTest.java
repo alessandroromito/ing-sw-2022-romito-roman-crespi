@@ -183,14 +183,18 @@ class ExpertGameTest {
 
     @Test
     void disableCardEffects() {
+        expertgame.disableCardEffects();
+        assertEquals(-1, expertgame.getActiveCardID());
     }
 
     @Test
     void getCharacterCards() {
+        assertEquals(2, expertgame.getCharacterCards().size());
     }
 
     @Test
     void getCharacterCardByID() {
+        assertEquals(217, expertgame.getCharacterCardByID(217).getID());
     }
 
     @Test

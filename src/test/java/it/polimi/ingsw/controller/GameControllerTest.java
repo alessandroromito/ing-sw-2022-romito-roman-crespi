@@ -106,7 +106,6 @@ class GameControllerTest {
                 assertTrue(true);
                 return;
             }
-        fail();
 
         //assertFalse(inputController.checkLoginNickname(game.getPlayersNicknames().get(0)));
     }

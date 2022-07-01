@@ -100,7 +100,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
             }
             throw new MissingProfessorException("Unable to remove professor");
         } catch (MissingProfessorException e) {
-            e.printStackTrace();
+            System.out.println("Unable to remove professor");
         }
         return null;
     }
@@ -166,19 +166,22 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     /**
      * Add a student on the entrance section
+     *
      * @param student student to add
+     * @return
      */
     @Override
-    public void addStudentOnEntrance(StudentDisc student) {
+    public boolean addStudentOnEntrance(StudentDisc student) {
         try{
             for(int k=0;k<=6;k++)
                 if(entrance[k] == null){
                     entrance[k] = student;
-                    return;
+                    return true;
                 }
             throw new EntranceFullException("Entrance is full");
         } catch (EntranceFullException e) {
-            throw new RuntimeException(e);
+            System.out.println("Entrance is full");
+            return false;
         }
     }
 
@@ -198,10 +201,12 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     /**
      * Move a student from the entrance to the dining room section if presents
+     *
      * @param student student to move
+     * @return
      */
     @Override
-    public void moveFromEntranceToDining(StudentDisc student) {
+    public boolean moveFromEntranceToDining(StudentDisc student) {
         try {
             for (int i = 0; i < 7; i++)
                 if (entrance[i] != null && entrance[i].getID() == student.getID()) {
@@ -215,11 +220,12 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
                         }
 
                     entrance[i] = null;
-                    return;
+                    return true;
                 }
             throw new StudentNotInEntranceException("Student not in entrance!");
         } catch (StudentNotInEntranceException e) {
-            e.printStackTrace();
+            System.out.println("Student not in entrance!");
+            return false;
         }
     }
 

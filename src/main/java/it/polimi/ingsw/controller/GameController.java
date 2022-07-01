@@ -518,6 +518,15 @@ public class GameController implements Observer, Serializable {
     }
 
     /**
+     * Send a game scenario message to all players
+     */
+    public void sendGameScenarioMessageToAll() {
+        for (VirtualView virtualView : virtualViewMap.values()) {
+            virtualView.showGameScenario(new GameSerialized(game));
+        }
+    }
+
+    /**
      * Show a message only to the parameter player
      * @param nickname nickname of the player to send a message
      * @param message message to be sent

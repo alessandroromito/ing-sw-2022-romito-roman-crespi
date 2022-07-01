@@ -160,6 +160,7 @@ public class TurnController implements Serializable {
         try {
             switch (actionPhaseState) {
                 case USE_EFFECT -> {
+                    gameController.sendGameScenarioMessageToAll();
                     if(game.isExpertMode()){
                         gameController.askCharacterCard();
                     }

@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GameTest {
+public class GameTest3P {
     Game game;
     Map map;
     Bag bag;
@@ -44,7 +44,6 @@ public class GameTest {
         String player3 = "gio";
 
         gameController.getPlayersNicknames().add(player1);
-
         gameController.getPlayersNicknames().add(player2);
         gameController.getPlayersNicknames().add(player3);
 
@@ -264,6 +263,21 @@ public class GameTest {
 
         assertTrue(map.getIsland(4).isDisabled());
         assertTrue(map.getIsland(5).isDisabled());
+
+        map.getIsland(6).addStudent(new StudentDisc(1,PawnColors.RED));
+        map.getIsland(6).addStudent(new StudentDisc(1,PawnColors.RED));
+
+        game.checkInfluence(6);
+
+        map.getIsland(7).addStudent(new StudentDisc(1,PawnColors.RED));
+        map.getIsland(7).addStudent(new StudentDisc(1,PawnColors.RED));
+
+        map.getIsland(8).addStudent(new StudentDisc(1,PawnColors.RED));
+        map.getIsland(8).addStudent(new StudentDisc(1,PawnColors.RED));
+
+        game.checkInfluence(8);
+        game.checkInfluence(7);
+
     }
 
     @Test
