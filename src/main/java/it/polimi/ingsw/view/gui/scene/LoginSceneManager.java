@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 
+/**
+ * Manager of the login scene.
+ */
 public class LoginSceneManager extends ViewObservable implements SceneManagerInterface {
 
     @FXML
@@ -20,6 +23,10 @@ public class LoginSceneManager extends ViewObservable implements SceneManagerInt
     @FXML
     private ImageView loading;
 
+    /**
+     * Handles the click of the button sending a message with the nickname requested to the server.
+     * @param event mouse event.
+     */
     @FXML
     void onButtonClick(ActionEvent event) {
         String nickname = nicknameField.getText();
