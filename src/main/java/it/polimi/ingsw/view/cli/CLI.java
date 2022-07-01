@@ -789,7 +789,7 @@ public class CLI extends ViewObservable implements View {
             case 212 -> out.println(ANSI_GREEN + "Puoi muovere madre natura di 2 isole addizionali rispetto a quanto indicato sulla carta assistente." + ANSI_RESET );
             case 213 -> out.println(ANSI_GREEN + "Piazza una tessera divieto su un isola a tua scelta, la prima volta che madre natura termina il suo movimento lì verrà rimossa e non verrà calcolata l'influenza ne piazzate torri. " + ANSI_RESET );
             case 214 -> out.println(ANSI_GREEN + "Durante il conteggio dell'influenza su un isola, le torri presenti non vengono calcolate." + ANSI_RESET );
-            case 215 -> out.println(ANSI_GREEN + "Puoi prendere fino a 3 studenti da questa carta e scambiarli con altrettant Studenti presenti nel tuo ingresso." + ANSI_RESET);
+            case 215 -> out.println(ANSI_GREEN + "Puoi prendere fino a 3 studenti da questa carta e scambiarli con altrettanti Studenti presenti nel tuo ingresso." + ANSI_RESET);
             case 216 -> out.println(ANSI_GREEN + "In questo turno, durante il calcolo dell'influenza hai 2 punti addizionali." + ANSI_RESET );
             case 217 -> out.println(ANSI_GREEN + "Scegli un colore di uno studente, in questo turno durante il calcolo dell'influenza quel colore non fornisce influenza." + ANSI_RESET );
             case 218 -> out.println(ANSI_GREEN + "puoi scambiare fra loro fino a 2 Studenti presenti nella Sala e nel tuo ingresso." + ANSI_RESET);

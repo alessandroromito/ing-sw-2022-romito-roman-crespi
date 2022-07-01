@@ -15,7 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class GameControllerSetupTest {
+class GameControllerTest {
 
     private List<String> players;
     private Map<String, VirtualView> virtualViewMap;
@@ -106,7 +106,6 @@ class GameControllerSetupTest {
                 assertTrue(true);
                 return;
             }
-        fail();
 
         //assertFalse(inputController.checkLoginNickname(game.getPlayersNicknames().get(0)));
     }
