@@ -237,6 +237,12 @@ class ExpertGameTest {
         expertgame.checkInfluence(6);
 
         assertEquals(0, map.getIsland(6).getTowerNumber());
+
+        map.getIsland(10).addNoEntryTile(new NoEntryTile(2));
+        expertgame.checkInfluence(10);
+
+        assertEquals(0, map.getIsland(10).getTowerNumber());
+
     }
 
     @Test
