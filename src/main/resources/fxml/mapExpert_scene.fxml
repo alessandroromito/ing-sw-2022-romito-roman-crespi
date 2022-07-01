@@ -124,7 +124,7 @@
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bridge_4_5" fitHeight="142.0" fitWidth="187.0" layoutX="686.0" layoutY="838.0" opacity="0.0" pickOnBounds="true" rotate="-20.2">
+      <ImageView fx:id="bridge_4_5" fitHeight="142.0" fitWidth="187.0" layoutX="699.0" layoutY="831.0" opacity="0.0" pickOnBounds="true" rotate="-20.6">
          <image>
             <Image url="@../Graphical_Assets/Reame/bridge_reverse.png" />
          </image>
