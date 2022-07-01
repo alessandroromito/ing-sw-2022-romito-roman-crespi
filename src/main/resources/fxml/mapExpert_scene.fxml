@@ -585,7 +585,7 @@
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
       </ImageView>
-      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="518.0" layoutY="515.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cloud1Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="518.0" layoutY="498.0" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow height="15.0" radius="7.0" width="15.0" />
          </effect>
@@ -744,5 +744,33 @@
             </Bloom>
          </effect>
       </Label>
+      <ImageView fx:id="cloud3" disable="true" fitHeight="214.0" fitWidth="214.0" layoutX="1220.0" layoutY="523.0" onMouseClicked="#selectedCloud3" onMouseEntered="#inCloud3" onMouseExited="#outCloud3" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" visible="false">
+         <image>
+            <Image url="@../Graphical_Assets/Reame/cloud.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud3Student0" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1294.0" layoutY="646.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" visible="false">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud3Student1" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1270.0" layoutY="587.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" visible="false">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud3Student3" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1339.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" visible="false">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
+      <ImageView fx:id="cloud3Student2" disable="true" fitHeight="44.0" fitWidth="44.0" layoutX="1323.0" layoutY="580.0" pickOnBounds="true" preserveRatio="true" scaleX="0.75" scaleY="0.75" scaleZ="0.0" visible="false">
+         <effect>
+            <DropShadow height="15.0" radius="7.0" width="15.0" />
+         </effect>
+      </ImageView>
    </children>
 </AnchorPane>

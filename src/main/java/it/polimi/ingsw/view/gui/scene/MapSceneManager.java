@@ -12,7 +12,6 @@ import it.polimi.ingsw.server.model.component.charactercards.Card_209;
 import it.polimi.ingsw.server.model.component.charactercards.Card_219;
 import it.polimi.ingsw.server.model.component.charactercards.CharacterCard;
 import it.polimi.ingsw.server.model.map.Cloud;
-import it.polimi.ingsw.server.model.map.GhostIsland;
 import it.polimi.ingsw.view.gui.GraphicController;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -26,10 +25,8 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
@@ -104,6 +101,9 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     @FXML
     private ImageView cloud2;
+
+    @FXML
+    private ImageView cloud3;
 
     @FXML
     private ImageView island1;
@@ -241,6 +241,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     private ImageView cloud2Student3;
 
     @FXML
+    private ImageView cloud3Student0;
+
+    @FXML
+    private ImageView cloud3Student1;
+
+    @FXML
+    private ImageView cloud3Student2;
+
+    @FXML
+    private ImageView cloud3Student3;
+
+    @FXML
     private ImageView motherNature;
 
     @FXML
@@ -308,6 +320,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     ScoreboardSceneManager scoreboardSceneManager = null;
     private int coins;
     private int finalStudentPos;
+    private boolean modeCloud3 = false;
 
     public void setPlayedAssistantCardsList(List<AssistantCard> playedAssistantCardsList) {
         this.playedAssistantCardsList = playedAssistantCardsList;
@@ -317,6 +330,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     ArrayList<Cloud> clouds = new ArrayList<>();
     ImageView[] cloudStudents1 = new ImageView[4];
     ImageView[] cloudStudents2 = new ImageView[4];
+    ImageView[] cloudStudents3 = new ImageView[4];
     ImageView[] towerBases = new ImageView[12];
     ImageView[] island = new ImageView[12];
     ImageView[] assistantCards = new ImageView[10];
@@ -425,6 +439,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         cloudStudents2[1] = cloud2Student1;
         cloudStudents2[2] = cloud2Student2;
         cloudStudents2[3] = cloud2Student3;
+        cloudStudents3[0] = cloud1Student0;
+        cloudStudents3[1] = cloud1Student1;
+        cloudStudents3[2] = cloud1Student2;
+        cloudStudents3[3] = cloud1Student3;
 
         disableClouds();
 
@@ -694,7 +712,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
                 cloudStudents1[i].setEffect(dr);
                 cloudStudents1[i].setId(Integer.toString(s.getID()));
-            } else {
+            } else if(number == 2){
                 cloudStudents2[i].setImage(image);
                 DropShadow dr = new DropShadow();
                 dr.setWidth(15);
@@ -702,6 +720,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
                 cloudStudents2[i].setEffect(dr);
                 cloudStudents2[i].setId(Integer.toString(s.getID()));
+            } else {
+                cloudStudents3[i].setImage(image);
+                DropShadow dr = new DropShadow();
+                dr.setWidth(15);
+                dr.setHeight(15);
+
+                cloudStudents3[i].setEffect(dr);
+                cloudStudents3[i].setId(Integer.toString(s.getID()));
             }
         }
     }
@@ -1074,8 +1100,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         clearCloud1();
         clearCloud2();
+        clearCloud3();
         addStudentsToCloud(gameSerialized.getClouds().get(0), 1);
-        if (gameSerialized.getClouds().get(1) != null) addStudentsToCloud(gameSerialized.getClouds().get(1), 2);
+        addStudentsToCloud(gameSerialized.getClouds().get(1), 2);
+        if (gameSerialized.getClouds().size() == 3) {
+            modeCloud3();
+            addStudentsToCloud(gameSerialized.getClouds().get(2), 3);}
 
         this.gameSerialized = gameSerialized;
         ArrayList<SerializableIsland> islands = gameSerialized.getSerializableIslands();
@@ -1446,19 +1476,27 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     }
 
     public void selectedCloud2(MouseEvent mouseEvent) {
-        cloud1.setEffect(new DropShadow());
+        cloud2.setEffect(new DropShadow());
         selectCloudObserverNotification(2);
+        disableClouds();
+    }
+
+    public void selectedCloud3(MouseEvent mouseEvent) {
+        cloud3.setEffect(new DropShadow());
+        selectCloudObserverNotification(3);
         disableClouds();
     }
 
     public void disableClouds() {
         cloud1.setDisable(true);
         cloud2.setDisable(true);
+        cloud3.setDisable(true);
     }
 
     public void enableClouds() {
         if (cloud1Student0.getImage() != null) cloud1.setDisable(false);
         if (cloud2Student0.getImage() != null) cloud2.setDisable(false);
+        if (cloud3Student0.getImage() != null && modeCloud3) cloud3.setDisable(false);
     }
 
     public void selectCloudObserverNotification(int cloudNumber) {
@@ -1470,6 +1508,37 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             clearCloud1();
         if (cloudNumber == 2)
             clearCloud2();
+        if (cloudNumber == 3)
+            clearCloud3();
+    }
+
+    private void modeCloud3(){
+        modeCloud3 = true;
+        cloud2Student0.setScaleX(0.75);
+        cloud2Student0.setScaleY(0.75);
+        cloud2Student1.setScaleX(0.75);
+        cloud2Student1.setScaleY(0.75);
+        cloud2Student2.setScaleX(0.75);
+        cloud2Student2.setScaleY(0.75);
+        cloud2Student3.setScaleX(0.75);
+        cloud2Student3.setScaleY(0.75);
+        cloud2Student0.setTranslateX(-40);
+        cloud2Student0.setTranslateY(-105);
+        cloud2Student1.setTranslateX(-37);
+        cloud2Student1.setTranslateY(-95);
+        cloud2Student2.setTranslateX(-50);
+        cloud2Student2.setTranslateY(-90);
+        cloud2Student3.setTranslateX(-40);
+        cloud2Student3.setTranslateY(-90);
+
+        cloud2.setScaleX(0.75);
+        cloud2.setScaleY(0.75);
+        cloud2.setTranslateX(-40);
+        cloud2.setTranslateY(-90);
+
+        cloud3.setVisible(true);
+        for(ImageView i: cloudStudents3)
+            i.setVisible(true);
     }
 
     public void clearCloud1() {
@@ -1480,6 +1549,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void clearCloud2() {
         for (int i = 0; i < 4; i++)
             cloudStudents2[i].setImage(null);
+    }
+
+    public void clearCloud3() {
+        for (int i = 0; i < 4; i++)
+            cloudStudents3[i].setImage(null);
     }
 
     public void inCloud1(MouseEvent mouseEvent) {
@@ -1496,6 +1570,14 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
     public void outCloud2(MouseEvent mouseEvent) {
         cloud2.setEffect(new DropShadow());
+    }
+
+    public void inCloud3(MouseEvent mouseEvent) {
+        cloud3.setEffect(new Bloom(0.95));
+    }
+
+    public void outCloud3(MouseEvent mouseEvent) {
+        cloud3.setEffect(new DropShadow());
     }
 
     public void setAssistants(List<AssistantCard> assistantCards) {
