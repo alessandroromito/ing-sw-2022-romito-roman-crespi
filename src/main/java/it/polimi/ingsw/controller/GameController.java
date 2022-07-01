@@ -540,7 +540,6 @@ public class GameController implements Observer, Serializable {
      * Call a game method that refill the clouds with students.
      */
     public void refillClouds(){
-
         game.refillClouds();
     }
 

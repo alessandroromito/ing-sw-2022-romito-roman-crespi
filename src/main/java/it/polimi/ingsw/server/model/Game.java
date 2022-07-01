@@ -315,6 +315,7 @@ public class Game extends Observable implements Serializable {
         getActivePlayer().getScoreboard().moveFromEntranceToDining(stud);
         if(!getActivePlayer().getScoreboard().getProfessor(stud.getColor()))
             checkProfessors(stud.getColor());
+
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
     }
 

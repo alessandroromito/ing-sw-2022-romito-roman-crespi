@@ -23,6 +23,11 @@ public class GameTest {
     Game game;
     Map map;
     Bag bag;
+
+    Player teo;
+    Player gio;
+    Player ale;
+
     TurnController turnController;
     GameController gameController;
 
@@ -55,6 +60,10 @@ public class GameTest {
         this.components = game.getComponents();
         this.map = game.getMap();
         this.bag = game.getBag();
+
+        this.teo = game.getPlayerByNickname("teo");
+        this.ale = game.getPlayerByNickname("ale");
+        this.gio = game.getPlayerByNickname("gio");
     }
 
     @Test
@@ -198,12 +207,22 @@ public class GameTest {
 
     @Test
     public void moveProfessor() {
+        game.getPlayerByNickname("ale").getScoreboard().addProfessor(new ProfessorPawn(0, PawnColors.PINK));
 
+        game.moveProfessor(PawnColors.PINK, teo);
+
+        assertTrue(teo.getScoreboard().getProfessor(PawnColors.PINK));
+        assertFalse(game.getPlayerByNickname("ale").getScoreboard().getProfessor(PawnColors.PINK));
     }
 
     @Test
     public void moveStudentToDiningRoom() {
+        StudentDisc studentDisc = teo.getScoreboard().getEntrance().get(0);
 
+        game.moveStudentToDiningRoom(studentDisc);
+
+        assertEquals(1, teo.getScoreboard().getPlayerStudentFromDining(studentDisc.getColor()));
+        assertFalse(teo.getScoreboard().getEntrance().contains(studentDisc));
     }
 
     @Test
@@ -217,6 +236,27 @@ public class GameTest {
             assertTrue(game.getActivePlayer().getScoreboard().getEntrance().contains(student));
         }
 
+    }
+
+    @Test
+    public void checkInfluence(){
+        teo.getScoreboard().addProfessor(new ProfessorPawn(1, PawnColors.RED));
+        System.out.println("teo: " + teo.getScoreboard().getNumProf());
+
+        map.getIsland(4).addStudent(new StudentDisc(1,PawnColors.RED));
+        map.getIsland(4).addStudent(new StudentDisc(1,PawnColors.RED));
+
+        game.checkInfluence(4);
+
+        assertSame(map.getIsland(4).getTowerColor(), teo.getScoreboard().getTowerColor());
+
+        map.getIsland(5).addStudent(new StudentDisc(1,PawnColors.RED));
+        map.getIsland(5).addStudent(new StudentDisc(1,PawnColors.RED));
+
+        game.checkInfluence(5);
+
+        assertTrue(map.getIsland(4).isDisabled());
+        assertTrue(map.getIsland(5).isDisabled());
     }
 
     @Test
