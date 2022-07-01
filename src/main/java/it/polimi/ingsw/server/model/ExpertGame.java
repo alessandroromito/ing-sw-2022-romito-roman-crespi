@@ -362,6 +362,8 @@ public class ExpertGame extends Game {
             }
         }
 
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
+
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
