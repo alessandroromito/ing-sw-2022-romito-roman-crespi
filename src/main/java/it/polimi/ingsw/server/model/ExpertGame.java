@@ -55,7 +55,7 @@ public class ExpertGame extends Game {
 
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
-        for(int i=0;i<12;i++){
+        for(int i=0;i<7;i++){
             vector12.add(i);
         }
         Collections.shuffle(vector12);
@@ -63,12 +63,6 @@ public class ExpertGame extends Game {
         for(int i=0;i<3;i++) {
             switch (vector12.get(i)) {
                 case 0 -> {
-                    ArrayList<StudentDisc> t = new ArrayList<>();
-                    for (int k = 0; k < 4; k++)
-                        t.add(bag.pickSorted());
-                    pool.add(new Card_209(t));
-                }
-                case 1 -> {
                     Player[] mps = new Player[5];
                     for (Player p : players)
                         for (int k = 0; k < 5; k++)
@@ -76,26 +70,11 @@ public class ExpertGame extends Game {
                                 mps[k] = p;
                     pool.add(new Card_210(mps));
                 }
-                case 2 -> pool.add(new Card_211());
-                case 3 -> pool.add(new Card_212());
-                case 4 -> pool.add(new Card_213(List.of(getComponent(221),getComponent(222),getComponent(223),getComponent(224))));
-                case 5 -> pool.add(new Card_214());
-                case 6 -> pool.add(new Card_216());
-                case 7 -> pool.add(new Card_217());
-                case 8 -> {
-                    ArrayList<StudentDisc> s = new ArrayList<>();
-                    for (int k = 0; k < 4; k++)
-                        s.add(bag.pickSorted());
-                    pool.add(new Card_219(s));
-                }
-                case 9 -> {
-                    ArrayList<StudentDisc> s = new ArrayList<>();
-                    for (int k = 0; k < 6; k++)
-                        s.add(bag.pickSorted());
-                    pool.add(new Card_215(s));
-                }
-                case 10 -> pool.add(new Card_218());
-                case 11 -> pool.add(new Card_220());
+                case 1 -> pool.add(new Card_211());
+                case 2 -> pool.add(new Card_212());
+                case 3 -> pool.add(new Card_214());
+                case 4 -> pool.add(new Card_216());
+                case 5 -> pool.add(new Card_217());
             }
         }
 
@@ -375,14 +354,14 @@ public class ExpertGame extends Game {
      *
      * @param p player that use the effect
      */
-     public void use_216(Player p){
+    public void use_216(Player p){
         p.setAdditionalPoints(true);
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
 
-     }
+    }
 
     /**
      * Disable the effect of the card 216
@@ -448,24 +427,24 @@ public class ExpertGame extends Game {
      *
      * @param number from 0 to 3 which is the number of the 4 student to take
      */
-     public void use_219(int number) {
-         try{
-             if(activeCardID != 219)
-                 throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
-         } catch (ActiveCardAlreadyExistingException e) {
-             e.printStackTrace();
-         }
+    public void use_219(int number) {
+        try{
+            if(activeCardID != 219)
+                throw new ActiveCardAlreadyExistingException("Trying to use the wrong card");
+        } catch (ActiveCardAlreadyExistingException e) {
+            e.printStackTrace();
+        }
 
-         Scoreboard scoreboard = getActivePlayer().getScoreboard();
-         Card_219 card = (Card_219) activeCard;
-         scoreboard.addStudentOnDining(card.getStudent(number));
-         card.addStudent(bag.pickSorted());
+        Scoreboard scoreboard = getActivePlayer().getScoreboard();
+        Card_219 card = (Card_219) activeCard;
+        scoreboard.addStudentOnDining(card.getStudent(number));
+        card.addStudent(bag.pickSorted());
 
-         notifyObserver(new GameScenarioMessage(getGameSerialized()));
+        notifyObserver(new GameScenarioMessage(getGameSerialized()));
 
-         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
-             turnController.nextActionPhase();
-         else turnController.actionPhase();
+        if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
+            turnController.nextActionPhase();
+        else turnController.actionPhase();
     }
 
     /**
