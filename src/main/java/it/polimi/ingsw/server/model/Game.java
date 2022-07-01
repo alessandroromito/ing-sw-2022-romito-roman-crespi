@@ -18,6 +18,7 @@ import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
 import it.polimi.ingsw.server.model.player.Player;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -29,6 +30,8 @@ import java.util.Random;
  * Make that communicate and collaborate each other
  */
 public class Game extends Observable implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -3718160795129337210L;
 
     protected List<Player> players = new ArrayList<>();
     protected ArrayList<Component> components = new ArrayList<>();

@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.component.Tower;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.server.model.player.Scoreboard;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  * Class that represents an Island of the game
  */
 public class Island implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -8167803544947348606L;
 
     protected final int ID;
     protected Integer[] numberOfColors = {0,0,0,0,0};

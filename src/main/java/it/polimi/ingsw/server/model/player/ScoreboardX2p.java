@@ -9,12 +9,19 @@ import it.polimi.ingsw.server.model.component.ProfessorPawn;
 import it.polimi.ingsw.server.model.component.StudentDisc;
 import it.polimi.ingsw.server.model.component.Tower;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class that represents the scoreboard of every player, it contains the entrance section,
+ * the dining room section and the professors owned by the player
+ */
 public class ScoreboardX2p implements Scoreboard, Serializable {
+    @Serial
+    private static final long serialVersionUID = 3266677119453192198L;
 
     private final Player player;
     private final boolean[][] availableCoin = new boolean[5][3];
@@ -27,9 +34,14 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
 
     private final ArrayList<ProfessorPawn> professorList = new ArrayList<>();
     private final ArrayList<Tower> towers = new ArrayList<>(8);
-    private TowerColors towerColor;
+    private final TowerColors towerColor;
 
-    public ScoreboardX2p(TowerColors towerColor,Player p){
+    /**
+     * Default Constructor
+     * @param towerColor color of the towers
+     * @param p player which belongs
+     */
+    public ScoreboardX2p(TowerColors towerColor, Player p){
         this.player = p;
         for(int i=0;i<5;i++)
             for(int k=0;k<3;k++)
@@ -49,6 +61,10 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         }
     }
 
+    /**
+     * Getter
+     * @return the number of professors owned
+     */
     @Override
     public int getNumProf(){
         int count = 0;
@@ -57,17 +73,21 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return count;
     }
 
-    @Override
-    public void setTowerColor(TowerColors t){
-        this.towerColor = t;
-    }
-
+    /**
+     * Add a professor
+     * @param professor prof to add
+     */
     @Override
     public void addProfessor(ProfessorPawn professor) {
         professorList.add(professor);
         professorTable[professor.getColor().ordinal()] = true;
     }
 
+    /**
+     * Remove an owned professor
+     * @param color color of the prof to remove
+     * @return the professor removed
+     */
     @Override
     public ProfessorPawn removeProfessor(PawnColors color) {
         try{
@@ -85,6 +105,11 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return null;
     }
 
+    /**
+     * Remove a student from the entrance
+     * @param student stud to remove
+     * @return the student removed
+     */
     @Override
     public StudentDisc removeStudent(StudentDisc student){
         int studentID = student.getID();
@@ -95,6 +120,11 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return null;
     }
 
+    /**
+     * Check if there is the professor asked
+     * @param color color of the professor to check
+     * @return true if the player has the professor, false otherwise
+     */
     @Override
     public boolean getProfessor(PawnColors color) {
         for(ProfessorPawn professor : professorList){
@@ -104,11 +134,17 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return false;
     }
 
+    /**
+     * @return the number of the towers lefts
+     */
     @Override
     public int getNumTowers() {
         return towers.size();
     }
 
+    /**
+     * @return the number of students presents on entrance section
+     */
     @Override
     public int getNumStudentsFromEntrance() {
         int c = 0;
@@ -118,11 +154,20 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return c;
     }
 
+    /**
+     * Get the number of students on the dining room for one color
+     * @param color color of the students to count
+     * @return the total number
+     */
     @Override
     public int getPlayerStudentFromDining(PawnColors color) {
         return this.diningRoom[color.ordinal()];
     }
 
+    /**
+     * Add a student on the entrance section
+     * @param student student to add
+     */
     @Override
     public void addStudentOnEntrance(StudentDisc student) {
         try{
@@ -137,6 +182,10 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         }
     }
 
+    /**
+     * Add a student on the dining room section
+     * @param student student to add
+     */
     @Override
     public void addStudentOnDining(StudentDisc student) {
         diningRoomList.add(student);
@@ -147,6 +196,10 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         }
     }
 
+    /**
+     * Move a student from the entrance to the dining room section if presents
+     * @param student student to move
+     */
     @Override
     public void moveFromEntranceToDining(StudentDisc student) {
         try {
@@ -170,36 +223,47 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         }
     }
 
+    /**
+     * Getter
+     * @return the tower color of this scoreboard
+     */
     @Override
     public TowerColors getTowerColor() {
         return this.towerColor;
     }
 
+    /**
+     * Remove a tower
+     * @return the tower removed
+     */
     @Override
     public Tower removeTower() {
         return towers.remove(towers.size()-1);
     }
 
-    @Override
-    public void addTower(Tower tower) {
-        towers.add(tower);
-    }
-
+    /**
+     * Getter
+     * @return the entrance section as a List
+     */
     @Override
     public List<StudentDisc> getEntrance() {
         return new ArrayList<>(Arrays.asList(entrance).subList(0, 7));
     }
 
+    /**
+     * Getter
+     * @return the dining room
+     */
     @Override
     public Integer[] getDiningRoom() {
         return diningRoom;
     }
 
-    @Override
-    public ArrayList<StudentDisc> getDiningRoomList() {
-        return diningRoomList;
-    }
-
+    /**
+     * Get a student from the dining room
+     * @param color color of the student requested
+     * @return the student
+     */
     @Override
     public StudentDisc getStudentFromDining(PawnColors color){
         for(StudentDisc studentDisc : diningRoomList){
@@ -209,16 +273,28 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         return null;
     }
 
+    /**
+     * Getter
+     * @return the list of the professors
+     */
     @Override
     public ArrayList<ProfessorPawn> getProfessorList() {
         return professorList;
     }
 
+    /**
+     * Add @param towers to the scoreboard
+     * @param towers towers to be added
+     */
     @Override
     public void addTowers(ArrayList<Tower> towers) {
         this.towers.addAll(towers);
     }
 
+    /**
+     * Remove a student from the dining room section
+     * @param studentDisc student removed
+     */
     @Override
     public void removeStudentFromDining(StudentDisc studentDisc) {
         diningRoom[studentDisc.getColor().ordinal()]--;

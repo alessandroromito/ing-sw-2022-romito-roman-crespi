@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.player.Player;
 import it.polimi.ingsw.view.VirtualView;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import java.util.Map;
  * Class that contains methods about check and validation of the messages sent by client side.
  */
 public class InputController implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7360071799215316251L;
 
     private Game game;
     private final GameController gameController;
