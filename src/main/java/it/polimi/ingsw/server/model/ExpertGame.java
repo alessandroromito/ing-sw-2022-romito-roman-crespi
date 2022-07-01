@@ -552,7 +552,6 @@ public class ExpertGame extends Game {
                 for(CharacterCard characterCard : pool)
                     if(characterCard.getID() == 213)
                         temp = (Card_213) characterCard;
-
                 assert temp != null;
                 temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
                 return;

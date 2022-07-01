@@ -31,10 +31,10 @@ public class Card_213 extends CharacterCard{
     public NoEntryTile use() {
         try {
             if(!noEntryTiles.isEmpty())
-                return noEntryTiles.get(0);
+                return noEntryTiles.remove(0);
             else throw new ZeroNoEntryTileRemainingException("No entry tiles available");
         }catch (ZeroNoEntryTileRemainingException e){
-            e.printStackTrace();
+            System.out.println("No entry tiles remaining");
         }
         return null;
     }
