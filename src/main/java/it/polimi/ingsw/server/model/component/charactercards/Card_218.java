@@ -7,6 +7,6 @@ public class Card_218 extends CharacterCard{
      */
     public Card_218(){
         super(218);
-        this.cost = 1;
+        this.cost = 1; //1
     }
 }

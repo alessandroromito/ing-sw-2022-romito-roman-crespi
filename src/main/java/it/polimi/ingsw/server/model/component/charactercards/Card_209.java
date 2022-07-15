@@ -17,7 +17,7 @@ public class Card_209 extends CharacterCard {
     public Card_209(ArrayList<StudentDisc> students) {
         super(209);
         this.students = students;
-        this.cost = 1;
+        this.cost = 1; //1
     }
 
     /**

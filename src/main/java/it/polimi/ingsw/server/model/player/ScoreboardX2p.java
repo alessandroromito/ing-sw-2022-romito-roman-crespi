@@ -194,7 +194,7 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
         diningRoomList.add(student);
         diningRoom[student.getColorInt()]++;
         for(int i = 0; i < 7; i++){
-            if(entrance[i].equals(student))
+            if(entrance[i] != null && entrance[i].equals(student))
                 entrance[i] = null;
         }
     }
@@ -304,7 +304,12 @@ public class ScoreboardX2p implements Scoreboard, Serializable {
     @Override
     public void removeStudentFromDining(StudentDisc studentDisc) {
         diningRoom[studentDisc.getColor().ordinal()]--;
-        diningRoomList.removeIf(student -> student.getColor() == studentDisc.getColor());
+        for(StudentDisc stud : diningRoomList){
+            if(stud.getColor() == studentDisc.getColor()){
+                diningRoomList.remove(stud);
+                break;
+            }
+        }
     }
 
 }

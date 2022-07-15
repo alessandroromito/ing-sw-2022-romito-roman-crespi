@@ -13,9 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.effect.Bloom;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -921,7 +918,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setVisible(false);
         for(ImageView i:entrance)
             i.setDisable(true);
-        new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number))).start();
+        notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 1, number));
     }
 
     /**
@@ -1337,7 +1334,7 @@ public class ScoreboardSceneManager extends ViewObservable implements SceneManag
         diningButton.setVisible(false);
         for(ImageView i:entrance)
             i.setDisable(true);
-        new Thread( () -> notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1))).start();
+        notifyObserver(obs -> obs.onUpdateMoveStudent(new StudentDisc(selEntranceStudentId,PawnColors.values()[getColorFromId(selEntranceStudentId)-1]), 0, -1));
     }
 
 }

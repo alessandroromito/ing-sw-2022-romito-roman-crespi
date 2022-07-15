@@ -13,7 +13,7 @@ public class Card_217 extends CharacterCard{
      */
     public Card_217(){
         super(217);
-        this.cost = 3;
+        this.cost = 3; //3
     }
 
     /**

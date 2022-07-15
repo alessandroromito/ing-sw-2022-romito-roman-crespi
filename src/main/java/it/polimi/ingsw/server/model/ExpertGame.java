@@ -5,10 +5,7 @@ import it.polimi.ingsw.server.enumerations.ActionPhaseState;
 import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.exception.ActiveCardAlreadyExistingException;
 import it.polimi.ingsw.server.model.bag.Bag;
-import it.polimi.ingsw.server.model.component.Coin;
-import it.polimi.ingsw.server.model.component.Component;
-import it.polimi.ingsw.server.model.component.NoEntryTile;
-import it.polimi.ingsw.server.model.component.StudentDisc;
+import it.polimi.ingsw.server.model.component.*;
 import it.polimi.ingsw.server.model.component.charactercards.*;
 import it.polimi.ingsw.server.model.map.Island;
 import it.polimi.ingsw.server.model.map.Map;
@@ -55,12 +52,12 @@ public class ExpertGame extends Game {
 
         // Choose 3 CharacterCards
         List<Integer> vector12 = new ArrayList<>(12);
-        for(int i=0;i<7;i++){
+        for(int i=0;i<9;i++){
             vector12.add(i);
         }
         Collections.shuffle(vector12);
 
-        for(int i=0;i<3;i++) {
+        for(int i=0; i<3; i++) {
             switch (vector12.get(i)) {
                 case 0 -> {
                     Player[] mps = new Player[5];
@@ -75,6 +72,19 @@ public class ExpertGame extends Game {
                 case 3 -> pool.add(new Card_214());
                 case 4 -> pool.add(new Card_216());
                 case 5 -> pool.add(new Card_217());
+                case 6 -> {
+                    ArrayList<StudentDisc> s = new ArrayList<>();
+                    for (int k = 0; k < 4; k++)
+                        s.add(bag.pickSorted());
+                    pool.add(new Card_219(s));
+                }
+                case 7 -> pool.add(new Card_213(List.of((NoEntryTile) getComponent(221), (NoEntryTile) getComponent(222), (NoEntryTile) getComponent(223), (NoEntryTile) getComponent(224))));
+                case 8 -> {
+                    ArrayList<StudentDisc> t = new ArrayList<>();
+                    for (int k = 0; k < 4; k++)
+                        t.add(bag.pickSorted());
+                    pool.add(new Card_209(t));
+                }
             }
         }
 
@@ -174,15 +184,17 @@ public class ExpertGame extends Game {
 
         Card_209 card209 = (Card_209) activeCard;
 
-        StudentDisc moving = card209.use(studentPos, bag.pickSorted());
-        map.getIsland(islandID).addStudent(moving);
+        StudentDisc student = card209.use(studentPos, bag.pickSorted());
+        Island island = map.getIsland(islandID);
+        if(island.isDisabled())
+            island = map.getGhostIsland(islandID);
+        island.addStudent(student);
 
         notifyObserver(new GameScenarioMessage(getGameSerialized()));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
-
     }
 
     /**
@@ -283,7 +295,12 @@ public class ExpertGame extends Game {
         }
 
         Card_213 temp = (Card_213) activeCard;
-        map.getIsland(islandNumber - 1).addNoEntryTile(temp.use());
+        Island island = map.getIsland(islandNumber - 1);
+        if(island.isDisabled())
+            island = map.getGhostIsland(islandNumber -1);
+        island.addNoEntryTile(temp.use());
+
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -302,6 +319,8 @@ public class ExpertGame extends Game {
         }
 
         activeCardID = 214;
+
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -346,7 +365,6 @@ public class ExpertGame extends Game {
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
         else turnController.actionPhase();
-
     }
 
     /**
@@ -355,7 +373,10 @@ public class ExpertGame extends Game {
      * @param p player that use the effect
      */
     public void use_216(Player p){
+
         p.setAdditionalPoints(true);
+
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -385,6 +406,8 @@ public class ExpertGame extends Game {
 
         Card_217 card = (Card_217) activeCard;
         card.setDisColor(color);
+
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -462,10 +485,11 @@ public class ExpertGame extends Game {
             for(int i = 0; i < 3; i++){
                 if(player.getScoreboard().getPlayerStudentFromDining(color) > 0){
                     player.getScoreboard().removeStudentFromDining(player.getScoreboard().getStudentFromDining(color));
-                }
-                else break;
+                } else break;
             }
         }
+
+        notifyObserver(new GameScenarioMessage(new GameSerialized(this)));
 
         if(turnController.getActionPhaseState() == ActionPhaseState.USE_EFFECT)
             turnController.nextActionPhase();
@@ -517,24 +541,17 @@ public class ExpertGame extends Game {
         if(island.isDisabled()) {
             island = map.getGhostIsland(islandID);
         }
-        if(island.checkNoEntryTile())
+        if(island.checkNoEntryTile()) {
+            System.out.println("Found No Entry Tile on island " + (islandID+1) );
+            island.removeNoEntryTile();
             return;
+        }
 
         if(activeCardID == 214) {
             System.out.println("Checking influence 214");
             int bestInfluence = 0;
             Player dominantPlayer = null;
             Player opponentPlayer = null;
-
-            if(island.checkNoEntryTile()) {
-                Card_213 temp = null;
-                for(CharacterCard characterCard : pool)
-                    if(characterCard.getID() == 213)
-                        temp = (Card_213) characterCard;
-                assert temp != null;
-                temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
-                return;
-            }
 
             // CASE no tower on island
             if (island.getTowerNumber() == 0) {
@@ -590,7 +607,7 @@ public class ExpertGame extends Game {
                         temp = (Card_213) characterCard;
 
                 assert temp != null;
-                temp.recoverTile(map.getIsland(islandID).removeNoEntryTile());
+                temp.recoverTile(island.removeNoEntryTile());
                 return;
             }
 

@@ -13,7 +13,7 @@ public class Card_219 extends CharacterCard {
     public Card_219(ArrayList<StudentDisc> studentDiscArray){
         super(219);
         this.students = studentDiscArray;
-        this.cost = 2;
+        this.cost = 2; //2
     }
 
     /**
@@ -22,7 +22,7 @@ public class Card_219 extends CharacterCard {
      * @return student at i
      */
     public StudentDisc getStudent(int i){
-        if(i>=0 && i<=3) {
+        if(i>=0 && i<=5) {
             StudentDisc studentToReturn = students.get(i);
             students.remove(i);
             return studentToReturn;

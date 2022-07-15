@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.observer.ViewObservable;
 import it.polimi.ingsw.observer.ViewObserver;
-import it.polimi.ingsw.server.enumerations.PawnColors;
 import it.polimi.ingsw.server.model.GameSerialized;
 import it.polimi.ingsw.server.model.component.AssistantCard;
 import it.polimi.ingsw.server.model.component.StudentDisc;
@@ -433,7 +432,6 @@ public class GraphicController extends ViewObservable implements View {
     @Override
     public void askAssistantCard(List<AssistantCard> assistantCards, List<AssistantCard> playedAssistantCards) {
         Platform.runLater( () -> {
-            mapSceneManager.placeNoEntry();
             mapSceneManager.setActionFase(false);
             mapSceneManager.setActive(true);
             mapSceneManager.setPlayedAssistantCardsList(playedAssistantCards);

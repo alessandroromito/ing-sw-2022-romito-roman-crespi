@@ -27,7 +27,7 @@ public class SerializableIsland implements Serializable {
     private int pinkStudents = 0;
     private final int towerNumber;
     private final TowerColors towerColor;
-    private boolean noEntryTile;
+    private final boolean noEntryTile;
 
     /**
      * Default Constructor for an Island

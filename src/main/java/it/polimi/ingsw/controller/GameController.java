@@ -336,6 +336,7 @@ public class GameController implements Observer, Serializable {
         }
 
         this.turnController = restoredGameController.turnController;
+        this.game.setTurnController(restoredGameController.turnController);
         turnController.setGameController(this);
         this.gameState = restoredGameController.gameState;
 
@@ -561,6 +562,8 @@ public class GameController implements Observer, Serializable {
             if(inputController.validateCard(assistantCardMessage.getAssistantCards().get(0))) {
                 game.setAssistantCard(assistantCardMessage.getNickname(), assistantCardMessage.getAssistantCards().get(0).getID());
                 showMessage(assistantCardMessage.getNickname(), "Assistant Card Set!");
+
+                sendGameScenarioMessageToAll();
 
                 turnController.next();
             }

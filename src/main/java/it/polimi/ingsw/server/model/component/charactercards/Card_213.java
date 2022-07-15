@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model.component.charactercards;
 
 import it.polimi.ingsw.server.exception.ZeroNoEntryTileRemainingException;
-import it.polimi.ingsw.server.model.component.Component;
 import it.polimi.ingsw.server.model.component.NoEntryTile;
 
 import java.util.ArrayList;
@@ -16,12 +15,12 @@ public class Card_213 extends CharacterCard{
     /**
      * Default Constructor
      */
-    public Card_213(List<Component> nt) {
+    public Card_213(List<NoEntryTile> nt) {
         super(213);
-        this.cost = 2;
+        this.cost = 2; //2
 
         for(int i=0;i<4;i++)
-            this.noEntryTiles.add((NoEntryTile) nt.get(i));
+            this.noEntryTiles.add(nt.get(i));
     }
 
     /**

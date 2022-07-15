@@ -798,7 +798,6 @@ public class CLI extends ViewObservable implements View {
         }
     }
 
-
     /**
      * Method use to show the players in the lobby.
      * @param playersNickname nicknames of the player.
@@ -871,7 +870,7 @@ public class CLI extends ViewObservable implements View {
                 out.println("ISOLA " + (island.getId() + 1) + ":");
             }
 
-            if((gameSerialized.getMotherNaturePos() == island.getId() && !island.isGhost()) || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos())))
+            if((gameSerialized.getMotherNaturePos() == island.getId() && !island.isGhost()) || (island.getReferencedIslands() != null && island.getReferencedIslands().contains(gameSerialized.getMotherNaturePos() + 1)))
                 out.println(ANSI_WHITE + "MOTHER NATURE" + ANSI_RESET);
 
             if(island.getTowerNumber() != 0){

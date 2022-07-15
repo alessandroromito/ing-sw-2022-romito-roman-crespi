@@ -18,7 +18,6 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -33,8 +32,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 import java.util.random.RandomGenerator;
 
 import static it.polimi.ingsw.view.gui.GraphicController.nickname;
@@ -1158,7 +1159,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
             if (posWithGhost == null) {
                 int finalSteps = steps;
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps))).start();
+                notifyObserver(obs -> obs.onUpdateMotherNaturePosition(finalSteps));
             } else {
                 System.out.println("Spostamento modalità ghost");
                 Integer finalPose = null;
@@ -1176,7 +1177,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                 System.out.println("starting , final  pose: " + startingPose + " , " + finalPose);
                 int move = finalPose - startingPose;
                 System.out.println("Passi: " + move);
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateMotherNaturePosition(move))).start();
+                notifyObserver(obs -> obs.onUpdateMotherNaturePosition(move));
             }
         }
 
@@ -1271,6 +1272,11 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                             addStudentToIsland(getColorFromId(id), id, i);
                     }
                 }
+
+                if(gameSerialized.getSerializableIslands().get(k).getNoEntryTile())
+                    noEntryTile[k].setVisible(true);
+                else
+                    noEntryTile[k].setVisible(false);
             }
         } else {
             int islandMarker = 0;
@@ -1317,6 +1323,12 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                             addStudentToIsland(getColorFromId(id), id, islandMarker);
                     }
                     posWithGhost.add(List.of(islandMarker));
+
+                    if(island.getNoEntryTile())
+                        noEntryTile[islandMarker].setVisible(true);
+                    else
+                        noEntryTile[islandMarker].setVisible(false);
+
                     islandMarker++;
                 } else if (island.isGhost()) {
                     System.out.println();
@@ -1348,6 +1360,18 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                         temp.add(island.getReferencedIslands().get(j) - 1);
 
                     posWithGhost.add(temp);
+
+                    for(SerializableIsland isla: gameSerialized.getSerializableIslands()) {
+                        if (isla.getNoEntryTile()) {
+                            if(isla.isGhost())
+                                for (int marker : isla.getReferencedIslands())
+                                    noEntryTile[marker].setVisible(true);
+                            else
+                                for (int marker : isla.getReferencedIslands())
+                                    noEntryTile[marker].setVisible(false);
+                        }
+                    }
+
                     islandMarker += island.getReferencedIslands().size();
                 }
             }
@@ -1709,7 +1733,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
     public void selectCloudObserverNotification(int cloudNumber) {
         ArrayList<Cloud> finalCloud = new ArrayList<>();
         finalCloud.add(clouds.get(cloudNumber - 1));
-        new Thread(() -> notifyObserver(obs -> obs.onUpdatePickCloud(finalCloud))).start();
+        notifyObserver(obs -> obs.onUpdatePickCloud(finalCloud));
         clouds.clear();
         if (cloudNumber == 1)
             clearCloud1();
@@ -1864,7 +1888,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
 
         playedAssistantCardsList.add(finalAssistantCard);
         AssistantCard finalAssistantCard1 = finalAssistantCard;
-        new Thread(() -> notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList))).start();
+        notifyObserver(obs -> obs.onUpdatePlayAssistantCard(List.of(finalAssistantCard1), playedAssistantCardsList));
         assistantCardsList.remove(finalAssistantCard);
         return;
 
@@ -2393,7 +2417,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
                     disableMenu();
                     disable219();
                     System.out.println("use 219 pos: "+finalI);
-                    new Thread(() -> notifyObserver(obs -> obs.onUpdateUse219(finalI))).start();
+                    notifyObserver(obs -> obs.onUpdateUse219(finalI));
                 });
                 card219[i].setOnMouseEntered(ev -> card219[finalI].setEffect(new Glow(0.6)));
                 card219[i].setOnMouseExited(ev -> card219[finalI].setEffect(null));
@@ -2412,10 +2436,10 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             menuCard220();
 
         switch (idCard) {
-            case 210 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse210)).start();
-            case 212 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse212)).start();
-            case 214 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse214)).start();
-            case 216 -> new Thread(() -> notifyObserver(ViewObserver::onUpdateUse216)).start();
+            case 210 -> notifyObserver(ViewObserver::onUpdateUse210);
+            case 212 -> notifyObserver(ViewObserver::onUpdateUse212);
+            case 214 -> notifyObserver(ViewObserver::onUpdateUse214);
+            case 216 -> notifyObserver(ViewObserver::onUpdateUse216);
         }
     }
 
@@ -2473,7 +2497,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
         disableMenu();
         disable209();
         System.out.println("carta 209 pos: "+finalStudentPos+" "+islandSelected);
-        new Thread(() -> notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected)));
+        notifyObserver(obs -> obs.onUpdateUse209(finalStudentPos, islandSelected));
     }
 
     /**
@@ -2490,7 +2514,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             islandMenu.getItems().get(j).setOnAction(event -> {
                 disableMenu();
                 System.out.println("carta 211: "+(finalJ+1));
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse211(finalJ + 1))).start();
+                notifyObserver(obs -> obs.onUpdateUse211(finalJ + 1));
             });
         }
     }
@@ -2508,7 +2532,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             int finalJ = j;
             islandMenu.getItems().get(j).setOnAction(event -> {
                 disableMenu();
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse213(finalJ + 1))).start();
+                notifyObserver(obs -> obs.onUpdateUse213(finalJ + 1));
             });
         }
     }
@@ -2527,7 +2551,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             colorMenu.getItems().get(i).setOnAction(event -> {
                 disableMenu();
                 disable219();
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]))).start();
+                notifyObserver(obs -> obs.onUpdateUse217(PawnColors.values()[finalI]));
             });
         }
     }
@@ -2546,7 +2570,7 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             colorMenu.getItems().get(i).setOnAction(event -> {
                 disableMenu();
                 disable219();
-                new Thread(() -> notifyObserver(obs -> obs.onUpdateUse220(PawnColors.values()[finalI]))).start();
+                notifyObserver(obs -> obs.onUpdateUse220(PawnColors.values()[finalI]));
             });
         }
     }
@@ -2627,9 +2651,5 @@ public class MapSceneManager extends ViewObservable implements SceneManagerInter
             scale.setPivotY(0);
             pane.getScene().getRoot().getTransforms().setAll(scale);
         }
-    }
-
-    public void placeNoEntry(){
-
     }
 }
